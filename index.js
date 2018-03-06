@@ -8,8 +8,6 @@ import { AppRegistry } from 'react-native';
 import App from './src/App';
 import Screen2 from './src/Screen2';
 
-
-
 function registerScreens() {
   Navigation.registerComponent('wevedo.FirstTabScreen', () => App);
   Navigation.registerComponent('wevedo.SecondTabScreen', () => Screen2);
@@ -17,7 +15,7 @@ function registerScreens() {
 
 registerScreens();
 
-Navigation.startTabBasedApp({
+/*Navigation.startTabBasedApp({
   tabs: [
     {
       label: 'One',
@@ -32,8 +30,12 @@ Navigation.startTabBasedApp({
       title: 'Screen Two'
     }
   ]
+});*/
+Navigation.startSingleScreenApp({
+  screen: {
+    screen: 'wevedo.FirstTabScreen',
+    title: 'Welcome',
+  },
 });
-
-
 
 AppRegistry.registerComponent('wevedo_app', () => App);
