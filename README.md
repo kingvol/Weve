@@ -35,11 +35,7 @@ Prettier will auto-format your code based on eslint rules whenever you save a fi
 `"javascript.format.enable": false,`
 `"prettier.eslintIntegration": true`
 
-<!-- ## Google play deployment with BuddyBuild
-
-1.  Go to Deployments -> Deploy to Google Play
-2.  Select branch to deploy
-3.  Press "Deploy latest now"
+<!--
 
 ## Deploy specific build:
 
