@@ -32,6 +32,9 @@
     "jest": "22.4.2",
     "react-test-renderer": "16.2.0"
   },
+  "rnpm": {
+    "assets": ["./js/Assets/Fonts/"]
+  },
   "jest": {
     "preset": "react-native"
   }
