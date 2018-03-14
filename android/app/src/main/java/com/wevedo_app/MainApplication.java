@@ -26,7 +26,7 @@ public class MainApplication extends NavigationApplication  {
     @Override
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
-          new MainReactPackage(),
+          new MainReactPackage(),            
             new SplashScreenReactPackage()
       );
     }
