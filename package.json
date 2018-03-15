@@ -9,6 +9,9 @@
     "test": "jest"
   },
   "dependencies": {
+    "appcenter": "^1.4.0",
+    "appcenter-analytics": "^1.4.0",
+    "appcenter-crashes": "^1.4.0",
     "color": "^3.0.0",
     "eslint": "^4.18.1",
     "eslint-config-airbnb": "^16.1.0",
@@ -34,7 +37,9 @@
     "react-test-renderer": "16.2.0"
   },
   "rnpm": {
-    "assets": ["./js/Assets/Fonts/"]
+    "assets": [
+      "./js/Assets/Fonts/"
+    ]
   },
   "jest": {
     "preset": "react-native"
