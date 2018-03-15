@@ -19,31 +19,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MainApplication extends NavigationApplication  {
-
-  /* private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
-    @Override
-    public boolean getUseDeveloperSupport() {
-      return BuildConfig.DEBUG;
-    }
-
-    @Override
-    protected List<ReactPackage> getPackages() {
-      return Arrays.<ReactPackage>asList(
-
-        // If there are some packages inserted (mainReactPackage is default)
-        // PLACE THEM TO createAdditionalReactPackages() below
-        // ATTENTION!
-
-          new MainReactPackage()
-      );
-    }
-
-    @Override
-    protected String getJSMainModuleName() {
-      return "index";
-    }
-  }; */
-
   @Override
   public boolean isDebug() {
     return BuildConfig.DEBUG;
