@@ -1,0 +1,767 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		18466195E7EE9E420BDA65ACD5C418B3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 572DBE63D5360AB71E5F80F979738FD0 /* Foundation.framework */; };
+		288D5B2E33AF27986E98A31C716D67A1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D154F4805B9715F0E6D79B0363CE280 /* Foundation.framework */; };
+		595F2C31BE2E3C68E4AE6DD428BB180D /* Pods-wevedo_appTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = D1707F1D035B2041797D500CA2774201 /* Pods-wevedo_appTests-dummy.m */; };
+		5BC90E3764A585EA70753B61577446B7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 572DBE63D5360AB71E5F80F979738FD0 /* Foundation.framework */; };
+		5D0CEA8395C3C68E0B50F34088C58C4B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D154F4805B9715F0E6D79B0363CE280 /* Foundation.framework */; };
+		78ABBF8363BCE8646930EBAB1457EFD5 /* Pods-wevedo_app-tvOS-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 4930E7F849D04CA3DB1636B8B9CAEEE6 /* Pods-wevedo_app-tvOS-dummy.m */; };
+		7E7B6823E5F59A69F706BBA0ABA8D833 /* Pods-wevedo_app-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 19D9EFF72BF42D1F58769FB4C1635828 /* Pods-wevedo_app-dummy.m */; };
+		A1C0798B80D2B8A7D6579D6DCE9E4839 /* Pods-wevedo_app-tvOSTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 3645D8C1E3F2157F108B22D32B5EAC04 /* Pods-wevedo_app-tvOSTests-dummy.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0537FC8112F20CC700EB1A9D9F6B1E0E /* Pods-wevedo_app-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-wevedo_app-acknowledgements.plist"; sourceTree = "<group>"; };
+		14B1FD08C44DC85848761EB460D8D09A /* libPods-wevedo_app-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-wevedo_app-tvOSTests.a"; path = "libPods-wevedo_app-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		19D9EFF72BF42D1F58769FB4C1635828 /* Pods-wevedo_app-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-wevedo_app-dummy.m"; sourceTree = "<group>"; };
+		19ECC6A6A274D2AC11E57E339B207929 /* Pods-wevedo_app-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-wevedo_app-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		1FF8CBE3D70C3B5EE02BF7F1402952A2 /* AppCenterCrashes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppCenterCrashes.framework; path = "AppCenter-SDK-Apple/iOS/AppCenterCrashes.framework"; sourceTree = "<group>"; };
+		2D154F4805B9715F0E6D79B0363CE280 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		2E280B58529AEBA76B5F11C0705D0856 /* AppCenterReactNativeShared.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppCenterReactNativeShared.framework; path = AppCenterReactNativeShared/AppCenterReactNativeShared.framework; sourceTree = "<group>"; };
+		3645D8C1E3F2157F108B22D32B5EAC04 /* Pods-wevedo_app-tvOSTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-wevedo_app-tvOSTests-dummy.m"; sourceTree = "<group>"; };
+		3E9DF72167798BDB7AE4F7223E72F411 /* Pods-wevedo_app-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-wevedo_app-resources.sh"; sourceTree = "<group>"; };
+		4930E7F849D04CA3DB1636B8B9CAEEE6 /* Pods-wevedo_app-tvOS-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-wevedo_app-tvOS-dummy.m"; sourceTree = "<group>"; };
+		5193DFE36FAEF5B4A5633A5D7EF4DF9E /* Pods-wevedo_app.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-wevedo_app.debug.xcconfig"; sourceTree = "<group>"; };
+		572DBE63D5360AB71E5F80F979738FD0 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS10.2.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		6380F0DCB1A56B1B485D235C73ECD42B /* Pods-wevedo_app-tvOSTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-wevedo_app-tvOSTests-acknowledgements.markdown"; sourceTree = "<group>"; };
+		697057EB6F6A315777E7EA941A2AAF3B /* AppCenterAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppCenterAnalytics.framework; path = "AppCenter-SDK-Apple/iOS/AppCenterAnalytics.framework"; sourceTree = "<group>"; };
+		7358EEC9680D215886C29468725F8C1C /* Pods-wevedo_app-tvOS-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-wevedo_app-tvOS-acknowledgements.plist"; sourceTree = "<group>"; };
+		85D98EABD33CC00BB2A5557BA29C2F2E /* libPods-wevedo_app.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-wevedo_app.a"; path = "libPods-wevedo_app.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9176B96E20B1E38DE61AD57BF2272EF4 /* libPods-wevedo_appTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-wevedo_appTests.a"; path = "libPods-wevedo_appTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		932405C611D450F001021829333CB788 /* Pods-wevedo_app-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-wevedo_app-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		B1E95A02ADD07BB24920138C6758DB2D /* Pods-wevedo_app-tvOSTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-wevedo_app-tvOSTests-acknowledgements.plist"; sourceTree = "<group>"; };
+		B42D02C66B3AFDD3D2C79E5F01F22BE7 /* Pods-wevedo_app-tvOS-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-wevedo_app-tvOS-resources.sh"; sourceTree = "<group>"; };
+		B4FCF94E636941B82F726AC55B9689B1 /* Pods-wevedo_appTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-wevedo_appTests.debug.xcconfig"; sourceTree = "<group>"; };
+		B5C7DCDBF589A35EF4490C75E609CB63 /* Pods-wevedo_appTests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-wevedo_appTests-resources.sh"; sourceTree = "<group>"; };
+		B83BBB7518AB90D278EE081E9796E326 /* Pods-wevedo_app-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-wevedo_app-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		C26C7B826F1ECCCDAE138E50277A9AC6 /* Pods-wevedo_app-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-wevedo_app-acknowledgements.markdown"; sourceTree = "<group>"; };
+		D1707F1D035B2041797D500CA2774201 /* Pods-wevedo_appTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-wevedo_appTests-dummy.m"; sourceTree = "<group>"; };
+		D3FFB27253922961037D84B030A0E6DD /* Pods-wevedo_appTests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-wevedo_appTests-frameworks.sh"; sourceTree = "<group>"; };
+		DC65AFFB7964130E42157D207BE3A6DE /* AppCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppCenter.framework; path = "AppCenter-SDK-Apple/iOS/AppCenter.framework"; sourceTree = "<group>"; };
+		DD3A01B92D814920F8F45DE4996C6A2A /* Pods-wevedo_app-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-wevedo_app-frameworks.sh"; sourceTree = "<group>"; };
+		E5639E1FBE43E4316A6E4B1CAA815AE8 /* Pods-wevedo_app-tvOS-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-wevedo_app-tvOS-frameworks.sh"; sourceTree = "<group>"; };
+		E756735B0096DF001173E4563A46FEC8 /* Pods-wevedo_app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-wevedo_app.release.xcconfig"; sourceTree = "<group>"; };
+		E7600E1CDF834CD01A67FC26C66A21DE /* Pods-wevedo_appTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-wevedo_appTests.release.xcconfig"; sourceTree = "<group>"; };
+		E923386E46277F8AE28B2F27943BCB70 /* Pods-wevedo_app-tvOSTests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-wevedo_app-tvOSTests-frameworks.sh"; sourceTree = "<group>"; };
+		E9C624CB01F7B7274241CB463DD025D5 /* Pods-wevedo_app-tvOSTests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-wevedo_app-tvOSTests-resources.sh"; sourceTree = "<group>"; };
+		EDE6A0C94BC47AA21290EF06ED29A7AF /* Pods-wevedo_app-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-wevedo_app-tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		F1503E0630AF4B8B6932B8472E750FEA /* Pods-wevedo_app-tvOS-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-wevedo_app-tvOS-acknowledgements.markdown"; sourceTree = "<group>"; };
+		F4E0ACC06668C9B3D0D743CA17A099E3 /* libPods-wevedo_app-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-wevedo_app-tvOS.a"; path = "libPods-wevedo_app-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FD6D296C67F0138EB489ACD7B206850E /* Pods-wevedo_appTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-wevedo_appTests-acknowledgements.markdown"; sourceTree = "<group>"; };
+		FEA6FF8CCDCC9DA420A57857F925C867 /* Pods-wevedo_appTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-wevedo_appTests-acknowledgements.plist"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		26A18FAACC8736C4F1CF3658D3934FBB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				288D5B2E33AF27986E98A31C716D67A1 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		33DB0FD6D191CE22F220ABACF9754554 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5BC90E3764A585EA70753B61577446B7 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4A8276534DDC0D69494703FA7707217E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				18466195E7EE9E420BDA65ACD5C418B3 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A2889E5245F0BE24C7BDAD4B396A734F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5D0CEA8395C3C68E0B50F34088C58C4B /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0C0416FA3744ECAB6C76E95960896084 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DC65AFFB7964130E42157D207BE3A6DE /* AppCenter.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		0C564BB602690719580FCC113EB3EF72 /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				845A612DC58B3DA2D4FCE3B4CC8651FB /* Pods-wevedo_app */,
+				4BD0DC0C30E0D1D029DB3C66832E4123 /* Pods-wevedo_app-tvOS */,
+				251652FF20FB9468FE64B56E8C3109C9 /* Pods-wevedo_app-tvOSTests */,
+				6280BA299513BA0A3A9A2D65140B1076 /* Pods-wevedo_appTests */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		20F731AE46C73F232AF0C168DC383CF9 /* tvOS */ = {
+			isa = PBXGroup;
+			children = (
+				572DBE63D5360AB71E5F80F979738FD0 /* Foundation.framework */,
+			);
+			name = tvOS;
+			sourceTree = "<group>";
+		};
+		2299AF501E253B95F2AE1FAD00A3B182 /* Crashes */ = {
+			isa = PBXGroup;
+			children = (
+				4789B2888C9F3A64D9BB98A64504484B /* Frameworks */,
+			);
+			name = Crashes;
+			sourceTree = "<group>";
+		};
+		251652FF20FB9468FE64B56E8C3109C9 /* Pods-wevedo_app-tvOSTests */ = {
+			isa = PBXGroup;
+			children = (
+				6380F0DCB1A56B1B485D235C73ECD42B /* Pods-wevedo_app-tvOSTests-acknowledgements.markdown */,
+				B1E95A02ADD07BB24920138C6758DB2D /* Pods-wevedo_app-tvOSTests-acknowledgements.plist */,
+				3645D8C1E3F2157F108B22D32B5EAC04 /* Pods-wevedo_app-tvOSTests-dummy.m */,
+				E923386E46277F8AE28B2F27943BCB70 /* Pods-wevedo_app-tvOSTests-frameworks.sh */,
+				E9C624CB01F7B7274241CB463DD025D5 /* Pods-wevedo_app-tvOSTests-resources.sh */,
+				B83BBB7518AB90D278EE081E9796E326 /* Pods-wevedo_app-tvOSTests.debug.xcconfig */,
+				19ECC6A6A274D2AC11E57E339B207929 /* Pods-wevedo_app-tvOSTests.release.xcconfig */,
+			);
+			name = "Pods-wevedo_app-tvOSTests";
+			path = "Target Support Files/Pods-wevedo_app-tvOSTests";
+			sourceTree = "<group>";
+		};
+		260E672E181DB8BDAC7A2999772A7AE4 /* Analytics */ = {
+			isa = PBXGroup;
+			children = (
+				8E2C96EA6162ABA11EBE8E8817909062 /* Frameworks */,
+			);
+			name = Analytics;
+			sourceTree = "<group>";
+		};
+		2D20FC01AE47C04E62202F456C8DC21D /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				0C0416FA3744ECAB6C76E95960896084 /* Frameworks */,
+			);
+			name = Core;
+			sourceTree = "<group>";
+		};
+		4789B2888C9F3A64D9BB98A64504484B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1FF8CBE3D70C3B5EE02BF7F1402952A2 /* AppCenterCrashes.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4BD0DC0C30E0D1D029DB3C66832E4123 /* Pods-wevedo_app-tvOS */ = {
+			isa = PBXGroup;
+			children = (
+				F1503E0630AF4B8B6932B8472E750FEA /* Pods-wevedo_app-tvOS-acknowledgements.markdown */,
+				7358EEC9680D215886C29468725F8C1C /* Pods-wevedo_app-tvOS-acknowledgements.plist */,
+				4930E7F849D04CA3DB1636B8B9CAEEE6 /* Pods-wevedo_app-tvOS-dummy.m */,
+				E5639E1FBE43E4316A6E4B1CAA815AE8 /* Pods-wevedo_app-tvOS-frameworks.sh */,
+				B42D02C66B3AFDD3D2C79E5F01F22BE7 /* Pods-wevedo_app-tvOS-resources.sh */,
+				932405C611D450F001021829333CB788 /* Pods-wevedo_app-tvOS.debug.xcconfig */,
+				EDE6A0C94BC47AA21290EF06ED29A7AF /* Pods-wevedo_app-tvOS.release.xcconfig */,
+			);
+			name = "Pods-wevedo_app-tvOS";
+			path = "Target Support Files/Pods-wevedo_app-tvOS";
+			sourceTree = "<group>";
+		};
+		58996781A54EE964D7111D73083A18A5 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				2D154F4805B9715F0E6D79B0363CE280 /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		6280BA299513BA0A3A9A2D65140B1076 /* Pods-wevedo_appTests */ = {
+			isa = PBXGroup;
+			children = (
+				FD6D296C67F0138EB489ACD7B206850E /* Pods-wevedo_appTests-acknowledgements.markdown */,
+				FEA6FF8CCDCC9DA420A57857F925C867 /* Pods-wevedo_appTests-acknowledgements.plist */,
+				D1707F1D035B2041797D500CA2774201 /* Pods-wevedo_appTests-dummy.m */,
+				D3FFB27253922961037D84B030A0E6DD /* Pods-wevedo_appTests-frameworks.sh */,
+				B5C7DCDBF589A35EF4490C75E609CB63 /* Pods-wevedo_appTests-resources.sh */,
+				B4FCF94E636941B82F726AC55B9689B1 /* Pods-wevedo_appTests.debug.xcconfig */,
+				E7600E1CDF834CD01A67FC26C66A21DE /* Pods-wevedo_appTests.release.xcconfig */,
+			);
+			name = "Pods-wevedo_appTests";
+			path = "Target Support Files/Pods-wevedo_appTests";
+			sourceTree = "<group>";
+		};
+		7DB346D0F39D3F0E887471402A8071AB = {
+			isa = PBXGroup;
+			children = (
+				93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */,
+				A42F72DC1D780481325DD00969B19BB6 /* Frameworks */,
+				B1C0FD4C526B54B6F7B5EA76C32A7B4C /* Pods */,
+				8D5A5DACB691DF92DE72C38208683252 /* Products */,
+				0C564BB602690719580FCC113EB3EF72 /* Targets Support Files */,
+			);
+			sourceTree = "<group>";
+		};
+		845A612DC58B3DA2D4FCE3B4CC8651FB /* Pods-wevedo_app */ = {
+			isa = PBXGroup;
+			children = (
+				C26C7B826F1ECCCDAE138E50277A9AC6 /* Pods-wevedo_app-acknowledgements.markdown */,
+				0537FC8112F20CC700EB1A9D9F6B1E0E /* Pods-wevedo_app-acknowledgements.plist */,
+				19D9EFF72BF42D1F58769FB4C1635828 /* Pods-wevedo_app-dummy.m */,
+				DD3A01B92D814920F8F45DE4996C6A2A /* Pods-wevedo_app-frameworks.sh */,
+				3E9DF72167798BDB7AE4F7223E72F411 /* Pods-wevedo_app-resources.sh */,
+				5193DFE36FAEF5B4A5633A5D7EF4DF9E /* Pods-wevedo_app.debug.xcconfig */,
+				E756735B0096DF001173E4563A46FEC8 /* Pods-wevedo_app.release.xcconfig */,
+			);
+			name = "Pods-wevedo_app";
+			path = "Target Support Files/Pods-wevedo_app";
+			sourceTree = "<group>";
+		};
+		8D5A5DACB691DF92DE72C38208683252 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				85D98EABD33CC00BB2A5557BA29C2F2E /* libPods-wevedo_app.a */,
+				F4E0ACC06668C9B3D0D743CA17A099E3 /* libPods-wevedo_app-tvOS.a */,
+				14B1FD08C44DC85848761EB460D8D09A /* libPods-wevedo_app-tvOSTests.a */,
+				9176B96E20B1E38DE61AD57BF2272EF4 /* libPods-wevedo_appTests.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8E2C96EA6162ABA11EBE8E8817909062 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				697057EB6F6A315777E7EA941A2AAF3B /* AppCenterAnalytics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A42F72DC1D780481325DD00969B19BB6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				58996781A54EE964D7111D73083A18A5 /* iOS */,
+				20F731AE46C73F232AF0C168DC383CF9 /* tvOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B1C0FD4C526B54B6F7B5EA76C32A7B4C /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				D6F4E16E170AFF42D929EF8FFF92078F /* AppCenter */,
+				FDE42022E7C36FE2A980950DD051F732 /* AppCenterReactNativeShared */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		D6F4E16E170AFF42D929EF8FFF92078F /* AppCenter */ = {
+			isa = PBXGroup;
+			children = (
+				260E672E181DB8BDAC7A2999772A7AE4 /* Analytics */,
+				2D20FC01AE47C04E62202F456C8DC21D /* Core */,
+				2299AF501E253B95F2AE1FAD00A3B182 /* Crashes */,
+			);
+			name = AppCenter;
+			path = AppCenter;
+			sourceTree = "<group>";
+		};
+		F84ACEF4E4D3666C3A595115D01D3868 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2E280B58529AEBA76B5F11C0705D0856 /* AppCenterReactNativeShared.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		FDE42022E7C36FE2A980950DD051F732 /* AppCenterReactNativeShared */ = {
+			isa = PBXGroup;
+			children = (
+				F84ACEF4E4D3666C3A595115D01D3868 /* Frameworks */,
+			);
+			name = AppCenterReactNativeShared;
+			path = AppCenterReactNativeShared;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		615CF64FEE5B7255E65525027F46643E /* Pods-wevedo_app */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D9075EFE7768B929001AC59B23E5EDEA /* Build configuration list for PBXNativeTarget "Pods-wevedo_app" */;
+			buildPhases = (
+				F7DCF2348506338BB12FD34E911D3FCC /* Sources */,
+				A2889E5245F0BE24C7BDAD4B396A734F /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-wevedo_app";
+			productName = "Pods-wevedo_app";
+			productReference = 85D98EABD33CC00BB2A5557BA29C2F2E /* libPods-wevedo_app.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		A86FF09015BD0AF34B0B77B9AD8036CC /* Pods-wevedo_app-tvOSTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EC2CCD3F13F9A7B8BDED8149F2CECEEE /* Build configuration list for PBXNativeTarget "Pods-wevedo_app-tvOSTests" */;
+			buildPhases = (
+				1FDDBD4D79D090BFFFFC6EDE2D2FBBB5 /* Sources */,
+				4A8276534DDC0D69494703FA7707217E /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-wevedo_app-tvOSTests";
+			productName = "Pods-wevedo_app-tvOSTests";
+			productReference = 14B1FD08C44DC85848761EB460D8D09A /* libPods-wevedo_app-tvOSTests.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		B694099F6638144A1591627E24375891 /* Pods-wevedo_app-tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F069D5990413952E7BFA39D6CDCB2EE2 /* Build configuration list for PBXNativeTarget "Pods-wevedo_app-tvOS" */;
+			buildPhases = (
+				80BC22F0B1172BF2C574031D08A09358 /* Sources */,
+				33DB0FD6D191CE22F220ABACF9754554 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-wevedo_app-tvOS";
+			productName = "Pods-wevedo_app-tvOS";
+			productReference = F4E0ACC06668C9B3D0D743CA17A099E3 /* libPods-wevedo_app-tvOS.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		BCD7CF15351EAE22D66D3C1381787EB4 /* Pods-wevedo_appTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 216904F25E5A8352B4E2E357919BDFE9 /* Build configuration list for PBXNativeTarget "Pods-wevedo_appTests" */;
+			buildPhases = (
+				AAC5DB947AAD0A1B21477BF5C9C12920 /* Sources */,
+				26A18FAACC8736C4F1CF3658D3934FBB /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-wevedo_appTests";
+			productName = "Pods-wevedo_appTests";
+			productReference = 9176B96E20B1E38DE61AD57BF2272EF4 /* libPods-wevedo_appTests.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D41D8CD98F00B204E9800998ECF8427E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0930;
+				LastUpgradeCheck = 0930;
+			};
+			buildConfigurationList = 2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 7DB346D0F39D3F0E887471402A8071AB;
+			productRefGroup = 8D5A5DACB691DF92DE72C38208683252 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				615CF64FEE5B7255E65525027F46643E /* Pods-wevedo_app */,
+				B694099F6638144A1591627E24375891 /* Pods-wevedo_app-tvOS */,
+				A86FF09015BD0AF34B0B77B9AD8036CC /* Pods-wevedo_app-tvOSTests */,
+				BCD7CF15351EAE22D66D3C1381787EB4 /* Pods-wevedo_appTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1FDDBD4D79D090BFFFFC6EDE2D2FBBB5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1C0798B80D2B8A7D6579D6DCE9E4839 /* Pods-wevedo_app-tvOSTests-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		80BC22F0B1172BF2C574031D08A09358 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				78ABBF8363BCE8646930EBAB1457EFD5 /* Pods-wevedo_app-tvOS-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AAC5DB947AAD0A1B21477BF5C9C12920 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				595F2C31BE2E3C68E4AE6DD428BB180D /* Pods-wevedo_appTests-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F7DCF2348506338BB12FD34E911D3FCC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7E7B6823E5F59A69F706BBA0ABA8D833 /* Pods-wevedo_app-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		127540A8EE254908AA2EC5DBAC80B7D0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E7600E1CDF834CD01A67FC26C66A21DE /* Pods-wevedo_appTests.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MACH_O_TYPE = staticlib;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		12EC319154A00D25BF67EC67C62DDCD5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_RELEASE=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = NO_SIGNING/;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SYMROOT = "${SRCROOT}/../build";
+				TVOS_DEPLOYMENT_TARGET = 9.2;
+			};
+			name = Release;
+		};
+		2602AAF40ED62B04F153BB199D080FBE /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 19ECC6A6A274D2AC11E57E339B207929 /* Pods-wevedo_app-tvOSTests.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				MACH_O_TYPE = staticlib;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.2;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		2F6935D43DD3F8696513BE5A5BD5E7AF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_DEBUG=1",
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = NO_SIGNING/;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SYMROOT = "${SRCROOT}/../build";
+				TVOS_DEPLOYMENT_TARGET = 9.2;
+			};
+			name = Debug;
+		};
+		61EC1FC1ACDEE05F179DF24F30000EC8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B83BBB7518AB90D278EE081E9796E326 /* Pods-wevedo_app-tvOSTests.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				MACH_O_TYPE = staticlib;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.2;
+			};
+			name = Debug;
+		};
+		67039CD080D6205DCE4AD5534BE7E68D /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = EDE6A0C94BC47AA21290EF06ED29A7AF /* Pods-wevedo_app-tvOS.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				MACH_O_TYPE = staticlib;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.2;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		7CB064A10D634EA39B457DE52E4F48D4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 932405C611D450F001021829333CB788 /* Pods-wevedo_app-tvOS.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				MACH_O_TYPE = staticlib;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.2;
+			};
+			name = Debug;
+		};
+		A5C047EDB487CDBD0298ABEAFA2C1301 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B4FCF94E636941B82F726AC55B9689B1 /* Pods-wevedo_appTests.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MACH_O_TYPE = staticlib;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		DFC176A729DF8D7635DE270466F96FA6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5193DFE36FAEF5B4A5633A5D7EF4DF9E /* Pods-wevedo_app.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MACH_O_TYPE = staticlib;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		EA419598FF6ADDC2AC4E43FC7FC9066D /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E756735B0096DF001173E4563A46FEC8 /* Pods-wevedo_app.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MACH_O_TYPE = staticlib;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		216904F25E5A8352B4E2E357919BDFE9 /* Build configuration list for PBXNativeTarget "Pods-wevedo_appTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A5C047EDB487CDBD0298ABEAFA2C1301 /* Debug */,
+				127540A8EE254908AA2EC5DBAC80B7D0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2F6935D43DD3F8696513BE5A5BD5E7AF /* Debug */,
+				12EC319154A00D25BF67EC67C62DDCD5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D9075EFE7768B929001AC59B23E5EDEA /* Build configuration list for PBXNativeTarget "Pods-wevedo_app" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DFC176A729DF8D7635DE270466F96FA6 /* Debug */,
+				EA419598FF6ADDC2AC4E43FC7FC9066D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EC2CCD3F13F9A7B8BDED8149F2CECEEE /* Build configuration list for PBXNativeTarget "Pods-wevedo_app-tvOSTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				61EC1FC1ACDEE05F179DF24F30000EC8 /* Debug */,
+				2602AAF40ED62B04F153BB199D080FBE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F069D5990413952E7BFA39D6CDCB2EE2 /* Build configuration list for PBXNativeTarget "Pods-wevedo_app-tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7CB064A10D634EA39B457DE52E4F48D4 /* Debug */,
+				67039CD080D6205DCE4AD5534BE7E68D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+}
