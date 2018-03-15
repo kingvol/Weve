@@ -1,0 +1,124 @@
+{
+  "logIn": {
+    "log_in": "Içeri gir",
+    "sign_up": "Registrasiýa",
+    "account_login": "Hasaba girimek",
+    "or": "ýa-da",
+    "confirm_password": "Açar sözi tassykla",
+    "forgot_your_password": "Açar sözi ýatdan çykardyňyzmy?",
+    "dont_have_an_account": "Intägem registrasiýa bolmadyňmy?",
+    "register": "Registrasiýa bol",
+    "reset_password": "Açar sözi täzele",
+    "forgot_password_title": "Açar sözi ýatdan çykardyňyzmy?",
+    "create_user_error": "Ulanjyny döredip bolmady",
+    "weak_password": "Siziň açar sözüňiz gaty ejiz",
+    "email_used": "Girizen E-poçtaňyz eýýäm ulanylýar",
+    "no_category": "Kategoriýa saýlanmady",
+    "no_image": "Suratyňyz ýüklenmedi",
+    "advertiser": "Hyzmat beriji",
+    "select_category": "Kategoriýa saýlaň",
+    "account_activation": "Hasabyňyz 24 sagadyň içinde işe giriziler",
+    "upload_photo": "Suratyňyzy ýükläň",
+    "photo_saved": "Surayňyz hasaba geçirildi",
+    "tap_on_icon": "Surat belgisine basyň",
+    "landscape": "*Suratyñyzy albomny stilde ýükleseñiz has owadan görüner"
+  },
+  "eula": {
+    "error": "Bagyşlaň,siz registrasiýa bolup bilmeýäňiz",
+    "error_message": "Dowam etmek üçin Şertnamany kabul ediň",
+    "accept": "Kabul etmek",
+    "decline": "Kabul etmezlik"
+  },
+  "changePassword": {
+    "title": "Açar sözi üýtget",
+    "success": "Açar sözüňiz üstünlikli täzelendi",
+    "success_message": "Açar sözüňiz täzelendi",
+    "current_password": "Häzirki açar söz",
+    "new_password": "Täze açar söz",
+    "confirm_password": "Açar sözi tassykla"
+  },
+  "resetPassword": {
+    "error_title": "Açar sözüňiz pozulmady",
+    "success": "Açar sözüňiz üstünlikli pozuldy",
+    "success_message": "E-poçtaňyzy barlaň"
+  },
+  "categories": {
+    "artist": "Artist",
+    "photo": "Suratçy",
+    "venue": "Restoran",
+    "makeup": "Gözellik salony",
+    "entertainment": "Hezillik",
+    "decoration": "Bezeg",
+    "costume": "Egin-eşik",
+    "video": "Wideoçy",
+    "cake": "Tort"
+  },
+  "menu": {
+    "home": "Baş sahypa",
+    "categories": "Bölümler",
+    "inbox": "Gelen hatlar",
+    "my_profile": "Meniň profilim",
+    "settings": "Sazlamalar",
+    "sign_out": "Çykalga"
+  },
+  "editProfile": {
+    "title": "Profili düzetmek",
+    "first_name": "Ady",
+    "last_name": "Familiýasy",
+    "phone_number": "Telefon belgi",
+    "select_avatar": "Suratyňyzy saýlaň",
+    "avatar_error": "Surat alynmady"
+  },
+  "inbox": {
+    "no_active_dialog": "Häzirki wagtda hiç hili hatyňyz ýok"
+  },
+  "validations": {
+    "required": "Hökman gerekli",
+    "password_length": "Açar sözüňiziň iň az sany 8 bolmalydyr",
+    "password_mismatch": "Açar sözüňiz deň gelmedi",
+    "password_matches_old": "Öňki açar söz bilen deň",
+    "email_invalid": "E-poçtaňyz ýalňyş"
+  },
+  "common": {
+    "ok": "Bolýa",
+    "error": "Ýalňyş",
+    "done": "Tassyklamak",
+    "save": "Ýatda sakla",
+    "email": "Elektron poçta",
+    "phone": "Telefon belgi",
+    "password": "Açar söz",
+    "loading": "Ýüklenýä...",
+    "fullName": "Ady Familiýasy",
+    "continue": "Dowam",
+    "category": "Kategoriýa"
+  },
+  "auth": {
+    "error_incorrect_password": "Açar söz ýalňyş",
+    "error_user_not_found": "Ulanjyny tapylmady",
+    "error_app_deleted": "Esasy programma pozuldy",
+    "error_app_not_authorized": "Programma rugsat edilmedi",
+    "error_argument_error": "Ýalňyş argumentler",
+    "error_invalid_api_key": "API açary ýalňyş",
+    "error_invalid_user_token": "Maglumatlar ýalňyş,täzeden giriň",
+    "error_network_request_failed": "Internet torunyň ýalňyşy emele geldi",
+    "error_requires_recent_login": "Giriş wagty deň gelenok",
+    "error_too_many_requests": "Gaty köp synanyşyk edildi,täzeden barlap görüň",
+    "error_unauthorized_domain": "Rugsat berilmeýän meýdan",
+    "error_user_disabled": "Ulanyjy ýatyryldy",
+    "error_user_token_expired": "Ulanyjy maglumatlaryň wagty doldy",
+    "error_web_storage_unsupported": "Web ýygnama meýdany tassyklanmaýar",
+    "error_user_mismatch": "Ýazylan maglumatlaryňyz deň gelmeýär",
+    "error_invalid_credential": "Şahsyýet maglumatlaryňyz ýalňyş",
+    "error_invalid_email": "Ýalňyş elektron poçta",
+    "error_invalid_verification_code": "Ýalňyş werifikasiýa kody",
+    "error_invalid_verification_id": "Ýalňyş ID"
+  },
+  "chat": {
+    "type_a_message": "Mesaj yaz..."
+  },
+  "report": {
+    "name": "Arz etmek",
+    "subject": "Ulanyjyny arz etmek",
+    "body": "Şu agzany arz etmek isleýärin:"
+  }
+}
