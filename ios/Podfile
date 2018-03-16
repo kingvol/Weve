@@ -9,10 +9,10 @@ target 'wevedo_app' do
   pod 'AppCenter/Crashes', '~> 1.5.0'
   pod 'AppCenter/Analytics', '~> 1.5.0'
   pod 'AppCenterReactNativeShared', '~> 1.4.0'
-
+  pod 'RNI18n', :path => '../node_modules/react-native-i18n'
   
 
-  platform :ios, '9.0'
+  platform :ios, '9.0'  
   target 'wevedo_appTests' do
     inherit! :search_paths
     # Pods for testing

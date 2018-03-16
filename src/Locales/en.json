@@ -1,0 +1,124 @@
+{
+  "logIn": {
+    "log_in": "LOGIN",
+    "sign_up": "Sign Up",
+    "account_login": "Account Login",
+    "or": "or",
+    "confirm_password": "Confirm Password",
+    "forgot_your_password": "Forgot your Password?",
+    "dont_have_an_account": "Don't have an account yet?",
+    "register": "Register",
+    "reset_password": "Reset Password",
+    "forgot_password_title": "Forgot Password",
+    "create_user_error": "Could not create user",
+    "weak_password": "Your password is too weak.",
+    "email_used": "Email is already in use.",
+    "no_category": "Category is not selected",
+    "no_image": "Image is not uploaded",
+    "advertiser": "I'm the advertiser",
+    "select_category": "Choose category",
+    "account_activation": "Your account will be live within 24 hours",
+    "upload_photo": "It's time to upload your photo",
+    "photo_saved": "Photo saved",
+    "tap_on_icon": "Tap on photo icon",
+    "landscape": "*Please upload landscape image - your profile will look great"
+  },
+  "eula": {
+    "error": "Sorry you cannot sign up!",
+    "error_message": "Please accept the EULA to proceed.",
+    "accept": "Accept",
+    "decline": "Decline"
+  },
+  "changePassword": {
+    "title": "Change Password",
+    "success": "Change password success!",
+    "success_message": "Your password has been updated.",
+    "current_password": "Current Password",
+    "new_password": "New Password",
+    "confirm_password": "Confirm Password"
+  },
+  "resetPassword": {
+    "error_title": "Unable to reset password!",
+    "success": "Password reset success",
+    "success_message": "Please check your email."
+  },
+  "categories": {
+    "artist": "Artist",
+    "photo": "Photo",
+    "venue": "Venue",
+    "makeup": "Make Up",
+    "entertainment": "Entertainment",
+    "decoration": "Decoration",
+    "costume": "Costume",
+    "video": "Video",
+    "cake": "Cake"
+  },
+  "menu": {
+    "home": "Home",
+    "categories": "Categories",
+    "inbox": "Inbox",
+    "my_profile": "My Profile",
+    "settings": "Settings",
+    "sign_out": "Sign Out"
+  },
+  "editProfile": {
+    "title": "Edit Profile",
+    "first_name": "First Name",
+    "last_name": "Last Name",
+    "phone_number": "Phone Number",
+    "select_avatar": "Select Avatar",
+    "avatar_error": "Unable to get photo"
+  },
+  "inbox": {
+    "no_active_dialog": "There are no active dialogs"
+  },
+  "validations": {
+    "required": "Required",
+    "password_length": "Min password length is 8",
+    "password_mismatch": "Password does not match",
+    "password_matches_old": "Matches old password",
+    "email_invalid": "Invalid email address"
+  },
+  "common": {
+    "ok": "OK",
+    "error": "Error",
+    "done": "Done",
+    "save": "Save",
+    "email": "Email",
+    "phone": "Phone",
+    "password": "Password",
+    "loading": "Loading...",
+    "fullName": "Full name",
+    "continue": "Continue",
+    "category": "Category"
+  },
+  "auth": {
+    "error_incorrect_password": "Incorrect password",
+    "error_user_not_found": "User not found",
+    "error_app_deleted": "Authentication application deleted",
+    "error_app_not_authorized": "Application is not authorized",
+    "error_argument_error": "Incorrect arguments",
+    "error_invalid_api_key": "API key is invalid",
+    "error_invalid_user_token": "Credentials is invalid, Sign in again",
+    "error_network_request_failed": "Network error has occurred",
+    "error_requires_recent_login": "Last sign-in time does not meet the security threshold",
+    "error_too_many_requests": "Too many requests from this device, try again later",
+    "error_unauthorized_domain": "Unauthorized domain",
+    "error_user_disabled": "User disabled",
+    "error_user_token_expired": "User credentials expired or profile has been deleted",
+    "error_web_storage_unsupported": "Web storage unsupported",
+    "error_user_mismatch": "Credential given does not correspond to the user",
+    "error_invalid_credential": "Your credentials invalid",
+    "error_invalid_email": "Invalid email",
+    "error_invalid_verification_code": "Invalid verification code",
+    "error_invalid_verification_id": "Invalid verification id"
+  },
+  "chat": {
+    "type_a_message": "Type a message..."
+  },
+  "report": {
+    "name": "Report",
+    "subject": "Report a user",
+    "body": "I would like to report this user:"
+  }
+}
