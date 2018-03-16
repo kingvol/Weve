@@ -4,7 +4,7 @@ import SplashScreen from 'react-native-splash-screen';
 
 import { Button } from './Components/Common';
 import { primaryFont } from './Theme';
-import I18n from './locals';
+import I18n from './Locales';
 
 export default class App extends Component {
   componentDidMount() {
