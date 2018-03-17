@@ -14,7 +14,7 @@ AppRegistry.registerComponent('wevedo_app', () => AppBootstrap);
 
 Navigation.startSingleScreenApp({
   screen: {
-    screen: 'wevedo.screen2',
+    screen: 'wevedo.launchScreen',
     title: 'Welcome!',
   },
 });
