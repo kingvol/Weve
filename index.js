@@ -4,13 +4,13 @@ import { AppRegistry } from 'react-native';
 
 import registerScreens from './src/screens';
 import configureStore from './src/store/configureStore';
-import App from './src/App';
+import AppBootstrap from './src/AppBootstrap';
 
 const store = configureStore();
 
 registerScreens(store, Provider);
 
-AppRegistry.registerComponent('wevedo_app', () => App);
+AppRegistry.registerComponent('wevedo_app', () => AppBootstrap);
 
 Navigation.startSingleScreenApp({
   screen: {

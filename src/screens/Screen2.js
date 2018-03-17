@@ -1,8 +1,21 @@
 import React, { Component } from 'react';
 import { Text, View } from 'react-native';
 import { connect } from 'react-redux';
+import { Navigation } from 'react-native-navigation';
 
 class Screen2 extends Component {
+
+  componentDidMount() {
+    setTimeout(() => {
+      Navigation.startSingleScreenApp({
+        screen: {
+          screen: 'wevedo.mainScreen',
+          title: 'Welcome to main app',
+        },
+      });
+    }, 1000);
+  }
+
   render() {
     return (
       <View>
