@@ -27,6 +27,7 @@
     "react-native-i18n": "^2.0.12",
     "react-native-navigation": "^1.1.388",
     "react-native-splash-screen": "3.0.1",
+    "react-native-vector-icons": "^4.5.0",
     "react-redux": "^5.0.7",
     "redux": "^3.7.2",
     "redux-promise-middleware": "^5.0.0",
@@ -44,7 +45,9 @@
     "redux-logger": "^3.0.6"
   },
   "rnpm": {
-    "assets": ["./src/assets/Fonts/"]
+    "assets": [
+      "./src/assets/Fonts/"
+    ]
   },
   "jest": {
     "preset": "react-native"
