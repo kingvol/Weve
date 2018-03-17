@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { Label, Input } from 'native-base';
 import Color from 'color';
 import { Row } from 'react-native-easy-grid';
-import { primaryFont, lightTextColor, black } from '../../Theme';
+import { primaryFont, lightTextColor, black } from '../../theme';
 
 const EditProfileField = (props) => {
   const {

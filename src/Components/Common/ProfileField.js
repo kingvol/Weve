@@ -5,7 +5,7 @@ import {
 } from 'native-base';
 import { Col, Row } from 'react-native-easy-grid';
 // import Icon from 'react-native-vector-icons/FontAwesome';
-import { primaryFont, primaryColor } from '../../Theme';
+import { primaryFont, primaryColor } from '../../theme';
 
 const ProfileField = ({ icon, title, subTitle, id }) => {
   const noData = 'No data';

@@ -1,10 +1,14 @@
 import { Navigation } from 'react-native-navigation';
+import { Provider } from 'react-redux';
 import { AppRegistry } from 'react-native';
 
-import registerScreens from './src/Screens';
+import registerScreens from './src/screens';
+import configureStore from './src/store/configureStore';
 import App from './src/App';
 
-registerScreens();
+const store = configureStore();
+
+registerScreens(store, Provider);
 
 Navigation.startSingleScreenApp({
   screen: {

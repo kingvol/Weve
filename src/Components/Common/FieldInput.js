@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { Input, Text } from 'native-base';
-import { primaryFont, lightTextColor } from '../../Theme';
+import { primaryFont, lightTextColor } from '../../theme';
 // import Icon from 'react-native-vector-icons/FontAwesome'
 import Color from 'color';
 

@@ -2,8 +2,8 @@ import { Navigation } from 'react-native-navigation';
 
 import App from '../App';
 
-const registerScreens = () => {
-  Navigation.registerComponent('wevedo.launchScreen', () => App);
+const registerScreens = (store, Provider) => {
+  Navigation.registerComponent('wevedo.launchScreen', () => App, store, Provider);
 };
 
 
