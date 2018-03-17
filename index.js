@@ -10,11 +10,11 @@ const store = configureStore();
 
 registerScreens(store, Provider);
 
+AppRegistry.registerComponent('wevedo_app', () => App);
+
 Navigation.startSingleScreenApp({
   screen: {
-    screen: 'wevedo.launchScreen',
+    screen: 'wevedo.screen2',
     title: 'Welcome!',
   },
 });
-
-AppRegistry.registerComponent('wevedo_app', () => App);

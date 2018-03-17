@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View } from 'react-native';
-import { connect } from 'react-redux';
+import { Navigation } from 'react-native-navigation';
 import SplashScreen from 'react-native-splash-screen';
 
 import { Button } from './components/common';
@@ -19,16 +19,12 @@ class App extends Component {
         <Text style={{ fontFamily: primaryFont.fontFamily }}>Welcome to React Native!</Text>
         <Text style={{ fontFamily: primaryFont.fontFamily }}>{I18n.t('logIn.log_in')}</Text>
         <Button>
-          <Text>hello from {this.props.root.appTitle}</Text>
+          <Text>hello from</Text>
         </Button>
       </View>
     );
   }
 }
 
-const mapStateToProps = state => ({
-  root: state.root,
-});
-
-export default connect(mapStateToProps)(App);
+export default App;
 
