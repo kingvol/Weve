@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { black } from '../../Theme';
+import { black } from '../../theme';
 
 const styles = {
   listItem: {

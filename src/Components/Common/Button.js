@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button as BaseButton, Spinner, Text } from 'native-base';
-import { primaryFont, contrastColor } from '../../Theme';
+import { primaryFont, contrastColor } from '../../theme';
 
 const Button = (props) => {
   const { transparent, style, spinner, children, textStyle } = props;
