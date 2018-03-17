@@ -15,6 +15,9 @@ AppRegistry.registerComponent('wevedo_app', () => AppBootstrap);
 Navigation.startSingleScreenApp({
   screen: {
     screen: 'wevedo.launchScreen',
-    title: 'Welcome!',
+    navigatorStyle: {
+      navBarHidden: true,
+    },
   },
+  animationType: 'fade',
 });

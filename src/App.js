@@ -1,10 +1,27 @@
 import React, { Component } from 'react';
-import { Text, View, Platform } from 'react-native';
+import { View, Platform, AsyncStorage } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import { connect } from 'react-redux';
 
 class App extends Component {
-  componentDidMount() {
+  async componentDidMount() {
+    try {
+      const token = await AsyncStorage.getItem('wevedo_access_token');
+      if (token) {
+        alert('Token exist, starting a tab-based app...');
+      } else {
+        this.props.navigator.push({
+          screen: 'wevedo.loginScreen',
+          overrideBackPress: true,
+          navigatorStyle: {
+            navBarHidden: true,
+            disabledBackGesture: true,
+          },
+        });
+      }
+    } catch ({ message }) {
+      console.error(message);
+    }
     if (Platform.OS === 'ios') {
       SplashScreen.hide();
     }
@@ -12,9 +29,7 @@ class App extends Component {
 
   render() {
     return (
-      <View>
-        <Text>Hello from {this.props.root.appTitle}</Text>
-      </View>
+      <View />
     );
   }
 }
