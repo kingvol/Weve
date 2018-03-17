@@ -1,3 +1,3 @@
 export default {
-  backendUrl: 'https://wevedo-prod.herokuapp.com',
+  backendUrl: 'https://wevedo.herokuapp.com',
 };
