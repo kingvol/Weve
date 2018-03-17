@@ -7,4 +7,4 @@ const Center = ({ style, children }) => (
   </View>
 );
 
-export { Center };
+export default Center;
