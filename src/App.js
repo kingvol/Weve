@@ -1,8 +1,15 @@
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, Platform } from 'react-native';
+import SplashScreen from 'react-native-splash-screen';
 import { connect } from 'react-redux';
 
 class App extends Component {
+  componentDidMount() {
+    if (Platform.OS === 'ios') {
+      SplashScreen.hide();
+    }
+  }
+
   render() {
     return (
       <View>
