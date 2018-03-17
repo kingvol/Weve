@@ -4,6 +4,7 @@ import android.app.Application;
 import android.support.annotation.NonNull;
 
 import com.facebook.react.ReactApplication;
+import com.oblador.vectoricons.VectorIconsPackage;
 import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.microsoft.appcenter.reactnative.crashes.AppCenterReactNativeCrashesPackage;
 import com.microsoft.appcenter.reactnative.analytics.AppCenterReactNativeAnalyticsPackage;
@@ -30,6 +31,7 @@ public class MainApplication extends NavigationApplication  {
   public List<ReactPackage> createAdditionalReactPackages() {
     return Arrays.<ReactPackage>asList(
     new MainReactPackage(),
+    new VectorIconsPackage(),
     new SplashScreenReactPackage(),           
     new RNI18nPackage(),            
     new AppCenterReactNativeCrashesPackage(MainApplication.this, getResources().getString(R.string.appCenterCrashes_whenToSendCrashes)),

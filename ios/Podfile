@@ -10,7 +10,7 @@ target 'wevedo_app' do
   pod 'AppCenter/Analytics', '~> 1.5.0'
   pod 'AppCenterReactNativeShared', '~> 1.4.0'
   pod 'RNI18n', :path => '../node_modules/react-native-i18n'
-  
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
   platform :ios, '9.0'  
   target 'wevedo_appTests' do
