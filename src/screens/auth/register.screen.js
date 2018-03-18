@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+// import { View } from 'react-native';
+import LoginForm from '../../components/auth/login.form';
 
 class RegisterScreen extends Component {
   render() {
     return (
-      <View>
-        <Text>This is signup screen</Text>
-      </View>
+      // <View>
+      <LoginForm />
+      // </View>
     );
   }
 }

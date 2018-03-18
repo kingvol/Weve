@@ -10,7 +10,7 @@ class LoginScreen extends Component {
         navBarHidden: true,
       },
     });
-  }
+  };
 
   render() {
     return (
