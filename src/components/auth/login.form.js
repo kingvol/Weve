@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Image, ImageBackground, Keyboard, View } from 'react-native';
+import { Image, ImageBackground, View } from 'react-native';
 import { Card, CardItem, Container, Header, Content, Form, Item, Input, Title } from 'native-base';
 import I18n from '../../locales';
-// import { loginUser } from '../../actions/auth.actions';
 import { primaryColor, backgroundColor, contrastColor, primaryFont } from '../../theme';
 import images from '../../images';
 import {
@@ -17,6 +16,26 @@ import {
 } from '../../components/common';
 
 class LoginForm extends Component {
+  state = {
+    email: '',
+    password: '',
+  }
+
+  onSubmitPress = () => { /*
+    const { onSubmitPress } = this.props;
+    const { email, password } = this.state;
+      validate data here..
+    if (dataValid) {
+      onSubmitPress(email, password);
+    } */
+  }
+
+  onFieldChange = (key, value) => {
+    this.setState({
+      [key]: value,
+    });
+  }
+
   render() {
     const {
       containerStyle,
@@ -37,6 +56,12 @@ class LoginForm extends Component {
       register,
       textRegister,
     } = styles;
+    /*
+      const {
+        isLoading,
+        error
+      } = this.props;
+    */
     return (
       <Container style={containerStyle}>
         <ImageBackground resizeMode="cover" style={background} source={images.backGround}>
@@ -54,6 +79,8 @@ class LoginForm extends Component {
                 <Item>
                   <Input
                     style={input}
+                    value={this.state.email}
+                    onChangeText={text => this.onFieldChange('email', text)}
                     placeholderTextColor={contrastColor}
                     placeholder={I18n.t('common.email')}
                   />
@@ -61,6 +88,8 @@ class LoginForm extends Component {
                 <Item last>
                   <Input
                     style={input}
+                    value={this.state.password}
+                    onChangeText={text => this.onFieldChange('password', text)}
                     placeholderTextColor={contrastColor}
                     placeholder={I18n.t('common.password')}
                     secureTextEntry
@@ -69,7 +98,7 @@ class LoginForm extends Component {
                 <Title style={{ textAlignVertical: 'center' }}>
                   {I18n.t('logIn.forgot_your_password')}
                 </Title>
-                <Button block style={loginButton}>
+                <Button block style={loginButton} onPress={this.onSubmitPress}>
                   <Text style={loginButtonText}>{I18n.t('logIn.log_in')}</Text>
                 </Button>
                 <View style={OR}>
@@ -78,7 +107,7 @@ class LoginForm extends Component {
                   <View style={or} />
                 </View>
                 <View style={register}>
-                  <Button block transparent>
+                  <Button block transparent onPress={this.props.onRegisterPress}>
                     <Text uppercase={false} style={textRegister}>
                       {I18n.t('logIn.register')}
                     </Text>
