@@ -19,7 +19,12 @@ class ForgotPassword extends Component {
       this.props.navigator.pop();
     }
 
+    onEmailChange = (email) => {
+      this.setState({ email });
+    }
+
     onSubmitForm = () => {
+      console.warn(this.state.email);
       /* const {email} = values;
         this.setState({loading: true});
         this.props.resetPassword(email, error => {
@@ -46,7 +51,7 @@ class ForgotPassword extends Component {
 
     renderForm() {
       return (
-        <Content id="ForgotPassword.main-content" padder keyboardShouldPersistTaps="always" contentContainerStyle={{ flex: 1 }}>
+        <Content id="ForgotPassword.main-content" padder contentContainerStyle={{ flex: 1 }}>
           <View style={styles.headerWrapper}>
             <Button id="ForgotPassword.backButton" style={{ flex: 1 }} transparent onPress={this.onBackPress}>
               <Icon style={{ color: white, fontSize: 40 }} name="ios-arrow-back" />
@@ -60,6 +65,7 @@ class ForgotPassword extends Component {
               <FieldInput
                 color={white}
                 name="email"
+                onChangeText={this.onEmailChange}
                 placeholder={I18n.t('common.email')}
                 id="ForgotPassword.emailInput"
               />
