@@ -44,8 +44,8 @@ class LoginScreen extends Component {
         isLoading={this.props.auth.isLoading}
         error={this.props.auth.error}
         onRegisterPress={this.onRegisterPress}
+        onSubmitPress={this.onSubmitPress}
         onForgotPress={this.onForgotPress}
-        obSumbitPress={this.onSubmitPress}
       />
     );
   }
