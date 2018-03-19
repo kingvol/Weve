@@ -30,6 +30,10 @@ class LoginForm extends Component {
     } */
   }
 
+  onForgotPress = () => {
+    this.props.onForgotPress();
+  }
+
   onFieldChange = (key, value) => {
     this.setState({
       [key]: value,
@@ -95,9 +99,11 @@ class LoginForm extends Component {
                     secureTextEntry
                   />
                 </Item>
-                <Title style={{ textAlignVertical: 'center' }}>
-                  {I18n.t('logIn.forgot_your_password')}
-                </Title>
+                <Button transparent onPress={this.onForgotPress}>
+                  <Title style={{ textAlignVertical: 'center' }}>
+                    {I18n.t('logIn.forgot_your_password')}
+                  </Title>
+                </Button>
                 <Button block style={loginButton} onPress={this.onSubmitPress}>
                   <Text style={loginButtonText}>{I18n.t('logIn.log_in')}</Text>
                 </Button>

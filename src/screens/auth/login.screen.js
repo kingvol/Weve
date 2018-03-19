@@ -29,12 +29,22 @@ class LoginScreen extends Component {
     });
   };
 
+  onForgotPress = () => {
+    this.props.navigator.push({
+      screen: 'wevedo.forgotScreen',
+      navigatorStyle: {
+        navBarHidden: true,
+      },
+    });
+  }
+
   render() {
     return (
       <LoginForm
         isLoading={this.props.auth.isLoading}
         error={this.props.auth.error}
         onRegisterPress={this.onRegisterPress}
+        onForgotPress={this.onForgotPress}
         obSumbitPress={this.onSubmitPress}
       />
     );

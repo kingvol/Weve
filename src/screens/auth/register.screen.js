@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+
+import RegisterForm from '../../components/auth/register.form';
 
 class RegisterScreen extends Component {
+  onBackPress = () => {
+    this.props.navigator.pop();
+  }
+
   render() {
     return (
-      <View>
-        <Text>Sign up screen here... </Text>
-      </View>
+      <RegisterForm
+        onBackPress={this.onBackPress}
+      />
     );
   }
 }
