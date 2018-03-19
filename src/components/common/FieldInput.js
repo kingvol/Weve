@@ -1,9 +1,8 @@
 import React, { PureComponent } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { Input, Text } from 'native-base';
-import { primaryFont, lightTextColor } from '../../theme';
-// import Icon from 'react-native-vector-icons/FontAwesome'
 import Color from 'color';
+import { primaryFont, lightTextColor } from '../../theme';
 
 class FieldInput extends PureComponent {
   constructor(props) {
@@ -20,12 +19,10 @@ class FieldInput extends PureComponent {
 
   render() {
     const {
-      input, id, label, placeholder, color = lightTextColor,
-      secureTextEntry, autoCapitalize = 'none', type,
-      meta: { touched, error, warning },
+      id, placeholder, color = lightTextColor,
+      secureTextEntry, autoCapitalize = 'none',
+      isError, error,
     } = this.props;
-
-    const isError = !!(touched && error);
 
     const secure = secureTextEntry ? !this.state.secureVisible : false;
 
@@ -38,7 +35,6 @@ class FieldInput extends PureComponent {
             style={{ color, ...primaryFont }}
             secureTextEntry={secure}
             autoCapitalize={autoCapitalize}
-            {...input}
             selectionColor={Color(color).alpha(0.5).toString()}
           />
           <View style={{

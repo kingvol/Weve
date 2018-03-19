@@ -1,69 +1,101 @@
+/**
+ * @providesModule ForgotPassword
+ */
+/* eslint-disable global-require */
 import React, { Component } from 'react';
-import { ImageBackground, Alert } from 'react-native';
-import { Card, Container, Header, Content, Form, Item, Input, Title } from 'native-base';
-
-import I18n from '../../locales';
-import { primaryColor, backgroundColor, contrastColor, primaryFont } from '../../theme';
-import images from '../../images';
-import {
-  Button,
-  Text
-} from '../../components/common';
+import { Alert, ImageBackground, StyleSheet, View } from 'react-native';
+import { Icon } from 'native-base';
+import { connect } from 'react-redux';
+import I18n from 'react-native-i18n';
+import { Button, Container, Content, FieldInput, Text } from '../../components/common';
+import { white } from '../../theme/colors';
 
 class ForgotPassword extends Component {
-  state = {
-    email: '',
-  }
-
-  onBackPress = () => {
-    this.props.navigator.pop();
-  }
-
-  onSubmitPress = () => {
-    if (!this.state.email) {
-      // Alert here..
+    state = {
+      email: '',
     }
-  }
 
-  render() {
-    const {
-      containerStyle,
-      background,
-      header,
-      headerText,
-      form,
-      formShadow,
-      input,
-    } = styles;
-    return (
-      <Container style={containerStyle}>
-        <ImageBackground resizeMode="cover" style={background} source={images.backGround}>
-          <Header style={header}>
-            <Title style={headerText}>{I18n.t('logIn.forgot_your_password')}</Title>
-          </Header>
-          <Content style={containerStyle}>
-            <Form style={form}>
-              <Card style={formShadow}>
-                <Item>
-                  <Input
-                    style={input}
-                    placeholderTextColor={contrastColor}
-                    placeholder={I18n.t('common.email')}
-                  />
-                </Item>
-              </Card>
-            </Form>
-          </Content>
-        </ImageBackground>
-      </Container>
-    );
-  }
+    onBackPress = () => {
+      this.props.navigator.pop();
+    }
+
+    onSubmitForm = () => {
+      /* const {email} = values;
+        this.setState({loading: true});
+        this.props.resetPassword(email, error => {
+            this.setState({loading: false});
+            if (error) {
+                Alert.alert(
+                    `${I18n.t('resetPassword.error_title')}`,
+                    `${error.error}`,
+                    [{text: `${I18n.t('common.ok')}`}],
+                    {cancelable: false}
+                );
+                return
+            }
+
+            Alert.alert(
+                `${I18n.t('resetPassword.success')}`,
+                `${I18n.t('resetPassword.success_message')}`,
+                [{text: `${I18n.t('common.ok')}`}],
+                {cancelable: false}
+            );
+            this.props.navigation.goBack()
+        })  */
+    }
+
+    renderForm() {
+      return (
+        <Content id="ForgotPassword.main-content" padder keyboardShouldPersistTaps="always" contentContainerStyle={{ flex: 1 }}>
+          <View style={styles.headerWrapper}>
+            <Button id="ForgotPassword.backButton" style={{ flex: 1 }} transparent onPress={this.onBackPress}>
+              <Icon style={{ color: white, fontSize: 40 }} name="ios-arrow-back" />
+            </Button>
+            <Text style={styles.headerText}>
+              {I18n.t('logIn.forgot_password_title')}
+            </Text>
+          </View>
+          <View id="ForgotPassword.formWrapper" style={styles.formWrapper}>
+            <View id="ForgotPassword.form" style={styles.form}>
+              <FieldInput
+                color={white}
+                name="email"
+                placeholder={I18n.t('common.email')}
+                id="ForgotPassword.emailInput"
+              />
+              <Button
+                block
+                style={styles.button}
+                id="ForgotPassword.resetButton"
+                onPress={this.onSubmitForm}
+              >
+                <Text style={styles.buttonText}>
+                  {I18n.t('logIn.reset_password')}
+                </Text>
+              </Button>
+            </View>
+          </View>
+        </Content>
+      );
+    }
+
+    render() {
+      return (
+        <Container id="ForgotPassword.container">
+          <ImageBackground
+            id="ForgotPassword.bg-image"
+            resizeMode="cover"
+            style={styles.background}
+            source={require('../../images/loginBackground.png')}
+          >
+            {this.renderForm()}
+          </ImageBackground>
+        </Container>
+      );
+    }
 }
 
-const styles = {
-  containerStyle: {
-    flex: 1,
-  },
+const styles = StyleSheet.create({
   background: {
     flex: 1,
     height: null,
@@ -75,36 +107,34 @@ const styles = {
     right: 0,
     zIndex: -1,
   },
-  header: {
-    alignSelf: 'center',
-    backgroundColor: 'transparent',
+  headerWrapper: {
+    justifyContent: 'flex-start',
+    top: 20,
+    flex: 1,
+    flexDirection: 'row',
   },
   headerText: {
-    textAlignVertical: 'center',
-    color: 'white',
+    color: white,
     fontSize: 25,
-    ...primaryFont,
+    flex: 3,
+  },
+  formWrapper: {
+    flex: 3,
+    justifyContent: 'flex-start',
   },
   form: {
-    flex: 2,
-  },
-  formShadow: {
-    flex: 1,
-    height: 350,
     backgroundColor: 'rgba(0,0,0,0.5)',
+    padding: 10,
+    flexDirection: 'column',
   },
-  input: {
-    color: contrastColor,
-  },
-  forgotButton: {
+  button: {
     marginTop: 10,
-    marginLeft: 20,
-    marginRight: 20,
     backgroundColor: '#f3c200',
   },
-  forgotButtonText: {
+  buttonText: {
     color: 'red',
+    fontWeight: 'bold',
   },
-};
+});
 
 export default ForgotPassword;

@@ -96,7 +96,7 @@ class LoginForm extends Component {
                   secureTextEntry
                 />
               </Item>
-              <Button style={forgot} block transparent>
+              <Button style={forgot} block transparent onPress={this.onForgotPress}>
                 <Text uppercase={false} style={textForgot}>
                   {I18n.t('logIn.forgot_your_password')}
                 </Text>
