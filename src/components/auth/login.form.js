@@ -4,7 +4,7 @@ import { CardItem, Container, Form, Item, Input, Label, Title } from 'native-bas
 import I18n from '../../locales';
 import { primaryColor, backgroundColor, contrastColor, primaryFont } from '../../theme';
 import images from '../../images';
-import { Button, Center, Content, Text } from '../../components/common';
+import { Button, Center, Text } from '../../components/common';
 
 class LoginForm extends Component {
   state = {
@@ -51,19 +51,22 @@ class LoginForm extends Component {
       textRegister,
     } = styles;
     const { isLoading, error } = this.props;
+
     return (
-      <Container containerStyle={containerStyle}>
+      <Container containerStyle={containerStyle} id="LoginPage.main-content">
         <ImageBackground resizeMode="cover" style={background} source={images.backGround}>
-          <CardItem style={header}>
-            <Title style={headerText}>{I18n.t('logIn.account_login')}</Title>
+          <CardItem style={header} id="LoginPage.logo-container">
+            <Title style={headerText} id="LoginPage.accountLoginText">
+              {I18n.t('logIn.account_login')}
+            </Title>
           </CardItem>
-          <CardItem style={pic}>
-            <View style={logoOuterCircle}>
-              <Image source={images.logo} style={logoInnerCircle} />
+          <CardItem style={pic} id="LoginPage.logoWrapper">
+            <View style={logoOuterCircle} id="LoginPage.logoOuterCirlcle">
+              <Image id="LoginPage.logo" source={images.logo} style={logoInnerCircle} />
             </View>
           </CardItem>
-          <Form style={form}>
-            <Item floatingLabel style={item}>
+          <Form id="LoginPage.form-container" style={form}>
+            <Item id="LoginPage.emailInput" floatingLabel style={item}>
               <Label style={label}>{I18n.t('common.email')}</Label>
               <Input
                 style={input}
@@ -71,7 +74,7 @@ class LoginForm extends Component {
                 onChangeText={text => this.onFieldChange('email', text)}
               />
             </Item>
-            <Item floatingLabel style={item}>
+            <Item id="LoginPage.passwordInput" floatingLabel style={item}>
               <Label style={label}>{I18n.t('common.password')}</Label>
               <Input
                 style={input}
@@ -80,18 +83,39 @@ class LoginForm extends Component {
                 secureTextEntry
               />
             </Item>
-            <Button style={forgot} block transparent onPress={this.onForgotPress}>
+            <Text id="LoginPage.errorText" style={{ color: contrastColor, textAlign: 'center' }}>
+              {error ? 'not object' : ''}
+            </Text>
+            <Button
+              id="LoginPage.forgotPasswordButton"
+              style={forgot}
+              block
+              transparent
+              onPress={this.onForgotPress}
+            >
               <Text style={textForgot}>{I18n.t('logIn.forgot_your_password')}</Text>
             </Button>
-            <Button block style={loginButton} onPress={this.onSubmitPress}>
+            <Button
+              id="LoginPage.loginButton"
+              block
+              style={loginButton}
+              onPress={this.onSubmitPress}
+              loading={isLoading}
+            >
               <Text style={loginButtonText}>{I18n.t('logIn.log_in')}</Text>
             </Button>
-            <Center style={OR}>
+            <Center id="LoginPage.dontHaveAnAccountContainer" style={OR}>
               <View style={or} />
               <Text style={orText}>{I18n.t('logIn.or')}</Text>
               <View style={or} />
             </Center>
-            <Button style={register} block transparent onPress={this.props.onRegisterPress}>
+            <Button
+              id="LoginPage.signUpButton"
+              style={register}
+              block
+              transparent
+              onPress={this.props.onRegisterPress}
+            >
               <Text uppercase={false} style={textRegister}>
                 {I18n.t('logIn.register')}
               </Text>
