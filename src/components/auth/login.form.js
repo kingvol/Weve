@@ -52,6 +52,8 @@ class LoginForm extends Component {
     } = styles;
     const { isLoading, error } = this.props;
 
+    const disabled = (!this.state.email || !this.state.password);
+
     return (
       <Container containerStyle={containerStyle} id="LoginPage.main-content">
         <ImageBackground resizeMode="cover" style={background} source={images.backGround}>
@@ -83,24 +85,29 @@ class LoginForm extends Component {
                 secureTextEntry
               />
             </Item>
-            <Text id="LoginPage.errorText" style={{ color: contrastColor, textAlign: 'center' }}>
-              {error ? 'not object' : ''}
-            </Text>
+            {error && (
+              <View style={styles.errorContainer}>
+                <Text id="LoginPage.errorText" style={{ color: contrastColor, textAlign: 'center' }}>
+                  {error}
+                </Text>
+              </View>
+            )}
             <Button
               id="LoginPage.forgotPasswordButton"
-              style={forgot}
+              style={{ flex: error ? 1 : 2 }}
               block
               transparent
               onPress={this.onForgotPress}
             >
-              <Text style={textForgot}>{I18n.t('logIn.forgot_your_password')}</Text>
+              <Text style={Object.assign({ marginTop: error ? 0 : 35 }, textForgot)}>{I18n.t('logIn.forgot_your_password').toUpperCase()}</Text>
             </Button>
             <Button
               id="LoginPage.loginButton"
               block
               style={loginButton}
-              onPress={this.onSubmitPress}
-              loading={isLoading}
+              onPress={this.handleSubmit}
+              disabled={disabled}
+              spinner={isLoading}
             >
               <Text style={loginButtonText}>{I18n.t('logIn.log_in')}</Text>
             </Button>
@@ -117,7 +124,7 @@ class LoginForm extends Component {
               onPress={this.props.onRegisterPress}
             >
               <Text uppercase={false} style={textRegister}>
-                {I18n.t('logIn.register')}
+                {I18n.t('logIn.register').toUpperCase()}
               </Text>
             </Button>
           </Form>
@@ -197,11 +204,7 @@ const styles = {
     color: contrastColor,
     ...primaryFont,
   },
-  forgot: {
-    flex: 2,
-  },
   textForgot: {
-    marginTop: 35,
     color: contrastColor,
     ...primaryFont,
   },
@@ -241,6 +244,10 @@ const styles = {
   textRegister: {
     color: primaryColor,
     ...primaryFont,
+  },
+  errorContainer: {
+    flex: 1,
+    marginTop: 30,
   },
 };
 
