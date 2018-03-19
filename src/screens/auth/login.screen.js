@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
 
 import { AuthActions } from '../../actions';
@@ -7,11 +8,11 @@ import LoginForm from '../../components/auth/login.form';
 const { loginUser } = AuthActions;
 
 class LoginScreen extends Component {
-  componentWillUpdate({ auth }) {
+  async componentWillUpdate({ auth }) {
     if (auth.isAuthorized && auth.accessToken) {
       /*
-        Write wevedo_access_token to the AsyncStorage
-        and start main Tab-based app.
+        await AsyncStorage.setItem('wevedo_access_token', auth.accessToken);
+        navigator.startMainApp();
       */
     }
   }
