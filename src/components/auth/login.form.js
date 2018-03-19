@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Image, ImageBackground, View } from 'react-native';
-import { Card, CardItem, Container, Form, Item, Input, Label, Title } from 'native-base';
+import { CardItem, Container, Form, Item, Input, Label, Title } from 'native-base';
 import I18n from '../../locales';
 import { primaryColor, backgroundColor, contrastColor, primaryFont } from '../../theme';
 import images from '../../images';
-import { Button, Center, Text } from '../../components/common';
+import { Button, Center, Content, Text } from '../../components/common';
 
 class LoginForm extends Component {
   state = {
@@ -24,7 +24,7 @@ class LoginForm extends Component {
 
   onForgotPress = () => {
     this.props.onForgotPress();
-  }
+  };
 
   onFieldChange = (key, value) => {
     this.setState({
@@ -42,7 +42,6 @@ class LoginForm extends Component {
       form,
       logoOuterCircle,
       logoInnerCircle,
-      formShadow,
       item,
       label,
       input,
@@ -63,7 +62,7 @@ class LoginForm extends Component {
       } = this.props;
     */
     return (
-      <Container style={containerStyle}>
+      <Container containerStyle={containerStyle}>
         <ImageBackground resizeMode="cover" style={background} source={images.backGround}>
           <CardItem style={header}>
             <Title style={headerText}>{I18n.t('logIn.account_login')}</Title>
@@ -74,47 +73,39 @@ class LoginForm extends Component {
             </View>
           </CardItem>
           <Form style={form}>
-            <Card style={formShadow}>
-              <Item floatingLabel style={item}>
-                <Label style={label}>{I18n.t('common.email')}</Label>
-                <Input
-                  style={input}
-                  value={this.state.email}
-                  onChangeText={text => this.onFieldChange('email', text)}
-                  placeholderTextColor={primaryColor}
-                  // placeholder="user@gmail.com"
-                />
-              </Item>
-              <Item floatingLabel style={item}>
-                <Label style={label}>{I18n.t('common.password')}</Label>
-                <Input
-                  style={input}
-                  value={this.state.password}
-                  onChangeText={text => this.onFieldChange('password', text)}
-                  placeholderTextColor={primaryColor}
-                  // placeholder="password"
-                  secureTextEntry
-                />
-              </Item>
-              <Button style={forgot} block transparent onPress={this.onForgotPress}>
-                <Text uppercase={false} style={textForgot}>
-                  {I18n.t('logIn.forgot_your_password')}
-                </Text>
-              </Button>
-              <Button block style={loginButton} onPress={this.onSubmitPress}>
-                <Text style={loginButtonText}>{I18n.t('logIn.log_in')}</Text>
-              </Button>
-              <Center style={OR}>
-                <View style={or} />
-                <Text style={orText}>{I18n.t('logIn.or')}</Text>
-                <View style={or} />
-              </Center>
-              <Button style={register} block transparent onPress={this.props.onRegisterPress}>
-                <Text uppercase={false} style={textRegister}>
-                  {I18n.t('logIn.register')}
-                </Text>
-              </Button>
-            </Card>
+            <Item floatingLabel style={item}>
+              <Label style={label}>{I18n.t('common.email')}</Label>
+              <Input
+                style={input}
+                value={this.state.email}
+                onChangeText={text => this.onFieldChange('email', text)}
+              />
+            </Item>
+            <Item floatingLabel style={item}>
+              <Label style={label}>{I18n.t('common.password')}</Label>
+              <Input
+                style={input}
+                value={this.state.password}
+                onChangeText={text => this.onFieldChange('password', text)}
+                secureTextEntry
+              />
+            </Item>
+            <Button style={forgot} block transparent onPress={this.onForgotPress}>
+              <Text style={textForgot}>{I18n.t('logIn.forgot_your_password')}</Text>
+            </Button>
+            <Button block style={loginButton} onPress={this.onSubmitPress}>
+              <Text style={loginButtonText}>{I18n.t('logIn.log_in')}</Text>
+            </Button>
+            <Center style={OR}>
+              <View style={or} />
+              <Text style={orText}>{I18n.t('logIn.or')}</Text>
+              <View style={or} />
+            </Center>
+            <Button style={register} block transparent onPress={this.props.onRegisterPress}>
+              <Text uppercase={false} style={textRegister}>
+                {I18n.t('logIn.register')}
+              </Text>
+            </Button>
           </Form>
         </ImageBackground>
       </Container>
@@ -170,9 +161,6 @@ const styles = {
   },
   form: {
     flex: 2.5,
-  },
-  formShadow: {
-    flex: 1,
     backgroundColor: 'rgba(0,0,0,0.5)',
     marginLeft: 15,
     marginRight: 15,

@@ -11,16 +11,16 @@ import { Button, Container, Content, FieldInput, Text } from '../../components/c
 import { white } from '../../theme/colors';
 
 class ForgotPassword extends Component {
-    state = {
-      email: '',
-    }
+  state = {
+    email: '',
+  };
 
-    onBackPress = () => {
-      this.props.navigator.pop();
-    }
+  onBackPress = () => {
+    this.props.navigator.pop();
+  };
 
-    onSubmitForm = () => {
-      /* const {email} = values;
+  onSubmitForm = () => {
+    /* const {email} = values;
         this.setState({loading: true});
         this.props.resetPassword(email, error => {
             this.setState({loading: false});
@@ -42,57 +42,60 @@ class ForgotPassword extends Component {
             );
             this.props.navigation.goBack()
         })  */
-    }
+  };
 
-    renderForm() {
-      return (
-        <Content id="ForgotPassword.main-content" padder keyboardShouldPersistTaps="always" contentContainerStyle={{ flex: 1 }}>
-          <View style={styles.headerWrapper}>
-            <Button id="ForgotPassword.backButton" style={{ flex: 1 }} transparent onPress={this.onBackPress}>
-              <Icon style={{ color: white, fontSize: 40 }} name="ios-arrow-back" />
-            </Button>
-            <Text style={styles.headerText}>
-              {I18n.t('logIn.forgot_password_title')}
-            </Text>
-          </View>
-          <View id="ForgotPassword.formWrapper" style={styles.formWrapper}>
-            <View id="ForgotPassword.form" style={styles.form}>
-              <FieldInput
-                color={white}
-                name="email"
-                placeholder={I18n.t('common.email')}
-                id="ForgotPassword.emailInput"
-              />
-              <Button
-                block
-                style={styles.button}
-                id="ForgotPassword.resetButton"
-                onPress={this.onSubmitForm}
-              >
-                <Text style={styles.buttonText}>
-                  {I18n.t('logIn.reset_password')}
-                </Text>
-              </Button>
-            </View>
-          </View>
-        </Content>
-      );
-    }
-
-    render() {
-      return (
-        <Container id="ForgotPassword.container">
-          <ImageBackground
-            id="ForgotPassword.bg-image"
-            resizeMode="cover"
-            style={styles.background}
-            source={require('../../images/loginBackground.png')}
+  renderForm() {
+    return (
+      <Container id="ForgotPassword.main-content" style={{ flex: 1 }}>
+        {/* <Content id="ForgotPassword.main-content" padder keyboardShouldPersistTaps="always" contentContainerStyle={{ flex: 1 }}> */}
+        <View style={styles.headerWrapper}>
+          <Button
+            id="ForgotPassword.backButton"
+            style={{ flex: 1 }}
+            transparent
+            onPress={this.onBackPress}
           >
-            {this.renderForm()}
-          </ImageBackground>
-        </Container>
-      );
-    }
+            <Icon style={{ color: white, fontSize: 40 }} name="ios-arrow-back" />
+          </Button>
+          <Text style={styles.headerText}>{I18n.t('logIn.forgot_password_title')}</Text>
+        </View>
+        <View id="ForgotPassword.formWrapper" style={styles.formWrapper}>
+          <View id="ForgotPassword.form" style={styles.form}>
+            <FieldInput
+              color={white}
+              name="email"
+              placeholder={I18n.t('common.email')}
+              id="ForgotPassword.emailInput"
+            />
+            <Button
+              block
+              style={styles.button}
+              id="ForgotPassword.resetButton"
+              onPress={this.onSubmitForm}
+            >
+              <Text style={styles.buttonText}>{I18n.t('logIn.reset_password')}</Text>
+            </Button>
+          </View>
+        </View>
+        {/* </Content> */}
+      </Container>
+    );
+  }
+
+  render() {
+    return (
+      <Container id="ForgotPassword.container">
+        <ImageBackground
+          id="ForgotPassword.bg-image"
+          resizeMode="cover"
+          style={styles.background}
+          source={require('../../images/loginBackground.png')}
+        >
+          {this.renderForm()}
+        </ImageBackground>
+      </Container>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
