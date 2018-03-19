@@ -89,7 +89,7 @@ class ForgotPassword extends Component {
 
   render() {
     return (
-      <Container id="ForgotPassword.container">
+      <Container id="ForgotPassword.container" style={styles.container}>
         <ImageBackground
           id="ForgotPassword.bg-image"
           resizeMode="cover"
@@ -104,6 +104,9 @@ class ForgotPassword extends Component {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#f3c200',
+  },
   background: {
     flex: 1,
     height: null,
