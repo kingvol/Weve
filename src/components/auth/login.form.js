@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Image, ImageBackground, View } from 'react-native';
-import { Card, CardItem, Container, Header, Form, Item, Input, Label, Title } from 'native-base';
+import { Card, CardItem, Container, Form, Item, Input, Label, Title } from 'native-base';
 import I18n from '../../locales';
 import { primaryColor, backgroundColor, contrastColor, primaryFont } from '../../theme';
 import images from '../../images';
@@ -65,9 +65,9 @@ class LoginForm extends Component {
     return (
       <Container style={containerStyle}>
         <ImageBackground resizeMode="cover" style={background} source={images.backGround}>
-          <Header style={header}>
+          <CardItem style={header}>
             <Title style={headerText}>{I18n.t('logIn.account_login')}</Title>
-          </Header>
+          </CardItem>
           <CardItem style={pic}>
             <View style={logoOuterCircle}>
               <Image source={images.logo} style={logoInnerCircle} />
@@ -75,24 +75,24 @@ class LoginForm extends Component {
           </CardItem>
           <Form style={form}>
             <Card style={formShadow}>
-              <Item style={item}>
+              <Item floatingLabel style={item}>
                 <Label style={label}>{I18n.t('common.email')}</Label>
                 <Input
                   style={input}
                   value={this.state.email}
                   onChangeText={text => this.onFieldChange('email', text)}
                   placeholderTextColor={primaryColor}
-                  placeholder="user@gmail.com"
+                  // placeholder="user@gmail.com"
                 />
               </Item>
-              <Item style={item} last>
+              <Item floatingLabel style={item}>
                 <Label style={label}>{I18n.t('common.password')}</Label>
                 <Input
                   style={input}
                   value={this.state.password}
                   onChangeText={text => this.onFieldChange('password', text)}
                   placeholderTextColor={primaryColor}
-                  placeholder="password"
+                  // placeholder="password"
                   secureTextEntry
                 />
               </Item>
@@ -139,10 +139,12 @@ const styles = {
   },
   header: {
     alignSelf: 'center',
+    flex: 0.3,
     backgroundColor: 'transparent',
   },
   headerText: {
     textAlignVertical: 'center',
+    textAlign: 'center',
     color: 'white',
     fontSize: 25,
     ...primaryFont,
@@ -167,28 +169,29 @@ const styles = {
     margin: 3,
   },
   form: {
-    flex: 2,
+    flex: 2.5,
   },
   formShadow: {
     flex: 1,
-    // height: 350,
     backgroundColor: 'rgba(0,0,0,0.5)',
     marginLeft: 15,
     marginRight: 15,
     marginBottom: 15,
   },
   item: {
-    flex: 1.8,
+    flex: 2,
+    marginTop: 15,
     marginLeft: 20,
     marginRight: 20,
   },
   label: {
     flex: 1,
+    textAlign: 'left',
     color: contrastColor,
     ...primaryFont,
   },
   input: {
-    flex: 2,
+    flex: 1,
     color: contrastColor,
     ...primaryFont,
   },
@@ -196,7 +199,7 @@ const styles = {
     flex: 2,
   },
   textForgot: {
-    marginTop: 40,
+    marginTop: 35,
     color: contrastColor,
     ...primaryFont,
   },
