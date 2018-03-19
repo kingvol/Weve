@@ -13,6 +13,10 @@ class FieldInput extends PureComponent {
     };
   }
 
+  onChangeText = (text) => {
+    this.props.onChangeText(text);
+  }
+
   switchSecure() {
     this.setState({ secureVisible: !this.state.secureVisible });
   }
@@ -35,6 +39,7 @@ class FieldInput extends PureComponent {
             style={{ color, ...primaryFont }}
             secureTextEntry={secure}
             autoCapitalize={autoCapitalize}
+            onChangeText={this.onChangeText}
             selectionColor={Color(color).alpha(0.5).toString()}
           />
           <View style={{

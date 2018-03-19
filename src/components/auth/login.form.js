@@ -12,16 +12,6 @@ class LoginForm extends Component {
     password: '',
   };
 
-  onSubmitPress = () => {
-    /*
-    const { onSubmitPress } = this.props;
-    const { email, password } = this.state;
-      validate data here..
-    if (dataValid) {
-      onSubmitPress(email, password);
-    } */
-  };
-
   onForgotPress = () => {
     this.props.onForgotPress();
   };
@@ -30,6 +20,11 @@ class LoginForm extends Component {
     this.setState({
       [key]: value,
     });
+  };
+
+  handleSubmit = () => {
+    const { email, password } = this.state;
+    this.props.onSubmitPress(email, password);
   };
 
   render() {
@@ -55,12 +50,7 @@ class LoginForm extends Component {
       register,
       textRegister,
     } = styles;
-    /*
-      const {
-        isLoading,
-        error
-      } = this.props;
-    */
+    const { isLoading, error } = this.props;
     return (
       <Container containerStyle={containerStyle}>
         <ImageBackground resizeMode="cover" style={background} source={images.backGround}>

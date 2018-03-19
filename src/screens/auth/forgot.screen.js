@@ -19,7 +19,12 @@ class ForgotPassword extends Component {
     this.props.navigator.pop();
   };
 
+  onEmailChange = (email) => {
+    this.setState({ email });
+  };
+
   onSubmitForm = () => {
+    console.warn(this.state.email);
     /* const {email} = values;
         this.setState({loading: true});
         this.props.resetPassword(email, error => {

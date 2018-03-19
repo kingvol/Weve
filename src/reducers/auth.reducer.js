@@ -4,7 +4,7 @@ import { AUTH_ACTION_TYPES as types } from '../actions/actionTypes';
 const initialState = Immutable({
   isLoading: false,
   isAuthorized: false,
-  authToken: '',
+  accessToken: '',
   error: null,
 });
 
@@ -17,11 +17,12 @@ export default (state = initialState, action = {}) => {
       };
 
     case types.LOGIN_USER_FULFILLED:
+      console.warn('fulfulled');
       return {
         ...state,
         isLoading: false,
         isAuthorized: true,
-        authToken: action.payload,
+        accessToken: action.payload,
       };
 
     case types.LOGIN_USER_REJECTED:
