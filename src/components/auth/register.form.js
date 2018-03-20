@@ -1,71 +1,49 @@
 /* eslint-disable global-require */
 import React, { Component } from 'react';
-import { Alert, ImageBackground, StyleSheet, View, Platform } from 'react-native';
-import { CheckBox, Body, ListItem, Picker, Left, Icon } from 'native-base';
 import I18n from 'react-native-i18n';
-import { Button, Container, Content, FieldInput, Text } from '../../components/common';
+import { CheckBox, Left, Icon } from 'native-base';
+import { ImageBackground, StyleSheet, View } from 'react-native';
 import { contrastColor, primaryFont } from '../../theme';
-// import SignupImageForm from '../Components/Auth/SignupImageForm';
-// import Eula from 'Eula'
-
-// const Item = Picker.Item;
-
-/* const CATEGORIES = [
-    I18n.t('categories.venue'),
-    I18n.t('categories.artist'),
-    I18n.t('categories.makeup'),
-    I18n.t('categories.entertainment'),
-    I18n.t('categories.costume'),
-    I18n.t('categories.decoration'),
-    I18n.t('categories.video'),
-    I18n.t('categories.photo'),
-    I18n.t('categories.cake'),
-] */
+import { Button, Container, Content, FieldInput, Text } from '../../components/common';
 
 class SignupForm extends Component {
   state = {
-    isModalVisible: false,
     step: 1,
     values: {
+      fullName: '',
       email: '',
       password: '',
       confirmPassword: '',
-      isAdvertiser: false,
       category: null,
       image: null,
     },
-  }
-
-  componentDidMount() {
-    /* Predefine Venue category on iOS
-    if (Platform.OS === 'ios') {
-      this.onCategorySelect('Venue');
-    } */
+    isProvider: false,
+    isModalVisible: false,
   }
 
   onCheckboxPress = () => {
     this.setState({
-      isAdvertiser: !this.state.isAdvertiser,
+      isProvider: !this.state.isProvider,
     });
   }
 
-  /* onCategorySelect = (category) => {
+  onFieldChange = (key, value) => {
     this.setState({
-      category,
-    })
-  } */
-
-  /* onImageSelect = (uri) => {
-    this.setState({
-      image: uri,
+      values: {
+        ...this.state.values,
+        [key]: value,
+      },
     });
-  } */
+  }
 
-  /* onContinuePress = () => {
+  handleSubmit = () => {
+    // const { values } = this.state;
+    // const { fullName, password, confirmPassword, email } = values;
+
     this.setState({
-      step: 2,
+      isModalVisible: !this.state.isModalVisible,
     });
-  } */
+  }
 
   /* handleDecline() {
     this.setState({isModalVisible: !this.state.isModalVisible, values: null});
@@ -81,13 +59,13 @@ class SignupForm extends Component {
   /* handleAccept() {
         this.setState({isModalVisible: !this.state.isModalVisible});
         const {email, password, fullName} = this.state.values;
-        const { isAdvertiser, category, image } = this.state;
+        const { isProvider, category, image } = this.state;
         this.setState({loading: true});
         const arrFN = fullName.split(' ').map((a) => { return a.charAt(0).toUpperCase() + a.substr(1) });
         const capitalFullName = arrFN.join(' ');
 
 
-        if (isAdvertiser) {
+        if (isProvider) {
             this.props.signupProvider(email, password, capitalFullName, image, category, result => {
                 this.setState({loading: false});
                 const {errorMessage} = result;
@@ -117,7 +95,7 @@ class SignupForm extends Component {
   } */
 
   /* onSubmitForm = (values) => {
-        const { isAdvertiser, image } = this.state;
+        const { isProvider, image } = this.state;
         let { category } = this.state;
 
         // on Android the Venue category is predefined in UI but not set to state
@@ -128,12 +106,12 @@ class SignupForm extends Component {
             })
         }
 
-        if (isAdvertiser && !category) {
+        if (isProvider && !category) {
             alert(I18n.t('logIn.no_category'));
             return;
         }
 
-        if (isAdvertiser && !image) {
+        if (isProvider && !image) {
             alert(I18n.t('logIn.no_image'));
             return;
         };
@@ -141,9 +119,10 @@ class SignupForm extends Component {
   } */
 
   renderSignUp = () => {
-    const disabled = false;
-
-    // const disabled = this.state.loading || pristine || submitting || !email || !password || !confirmPassword || (this.state.step === 2 && ! this.state.image)
+    const { email, password, confirmPassword } = this.state.values;
+    const disabled = this.props.isLoading || !email || !password || !confirmPassword || (
+      this.state.step === 2 && !this.state.image
+    );
 
     return (
       <Content
@@ -171,6 +150,7 @@ class SignupForm extends Component {
                 color={contrastColor}
                 placeholder={I18n.t('common.fullName')}
                 errorColor={contrastColor}
+                onChangeText={text => this.onFieldChange('fullName', text)}
                 id="SignUp.fullNameInput"
                 autoCapitalize="words"
               />
@@ -179,6 +159,7 @@ class SignupForm extends Component {
                 name="email"
                 placeholder={I18n.t('common.email')}
                 errorColor={contrastColor}
+                onChangeText={text => this.onFieldChange('email', text)}
                 id="SignUp.emailInput"
               />
               <FieldInput
@@ -187,6 +168,7 @@ class SignupForm extends Component {
                 placeholder={I18n.t('common.password')}
                 errorColor={contrastColor}
                 secureTextEntry
+                onChangeText={text => this.onFieldChange('password', text)}
                 id="SignUp.passwordInput"
               />
               <FieldInput
@@ -195,12 +177,13 @@ class SignupForm extends Component {
                 placeholder={I18n.t('logIn.confirm_password')}
                 errorColor={contrastColor}
                 secureTextEntry
+                onChangeText={text => this.onFieldChange('confirmPassword', text)}
                 id="SignUp.confirmPasswordInput"
               />
 
               <View style={{ flexDirection: 'row' }}>
                 <CheckBox
-                  checked={this.state.isAdvertiser}
+                  checked={this.state.isProvider}
                   onPress={this.onCheckboxPress}
                   color="#f3c200"
                 />
@@ -212,7 +195,7 @@ class SignupForm extends Component {
             </View>
           )}
 
-            {/* this.state.isAdvertiser && this.state.step === 1 && (
+            {/* this.state.isProvider && this.state.step === 1 && (
                           <View style={{ flexDirection: 'row'}}>
                               {Platform.OS === 'android' && <Text style={styles.categoryText}>{I18n.t('common.category')}</Text>}
                             <Picker
@@ -232,13 +215,13 @@ class SignupForm extends Component {
                           </View>
                         ) */}
 
-            {/* this.state.isAdvertiser && this.state.step === 1 && (
+            {/* this.state.isProvider && this.state.step === 1 && (
                             <View style={{ alignItems: 'center', borderTopColor: 'white', borderTopWidth: 1 }}>
                                 <Text note style={{ color: 'white', margin: 10, marginBottom: 0, }}>{I18n.t('logIn.account_activation')}</Text>
                             </View>
                         ) */}
 
-            {/* this.state.isAdvertiser && this.state.step === 2 && (
+            {/* this.state.isProvider && this.state.step === 2 && (
                             <SignupImageForm
                                 onImageSelect={this.onImageSelect}
                             />
@@ -246,13 +229,14 @@ class SignupForm extends Component {
 
             <Button
               id="Signup.submitButton"
-              style={styles.registerButton}
               block
-              onPress={this.handleSubmit/* this.state.isAdvertiser && this.state.step === 1 ? this.onContinuePress : handleSubmit(this.onSubmitForm) */}
+              style={styles.registerButton}
+              onPress={this.state.isProvider && this.state.step === 1 ? this.onContinuePress : this.handleSubmit}
               spinner={this.props.isLoading}
+              disabled={disabled}
             >
               <Text style={styles.registerButtonText}>
-                {this.state.isAdvertiser && this.state.step === 1 ? I18n.t('common.continue') : I18n.t('logIn.sign_up')}
+                {this.state.isProvider && this.state.step === 1 ? I18n.t('common.continue') : I18n.t('logIn.sign_up')}
               </Text>
             </Button>
 
