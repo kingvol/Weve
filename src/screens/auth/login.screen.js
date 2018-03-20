@@ -26,6 +26,7 @@ class LoginScreen extends Component {
       screen: 'wevedo.registerScreen',
       navigatorStyle: {
         navBarHidden: true,
+        screenBackgroundColor: 'orange',
       },
     });
   };
