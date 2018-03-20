@@ -17,7 +17,6 @@ export default (state = initialState, action = {}) => {
       };
 
     case types.LOGIN_USER_FULFILLED:
-      console.warn('fulfulled');
       return {
         ...state,
         isLoading: false,
@@ -26,6 +25,25 @@ export default (state = initialState, action = {}) => {
       };
 
     case types.LOGIN_USER_REJECTED:
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload.message || action.payload.error,
+      };
+
+    case types.REGISTER_USER_PENDING:
+      return {
+        ...state,
+        isLoading: true,
+      };
+
+    case types.REGISTER_USER_FULFILLED:
+      return {
+        ...state,
+        isLoading: false,
+      };
+
+    case types.REGISTER_USER_REJECTED:
       return {
         ...state,
         isLoading: false,
