@@ -6,6 +6,11 @@ import { Alert, ImageBackground, StyleSheet, View } from 'react-native';
 import { contrastColor, primaryFont } from '../../theme';
 import { Button, Container, Content, FieldInput, Text } from '../../components/common';
 
+import APIs from '../../api';
+
+const { AuthApi } = APIs;
+const api = new AuthApi();
+
 class SignupForm extends Component {
   state = {
     step: 1,
@@ -17,6 +22,7 @@ class SignupForm extends Component {
       category: null,
       image: null,
     },
+    loading: false,
     isProvider: false,
     isModalVisible: false,
   }
@@ -36,10 +42,18 @@ class SignupForm extends Component {
     });
   }
 
-  handleSubmit = () => {
-    this.setState({
-      isModalVisible: !this.state.isModalVisible,
-    });
+  handleSubmit = async () => {
+    this.setState({ loading: true });
+    try {
+      await api.checkEmail(this.state.values.email);
+      this.setState({
+        loading: false,
+        isModalVisible: !this.state.isModalVisible,
+      });
+    } catch ({ message }) {
+      this.setState({ loading: false });
+      Alert.alert('Cannot create user', message);
+    }
   }
 
   handleDecline() {
@@ -120,7 +134,7 @@ class SignupForm extends Component {
 
   renderSignUp = () => {
     const { email, password, confirmPassword } = this.state.values;
-    const disabled = this.props.isLoading || !email || !password || !confirmPassword || (
+    const disabled = this.props.isLoading || this.state.loading || !email || !password || !confirmPassword || (
       this.state.step === 2 && !this.state.image
     );
 
@@ -199,7 +213,7 @@ class SignupForm extends Component {
               block
               style={styles.registerButton}
               onPress={this.state.isProvider && this.state.step === 1 ? this.onContinuePress : this.handleSubmit}
-              spinner={this.props.isLoading}
+              spinner={this.props.isLoading || this.state.loading}
               disabled={disabled}
             >
               <Text style={styles.registerButtonText}>
