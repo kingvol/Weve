@@ -194,39 +194,6 @@ class SignupForm extends Component {
 
             </View>
           )}
-
-            {/* this.state.isProvider && this.state.step === 1 && (
-                          <View style={{ flexDirection: 'row'}}>
-                              {Platform.OS === 'android' && <Text style={styles.categoryText}>{I18n.t('common.category')}</Text>}
-                            <Picker
-                                mode="dropdown"
-                                style={{ color: 'white', flex: Platform.OS === 'ios' ? 0 : 1 }}
-                                placeholder={I18n.t('logIn.select_category')}
-                                selectedValue={this.state.category}
-                                onValueChange={this.onCategorySelect}
-                                placeholderTextColor="white"
-                                placeholderStyle={{ color: 'white', }}
-                                textStyle={{ color: 'white', }}
-                            >
-                                {CATEGORIES.map(item => (
-                                    <Item key={item} label={item} value={item} />
-                                ))}
-                            </Picker>
-                          </View>
-                        ) */}
-
-            {/* this.state.isProvider && this.state.step === 1 && (
-                            <View style={{ alignItems: 'center', borderTopColor: 'white', borderTopWidth: 1 }}>
-                                <Text note style={{ color: 'white', margin: 10, marginBottom: 0, }}>{I18n.t('logIn.account_activation')}</Text>
-                            </View>
-                        ) */}
-
-            {/* this.state.isProvider && this.state.step === 2 && (
-                            <SignupImageForm
-                                onImageSelect={this.onImageSelect}
-                            />
-                        ) */}
-
             <Button
               id="Signup.submitButton"
               block
@@ -239,7 +206,6 @@ class SignupForm extends Component {
                 {this.state.isProvider && this.state.step === 1 ? I18n.t('common.continue') : I18n.t('logIn.sign_up')}
               </Text>
             </Button>
-
 
             {/* <Eula isModalVisible={this.state.isModalVisible}
                               handleDecline={this.handleDecline.bind(this)}
