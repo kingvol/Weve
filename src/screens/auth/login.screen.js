@@ -10,6 +10,7 @@ const { loginUser } = AuthActions;
 class LoginScreen extends Component {
   async componentWillUpdate({ auth }) {
     if (auth.isAuthorized && auth.accessToken) {
+      alert('Authorized!');
       /*
         await AsyncStorage.setItem('wevedo_access_token', auth.accessToken);
         navigator.startMainApp();
