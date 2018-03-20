@@ -7,10 +7,15 @@ class RegisterScreen extends Component {
     this.props.navigator.pop();
   }
 
+  onFormSubmit = (email, password, fullName) => {
+
+  }
+
   render() {
     return (
       <RegisterForm
         onBackPress={this.onBackPress}
+        onFormSubmit={this.onFormSubmit}
       />
     );
   }

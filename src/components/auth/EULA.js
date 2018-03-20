@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import Modal from 'react-native-modal';
 import I18n from 'react-native-i18n';
-import { Button, Container, Content, Text } from '../../common';
+import { Button, Container, Content, Text } from '../common';
 import { primaryFont, backgroundColor } from '../../theme';
 
 export default ({ isModalVisible, handleDecline, handleAccept }) => (

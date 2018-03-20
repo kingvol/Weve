@@ -5,6 +5,7 @@ import { CheckBox, Left, Icon } from 'native-base';
 import { Alert, ImageBackground, StyleSheet, View } from 'react-native';
 import { contrastColor, primaryFont } from '../../theme';
 import { Button, Container, Content, FieldInput, Text } from '../../components/common';
+import Eula from './EULA';
 
 import APIs from '../../api';
 
@@ -56,10 +57,9 @@ class SignupForm extends Component {
     }
   }
 
-  handleDecline() {
+  handleDecline = () => {
     this.setState({
       isModalVisible: !this.state.isModalVisible,
-      values: {},
     });
     setTimeout(() => {
       Alert.alert(
@@ -68,6 +68,14 @@ class SignupForm extends Component {
         [{ text: `${I18n.t('common.ok')}` }],
       );
     }, 800);
+  }
+
+  handleAccept = () => {
+    this.setState({ isModalVisible: !this.state.isModalVisible });
+    const { email, password, fullName } = this.state.values;
+    const arrFN = fullName.split(' ').map(a => a.charAt(0).toUpperCase() + a.substr(1));
+    const capitalFullName = arrFN.join(' ');
+    this.props.onFormSubmit(email, password, capitalFullName);
   }
 
   /* handleAccept() {
@@ -221,11 +229,12 @@ class SignupForm extends Component {
               </Text>
             </Button>
 
-            {/* <Eula isModalVisible={this.state.isModalVisible}
-                              handleDecline={this.handleDecline.bind(this)}
-                              handleAccept={this.handleAccept.bind(this)}
-                              id="Signup.EULA"
-                      /> */}
+            <Eula
+              isModalVisible={this.state.isModalVisible}
+              handleDecline={this.handleDecline}
+              handleAccept={this.handleAccept}
+              id="Signup.EULA"
+            />
           </View>
         </View>
       </Content>
