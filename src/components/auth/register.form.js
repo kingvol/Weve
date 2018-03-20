@@ -4,7 +4,7 @@ import I18n from 'react-native-i18n';
 import { CheckBox, Left, Icon } from 'native-base';
 import { ImageBackground, StyleSheet, View } from 'react-native';
 import { contrastColor, primaryFont } from '../../theme';
-import { Button, Container, Content, FieldInput, Text } from '../../components/common';
+import { Button, Container, FieldInput, Text } from '../../components/common';
 
 class SignupForm extends Component {
   state = {
@@ -125,10 +125,8 @@ class SignupForm extends Component {
     );
 
     return (
-      <Content
-        id="SignUp.content"
-        padder
-        keyboardShouldPersistTaps="always"
+      <Container
+        id="SignUp.content"        
         contentContainerStyle={{ flex: 1, justifyContent: 'space-between' }}
       >
         <View id="Signup.backButtonAndTitleWrapper" style={styles.header}>
@@ -214,7 +212,7 @@ class SignupForm extends Component {
                       /> */}
           </View>
         </View>
-      </Content>
+      </Container>
     );
   }
 
