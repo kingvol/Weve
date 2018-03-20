@@ -1,10 +1,17 @@
 import React, { Component } from 'react';
 import { Image, ImageBackground, View } from 'react-native';
-import { CardItem, Container, Form, Item, Input, Label, Title } from 'native-base';
+import { CardItem, Container, Form, Icon, Item, Input, Label, Title } from 'native-base';
 import I18n from '../../locales';
-import { primaryColor, backgroundColor, contrastColor, primaryFont } from '../../theme';
+import {
+  primaryColor,
+  backgroundColor,
+  contrastColor,
+  lightTextColor,
+  primaryFont,
+} from '../../theme';
 import images from '../../images';
 import { Button, Center, Text } from '../../components/common';
+// import { validate } from '../../validations/loginValidations';
 
 class LoginForm extends Component {
   state = {
@@ -20,6 +27,9 @@ class LoginForm extends Component {
     this.setState({
       [key]: value,
     });
+    // if (values.password && values.password.length < 8) {
+    //   errors.password = `${I18n.t('validations.password_length')}`;
+    // }
   };
 
   handleSubmit = () => {
@@ -40,7 +50,7 @@ class LoginForm extends Component {
       item,
       label,
       input,
-      forgot,
+      // forgot,
       textForgot,
       loginButton,
       loginButtonText,
@@ -52,7 +62,9 @@ class LoginForm extends Component {
     } = styles;
     const { isLoading, error } = this.props;
 
-    const disabled = (!this.state.email || !this.state.password);
+    const isError = 'ERROR';
+
+    const disabled = !this.state.email || !this.state.password;
 
     return (
       <Container containerStyle={containerStyle} id="LoginPage.main-content">
@@ -63,18 +75,28 @@ class LoginForm extends Component {
             </Title>
           </CardItem>
           <CardItem style={pic} id="LoginPage.logoWrapper">
-            <View style={logoOuterCircle} id="LoginPage.logoOuterCirlcle">
+            <View style={logoOuterCircle} id="LoginPage.logoOuterCircle">
               <Image id="LoginPage.logo" source={images.logo} style={logoInnerCircle} />
             </View>
           </CardItem>
           <Form id="LoginPage.form-container" style={form}>
-            <Item id="LoginPage.emailInput" floatingLabel style={item}>
+            <Item
+              iconRight
+              success
+              // ={this.state.inputSuccess}
+              // error={this.state.inputError}
+              // error
+              id="LoginPage.emailInput"
+              floatingLabel
+              style={item}
+            >
               <Label style={label}>{I18n.t('common.email')}</Label>
               <Input
                 style={input}
                 value={this.state.email}
                 onChangeText={text => this.onFieldChange('email', text)}
               />
+              <Icon name="close-circle" />
             </Item>
             <Item id="LoginPage.passwordInput" floatingLabel style={item}>
               <Label style={label}>{I18n.t('common.password')}</Label>
@@ -87,7 +109,10 @@ class LoginForm extends Component {
             </Item>
             {error && (
               <View style={styles.errorContainer}>
-                <Text id="LoginPage.errorText" style={{ color: contrastColor, textAlign: 'center' }}>
+                <Text
+                  id="LoginPage.errorText"
+                  style={{ color: contrastColor, textAlign: 'center' }}
+                >
                   {error}
                 </Text>
               </View>
@@ -99,7 +124,9 @@ class LoginForm extends Component {
               transparent
               onPress={this.onForgotPress}
             >
-              <Text style={Object.assign({ marginTop: error ? 0 : 35 }, textForgot)}>{I18n.t('logIn.forgot_your_password').toUpperCase()}</Text>
+              <Text style={Object.assign({ marginTop: error ? 0 : 35 }, textForgot)}>
+                {I18n.t('logIn.forgot_your_password')}
+              </Text>
             </Button>
             <Button
               id="LoginPage.loginButton"
@@ -123,9 +150,7 @@ class LoginForm extends Component {
               transparent
               onPress={this.props.onRegisterPress}
             >
-              <Text uppercase={false} style={textRegister}>
-                {I18n.t('logIn.register').toUpperCase()}
-              </Text>
+              <Text style={textRegister}>{I18n.t('logIn.register')}</Text>
             </Button>
           </Form>
         </ImageBackground>
