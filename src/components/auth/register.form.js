@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import I18n from 'react-native-i18n';
 import { CheckBox, Left, Icon } from 'native-base';
-import { ImageBackground, StyleSheet, View } from 'react-native';
+import { Alert, ImageBackground, StyleSheet, View } from 'react-native';
 import { contrastColor, primaryFont } from '../../theme';
 import { Button, Container, Content, FieldInput, Text } from '../../components/common';
 
@@ -37,24 +37,24 @@ class SignupForm extends Component {
   }
 
   handleSubmit = () => {
-    // const { values } = this.state;
-    // const { fullName, password, confirmPassword, email } = values;
-
     this.setState({
       isModalVisible: !this.state.isModalVisible,
     });
   }
 
-  /* handleDecline() {
-    this.setState({isModalVisible: !this.state.isModalVisible, values: null});
-        setTimeout(() => {
-            Alert.alert(
-                `${I18n.t('eula.error')}`,
-                `${I18n.t('eula.error_message')}`,
-                [{text: `${I18n.t('common.ok')}`}]
-            )
-        }, 800)
-  } */
+  handleDecline() {
+    this.setState({
+      isModalVisible: !this.state.isModalVisible,
+      values: {},
+    });
+    setTimeout(() => {
+      Alert.alert(
+        `${I18n.t('eula.error')}`,
+        `${I18n.t('eula.error_message')}`,
+        [{ text: `${I18n.t('common.ok')}` }],
+      );
+    }, 800);
+  }
 
   /* handleAccept() {
         this.setState({isModalVisible: !this.state.isModalVisible});
