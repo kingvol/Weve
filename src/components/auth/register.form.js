@@ -143,7 +143,9 @@ class SignupForm extends Component {
 
   renderSignUp = () => {
     const disabled = false;
-    //const disabled = this.state.loading || pristine || submitting || !email || !password || !confirmPassword || (this.state.step === 2 && ! this.state.image)
+
+  // const disabled = this.state.loading || pristine || submitting || !email || !password || !confirmPassword || (this.state.step === 2 && ! this.state.image)
+
     return (
       <Content
         id="SignUp.content"
@@ -154,18 +156,14 @@ class SignupForm extends Component {
           justifyContent: 'space-between',
         }}
       >
-      <View id="Signup.backButtonAndTitleWrapper" style={{
-          justifyContent: 'flex-start',
-                    top: 20,
-                    flexDirection: 'row',
-          }}>
-                    <Button id="Signup.backButton" style={{flex: 1}} transparent >
-                        <Icon size={25} style={{color: 'white'}} name="ios-chevron-left"/>
-                    </Button>
-                    <Text id="Signup.titleText" style={{color: contrastColor, fontSize: 25, flex: 2, ...primaryFont}}>
-                        {I18n.t('logIn.sign_up')}
-                    </Text>
-                </View>
+        <View id="Signup.backButtonAndTitleWrapper" style={styles.header}>
+          <Button id="Signup.backButton" style={{ flex: 1 }} transparent onPress={this.props.onBackPress}>
+            <Icon style={{ color: 'white', fontSize: 40 }} name="ios-arrow-back" />
+          </Button>
+          <Text id="Signup.titleText" style={{ color: contrastColor, fontSize: 25, flex: 1.6, ...primaryFont }}>
+            {I18n.t('logIn.sign_up')}
+          </Text>
+        </View>
                 <View id="Signup.formWrapper" style={{
                     flex: 0,
                     justifyContent: 'flex-start',
@@ -278,33 +276,39 @@ class SignupForm extends Component {
 }
 
 const styles = StyleSheet.create({
-    background: {
-        flex: 1,
-        height: null,
-        width: null,
-        position: 'absolute',
-        top: 0,
-        bottom: 0,
-        left: 0,
-        right: 0,
-        zIndex: -1
-    },
-    registerButton: {
-        marginTop: 10,
-        backgroundColor: '#f3c200',
-    },
-    registerButtonText: {
-        color: 'red',
-    },
-    checkBoxText: {
-        color: 'white',
-        marginLeft: 20,
-    },
-    categoryText: {
-        color: 'white',
-        marginTop: 15,
-        marginRight: 100,
-    }
+  background: {
+    flex: 1,
+    height: null,
+    width: null,
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    zIndex: -1,
+  },
+  header: {
+    justifyContent: 'flex-start',
+    top: 20,
+    flexDirection: 'row',
+    textAlign: 'center',
+  },
+  registerButton: {
+    marginTop: 10,
+    backgroundColor: '#f3c200',
+  },
+  registerButtonText: {
+    color: 'red',
+  },
+  checkBoxText: {
+    color: 'white',
+    marginLeft: 20,
+  },
+  categoryText: {
+    color: 'white',
+    marginTop: 15,
+    marginRight: 100,
+  },
 });
 
 export default SignupForm;
