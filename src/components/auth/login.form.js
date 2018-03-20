@@ -6,18 +6,26 @@ import {
   primaryColor,
   backgroundColor,
   contrastColor,
-  lightTextColor,
+  // lightTextColor,
   primaryFont,
 } from '../../theme';
 import images from '../../images';
 import { Button, Center, Text } from '../../components/common';
-// import { validate } from '../../validations/loginValidations';
 
 class LoginForm extends Component {
-  state = {
-    email: '',
-    password: '',
-  };
+  constructor() {
+    super();
+    this.state = {
+      email: '',
+      password: '',
+      passwordSuccess: false,
+      passwordLabel: I18n.t('common.password'),
+      passwordError: false,
+      emailSuccess: false,
+      emailLabel: I18n.t('common.email'),
+      emailError: false,
+    };
+  }
 
   onForgotPress = () => {
     this.props.onForgotPress();
@@ -27,10 +35,64 @@ class LoginForm extends Component {
     this.setState({
       [key]: value,
     });
-    // if (values.password && values.password.length < 8) {
-    //   errors.password = `${I18n.t('validations.password_length')}`;
-    // }
+    if (key === 'password') {
+      if (!value.length) {
+        this.setState({
+          passwordSuccess: false,
+          passwordError: true,
+          passwordLabel: I18n.t('validations.required'),
+        });
+      } else if (value.length >= 8) {
+        this.setState({
+          passwordSuccess: true,
+          passwordError: false,
+          passwordLabel: I18n.t('common.password'),
+        });
+      } else {
+        this.setState({
+          passwordSuccess: false,
+          passwordError: true,
+          passwordLabel: I18n.t('validations.password_length'),
+        });
+      }
+    } else if (key === 'email') {
+      if (!value.length) {
+        this.setState({
+          emailSuccess: false,
+          emailError: true,
+          emailLabel: I18n.t('validations.required'),
+        });
+      } else if (/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)) {
+        this.setState({
+          emailSuccess: true,
+          emailError: false,
+          emailLabel: I18n.t('common.email'),
+        });
+      } else {
+        this.setState({
+          emailSuccess: false,
+          emailError: true,
+          emailLabel: I18n.t('validations.email_invalid'),
+        });
+      }
+    }
   };
+
+  onBlur(key, value) {
+    if (key === 'password' && !value.length) {
+      this.setState({
+        passwordSuccess: false,
+        passwordError: true,
+        passwordLabel: I18n.t('validations.required'),
+      });
+    } else if (key === 'email' && !value.length) {
+      this.setState({
+        emailSuccess: false,
+        emailError: true,
+        emailLabel: I18n.t('validations.required'),
+      });
+    }
+  }
 
   handleSubmit = () => {
     const { email, password } = this.state;
@@ -62,8 +124,6 @@ class LoginForm extends Component {
     } = styles;
     const { isLoading, error } = this.props;
 
-    const isError = 'ERROR';
-
     const disabled = !this.state.email || !this.state.password;
 
     return (
@@ -81,31 +141,41 @@ class LoginForm extends Component {
           </CardItem>
           <Form id="LoginPage.form-container" style={form}>
             <Item
-              iconRight
-              success
-              // ={this.state.inputSuccess}
-              // error={this.state.inputError}
-              // error
+              success={this.state.emailSuccess}
+              error={this.state.emailError}
               id="LoginPage.emailInput"
               floatingLabel
               style={item}
             >
-              <Label style={label}>{I18n.t('common.email')}</Label>
+              <Label style={label}>{this.state.emailLabel}</Label>
               <Input
                 style={input}
+                autoCapitalize="none"
                 value={this.state.email}
                 onChangeText={text => this.onFieldChange('email', text)}
+                onBlur={() => this.onBlur('email', this.state.email)}
               />
-              <Icon name="close-circle" />
+              {this.state.emailError && <Icon name="close-circle" />}
+              {this.state.emailSuccess && <Icon name="ios-checkmark-circle" />}
             </Item>
-            <Item id="LoginPage.passwordInput" floatingLabel style={item}>
-              <Label style={label}>{I18n.t('common.password')}</Label>
+            <Item
+              success={this.state.passwordSuccess}
+              error={this.state.passwordError}
+              id="LoginPage.passwordInput"
+              floatingLabel
+              style={item}
+            >
+              <Label style={label}>{this.state.passwordLabel}</Label>
               <Input
                 style={input}
                 value={this.state.password}
                 onChangeText={text => this.onFieldChange('password', text)}
+                // onFocus={this.onFocus('password', this.state.password)}
+                onBlur={() => this.onBlur('password', this.state.password)}
                 secureTextEntry
               />
+              {this.state.passwordError && <Icon name="close-circle" />}
+              {this.state.passwordSuccess && <Icon name="ios-checkmark-circle" />}
             </Item>
             {error && (
               <View style={styles.errorContainer}>
@@ -125,7 +195,7 @@ class LoginForm extends Component {
               onPress={this.onForgotPress}
             >
               <Text style={Object.assign({ marginTop: error ? 0 : 35 }, textForgot)}>
-                {I18n.t('logIn.forgot_your_password')}
+                {I18n.t('logIn.forgot_your_password').toUpperCase()}
               </Text>
             </Button>
             <Button
@@ -150,7 +220,7 @@ class LoginForm extends Component {
               transparent
               onPress={this.props.onRegisterPress}
             >
-              <Text style={textRegister}>{I18n.t('logIn.register')}</Text>
+              <Text style={textRegister}>{I18n.t('logIn.register').toUpperCase()}</Text>
             </Button>
           </Form>
         </ImageBackground>
@@ -221,11 +291,13 @@ const styles = {
   label: {
     flex: 1,
     textAlign: 'left',
+    marginLeft: 10,
     color: contrastColor,
     ...primaryFont,
   },
   input: {
     flex: 1,
+    marginLeft: 10,
     color: contrastColor,
     ...primaryFont,
   },
