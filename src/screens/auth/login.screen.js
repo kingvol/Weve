@@ -1,11 +1,40 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
-import { Button } from 'native-base';
+import { AsyncStorage } from 'react-native';
+import { connect } from 'react-redux';
+
+import { AuthActions } from '../../actions';
+import LoginForm from '../../components/auth/login.form';
+
+const { loginUser } = AuthActions;
 
 class LoginScreen extends Component {
+  async componentWillUpdate({ auth }) {
+    if (auth.isAuthorized && auth.accessToken) {
+      alert('Authorized!');
+      /*
+        await AsyncStorage.setItem('wevedo_access_token', auth.accessToken);
+        navigator.startMainApp();
+      */
+    }
+  }
+
+  onSubmitPress = (email, password) => {
+    this.props.loginUser({ email, password });
+  }
+
   onRegisterPress = () => {
     this.props.navigator.push({
       screen: 'wevedo.registerScreen',
+      navigatorStyle: {
+        navBarHidden: true,
+        screenBackgroundColor: 'orange',
+      },
+    });
+  };
+
+  onForgotPress = () => {
+    this.props.navigator.push({
+      screen: 'wevedo.forgotScreen',
       navigatorStyle: {
         navBarHidden: true,
       },
@@ -14,14 +43,19 @@ class LoginScreen extends Component {
 
   render() {
     return (
-      <View>
-        <Text>Login screen here...</Text>
-        <Button onPress={this.onRegisterPress}>
-          <Text>Register</Text>
-        </Button>
-      </View>
+      <LoginForm
+        isLoading={this.props.auth.isLoading}
+        error={this.props.auth.error}
+        onRegisterPress={this.onRegisterPress}
+        onSubmitPress={this.onSubmitPress}
+        onForgotPress={this.onForgotPress}
+      />
     );
   }
 }
 
-export default LoginScreen;
+const mapStateToProps = state => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps, { loginUser })(LoginScreen);

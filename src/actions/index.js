@@ -1,5 +1,7 @@
-import RootActions from './root.actions';
+import * as RootActions from './root.actions';
+import * as AuthActions from './auth.actions';
 
-export default {
+export {
   RootActions,
+  AuthActions,
 };

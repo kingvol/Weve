@@ -10,6 +10,9 @@ class App extends Component {
       if (token) {
         alert('Token exist, starting a tab-based app...');
       } else {
+        if (Platform.OS === 'ios') {
+          SplashScreen.hide();
+        }
         this.props.navigator.push({
           screen: 'wevedo.loginScreen',
           overrideBackPress: true,
@@ -21,9 +24,6 @@ class App extends Component {
       }
     } catch ({ message }) {
       console.error(message);
-    }
-    if (Platform.OS === 'ios') {
-      SplashScreen.hide();
     }
   }
 
