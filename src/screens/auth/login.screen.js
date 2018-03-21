@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { AsyncStorage } from 'react-native';
+import { Platform } from 'react-native';
+import SplashScreen from 'react-native-splash-screen';
 import { connect } from 'react-redux';
 
 import { AuthActions } from '../../actions';
@@ -8,6 +9,12 @@ import LoginForm from '../../components/auth/login.form';
 const { loginUser } = AuthActions;
 
 class LoginScreen extends Component {
+  componentDidMount() {
+    if (Platform.OS === 'ios') {
+      SplashScreen.hide();
+    }
+  }
+
   async componentWillUpdate({ auth }) {
     if (auth.isAuthorized && auth.accessToken) {
       alert('Authorized!');
