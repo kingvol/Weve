@@ -2,30 +2,19 @@ import React, { Component } from 'react';
 import { Image, ImageBackground, View } from 'react-native';
 import { CardItem, Container, Form, Icon, Item, Input, Label, Title } from 'native-base';
 import I18n from '../../locales';
-import {
-  primaryColor,
-  backgroundColor,
-  contrastColor,
-  // lightTextColor,
-  primaryFont,
-} from '../../theme';
+import { primaryColor, backgroundColor, contrastColor, primaryFont } from '../../theme';
 import images from '../../images';
 import { Button, Center, Text } from '../../components/common';
 
 class LoginForm extends Component {
-  constructor() {
-    super();
-    this.state = {
-      email: '',
-      password: '',
-      passwordSuccess: false,
-      passwordLabel: I18n.t('common.password'),
-      passwordError: false,
-      emailSuccess: false,
-      emailLabel: I18n.t('common.email'),
-      emailError: false,
-    };
-  }
+  state = {
+    email: '',
+    password: '',
+    passwordLabel: I18n.t('common.password'),
+    passwordError: false,
+    emailLabel: I18n.t('common.email'),
+    emailError: false,
+  };
 
   onForgotPress = () => {
     this.props.onForgotPress();
@@ -35,61 +24,37 @@ class LoginForm extends Component {
     this.setState({
       [key]: value,
     });
-    if (key === 'password') {
-      if (!value.length) {
-        this.setState({
-          passwordSuccess: false,
-          passwordError: true,
-          passwordLabel: I18n.t('validations.required'),
-        });
-      } else if (value.length >= 8) {
-        this.setState({
-          passwordSuccess: true,
-          passwordError: false,
-          passwordLabel: I18n.t('common.password'),
-        });
-      } else {
-        this.setState({
-          passwordSuccess: false,
-          passwordError: true,
-          passwordLabel: I18n.t('validations.password_length'),
-        });
+    this.setState((() => {
+      switch (false) {
+        case value.length:
+          return {
+            [`${key}Error`]: true,
+            [`${key}Label`]: I18n.t('validations.required'),
+          };
+        case key === 'password'
+          ? value.length < 8
+          : !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value):
+          return {
+            [`${key}Error`]: false,
+            [`${key}Label`]: I18n.t(`common.${key}`),
+          };
+        default:
+          return {
+            [`${key}Error`]: true,
+            [`${key}Label`]:
+                key === 'password'
+                  ? I18n.t('validations.password_length')
+                  : I18n.t('validations.email_invalid'),
+          };
       }
-    } else if (key === 'email') {
-      if (!value.length) {
-        this.setState({
-          emailSuccess: false,
-          emailError: true,
-          emailLabel: I18n.t('validations.required'),
-        });
-      } else if (/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)) {
-        this.setState({
-          emailSuccess: true,
-          emailError: false,
-          emailLabel: I18n.t('common.email'),
-        });
-      } else {
-        this.setState({
-          emailSuccess: false,
-          emailError: true,
-          emailLabel: I18n.t('validations.email_invalid'),
-        });
-      }
-    }
+    })());
   };
 
   onBlur(key, value) {
-    if (key === 'password' && !value.length) {
+    if (!value.length) {
       this.setState({
-        passwordSuccess: false,
-        passwordError: true,
-        passwordLabel: I18n.t('validations.required'),
-      });
-    } else if (key === 'email' && !value.length) {
-      this.setState({
-        emailSuccess: false,
-        emailError: true,
-        emailLabel: I18n.t('validations.required'),
+        [`${key}Error`]: true,
+        [`${key}Label`]: I18n.t('validations.required'),
       });
     }
   }
@@ -112,7 +77,6 @@ class LoginForm extends Component {
       item,
       label,
       input,
-      // forgot,
       textForgot,
       loginButton,
       loginButtonText,
@@ -141,7 +105,6 @@ class LoginForm extends Component {
           </CardItem>
           <Form id="LoginPage.form-container" style={form}>
             <Item
-              success={this.state.emailSuccess}
               error={this.state.emailError}
               id="LoginPage.emailInput"
               floatingLabel
@@ -151,15 +114,17 @@ class LoginForm extends Component {
               <Input
                 style={input}
                 autoCapitalize="none"
+                autoCorrect={false}
                 value={this.state.email}
                 onChangeText={text => this.onFieldChange('email', text)}
                 onBlur={() => this.onBlur('email', this.state.email)}
               />
               {this.state.emailError && <Icon name="close-circle" />}
-              {this.state.emailSuccess && <Icon name="ios-checkmark-circle" />}
+              {!this.state.emailError && (
+                <Icon name="ios-checkmark-circle" style={{ color: 'green' }} />
+              )}
             </Item>
             <Item
-              success={this.state.passwordSuccess}
               error={this.state.passwordError}
               id="LoginPage.passwordInput"
               floatingLabel
@@ -175,7 +140,9 @@ class LoginForm extends Component {
                 secureTextEntry
               />
               {this.state.passwordError && <Icon name="close-circle" />}
-              {this.state.passwordSuccess && <Icon name="ios-checkmark-circle" />}
+              {!this.state.passwordError && (
+                <Icon name="ios-checkmark-circle" style={{ color: 'green' }} />
+              )}
             </Item>
             {error && (
               <View style={styles.errorContainer}>
