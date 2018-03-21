@@ -120,9 +120,6 @@ class LoginForm extends Component {
                 onBlur={() => this.onBlur('email', this.state.email)}
               />
               {this.state.emailError && <Icon name="close-circle" />}
-              {!this.state.emailError && (
-                <Icon name="ios-checkmark-circle" style={{ color: 'green' }} />
-              )}
             </Item>
             <Item
               error={this.state.passwordError}
@@ -140,9 +137,6 @@ class LoginForm extends Component {
                 secureTextEntry
               />
               {this.state.passwordError && <Icon name="close-circle" />}
-              {!this.state.passwordError && (
-                <Icon name="ios-checkmark-circle" style={{ color: 'green' }} />
-              )}
             </Item>
             {error && (
               <View style={styles.errorContainer}>
