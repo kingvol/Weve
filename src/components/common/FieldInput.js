@@ -29,6 +29,8 @@ class FieldInput extends PureComponent {
       secureTextEntry,
       autoCapitalize = 'none',
       error,
+      isError,
+      onBlur,
     } = this.props;
 
     const secure = secureTextEntry ? !this.state.secureVisible : false;
@@ -43,6 +45,7 @@ class FieldInput extends PureComponent {
             secureTextEntry={secure}
             autoCapitalize={autoCapitalize}
             onChangeText={this.onChangeText}
+            onBlur={onBlur}
             selectionColor={Color(color)
               .alpha(0.5)
               .toString()}
@@ -55,7 +58,7 @@ class FieldInput extends PureComponent {
               flex: 0,
             }}
           >
-            {error && <Text style={{ color, fontSize: 14, paddingHorizontal: 5 }}>{error}</Text>}
+            {isError && <Text style={{ color, fontSize: 14, paddingHorizontal: 5 }}>{error}</Text>}
             {secureTextEntry && (
               <TouchableOpacity onPress={this.switchSecure}>
                 {/* <Icon style={{color}} size={24} name={secure ? 'eye-slash' : 'eye'}/> */}
@@ -65,7 +68,7 @@ class FieldInput extends PureComponent {
         </View>
         <View
           style={{
-            borderBottomColor: `${error ? 'red' : color}`,
+            borderBottomColor: `${isError ? 'red' : color}`,
             borderBottomWidth: 1,
             bottom: 12,
           }}

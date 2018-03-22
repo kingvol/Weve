@@ -24,10 +24,22 @@ class SignupForm extends Component {
       image: null,
     },
     errors: {
-      fullName: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
+      fullName: {
+        isError: false,
+        error: '',
+      },
+      email: {
+        isError: false,
+        error: '',
+      },
+      password: {
+        isError: false,
+        error: '',
+      },
+      confirmPassword: {
+        isError: false,
+        error: '',
+      },
     },
     loading: false,
     isProvider: false,
@@ -41,7 +53,6 @@ class SignupForm extends Component {
   };
 
   onFieldChange = (key, value) => {
-    // console.log(key, value.length);
     this.setState({
       values: {
         ...this.state.values,
@@ -49,41 +60,52 @@ class SignupForm extends Component {
       },
       errors: {
         ...this.state.errors,
-        email: I18n.t('validations.required'),
+        [key]: (() => {
+          switch (true) {
+            case !value.length:
+              return {
+                isError: true,
+                error: I18n.t('validations.required'),
+              };
+            case key === 'email' && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value):
+              return {
+                isError: true,
+                error: I18n.t('validations.email_invalid'),
+              };
+            case key === 'password' && value.length < 8:
+              return {
+                isError: true,
+                error: I18n.t('validations.password_length'),
+              };
+            case key === 'confirmPassword' && this.state.values.password !== value:
+              return {
+                isError: true,
+                error: I18n.t('validations.password_mismatch'),
+              };
+            default:
+              return {
+                isError: false,
+                error: '',
+              };
+          }
+        })(),
       },
-      //   // [key]: (() => {
-      //   //   switch (true) {
-      //   //     case value.length:
-      //   //       return I18n.t('validations.required');
-      //   //     // [`${key}Label`]: I18n.t('validations.required'),
-
-      //   //     // case key === 'password'
-      //   //     //   ? value.length < 8
-      //   //     //   : !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value):
-      //   //     //   return {
-      //   //     //     [`${key}Error`]: false,
-      //   //     //     [`${key}Label`]: I18n.t(`common.${key}`),
-      //   //     //   };
-      //   //     default:
-      //   //       return '';
-      //   //     // [`${key}Label`]:
-      //   //     //     key === 'password'
-      //   //     //       ? I18n.t('validations.password_length')
-      //   //     //       : I18n.t('validations.email_invalid'),
-      //   //   }
-      //   // })(),
-      // },
     });
   };
 
-  // onBlur(key, value) {
-  //   if (!value.length) {
-  //     this.setState({
-  //       [`${key}Error`]: true,
-  //       [`${key}Label`]: I18n.t('validations.required'),
-  //     });
-  //   }
-  // }
+  onBlur(key, value) {
+    if (!value.length) {
+      this.setState({
+        errors: {
+          ...this.state.errors,
+          [key]: {
+            isError: true,
+            error: I18n.t('validations.required'),
+          },
+        },
+      });
+    }
+  }
 
   handleSubmit = async () => {
     this.setState({ loading: true });
@@ -224,8 +246,11 @@ class SignupForm extends Component {
                   placeholder={I18n.t('common.fullName')}
                   errorColor={contrastColor}
                   onChangeText={text => this.onFieldChange('fullName', text)}
+                  onBlur={() => this.onBlur('fullName', this.state.values.fullName)}
                   id="SignUp.fullNameInput"
                   autoCapitalize="words"
+                  isError={this.state.errors.fullName.isError}
+                  error={this.state.errors.fullName.error}
                 />
                 <FieldInput
                   color={contrastColor}
@@ -233,8 +258,10 @@ class SignupForm extends Component {
                   placeholder={I18n.t('common.email')}
                   errorColor={contrastColor}
                   onChangeText={text => this.onFieldChange('email', text)}
+                  onBlur={() => this.onBlur('email', this.state.values.email)}
                   id="SignUp.emailInput"
-                  // error={this.state.errors.email}
+                  isError={this.state.errors.email.isError}
+                  error={this.state.errors.email.error}
                 />
                 <FieldInput
                   color={contrastColor}
@@ -243,7 +270,10 @@ class SignupForm extends Component {
                   errorColor={contrastColor}
                   secureTextEntry
                   onChangeText={text => this.onFieldChange('password', text)}
+                  onBlur={() => this.onBlur('password', this.state.values.password)}
                   id="SignUp.passwordInput"
+                  isError={this.state.errors.password.isError}
+                  error={this.state.errors.password.error}
                 />
                 <FieldInput
                   color={contrastColor}
@@ -252,7 +282,10 @@ class SignupForm extends Component {
                   errorColor={contrastColor}
                   secureTextEntry
                   onChangeText={text => this.onFieldChange('confirmPassword', text)}
+                  onBlur={() => this.onBlur('confirmPassword', this.state.values.confirmPassword)}
                   id="SignUp.confirmPasswordInput"
+                  isError={this.state.errors.confirmPassword.isError}
+                  error={this.state.errors.confirmPassword.error}
                 />
 
                 <View style={{ flexDirection: 'row' }}>
