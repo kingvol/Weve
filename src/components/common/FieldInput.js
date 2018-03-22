@@ -15,7 +15,7 @@ class FieldInput extends PureComponent {
 
   onChangeText = (text) => {
     this.props.onChangeText(text);
-  }
+  };
 
   switchSecure() {
     this.setState({ secureVisible: !this.state.secureVisible });
@@ -23,9 +23,14 @@ class FieldInput extends PureComponent {
 
   render() {
     const {
-      id, placeholder, color = lightTextColor,
-      secureTextEntry, autoCapitalize = 'none',
-      isError, error,
+      id,
+      placeholder,
+      color = lightTextColor,
+      secureTextEntry,
+      autoCapitalize = 'none',
+      error,
+      isError,
+      onBlur,
     } = this.props;
 
     const secure = secureTextEntry ? !this.state.secureVisible : false;
@@ -40,14 +45,18 @@ class FieldInput extends PureComponent {
             secureTextEntry={secure}
             autoCapitalize={autoCapitalize}
             onChangeText={this.onChangeText}
-            selectionColor={Color(color).alpha(0.5).toString()}
+            onBlur={onBlur}
+            selectionColor={Color(color)
+              .alpha(0.5)
+              .toString()}
           />
-          <View style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            bottom: 2,
-            flex: 0,
-          }}
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              bottom: 2,
+              flex: 0,
+            }}
           >
             {isError && <Text style={{ color, fontSize: 14, paddingHorizontal: 5 }}>{error}</Text>}
             {secureTextEntry && (
@@ -57,7 +66,13 @@ class FieldInput extends PureComponent {
             )}
           </View>
         </View>
-        <View style={{ borderBottomColor: `${isError ? 'red' : color}`, borderBottomWidth: 1, bottom: 12 }} />
+        <View
+          style={{
+            borderBottomColor: `${isError ? 'red' : color}`,
+            borderBottomWidth: 1,
+            bottom: 12,
+          }}
+        />
       </View>
     );
   }
