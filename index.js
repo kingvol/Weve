@@ -1,7 +1,10 @@
 import { Navigation } from 'react-native-navigation';
 import { Provider } from 'react-redux';
 import { AppRegistry, AsyncStorage } from 'react-native';
-import { Icon } from 'native-base';
+
+// import React from 'react';
+// import { Icon } from 'native-base';
+// import { getDrawerIcon } from './src/screens/main/navigation.utils';
 
 import registerScreens from './src/screens';
 import configureStore from './src/store/configureStore';
@@ -32,24 +35,28 @@ const tabBasedApp = () => {
       {
         label: 'home',
         screen: 'wevedo.HomeTab', // this is a registered name for a screen
-        icon: () => <Icon name="close-circle" />,
-        selectedIcon: () => <Icon name="close-circle" />,
+        icon: require('./src/images/Categories/artist.png'), // eslint-disable-line global-require
+        // icon: () => getDrawerIcon('home'),
+        // icon: () => <Icon name="home" />,
+        // selectedIcon: () => <Icon name="home" />,
         title: 'Screen One',
         navigatorStyle: {},
       },
       {
         label: 'inbox',
         screen: 'wevedo.InboxTab',
-        icon: () => <Icon name="close-circle" />,
-        selectedIcon: () => <Icon name="close-circle" />,
+        icon: require('./src/images/Categories/artist.png'), // eslint-disable-line global-require
+        // icon: () => <Icon name="inbox" />,
+        // selectedIcon: () => <Icon name="inbox" />,
         title: 'Screen Two',
         navigatorStyle: {},
       },
       {
         label: 'settings',
         screen: 'wevedo.SettingsTab',
-        icon: () => <Icon name="close-circle" />,
-        selectedIcon: () => <Icon name="close-circle" />,
+        icon: require('./src/images/Categories/artist.png'), // eslint-disable-line global-require
+        // icon: () => <Icon name="settings" />,
+        // selectedIcon: () => <Icon name="settings" />,
         title: 'Screen Three',
         navigatorStyle: {},
       },
