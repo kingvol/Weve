@@ -52,7 +52,7 @@ class ForgotPassword extends Component {
   renderForm() {
     return (
       <Container id="ForgotPassword.main-content" style={{ flex: 1 }}>
-        {/* <Content id="ForgotPassword.main-content" padder keyboardShouldPersistTaps="always" contentContainerStyle={{ flex: 1 }}> */}
+        {/* <Content id="ForgotPassword.main-content" padder keyboardShouldPersistTaps="handled" contentContainerStyle={{ flex: 1 }}> */}
         <View style={styles.headerWrapper}>
           <Button
             id="ForgotPassword.backButton"

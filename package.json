@@ -46,9 +46,7 @@
     "redux-logger": "^3.0.6"
   },
   "rnpm": {
-    "assets": [
-      "./src/assets/Fonts/"
-    ]
+    "assets": ["./src/assets/Fonts/"]
   },
   "jest": {
     "preset": "react-native"
