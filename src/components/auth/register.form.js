@@ -216,7 +216,7 @@ class SignupForm extends Component {
       <Content
         id="SignUp.content"
         padder
-        keyboardShouldPersistTaps="always"
+        keyboardShouldPersistTaps="never"
         contentContainerStyle={{ flex: 1, justifyContent: 'space-between' }}
       >
         <View id="Signup.backButtonAndTitleWrapper" style={styles.header}>

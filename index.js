@@ -43,25 +43,34 @@ const tabBasedApp = () => {
           label: I18n.t('menu.home').toUpperCase(),
           screen: 'wevedo.HomeTab', // this is a registered name for a screen
           icon: sources[0],
-          // selectedIcon:
+          // selectedIcon: sources[1],
           title: I18n.t('menu.home'),
-          navigatorStyle: {},
+          overrideBackPress: true,
+          // navigatorStyle: {},
         },
         {
           label: I18n.t('menu.inbox').toUpperCase(),
           screen: 'wevedo.InboxTab',
           icon: sources[1],
           title: I18n.t('menu.inbox'),
-          navigatorStyle: {},
+          overrideBackPress: true,
+          // navigatorStyle: {},
         },
         {
           label: I18n.t('menu.my_profile').toUpperCase(),
           screen: 'wevedo.SettingsTab',
           icon: sources[2],
           title: I18n.t('menu.my_profile'),
-          navigatorStyle: {},
+          overrideBackPress: true,
+          // navigatorStyle: {},
         },
       ],
+      tabsStyle: {
+        tabBarButtonColor: '#c4c4c4',
+        tabBarSelectedButtonColor: '#e91e63',
+        // tabBarBackgroundColor: '#551A8B',
+        // initialTabIndex: 1,
+      }
     });
   });
 };
