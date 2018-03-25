@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
-import { Container } from 'native-base';
+import { Container, Icon } from 'native-base';
 
 class SettingsTab extends Component {
   render() {
     return (
       <Container>
         <View>
-          <Text>Home</Text>
+          <Text>Settings</Text>
+          <Icon name="settings" />
         </View>
       </Container>
     );

@@ -1,8 +1,7 @@
-import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
-import { Container } from 'native-base';
-// import { RootActions } from '../../actions';
+import { Container, Icon } from 'native-base';
+// import Icon from 'react-native-vector-icons/FontAwesome';
 
 class HomeTab extends Component {
   render() {
@@ -10,6 +9,7 @@ class HomeTab extends Component {
       <Container>
         <View>
           <Text>Home</Text>
+          <Icon name="home" />
         </View>
       </Container>
     );
@@ -17,4 +17,3 @@ class HomeTab extends Component {
 }
 
 export default HomeTab;
-// export default connect()(HomeTab);

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
-import { Container } from 'native-base';
+import { Container, Icon } from 'native-base';
 
 class InboxTab extends Component {
   render() {
@@ -8,6 +8,7 @@ class InboxTab extends Component {
       <Container>
         <View>
           <Text>Inbox</Text>
+          <Icon type="FontAwesome" name="inbox" />
         </View>
       </Container>
     );
