@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Platform, View, Text } from 'react-native';
 import { Container, Icon } from 'native-base';
 import SplashScreen from 'react-native-splash-screen';
-// import Icon from 'react-native-vector-icons/FontAwesome';
+import { Navigation } from 'react-native-navigation';
 
 class HomeTab extends Component {
   componentDidMount() {
