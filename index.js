@@ -70,7 +70,7 @@ const tabBasedApp = () => {
         tabBarSelectedButtonColor: '#e91e63',
         // tabBarBackgroundColor: '#551A8B',
         // initialTabIndex: 1,
-      }
+      },
     });
   });
 };

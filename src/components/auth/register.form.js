@@ -6,6 +6,7 @@ import { Alert, ImageBackground, StyleSheet, View } from 'react-native';
 import { contrastColor, primaryFont } from '../../theme';
 import { Button, Container, Content, FieldInput, Text } from '../../components/common';
 import Eula from './EULA';
+// import SignupImageForm from './SignupImageForm';
 
 import APIs from '../../api';
 
@@ -13,38 +14,42 @@ const { AuthApi } = APIs;
 const api = new AuthApi();
 
 class SignupForm extends Component {
-  state = {
-    step: 1,
-    values: {
-      fullName: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
-      category: null,
+  constructor(props) {
+    super(props);
+    this.state = {
       image: null,
-    },
-    errors: {
-      fullName: {
-        isError: false,
-        error: '',
+      step: 1,
+      values: {
+        fullName: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+        category: null,
+        image: null,
       },
-      email: {
-        isError: false,
-        error: '',
+      errors: {
+        fullName: {
+          isError: false,
+          error: '',
+        },
+        email: {
+          isError: false,
+          error: '',
+        },
+        password: {
+          isError: false,
+          error: '',
+        },
+        confirmPassword: {
+          isError: false,
+          error: '',
+        },
       },
-      password: {
-        isError: false,
-        error: '',
-      },
-      confirmPassword: {
-        isError: false,
-        error: '',
-      },
-    },
-    loading: false,
-    isProvider: false,
-    isModalVisible: false,
-  };
+      loading: false,
+      isProvider: false,
+      isModalVisible: false,
+    };
+  }
 
   onCheckboxPress = () => {
     this.setState({
@@ -106,6 +111,12 @@ class SignupForm extends Component {
       });
     }
   }
+
+  // onImageSelect = (uri) => {
+  //   this.setState({
+  //     image: uri,
+  //   });
+  // };
 
   handleSubmit = async () => {
     this.setState({ loading: true });
@@ -300,6 +311,12 @@ class SignupForm extends Component {
                 </View>
               </View>
             )}
+            {/* <View style={{ alignItems: 'center', borderTopColor: 'white', borderTopWidth: 1 }}>
+              <Text note style={{ color: 'white', margin: 10, marginBottom: 0 }}>
+                {I18n.t('logIn.account_activation')}
+              </Text>
+            </View> */}
+            {/* <SignupImageForm onImageSelect={this.onImageSelect} /> */}
             <Button
               id="Signup.submitButton"
               block
