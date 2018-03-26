@@ -103,4 +103,5 @@ const init = async () => {
 };
 
 // init();
-tabBasedApp();
+// tabBasedApp();
+startSingleScreenApp();
