@@ -5,10 +5,12 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import I18n from './src/locales';
 import registerScreens from './src/screens';
-import configureStore from './src/store/configureStore';
+// import configureStore from './src/store/configureStore';
+import store from './src/store/configureStore';
 import AppBootstrap from './src/AppBootstrap';
+import { primaryFont } from './src/theme';
 
-const store = configureStore();
+// const store = configureStore();
 
 registerScreens(store, Provider);
 
@@ -46,7 +48,11 @@ const tabBasedApp = () => {
           // selectedIcon: sources[1],
           title: I18n.t('menu.home'),
           overrideBackPress: true,
-          // navigatorStyle: {},
+          navigatorStyle: {
+            navBarBackgroundColor: '#d64635',
+            navBarTextColor: 'white',
+            navBarTextFontFamily: primaryFont,
+          },
         },
         {
           label: I18n.t('menu.inbox').toUpperCase(),
@@ -54,7 +60,11 @@ const tabBasedApp = () => {
           icon: sources[1],
           title: I18n.t('menu.inbox'),
           overrideBackPress: true,
-          // navigatorStyle: {},
+          navigatorStyle: {
+            navBarBackgroundColor: '#d64635',
+            navBarTextColor: 'white',
+            navBarTextFontFamily: primaryFont,
+          },
         },
         {
           label: I18n.t('menu.my_profile').toUpperCase(),
@@ -62,7 +72,11 @@ const tabBasedApp = () => {
           icon: sources[2],
           title: I18n.t('menu.my_profile'),
           overrideBackPress: true,
-          // navigatorStyle: {},
+          navigatorStyle: {
+            navBarBackgroundColor: '#d64635',
+            navBarTextColor: 'white',
+            navBarTextFontFamily: primaryFont,
+          },
         },
       ],
       tabsStyle: {
