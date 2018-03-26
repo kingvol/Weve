@@ -41,6 +41,7 @@ export default class SignupImageForm extends Component {
           imageAttached: true,
           image: source.uri,
         });
+        this.props.onImageSelect(source.uri);
       }
     });
   }

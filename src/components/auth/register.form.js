@@ -55,7 +55,6 @@ class SignupForm extends Component {
   }
 
   async componentWillMount() {
-    /* Fetch list of categories */
     try {
       const categories = await categoryApi.fetchCategoriesList();
       this.setState({ categories });
@@ -181,70 +180,14 @@ class SignupForm extends Component {
     const { email, password, fullName } = this.state.values;
     const arrFN = fullName.split(' ').map(a => a.charAt(0).toUpperCase() + a.substr(1));
     const capitalFullName = arrFN.join(' ');
-    this.props.onFormSubmit(email, password, capitalFullName);
+
+    if (this.state.isProvider) {
+      const { image, category } = this.state.values;
+      this.props.onProviderFormSubmit(email, password, capitalFullName, image, category);
+    } else {
+      this.props.onFormSubmit(email, password, capitalFullName);
+    }
   };
-
-  /* handleAccept() {
-        this.setState({isModalVisible: !this.state.isModalVisible});
-        const {email, password, fullName} = this.state.values;
-        const { isProvider, category, image } = this.state;
-        this.setState({loading: true});
-        const arrFN = fullName.split(' ').map((a) => { return a.charAt(0).toUpperCase() + a.substr(1) });
-        const capitalFullName = arrFN.join(' ');
-
-
-        if (isProvider) {
-            this.props.signupProvider(email, password, capitalFullName, image, category, result => {
-                this.setState({loading: false});
-                const {errorMessage} = result;
-                if (errorMessage) {
-                    Alert.alert(
-                        I18n.t('logIn.create_user_error'),
-                        errorMessage,
-                        [{text: I18n.t('common.ok')}],
-                        {cancelable: false}
-                    );
-                }
-            });
-        } else {
-            this.props.signupUser(email, password, capitalFullName, result => {
-                this.setState({loading: false});
-                const {errorMessage} = result;
-                if (errorMessage) {
-                    Alert.alert(
-                        I18n.t('logIn.create_user_error'),
-                        errorMessage,
-                        [{text: I18n.t('common.ok')}],
-                        {cancelable: false}
-                    );
-                }
-            });
-        }
-  } */
-
-  /* onSubmitForm = (values) => {
-        const { isProvider, image } = this.state;
-        let { category } = this.state;
-
-        // on Android the Venue category is predefined in UI but not set to state
-        if (Platform.OS === 'android' && !category) {
-            category = 'Venue';
-            this.setState({
-                category: 'Venue',
-            })
-        }
-
-        if (isProvider && !category) {
-            alert(I18n.t('logIn.no_category'));
-            return;
-        }
-
-        if (isProvider && !image) {
-            alert(I18n.t('logIn.no_image'));
-            return;
-        };
-        this.setState({isModalVisible: !this.state.isModalVisible, values})
-  } */
 
   renderSignUp = () => {
     const { email, password, confirmPassword } = this.state.values;
@@ -254,7 +197,7 @@ class SignupForm extends Component {
       !email ||
       !password ||
       !confirmPassword ||
-      (this.state.step === 2 && !this.state.image);
+      (this.state.step === 2 && !this.state.values.image);
 
     const ucFirst = s => (s.substr(0, 1).toLowerCase() + s.substr(1)).replace(' ', '');
 
