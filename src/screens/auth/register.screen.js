@@ -5,11 +5,25 @@ import { AuthActions } from '../../actions';
 import RegisterForm from '../../components/auth/register.form';
 import config from '../../../config';
 
-const { registerUser } = AuthActions;
+const { registerUser, loginUser } = AuthActions;
 
 class RegisterScreen extends Component {
   state = {
     loading: false,
+    nextStepSignIn: false,
+    email: '',
+    password: '',
+  }
+
+  async componentWillUpdate({ auth }) {
+    /* Automatically sign in after registration.
+       Navigating to tabBasedApp is handled by login screen.
+    */
+    if (!auth.isLoading && this.state.nextStepSignIn) {
+      const { email, password } = this.state;
+      this.switchNextStep();
+      this.props.loginUser({ email, password });
+    }
   }
 
   onBackPress = () => {
@@ -34,6 +48,7 @@ class RegisterScreen extends Component {
       deviceToken: 'somerandomtoken',
     };
 
+    this.setState({ nextStepSignIn: true, email, password });
     this.props.registerUser(body);
   }
 
@@ -67,8 +82,15 @@ class RegisterScreen extends Component {
       profileImageURL: image,
     };
 
-    console.warn(JSON.stringify(body));
+    this.setState({ nextStepSignIn: true, email, password });
+    this.props.registerUser(body);
   };
+
+  switchNextStep = () => {
+    this.setState({
+      nextStepSignIn: false,
+    });
+  }
 
   uploadProfileImage = (uri) => {
     const { cloudinary: { apiKey, cloud } } = config;
@@ -82,9 +104,7 @@ class RegisterScreen extends Component {
 
     return fetch(uploadUrl, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
+      headers: { 'Content-Type': 'multipart/form-data' },
       body: formdata,
     }).then(raw => raw.json());
   }
@@ -105,5 +125,5 @@ const mapStateToProps = state => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, { registerUser })(RegisterScreen);
+export default connect(mapStateToProps, { registerUser, loginUser })(RegisterScreen);
 

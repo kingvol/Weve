@@ -5,12 +5,9 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import I18n from './src/locales';
 import registerScreens from './src/screens';
-// import configureStore from './src/store/configureStore';
 import store from './src/store/configureStore';
 import AppBootstrap from './src/AppBootstrap';
 import { primaryFont } from './src/theme';
-
-// const store = configureStore();
 
 registerScreens(store, Provider);
 
@@ -29,11 +26,7 @@ const startSingleScreenApp = () => {
   });
 };
 
-// Icon.getImageSource('ios-home', 20, 'red').then((source) => {
-//   source;
-// });
-
-const tabBasedApp = () => {
+export const startTabBasedApp = () => {
   Promise.all([
     Icon.getImageSource('home', 20),
     Icon.getImageSource('inbox', 20),
@@ -93,7 +86,7 @@ const init = async () => {
   try {
     const token = await AsyncStorage.getItem('wevedo_access_token');
     if (token) {
-      tabBasedApp();
+      startTabBasedApp();
     } else {
       startSingleScreenApp();
     }
@@ -103,5 +96,4 @@ const init = async () => {
 };
 
 // init();
-// tabBasedApp();
 startSingleScreenApp();

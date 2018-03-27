@@ -4,6 +4,7 @@ import SplashScreen from 'react-native-splash-screen';
 import { connect } from 'react-redux';
 
 import { AuthActions } from '../../actions';
+import { startTabBasedApp } from '../../../index';
 import LoginForm from '../../components/auth/login.form';
 
 const { loginUser } = AuthActions;
@@ -17,10 +18,10 @@ class LoginScreen extends Component {
 
   async componentWillUpdate({ auth }) {
     if (auth.isAuthorized && auth.accessToken) {
-      alert('Authorized!');
+      startTabBasedApp();
       /*
         await AsyncStorage.setItem('wevedo_access_token', auth.accessToken);
-        navigator.startMainApp();
+        startTabBasedApp();
       */
     }
   }
