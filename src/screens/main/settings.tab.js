@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
 import I18n from 'react-native-i18n';
 import { backgroundColor, primaryFont } from '../../theme';
@@ -18,9 +19,10 @@ const SETTINGS = [{
 }];
 
 class SettingsTab extends Component {
-  onItemPress = (route, action) => {
+  onItemPress = async (route, action) => {
     if (action === 'SIGN_OUT') {
       this.props.signOut();
+      await AsyncStorage.removeItem('wevedo_access_token');
       startSingleScreenApp();
     }
   }

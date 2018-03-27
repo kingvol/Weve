@@ -95,5 +95,4 @@ const init = async () => {
   }
 };
 
-// init();
-startSingleScreenApp();
+init();
