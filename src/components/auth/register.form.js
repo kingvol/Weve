@@ -57,7 +57,12 @@ class SignupForm extends Component {
   async componentWillMount() {
     try {
       const categories = await categoryApi.fetchCategoriesList();
-      this.setState({ categories });
+      this.setState({
+        categories,
+        values: {
+          ...this.state.values, category: categories[0], // Predefine 'Venue category'
+        },
+      });
     } catch ({ message }) {
       alert(message);
     }
