@@ -17,3 +17,10 @@ export const registerUser = body => (dispatch) => {
     payload: api.signupUserByEmail(body),
   });
 };
+
+export const signOut = () => (dispatch) => {
+  dispatch({
+    type: types.SIGNOUT_USER,
+  });
+};
+

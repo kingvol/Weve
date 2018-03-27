@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform } from 'react-native';
+import { Platform, AsyncStorage } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import { connect } from 'react-redux';
 
@@ -18,11 +18,8 @@ class LoginScreen extends Component {
 
   async componentWillUpdate({ auth }) {
     if (auth.isAuthorized && auth.accessToken) {
+      await AsyncStorage.setItem('wevedo_access_token', auth.accessToken);
       startTabBasedApp();
-      /*
-        await AsyncStorage.setItem('wevedo_access_token', auth.accessToken);
-        startTabBasedApp();
-      */
     }
   }
 

@@ -50,6 +50,9 @@ export default (state = initialState, action = {}) => {
         error: action.payload.message || action.payload.error,
       };
 
+    case types.SIGNOUT_USER:
+      return initialState;
+
     default:
       return state;
   }
