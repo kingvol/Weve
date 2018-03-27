@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { Container } from 'native-base';
 
-class Venue extends Component {
+class VenueScreen extends Component {
   render() {
     return (
       <Container>
@@ -14,4 +14,4 @@ class Venue extends Component {
   }
 }
 
-export default Venue;
+export default VenueScreen;
