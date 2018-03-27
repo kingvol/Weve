@@ -96,4 +96,5 @@ const init = async () => {
 };
 
 // init();
-startSingleScreenApp();
+// startSingleScreenApp();
+startTabBasedApp();
