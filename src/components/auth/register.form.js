@@ -1,4 +1,4 @@
-/* eslint-disable global-require */
+/* eslint-disable global-require, max-len */
 import React, { Component } from 'react';
 import I18n from 'react-native-i18n';
 import { CheckBox, Left, Icon, Picker } from 'native-base';
