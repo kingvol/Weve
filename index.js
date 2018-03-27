@@ -13,7 +13,7 @@ registerScreens(store, Provider);
 
 AppRegistry.registerComponent('wevedo_app', () => AppBootstrap);
 
-const startSingleScreenApp = () => {
+export const startSingleScreenApp = () => {
   Navigation.startSingleScreenApp({
     screen: {
       screen: 'wevedo.loginScreen',
@@ -95,5 +95,4 @@ const init = async () => {
   }
 };
 
-// init();
-startSingleScreenApp();
+init();
