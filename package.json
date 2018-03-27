@@ -25,6 +25,7 @@
     "react-native": "0.53.3",
     "react-native-easy-grid": "^0.1.17",
     "react-native-i18n": "^2.0.12",
+    "react-native-image-picker": "^0.26.7",
     "react-native-modal": "^5.3.0",
     "react-native-navigation": "^1.1.388",
     "react-native-splash-screen": "3.0.1",
@@ -46,7 +47,9 @@
     "redux-logger": "^3.0.6"
   },
   "rnpm": {
-    "assets": ["./src/assets/Fonts/"]
+    "assets": [
+      "./src/assets/Fonts/"
+    ]
   },
   "jest": {
     "preset": "react-native"

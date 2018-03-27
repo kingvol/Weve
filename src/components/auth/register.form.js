@@ -1,56 +1,102 @@
-/* eslint-disable global-require */
+/* eslint-disable global-require, max-len */
 import React, { Component } from 'react';
 import I18n from 'react-native-i18n';
-import { CheckBox, Left, Icon } from 'native-base';
-import { Alert, ImageBackground, StyleSheet, View } from 'react-native';
+import { CheckBox, Left, Icon, Picker } from 'native-base';
+import { Alert, ImageBackground, StyleSheet, View, Platform } from 'react-native';
 import { contrastColor, primaryFont } from '../../theme';
 import { Button, Container, Content, FieldInput, Text } from '../../components/common';
+import SignupImageForm from './signupImage.form';
 import Eula from './EULA';
 
 import APIs from '../../api';
 
-const { AuthApi } = APIs;
+const { Item } = Picker;
+
+const { AuthApi, CategoryApi } = APIs;
+const categoryApi = new CategoryApi();
 const api = new AuthApi();
 
 class SignupForm extends Component {
-  state = {
-    step: 1,
-    values: {
-      fullName: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
-      category: null,
-      image: null,
-    },
-    errors: {
-      fullName: {
-        isError: false,
-        error: '',
+  constructor(props) {
+    super(props);
+    this.state = {
+      step: 1,
+      values: {
+        fullName: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+        category: null,
+        image: null,
       },
-      email: {
-        isError: false,
-        error: '',
+      errors: {
+        fullName: {
+          isError: false,
+          error: '',
+        },
+        email: {
+          isError: false,
+          error: '',
+        },
+        password: {
+          isError: false,
+          error: '',
+        },
+        confirmPassword: {
+          isError: false,
+          error: '',
+        },
       },
-      password: {
-        isError: false,
-        error: '',
-      },
-      confirmPassword: {
-        isError: false,
-        error: '',
-      },
-    },
-    loading: false,
-    isProvider: false,
-    isModalVisible: false,
-  };
+      categories: [],
+      loading: false,
+      isProvider: false,
+      isModalVisible: false,
+    };
+  }
+
+  async componentWillMount() {
+    try {
+      const categories = await categoryApi.fetchCategoriesList();
+      this.setState({
+        categories,
+        values: {
+          ...this.state.values, category: categories[0], // Predefine 'Venue category'
+        },
+      });
+    } catch ({ message }) {
+      alert(message);
+    }
+  }
 
   onCheckboxPress = () => {
     this.setState({
       isProvider: !this.state.isProvider,
     });
   };
+
+  onContinuePress = () => {
+    this.setState({
+      step: 2,
+    });
+  }
+
+  onCategorySelect = (category) => {
+    this.setState({
+      values: {
+        ...this.state.values,
+        category,
+      },
+    });
+  }
+
+  onImageSelect = (image) => {
+    this.setState({
+      values: {
+        ...this.state.values,
+        image,
+      },
+    });
+  }
 
   onFieldChange = (key, value) => {
     this.setState({
@@ -132,75 +178,21 @@ class SignupForm extends Component {
     }, 800);
   };
 
+  localiseCategory = name => I18n.t(`categories.${name}`);
+
   handleAccept = () => {
     this.setState({ isModalVisible: !this.state.isModalVisible });
     const { email, password, fullName } = this.state.values;
     const arrFN = fullName.split(' ').map(a => a.charAt(0).toUpperCase() + a.substr(1));
     const capitalFullName = arrFN.join(' ');
-    this.props.onFormSubmit(email, password, capitalFullName);
+
+    if (this.state.isProvider) {
+      const { image, category } = this.state.values;
+      this.props.onProviderFormSubmit(email, password, capitalFullName, image, category);
+    } else {
+      this.props.onFormSubmit(email, password, capitalFullName);
+    }
   };
-
-  /* handleAccept() {
-        this.setState({isModalVisible: !this.state.isModalVisible});
-        const {email, password, fullName} = this.state.values;
-        const { isProvider, category, image } = this.state;
-        this.setState({loading: true});
-        const arrFN = fullName.split(' ').map((a) => { return a.charAt(0).toUpperCase() + a.substr(1) });
-        const capitalFullName = arrFN.join(' ');
-
-
-        if (isProvider) {
-            this.props.signupProvider(email, password, capitalFullName, image, category, result => {
-                this.setState({loading: false});
-                const {errorMessage} = result;
-                if (errorMessage) {
-                    Alert.alert(
-                        I18n.t('logIn.create_user_error'),
-                        errorMessage,
-                        [{text: I18n.t('common.ok')}],
-                        {cancelable: false}
-                    );
-                }
-            });
-        } else {
-            this.props.signupUser(email, password, capitalFullName, result => {
-                this.setState({loading: false});
-                const {errorMessage} = result;
-                if (errorMessage) {
-                    Alert.alert(
-                        I18n.t('logIn.create_user_error'),
-                        errorMessage,
-                        [{text: I18n.t('common.ok')}],
-                        {cancelable: false}
-                    );
-                }
-            });
-        }
-  } */
-
-  /* onSubmitForm = (values) => {
-        const { isProvider, image } = this.state;
-        let { category } = this.state;
-
-        // on Android the Venue category is predefined in UI but not set to state
-        if (Platform.OS === 'android' && !category) {
-            category = 'Venue';
-            this.setState({
-                category: 'Venue',
-            })
-        }
-
-        if (isProvider && !category) {
-            alert(I18n.t('logIn.no_category'));
-            return;
-        }
-
-        if (isProvider && !image) {
-            alert(I18n.t('logIn.no_image'));
-            return;
-        };
-        this.setState({isModalVisible: !this.state.isModalVisible, values})
-  } */
 
   renderSignUp = () => {
     const { email, password, confirmPassword } = this.state.values;
@@ -210,13 +202,15 @@ class SignupForm extends Component {
       !email ||
       !password ||
       !confirmPassword ||
-      (this.state.step === 2 && !this.state.image);
+      (this.state.step === 2 && !this.state.values.image);
+
+    const ucFirst = s => (s.substr(0, 1).toLowerCase() + s.substr(1)).replace(' ', '');
 
     return (
       <Content
         id="SignUp.content"
         padder
-        keyboardShouldPersistTaps="never"
+        keyboardShouldPersistTaps="always"
         contentContainerStyle={{ flex: 1, justifyContent: 'space-between' }}
       >
         <View id="Signup.backButtonAndTitleWrapper" style={styles.header}>
@@ -300,6 +294,39 @@ class SignupForm extends Component {
                 </View>
               </View>
             )}
+
+            {this.state.isProvider && this.state.step === 1 && (
+              <View style={{ flexDirection: 'row' }}>
+                {Platform.OS === 'android' && <Text style={styles.categoryText}>{I18n.t('common.category')}</Text>}
+                <Picker
+                  mode="dropdown"
+                  style={{ color: 'white', flex: Platform.OS === 'ios' ? 0 : 1 }}
+                  placeholder={I18n.t('logIn.select_category')}
+                  selectedValue={this.state.values.category}
+                  onValueChange={this.onCategorySelect}
+                  placeholderTextColor="white"
+                  placeholderStyle={{ color: 'white' }}
+                  textStyle={{ color: 'white' }}
+                >
+                  {this.state.categories.map(item => (
+                    <Item key={item._id} label={this.localiseCategory(ucFirst(item.name))} value={item} />
+                  ))}
+                </Picker>
+              </View>
+            )}
+
+            {this.state.isProvider && this.state.step === 1 && (
+              <View style={{ alignItems: 'center', borderTopColor: 'white', borderTopWidth: 1 }}>
+                <Text note style={{ color: 'white', margin: 10, marginBottom: 0 }}>{I18n.t('logIn.account_activation')}</Text>
+              </View>
+            )}
+
+            {this.state.isProvider && this.state.step === 2 && (
+              <SignupImageForm
+                onImageSelect={this.onImageSelect}
+              />
+            )}
+
             <Button
               id="Signup.submitButton"
               block

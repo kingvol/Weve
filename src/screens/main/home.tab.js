@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
-import { Platform, View, Text } from 'react-native';
-import { Container, Icon } from 'native-base';
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+
 import SplashScreen from 'react-native-splash-screen';
-import { Navigation } from 'react-native-navigation';
 
 class HomeTab extends Component {
   componentDidMount() {
@@ -10,16 +14,23 @@ class HomeTab extends Component {
       SplashScreen.hide();
     }
   }
+
   render() {
     return (
-      <Container>
-        <View>
-          <Text>Home</Text>
-          <Icon name="home" />
-        </View>
-      </Container>
+      <View style={styles.container}>
+        <Text>Main content goes here...</Text>
+      </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+  },
+});
 
 export default HomeTab;

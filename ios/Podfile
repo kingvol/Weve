@@ -11,6 +11,7 @@ target 'wevedo_app' do
   pod 'AppCenterReactNativeShared', '~> 1.4.0'
   pod 'RNI18n', :path => '../node_modules/react-native-i18n'
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+  pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
 
   platform :ios, '9.0'  
   target 'wevedo_appTests' do
