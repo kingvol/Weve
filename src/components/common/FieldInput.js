@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { Input, Text } from 'native-base';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import Color from 'color';
 import { primaryFont, lightTextColor } from '../../theme';
 
@@ -61,7 +62,7 @@ class FieldInput extends PureComponent {
             {isError && <Text style={{ color, fontSize: 14, paddingHorizontal: 5 }}>{error}</Text>}
             {secureTextEntry && (
               <TouchableOpacity onPress={this.switchSecure}>
-                {/* <Icon style={{color}} size={24} name={secure ? 'eye-slash' : 'eye'}/> */}
+                <Icon style={{ color }} size={24} name={secure ? 'eye-slash' : 'eye'} />
               </TouchableOpacity>
             )}
           </View>

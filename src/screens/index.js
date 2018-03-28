@@ -6,7 +6,8 @@ import ForgotScreen from './auth/forgot.screen';
 import HomeTab from './main/home.tab';
 import InboxTab from './main/inbox.tab';
 import SettingsTab from './main/settings.tab';
-import Venue from './main/home/venue';
+import VenueScreen from './main/home/venue.screen';
+import ChangePasswordScreen from './main/settings/change.password.screen';
 
 const registerScreens = (store = {}, Provider = {}) => {
   Navigation.registerComponent('wevedo.loginScreen', () => LoginScreen, store, Provider);
@@ -15,7 +16,13 @@ const registerScreens = (store = {}, Provider = {}) => {
   Navigation.registerComponent('wevedo.HomeTab', () => HomeTab, store, Provider);
   Navigation.registerComponent('wevedo.InboxTab', () => InboxTab, store, Provider);
   Navigation.registerComponent('wevedo.SettingsTab', () => SettingsTab, store, Provider);
-  Navigation.registerComponent('wevedo.Venue', () => Venue, store, Provider);
+  Navigation.registerComponent('wevedo.VenueScreen', () => VenueScreen, store, Provider);
+  Navigation.registerComponent(
+    'wevedo.ChangePasswordScreen',
+    () => ChangePasswordScreen,
+    store,
+    Provider,
+  );
 };
 
 export default registerScreens;
