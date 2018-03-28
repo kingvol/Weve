@@ -4393,6 +4393,10 @@ react-native-keyboard-aware-scroll-view@0.4.2:
     prop-types "^15.6.0"
     react-native-iphone-x-helper "^1.0.1"
 
+react-native-loading-spinner-overlay@^0.5.2:
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/react-native-loading-spinner-overlay/-/react-native-loading-spinner-overlay-0.5.2.tgz#b7bcd277476d596615fd7feee601789f9bdc7acc"
+
 react-native-modal@^5.3.0:
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/react-native-modal/-/react-native-modal-5.3.0.tgz#000ccc40034a097125d6dfbe9ce846ec5958e3fc"

@@ -16,6 +16,10 @@ const SETTINGS = [
     route: 'ChangePasswordScreen',
   },
   {
+    name: 'menu.my_profile',
+    route: 'ProfileScreen',
+  },
+  {
     name: 'menu.sign_out',
     route: 'SIGN_OUT',
   },
