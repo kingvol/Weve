@@ -4,7 +4,7 @@ import { USER_ACTION_TYPES as types } from '../actions/actionTypes';
 const initialState = Immutable({
   isLoading: false,
   error: null,
-  body: {},
+  profile: {},
 });
 
 export default (state = initialState, action = {}) => {
