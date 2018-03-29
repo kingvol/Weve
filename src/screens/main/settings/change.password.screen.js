@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import { Alert, Keyboard } from 'react-native';
 import { Button, Container, Content, FieldInput } from '../../../components/common';
-// import {changePassword} from '../Helpers/user'
+import { connect } from 'react-redux';
 import I18n from '../../../locales';
 import { backgroundColor, lightTextColor } from '../../../theme';
+import { UserActions } from '../../../actions';
+
+const { changePassword } = UserActions;
 
 class ChangePasswordScreen extends Component {
   state = {
-    // loading: false,
     values: {
       currentPassword: '',
       newPassword: '',
@@ -27,6 +29,7 @@ class ChangePasswordScreen extends Component {
         error: '',
       },
     },
+    processing: false,
   };
 
   componentWillMount() {
@@ -37,6 +40,18 @@ class ChangePasswordScreen extends Component {
   componentWillUnmount() {
     this.keyboardDidShowListener.remove();
     this.keyboardDidHideListener.remove();
+  };
+
+  componentWillReceiveProps({ user }) {
+    if (!user.isLoading && user.error && this.state.processing) {
+      alert(user.error);
+      this.switchProcessing();
+      return;
+    }
+    if (!user.isLoading && this.state.processing) {
+      Alert.alert(I18n.t('changePassword.success_message'));
+      this.switchProcessing();
+    }
   }
 
   onFieldChange = (key, value) => {
@@ -85,7 +100,7 @@ class ChangePasswordScreen extends Component {
     });
   };
 
-  onBlur(key, value) {
+  onBlur = (key, value) => {
     if (!value.length) {
       this.setState({
         errors: {
@@ -97,6 +112,11 @@ class ChangePasswordScreen extends Component {
         },
       });
     }
+  }
+
+  onFormSubmit = () => {
+    this.setState({ processing: true });
+    this.props.changePassword({ password: this.state.values.newPassword });
   }
 
   keyboardDidShow = () => {
@@ -113,42 +133,12 @@ class ChangePasswordScreen extends Component {
     });
   };
 
-  // onSubmitForm(values) {
-  //   const { currentPassword, newPassword, confirmPassword } = values;
-  //   this.setState({ loading: true });
-  //   changePassword(currentPassword, newPassword, (result) => {
-  //     this.setState({ loading: false });
-  //     const { error } = result;
-  //     if (error) {
-  //       alert(error.message);
-  //     } else {
-  //       Alert.alert(
-  //         I18n.t('changePassword.success'),
-  //         I18n.t('changePassword.success_message'),
-  //         [{ text: `${I18n.t('common.ok')}` }],
-  //         { cancelable: false },
-  //       );
-  //       this.props.navigation.goBack();
-  //     }
-  //   });
-  // }
+  switchProcessing = () => {
+    this.setState({ processing: false });
+  }
 
   render() {
-    // const {
-    //   handleSubmit,
-    //   pristine,
-    //   submitting,
-    //   currentPassword,
-    //   newPassword,
-    //   confirmPassword,
-    // } = this.props;
-    // const disabled =
-    //   this.state.loading ||
-    //   pristine ||
-    //   submitting ||
-    //   !currentPassword ||
-    //   !newPassword ||
-    //   !confirmPassword;
+    const disabled = this.props.user.loading || !this.state.values.newPassword;
     return (
       <Container id="ChangePassword.container" style={{ backgroundColor }}>
         <Content id="ChangePassword.content" padder keyboardShouldPersistTaps="always">
@@ -190,9 +180,9 @@ class ChangePasswordScreen extends Component {
             style={{ marginTop: 10 }}
             block
             success
-            // disabled={disabled}
-            // onPress={handleSubmit(this.onSubmitForm.bind(this))}
-            loading={this.state.loading}
+            disabled={disabled}
+            onPress={this.onFormSubmit}
+            loading={this.props.user.loading}
           >
             {I18n.t('common.save')}
           </Button>
@@ -202,4 +192,8 @@ class ChangePasswordScreen extends Component {
   }
 }
 
-export default ChangePasswordScreen;
+const mapStateToProps = state => ({
+  user: state.user,
+});
+
+export default connect(mapStateToProps, { changePassword })(ChangePasswordScreen);

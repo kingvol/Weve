@@ -60,10 +60,10 @@ export const startTabBasedApp = () => {
           },
         },
         {
-          label: I18n.t('menu.my_profile').toUpperCase(),
+          label: I18n.t('menu.settings').toUpperCase(),
           screen: 'wevedo.SettingsTab',
           icon: sources[2],
-          title: I18n.t('menu.my_profile'),
+          title: I18n.t('menu.settings'),
           overrideBackPress: true,
           navigatorStyle: {
             navBarBackgroundColor: '#d64635',
