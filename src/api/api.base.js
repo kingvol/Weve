@@ -17,6 +17,8 @@ export default class Api {
 
   getHeaders = async () => ({
     authorization: await AsyncStorage.getItem('wevedo_access_token') || '',
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
   })
 
   create = async body => fetch(`${this.backendUrl}/${this.resource}`, {

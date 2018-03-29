@@ -29,7 +29,20 @@ class ChangePasswordScreen extends Component {
         error: '',
       },
     },
+    processing: false,
   };
+
+  componentWillReceiveProps({ user }) {
+    if (!user.isLoading && user.error && this.state.processing) {
+      alert(user.error);
+      this.switchProcessing();
+      return;
+    }
+    if (!user.isLoading && this.state.processing) {
+      Alert.alert(I18n.t('changePassword.success_message'));
+      this.switchProcessing();
+    }
+  }
 
   onFieldChange = (key, value) => {
     this.setState({
@@ -92,28 +105,13 @@ class ChangePasswordScreen extends Component {
   }
 
   onFormSubmit = () => {
+    this.setState({ processing: true });
     this.props.changePassword({ password: this.state.values.newPassword });
   }
 
-  // onSubmitForm(values) {   
-  //   const { currentPassword, newPassword, confirmPassword } = values;
-  //   this.setState({ loading: true });
-  //   changePassword(currentPassword, newPassword, (result) => {
-  //     this.setState({ loading: false });
-  //     const { error } = result;
-  //     if (error) {
-  //       alert(error.message);
-  //     } else {
-  //       Alert.alert(
-  //         I18n.t('changePassword.success'),
-  //         I18n.t('changePassword.success_message'),
-  //         [{ text: `${I18n.t('common.ok')}` }],
-  //         { cancelable: false },
-  //       );
-  //       this.props.navigation.goBack();
-  //     }
-  //   });
-  // }
+  switchProcessing = () => {
+    this.setState({ processing: false });
+  }
 
   render() {
     const disabled = this.props.user.loading || !this.state.values.newPassword;
