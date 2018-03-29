@@ -35,7 +35,6 @@ class SettingsTab extends Component {
       this.props.navigator.push({
         screen: `wevedo.${route}`,
         title: I18n.t(name),
-        // overrideBackPress: true,
         navigatorStyle: {
           navBarBackgroundColor: '#d64635',
           navBarTextColor: 'white',
@@ -54,7 +53,7 @@ class SettingsTab extends Component {
             {SETTINGS.map(({ name, route }) => (
               <ListItem
                 id={`Settings.listitem.${name}`}
-                key={Date.now()}
+                key={Math.random()}
                 style={{ marginLeft: 0 }}
                 icon
                 button
