@@ -1,36 +1,42 @@
 import React, { Component } from 'react';
-import { Alert } from 'react-native';
-import { Button, Container, Content, FieldInput, Text } from '../../../components/common';
+import { Alert, Keyboard } from 'react-native';
+import { Button, Container, Content, FieldInput } from '../../../components/common';
 // import {changePassword} from '../Helpers/user'
 import I18n from '../../../locales';
 import { backgroundColor, lightTextColor } from '../../../theme';
 
 class ChangePasswordScreen extends Component {
-  constructor(props) {
-    super(props);
+  state = {
+    // loading: false,
+    values: {
+      currentPassword: '',
+      newPassword: '',
+      confirmPassword: '',
+    },
+    errors: {
+      currentPassword: {
+        isError: false,
+        error: '',
+      },
+      newPassword: {
+        isError: false,
+        error: '',
+      },
+      confirmPassword: {
+        isError: false,
+        error: '',
+      },
+    },
+  };
 
-    this.state = {
-      // loading: false,
-      values: {
-        currentPassword: '',
-        newPassword: '',
-        confirmPassword: '',
-      },
-      errors: {
-        currentPassword: {
-          isError: false,
-          error: '',
-        },
-        newPassword: {
-          isError: false,
-          error: '',
-        },
-        confirmPassword: {
-          isError: false,
-          error: '',
-        },
-      },
-    };
+  componentWillMount() {
+    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
+    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
+  }
+
+  componentWillUnmount() {
+    this.keyboardDidShowListener.remove();
+    this.keyboardDidHideListener.remove();
   }
 
   onFieldChange = (key, value) => {
@@ -92,6 +98,20 @@ class ChangePasswordScreen extends Component {
       });
     }
   }
+
+  keyboardDidShow = () => {
+    this.props.navigator.toggleTabs({
+      to: 'hidden', // required, 'hidden' = hide tab bar, 'shown' = show tab bar
+      animated: false,
+    });
+  };
+
+  keyboardDidHide = () => {
+    this.props.navigator.toggleTabs({
+      to: 'shown', // required, 'hidden' = hide tab bar, 'shown' = show tab bar
+      animated: false,
+    });
+  };
 
   // onSubmitForm(values) {
   //   const { currentPassword, newPassword, confirmPassword } = values;
