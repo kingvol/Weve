@@ -1,10 +1,8 @@
 import React from 'react';
 import { View } from 'react-native';
-import {
-  Label,
-} from 'native-base';
+import { Label } from 'native-base';
 import { Col, Row } from 'react-native-easy-grid';
-// import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { primaryFont, primaryColor } from '../../theme';
 
 const ProfileField = ({ icon, title, subTitle, id }) => {
@@ -12,11 +10,8 @@ const ProfileField = ({ icon, title, subTitle, id }) => {
   return (
     <View id={id} style={{ marginHorizontal: 20 }}>
       <Row style={{ height: 80 }}>
-        <Col
-          style={{ justifyContent: 'center', alignItems: 'flex-start' }}
-          size={15}
-        >
-          { /* <Icon size={24} name={icon} /> */ }
+        <Col style={{ justifyContent: 'center', alignItems: 'flex-start' }} size={15}>
+          <Icon size={24} name={icon} />
         </Col>
         <Col size={85} style={{ justifyContent: 'flex-end' }}>
           <Row style={{ alignItems: 'center' }}>

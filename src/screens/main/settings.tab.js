@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
-import I18n from 'react-native-i18n';
 import Icon from 'react-native-vector-icons/FontAwesome';
+
+import I18n from '../../locales';
 import { backgroundColor, primaryFont } from '../../theme';
 import { Body, Container, Content, List, ListItem, Right, Text } from '../../components/common';
 import { AuthActions } from '../../actions';

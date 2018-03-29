@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Alert } from 'react-native';
-import { connect } from 'react-redux';
+import { Alert, Keyboard } from 'react-native';
 import { Button, Container, Content, FieldInput } from '../../../components/common';
+import { connect } from 'react-redux';
 import I18n from '../../../locales';
 import { backgroundColor, lightTextColor } from '../../../theme';
 import { UserActions } from '../../../actions';
@@ -30,6 +30,16 @@ class ChangePasswordScreen extends Component {
       },
     },
     processing: false,
+  };
+
+  componentWillMount() {
+    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
+    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
+  }
+
+  componentWillUnmount() {
+    this.keyboardDidShowListener.remove();
+    this.keyboardDidHideListener.remove();
   };
 
   componentWillReceiveProps({ user }) {
@@ -108,6 +118,20 @@ class ChangePasswordScreen extends Component {
     this.setState({ processing: true });
     this.props.changePassword({ password: this.state.values.newPassword });
   }
+
+  keyboardDidShow = () => {
+    this.props.navigator.toggleTabs({
+      to: 'hidden', // required, 'hidden' = hide tab bar, 'shown' = show tab bar
+      animated: false,
+    });
+  };
+
+  keyboardDidHide = () => {
+    this.props.navigator.toggleTabs({
+      to: 'shown', // required, 'hidden' = hide tab bar, 'shown' = show tab bar
+      animated: false,
+    });
+  };
 
   switchProcessing = () => {
     this.setState({ processing: false });
