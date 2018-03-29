@@ -1,37 +1,35 @@
 import React, { Component } from 'react';
 import { Alert } from 'react-native';
-import { Button, Container, Content, FieldInput, Text } from '../../../components/common';
-// import {changePassword} from '../Helpers/user'
+import { connect } from 'react-redux';
+import { Button, Container, Content, FieldInput } from '../../../components/common';
 import I18n from '../../../locales';
 import { backgroundColor, lightTextColor } from '../../../theme';
+import { UserActions } from '../../../actions';
+
+const { changePassword } = UserActions;
 
 class ChangePasswordScreen extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      // loading: false,
-      values: {
-        currentPassword: '',
-        newPassword: '',
-        confirmPassword: '',
+  state = {
+    values: {
+      currentPassword: '',
+      newPassword: '',
+      confirmPassword: '',
+    },
+    errors: {
+      currentPassword: {
+        isError: false,
+        error: '',
       },
-      errors: {
-        currentPassword: {
-          isError: false,
-          error: '',
-        },
-        newPassword: {
-          isError: false,
-          error: '',
-        },
-        confirmPassword: {
-          isError: false,
-          error: '',
-        },
+      newPassword: {
+        isError: false,
+        error: '',
       },
-    };
-  }
+      confirmPassword: {
+        isError: false,
+        error: '',
+      },
+    },
+  };
 
   onFieldChange = (key, value) => {
     this.setState({
@@ -79,7 +77,7 @@ class ChangePasswordScreen extends Component {
     });
   };
 
-  onBlur(key, value) {
+  onBlur = (key, value) => {
     if (!value.length) {
       this.setState({
         errors: {
@@ -93,7 +91,11 @@ class ChangePasswordScreen extends Component {
     }
   }
 
-  // onSubmitForm(values) {
+  onFormSubmit = () => {
+    this.props.changePassword({ password: this.state.values.newPassword });
+  }
+
+  // onSubmitForm(values) {   
   //   const { currentPassword, newPassword, confirmPassword } = values;
   //   this.setState({ loading: true });
   //   changePassword(currentPassword, newPassword, (result) => {
@@ -114,21 +116,7 @@ class ChangePasswordScreen extends Component {
   // }
 
   render() {
-    // const {
-    //   handleSubmit,
-    //   pristine,
-    //   submitting,
-    //   currentPassword,
-    //   newPassword,
-    //   confirmPassword,
-    // } = this.props;
-    // const disabled =
-    //   this.state.loading ||
-    //   pristine ||
-    //   submitting ||
-    //   !currentPassword ||
-    //   !newPassword ||
-    //   !confirmPassword;
+    const disabled = this.props.user.loading || !this.state.values.newPassword;
     return (
       <Container id="ChangePassword.container" style={{ backgroundColor }}>
         <Content id="ChangePassword.content" padder keyboardShouldPersistTaps="always">
@@ -170,9 +158,9 @@ class ChangePasswordScreen extends Component {
             style={{ marginTop: 10 }}
             block
             success
-            // disabled={disabled}
-            // onPress={handleSubmit(this.onSubmitForm.bind(this))}
-            loading={this.state.loading}
+            disabled={disabled}
+            onPress={this.onFormSubmit}
+            loading={this.props.user.loading}
           >
             {I18n.t('common.save')}
           </Button>
@@ -182,4 +170,8 @@ class ChangePasswordScreen extends Component {
   }
 }
 
-export default ChangePasswordScreen;
+const mapStateToProps = state => ({
+  user: state.user,
+});
+
+export default connect(mapStateToProps, { changePassword })(ChangePasswordScreen);
