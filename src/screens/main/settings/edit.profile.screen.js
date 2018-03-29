@@ -1,7 +1,8 @@
-import React, { PureComponent } from 'react';
-import { Alert, Keyboard, View, BackHandler } from 'react-native';
+import React, { Component } from 'react';
+import { Alert, Keyboard, View } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
-import SpinnerOverlay from 'react-native-loading-spinner-overlay';
+import { connect } from 'react-redux';
+// import SpinnerOverlay from 'react-native-loading-spinner-overlay';
 import I18n from '../../../locales';
 import {
   Button,
@@ -12,19 +13,34 @@ import {
   Thumbnail,
 } from '../../../components/common';
 import { backgroundColor, lightTextColor } from '../../../theme';
+import { UserActions } from '../../../actions';
 
+const { fetchProfile } = UserActions;
 const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png';
-// import { updateProfileDetails } from '../Actions/profileActions';
 
-class EditProfileScreen extends PureComponent {
-  state = {
-    loading: false,
-    image: null,
-  };
+class EditProfileScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      values: {
+        firstName: this.props.user.profile.firstName || '',
+        lastName: this.props.user.profile.lastName || '',
+        phoneNumber: this.props.user.profile.phoneNumber || '',
+        email: this.props.user.profile.email || '',
+      },
+      image: null,
+    };
+  }
 
   componentWillMount() {
     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
+  }
+
+  componentDidMount() {
+    if (!this.props.user.profile._id) {
+      this.props.fetchProfile('me');
+    }
   }
 
   componentWillUnmount() {
@@ -34,14 +50,14 @@ class EditProfileScreen extends PureComponent {
 
   keyboardDidShow = () => {
     this.props.navigator.toggleTabs({
-      to: 'hidden', // required, 'hidden' = hide tab bar, 'shown' = show tab bar
+      to: 'hidden',
       animated: false,
     });
   };
 
   keyboardDidHide = () => {
     this.props.navigator.toggleTabs({
-      to: 'shown', // required, 'hidden' = hide tab bar, 'shown' = show tab bar
+      to: 'shown',
       animated: false,
     });
   };
@@ -78,7 +94,7 @@ class EditProfileScreen extends PureComponent {
   //   });
   // }
 
-  captureImage() {
+  captureImage = () => {
     const options = {
       title: I18n.t('editProfile.select_avatar'),
       storageOptions: {
@@ -104,38 +120,36 @@ class EditProfileScreen extends PureComponent {
   }
 
   render() {
-    // const { firstName, lastName, phone, email, profileImageURL } = this.props.profile;
+    const { firstName, lastName, phoneNumber, email, profileImageURL } = this.state.values;
     // const { handleSubmit, initialValues } = this.props;
 
     return (
       <Container id="EditProfile.container" style={{ backgroundColor }}>
-        <SpinnerOverlay
+        {/* <SpinnerOverlay
           visible={this.state.loading}
           textContent={I18n.t('common.loading')}
           textStyle={{ color: '#FFF' }}
-        />
+        /> */}
         <Content id="EditProfile.content" padder keyboardShouldPersistTaps="always">
           <View style={{ justifyContent: 'center' }}>
             <Button
               id="EditProfile.imageButtonWrapper"
               style={{ height: 100 }}
               transparent
-              onPress={() => this.captureImage()}
+              onPress={this.captureImage}
             >
               <Thumbnail
                 id="EditProfile.profileImage"
                 large
                 source={{
-                  uri:
-                    this.state.image ||
-                    // profileImageURL ||
-                    defaultProfile,
+                  uri: this.state.image || profileImageURL || defaultProfile,
                 }}
               />
             </Button>
           </View>
           <FieldInput
             name="firstName"
+            input={{ value: firstName }}
             placeholder={I18n.t('editProfile.first_name')}
             color={lightTextColor}
             component={EditProfileField}
@@ -144,6 +158,7 @@ class EditProfileScreen extends PureComponent {
           />
           <FieldInput
             name="lastName"
+            input={{ value: lastName }}
             placeholder={I18n.t('editProfile.last_name')}
             color={lightTextColor}
             component={EditProfileField}
@@ -152,6 +167,7 @@ class EditProfileScreen extends PureComponent {
           />
           <FieldInput
             name="phone"
+            input={{ value: phoneNumber }}
             placeholder={I18n.t('editProfile.phone_number')}
             color={lightTextColor}
             component={EditProfileField}
@@ -159,6 +175,7 @@ class EditProfileScreen extends PureComponent {
           />
           <FieldInput
             name="email"
+            input={{ value: email }}
             placeholder={I18n.t('common.email')}
             color={lightTextColor}
             disabled
@@ -180,4 +197,8 @@ class EditProfileScreen extends PureComponent {
   }
 }
 
-export default EditProfileScreen;
+const mapStateToProps = state => ({
+  user: state.user,
+});
+
+export default connect(mapStateToProps, { fetchProfile })(EditProfileScreen);
