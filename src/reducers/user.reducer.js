@@ -28,6 +28,26 @@ export default (state = initialState, action = {}) => {
         error: action.payload.message || action.payload.error,
       };
 
+    case types.FETCH_USER_PROFILE_PENDING:
+      return {
+        ...state,
+        isLoading: true,
+      };
+
+    case types.FETCH_USER_PROFILE_FULFILLED:
+      return {
+        ...state,
+        profile: action.payload,
+        isLoading: false,
+      };
+
+    case types.FETCH_USER_PROFILE_REJECTED:
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload.message || action.payload.error,
+      };
+
     default:
       return state;
   }

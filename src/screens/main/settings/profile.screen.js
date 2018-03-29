@@ -14,10 +14,16 @@ import {
   ProfileField,
 } from '../../../components/common';
 import { backgroundColor, primaryFont } from '../../../theme';
+import { UserActions } from '../../../actions';
 
+const { fetchProfile } = UserActions;
 const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png';
 
 class ProfileScreen extends Component {
+  componentDidMount() {
+    this.props.fetchProfile('me');
+  }
+
   onEditPress = () => {
     this.props.navigator.push({
       screen: 'wevedo.EditProfileScreen',
@@ -31,7 +37,7 @@ class ProfileScreen extends Component {
     });
   };
 
-  renderProfileImageName = () => (
+  renderProfileImageName = (firstName, lastName, profileImageURL) => (
     <Row style={{ height: 150 }}>
       <Col style={{ alignItems: 'center' }}>
         <Row size={65}>
@@ -39,13 +45,13 @@ class ProfileScreen extends Component {
             id="Profile.profileImage"
             large
             source={{
-              uri: this.props.user.profileImageURL || defaultProfile,
+              uri: profileImageURL || defaultProfile,
             }}
           />
         </Row>
         <Row size={35} style={{ height: 20 }}>
           <Label id="Profile.first_lastName">
-            {`${this.props.profile.firstName || ''} ${this.props.profile.lastName || ''}`}
+            {`${firstName || ''} ${lastName || ''}`}
           </Label>
         </Row>
       </Col>
@@ -53,7 +59,7 @@ class ProfileScreen extends Component {
   );
 
   render() {
-    // const { firstName, lastName, phone, email, profileImageURL } = this.props.profile;
+    const { firstName, lastName, phoneNumber, email, profileImageURL } = this.props.profile;
     return (
       <Container id="Profile.container" style={{ backgroundColor }}>
         <Content id="Profile.content" padder>
@@ -68,18 +74,18 @@ class ProfileScreen extends Component {
                 <Icon size={24} name="pencil" />
               </Button>
             </Row>
-            {this.renderProfileImageName()}
+            {this.renderProfileImageName(firstName, lastName, profileImageURL)}
             <ProfileField
               id="Profile.phoneField"
               icon="phone"
               title={I18n.t('common.phone')}
-              subTitle={this.props.profile.phoneNumber || ''}
+              subTitle={phoneNumber || ''}
             />
             <ProfileField
               id="Profile.emailField"
               icon="envelope"
               title={I18n.t('common.email')}
-              subTitle={this.props.profile.email}
+              subTitle={email || ''}
             />
           </Grid>
         </Content>
@@ -93,4 +99,4 @@ const mapStateToProps = state => ({
   profile: state.user.profile,
 });
 
-export default connect(mapStateToProps)(ProfileScreen);
+export default connect(mapStateToProps, { fetchProfile })(ProfileScreen);

@@ -10,3 +10,10 @@ export const changePassword = body => (dispatch) => {
     payload: api.changePassword(body),
   });
 };
+
+export const fetchProfile = _id => (dispatch) => {
+  dispatch({
+    type: types.FETCH_USER_PROFILE,
+    payload: api.fetchProfile(_id),
+  });
+};
