@@ -11,6 +11,8 @@ import ChangePasswordScreen from './main/settings/change.password.screen';
 import ProfileScreen from './main/settings/profile.screen';
 import EditProfileScreen from './main/settings/edit.profile.screen';
 
+import ProviderTabList from './main/home/ProviderTabList.screen';
+
 const registerScreens = (store = {}, Provider = {}) => {
   Navigation.registerComponent('wevedo.loginScreen', () => LoginScreen, store, Provider);
   Navigation.registerComponent('wevedo.registerScreen', () => RegisterScreen, store, Provider);
@@ -32,6 +34,7 @@ const registerScreens = (store = {}, Provider = {}) => {
     store,
     Provider,
   );
+  Navigation.registerComponent('wevedo.ProviderTabList', () => ProviderTabList, store, Provider);
 };
 
 export default registerScreens;

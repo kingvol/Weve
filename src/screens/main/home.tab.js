@@ -60,30 +60,6 @@ for (let i = 0; i <= categories.length; i += 3) {
   items.push(categories.slice(i, i + 3));
 }
 
-const renderItem = ({ item }) => (
-  <View
-    style={{
-      marginBottom: 10,
-      flex: 1,
-      flexDirection: 'row',
-      justifyContent: item.length === 3 ? 'space-around' : 'flex-start',
-    }}
-  >
-    {item.map(category => (
-      <TouchableOpacity
-        style={{ width: '33%', alignItems: 'center' }}
-        onPress={this.onPress}
-        key={category.title}
-      >
-        <Image source={category.imageSource} style={{ width: 80, height: 80 }} />
-        <Text style={{ textAlign: 'center', ...primaryFont, color: 'black' }}>
-          {category.title}
-        </Text>
-      </TouchableOpacity>
-    ))}
-  </View>
-);
-
 class HomeTab extends Component {
   componentDidMount() {
     if (Platform.OS === 'ios') {
@@ -91,12 +67,42 @@ class HomeTab extends Component {
     }
   }
 
-  onCategoryPress = (screen) => {
+  onCategoryPress = () => {
     this.props.navigator.push({
-      screen: [`wevedo.${screen}`],
-      navigatorStyle: {},
+      screen: 'wevedo.ProviderTabList',
+      title: 'Advertisers',
+      navigatorStyle: {
+        navBarBackgroundColor: '#d64635',
+        navBarTextColor: 'white',
+        navBarButtonColor: 'white',
+        navBarTextFontFamily: primaryFont,
+      },
     });
-  };
+  }
+
+  renderItem = ({ item }) => (
+    <View
+      style={{
+        marginBottom: 10,
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: item.length === 3 ? 'space-around' : 'flex-start',
+      }}
+    >
+      {item.map(category => (
+        <TouchableOpacity
+          style={{ width: '33%', alignItems: 'center' }}
+          onPress={this.onCategoryPress}
+          key={category.title}
+        >
+          <Image source={category.imageSource} style={{ width: 80, height: 80 }} />
+          <Text style={{ textAlign: 'center', ...primaryFont, color: 'black' }}>
+            {category.title}
+          </Text>
+        </TouchableOpacity>
+      ))}
+    </View>
+  );
 
   render() {
     return (
@@ -116,7 +122,7 @@ class HomeTab extends Component {
           <FlatList
             numColumns={1}
             data={items}
-            renderItem={renderItem}
+            renderItem={this.renderItem}
             keyExtractor={(item, index) => index.toString()}
           />
         </View>
