@@ -4,6 +4,7 @@ import ImagePicker from 'react-native-image-picker';
 import { connect } from 'react-redux';
 import SpinnerOverlay from 'react-native-loading-spinner-overlay';
 import I18n from '../../../locales';
+import config from '../../../../config';
 import {
   Button,
   Container,
@@ -30,6 +31,7 @@ class EditProfileScreen extends Component {
         profileImageURL: this.props.user.profile.profileImageURL || '',
       },
       loading: false,
+      imageUploading: false,
     };
   }
 
@@ -68,42 +70,43 @@ class EditProfileScreen extends Component {
     });
   }
 
-  onSubmitForm = () => {
+  onSubmitForm = async () => {
+    if (this.state.values.profileImageURL !== this.props.user.profile.profileImageURL) {
+      try {
+        this.setState({ imageUploading: true });
+        const { url } = await this.uploadProfileImage(this.state.values.profileImageURL);
+        this.setState({
+          values: {
+            ...this.state.values,
+            profileImageURL: url,
+          },
+          imageUploading: false,
+        });
+      } catch ({ message }) {
+        Alert.alert(message);
+        this.setState({ imageUploading: false });
+      }
+    }
     this.props.updateProfile(this.state.values);
     this.setState({ loading: true });
   }
 
-  // onSubmitForm(profile) {
-  //   this.setState({ loading: true });
-  //   this.props.updateProfileDetails(profile, this.state.image, () => {
-  //     this.setState({ loading: false });
-  //     this.props.navigation.goBack();
-  //   });
-  // }
+  uploadProfileImage = (uri) => {
+    const { cloudinary: { apiKey, cloud } } = config;
+    const timestamp = Date.now().toString();
+    const uploadUrl = `https://api.cloudinary.com/v1_1/${cloud}/image/upload?upload_preset=profileImg`;
 
-  // backHandler() {
-  //   this.props.navigation.goBack();
-  //   return true;
-  // }
+    const formdata = new FormData();
+    formdata.append('file', { uri, type: 'image/png', name: 'image.png' });
+    formdata.append('timestamp', timestamp);
+    formdata.append('api_key', apiKey);
 
-  // componentDidMount() {
-  //   BackHandler.addEventListener('hardwareBackPress', this.backHandler);
-  // }
-
-  // componentWillUnmount() {
-  //   BackHandler.removeEventListener('hardwareBackPress', this.backHandler);
-  // }
-
-  // onSubmitForm(profile) {
-  //   this.setState({ loading: true });
-  //   const arrFN = profile.firstName.split(' ').map(a => a.charAt(0).toUpperCase() + a.substr(1));
-  //   profile.firstName = arrFN.join(' ');
-  //   profile.lastName = profile.lastName.charAt(0).toUpperCase() + profile.lastName.substr(1);
-  //   this.props.updateProfileDetails(profile, this.state.image, () => {
-  //     this.setState({ loading: false });
-  //     this.props.navigation.goBack();
-  //   });
-  // }
+    return fetch(uploadUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'multipart/form-data' },
+      body: formdata,
+    }).then(raw => raw.json());
+  }
 
   keyboardDidShow = () => {
     this.props.navigator.toggleTabs({
@@ -144,18 +147,23 @@ class EditProfileScreen extends Component {
       }
 
       if (uri) {
-        this.setState({ image: uri });
+        this.setState({
+          values: {
+            ...this.state.values,
+            profileImageURL: uri,
+          },
+        });
       }
     });
   }
 
   render() {
-    const { firstName, lastName, phoneNumber, email, profileImageURL } = this.state.values;
+    const { firstName, lastName, phoneNumber, email } = this.state.values;
 
     return (
       <Container id="EditProfile.container" style={{ backgroundColor }}>
         <SpinnerOverlay
-          visible={this.props.user.isLoading}
+          visible={this.state.imageUploading || this.props.user.isLoading}
           textContent={I18n.t('common.loading')}
           textStyle={{ color: '#FFF' }}
         />
@@ -171,7 +179,7 @@ class EditProfileScreen extends Component {
                 id="EditProfile.profileImage"
                 large
                 source={{
-                  uri: this.state.image || profileImageURL || defaultProfile,
+                  uri: this.props.user.profile.profileImageURL || defaultProfile,
                 }}
               />
             </Button>
