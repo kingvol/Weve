@@ -63,8 +63,8 @@ class RegisterScreen extends Component {
 
     try {
       this.setState({ loading: true });
-      const { url } = await this.uploadProfileImage(image);
-      image = url;
+      const { secure_url } = await this.uploadProfileImage(image);
+      image = secure_url;
     } catch ({ message }) {
       alert(message);
       this.setState({ loading: false });
@@ -95,7 +95,7 @@ class RegisterScreen extends Component {
   uploadProfileImage = (uri) => {
     const { cloudinary: { apiKey, cloud } } = config;
     const timestamp = Date.now().toString();
-    const uploadUrl = `https://api.cloudinary.com/v1_1/${cloud}/image/upload?upload_preset=profileImg`;
+    const uploadUrl = `https://api.cloudinary.com/v1_1/${cloud}/image/upload?upload_preset=profileImg&secure=true`;
 
     const formdata = new FormData();
     formdata.append('file', { uri, type: 'image/png', name: 'image.png' });

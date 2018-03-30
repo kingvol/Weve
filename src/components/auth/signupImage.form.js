@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Alert } from 'react-native';
 import { View, Text, Thumbnail, Button } from 'native-base';
 import ImagePicker from 'react-native-image-picker';
 import I18n from 'react-native-i18n';

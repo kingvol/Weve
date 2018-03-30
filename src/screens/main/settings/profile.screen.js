@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-// import { BackHandler } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { connect } from 'react-redux';
 import I18n from '../../../locales';
 import {
   Button,
@@ -13,19 +13,18 @@ import {
   Col,
   ProfileField,
 } from '../../../components/common';
-// import { getProfileDetails } from '../Actions/profileActions';
-
 import { backgroundColor, primaryFont } from '../../../theme';
+import { UserActions } from '../../../actions';
 
+const { fetchProfile } = UserActions;
 const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png';
 
 class ProfileScreen extends Component {
-  // constructor(props) {
-  //   super(props);
-  // this.backHandler = this.backHandler.bind(this);
-  // }
+  componentDidMount() {
+    this.props.fetchProfile('me');
+  }
 
-  onItemPress = () => {
+  onEditPress = () => {
     this.props.navigator.push({
       screen: 'wevedo.EditProfileScreen',
       title: I18n.t('editProfile.title'),
@@ -38,40 +37,19 @@ class ProfileScreen extends Component {
     });
   };
 
-  // backHandler() {
-  //   this.props.navigation.dispatch(NavigationActions.reset({
-  //     index: 0,
-  //     actions: [NavigationActions.navigate({ routeName: 'settingsScreen' })],
-  //   }));
-  //   return true;
-  // }
-
-  // componentDidMount() {
-  //   BackHandler.addEventListener('hardwareBackPress', this.backHandler);
-  //   this.props.getProfileDetails(this.props.auth.user.uid);
-  // }
-
-  // componentWillUnmount() {
-  //   BackHandler.removeEventListener('hardwareBackPress', this.backHandler);
-  // }
-  // { firstName, lastName, profileImageURL }  - aguments function bellow:
-  renderProfileImageName = () => (
+  renderProfileImageName = (firstName, lastName) => (
     <Row style={{ height: 150 }}>
       <Col style={{ alignItems: 'center' }}>
         <Row size={65}>
           <Thumbnail
             id="Profile.profileImage"
             large
-            source={{
-              uri:
-                // profileImageURL ||
-                defaultProfile,
-            }}
+            source={{ uri: this.props.user.profile.profileImageURL || defaultProfile }}
           />
         </Row>
         <Row size={35} style={{ height: 20 }}>
           <Label id="Profile.first_lastName">
-            {/* {`${firstName || ''} ${lastName || ''}`} */}
+            {`${firstName || ''} ${lastName || ''}`}
           </Label>
         </Row>
       </Col>
@@ -79,8 +57,7 @@ class ProfileScreen extends Component {
   );
 
   render() {
-    // const { firstName, lastName, phone, email, profileImageURL } = this.props.profile;
-
+    const { firstName, lastName, phoneNumber, email, profileImageURL } = this.props.profile;
     return (
       <Container id="Profile.container" style={{ backgroundColor }}>
         <Content id="Profile.content" padder>
@@ -90,24 +67,23 @@ class ProfileScreen extends Component {
                 id="Profile.row.editProfileButton"
                 style={{ marginRight: 10 }}
                 transparent
-                onPress={() => this.onItemPress()}
+                onPress={this.onEditPress}
               >
                 <Icon size={24} name="pencil" />
               </Button>
             </Row>
-            {/* {this.renderProfileImageName({ firstName, lastName, profileImageURL })} */}
-            {this.renderProfileImageName()}
+            {this.renderProfileImageName(firstName, lastName, profileImageURL)}
             <ProfileField
               id="Profile.phoneField"
               icon="phone"
               title={I18n.t('common.phone')}
-              // subTitle={phone}
+              subTitle={phoneNumber || ''}
             />
             <ProfileField
               id="Profile.emailField"
               icon="envelope"
               title={I18n.t('common.email')}
-              // subTitle={email}
+              subTitle={email || ''}
             />
           </Grid>
         </Content>
@@ -116,4 +92,9 @@ class ProfileScreen extends Component {
   }
 }
 
-export default ProfileScreen;
+const mapStateToProps = state => ({
+  user: state.user,
+  profile: state.user.profile,
+});
+
+export default connect(mapStateToProps, { fetchProfile })(ProfileScreen);
