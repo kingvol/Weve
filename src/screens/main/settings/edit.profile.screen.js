@@ -53,6 +53,7 @@ class EditProfileScreen extends Component {
     }
     if (!user.isLoading && this.state.loading) {
       this.updateProfile();
+      this.props.navigator.pop();
     }
   }
 
@@ -163,7 +164,7 @@ class EditProfileScreen extends Component {
     return (
       <Container id="EditProfile.container" style={{ backgroundColor }}>
         <SpinnerOverlay
-          visible={this.state.imageUploading || this.props.user.isLoading}
+          visible={this.state.imageUploading}
           textContent={I18n.t('common.loading')}
           textStyle={{ color: '#FFF' }}
         />
