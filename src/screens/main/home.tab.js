@@ -10,46 +10,55 @@ import { primaryFont, backgroundColor } from '../../theme';
 const categories = [
   {
     route: 'Venue',
+    screenIndex: 0,
     title: I18n.t('categories.venue'),
     imageSource: images.venue,
   },
   {
     route: 'Artist',
+    screenIndex: 1,
     title: I18n.t('categories.artist'),
     imageSource: images.artist,
   },
   {
     route: 'Photo',
+    screenIndex: 2,
     title: I18n.t('categories.photo'),
     imageSource: images.photo,
   },
   {
     route: 'Video',
+    screenIndex: 3,
     title: I18n.t('categories.video'),
     imageSource: images.video,
   },
   {
     route: 'Entertainment',
+    screenIndex: 4,
     title: I18n.t('categories.entertainment'),
     imageSource: images.ent,
   },
   {
     route: 'MakeUp',
+    screenIndex: 5,
     title: I18n.t('categories.makeup'),
     imageSource: images.make_up,
   },
   {
     route: 'Costume',
+    screenIndex: 6,
     title: I18n.t('categories.costume'),
     imageSource: images.costume,
   },
   {
     route: 'Decoration',
+    screenIndex: 7,
     title: I18n.t('categories.decoration'),
     imageSource: images.decoration,
   },
   {
     route: 'Cake',
+    screenIndex: 8,
     title: I18n.t('categories.cake'),
     imageSource: images.cake,
   },
@@ -67,10 +76,11 @@ class HomeTab extends Component {
     }
   }
 
-  onCategoryPress = () => {
+  onCategoryPress = (category) => {
     this.props.navigator.push({
       screen: 'wevedo.ProviderTabList',
       title: 'Advertisers',
+      passProps: { routeIndex: category.screenIndex },
       navigatorStyle: {
         navBarBackgroundColor: '#d64635',
         navBarTextColor: 'white',
@@ -92,7 +102,7 @@ class HomeTab extends Component {
       {item.map(category => (
         <TouchableOpacity
           style={{ width: '33%', alignItems: 'center' }}
-          onPress={this.onCategoryPress}
+          onPress={() => this.onCategoryPress(category)}
           key={category.title}
         >
           <Image source={category.imageSource} style={{ width: 80, height: 80 }} />
