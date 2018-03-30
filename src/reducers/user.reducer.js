@@ -48,6 +48,25 @@ export default (state = initialState, action = {}) => {
         error: action.payload.message || action.payload.error,
       };
 
+    case types.UPDATE_USER_PROFILE_PENDING:
+      return {
+        ...state,
+        isLoading: true,
+      };
+
+    case types.UPDATE_USER_PROFILE_FULFILLED:
+      return {
+        ...state,
+        isLoading: false,
+      };
+
+    case types.UPDATE_USER_PROFILE_REJECTED:
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload.message || action.payload.error,
+      };
+
     default:
       return state;
   }

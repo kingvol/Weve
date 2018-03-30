@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Alert, Keyboard, View } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import { connect } from 'react-redux';
-// import SpinnerOverlay from 'react-native-loading-spinner-overlay';
+import SpinnerOverlay from 'react-native-loading-spinner-overlay';
 import I18n from '../../../locales';
 import {
   Button,
@@ -15,7 +15,7 @@ import {
 import { backgroundColor, lightTextColor } from '../../../theme';
 import { UserActions } from '../../../actions';
 
-const { fetchProfile } = UserActions;
+const { fetchProfile, updateProfile } = UserActions;
 const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png';
 
 class EditProfileScreen extends Component {
@@ -27,8 +27,9 @@ class EditProfileScreen extends Component {
         lastName: this.props.user.profile.lastName || '',
         phoneNumber: this.props.user.profile.phoneNumber || '',
         email: this.props.user.profile.email || '',
+        profileImageURL: this.props.user.profile.profileImageURL || '',
       },
-      image: null,
+      loading: false,
     };
   }
 
@@ -43,24 +44,34 @@ class EditProfileScreen extends Component {
     }
   }
 
+  componentWillReceiveProps({ user }) {
+    if (!user.isLoading && user.error && this.state.loading) {
+      Alert.alert(user.error);
+      return;
+    }
+    if (!user.isLoading && this.state.loading) {
+      this.updateProfile();
+    }
+  }
+
   componentWillUnmount() {
     this.keyboardDidShowListener.remove();
     this.keyboardDidHideListener.remove();
   }
 
-  keyboardDidShow = () => {
-    this.props.navigator.toggleTabs({
-      to: 'hidden',
-      animated: false,
+  onFieldChange = (key, value) => {
+    this.setState({
+      values: {
+        ...this.state.values,
+        [key]: value,
+      },
     });
-  };
+  }
 
-  keyboardDidHide = () => {
-    this.props.navigator.toggleTabs({
-      to: 'shown',
-      animated: false,
-    });
-  };
+  onSubmitForm = () => {
+    this.props.updateProfile(this.state.values);
+    this.setState({ loading: true });
+  }
 
   // onSubmitForm(profile) {
   //   this.setState({ loading: true });
@@ -94,6 +105,25 @@ class EditProfileScreen extends Component {
   //   });
   // }
 
+  keyboardDidShow = () => {
+    this.props.navigator.toggleTabs({
+      to: 'hidden',
+      animated: false,
+    });
+  };
+
+  keyboardDidHide = () => {
+    this.props.navigator.toggleTabs({
+      to: 'shown',
+      animated: false,
+    });
+  };
+
+  updateProfile = () => {
+    this.props.fetchProfile('me');
+    this.setState({ loading: false });
+  }
+
   captureImage = () => {
     const options = {
       title: I18n.t('editProfile.select_avatar'),
@@ -121,15 +151,14 @@ class EditProfileScreen extends Component {
 
   render() {
     const { firstName, lastName, phoneNumber, email, profileImageURL } = this.state.values;
-    // const { handleSubmit, initialValues } = this.props;
 
     return (
       <Container id="EditProfile.container" style={{ backgroundColor }}>
-        {/* <SpinnerOverlay
-          visible={this.state.loading}
+        <SpinnerOverlay
+          visible={this.props.user.isLoading}
           textContent={I18n.t('common.loading')}
           textStyle={{ color: '#FFF' }}
-        /> */}
+        />
         <Content id="EditProfile.content" padder keyboardShouldPersistTaps="always">
           <View style={{ justifyContent: 'center' }}>
             <Button
@@ -152,6 +181,7 @@ class EditProfileScreen extends Component {
             input={{ value: firstName }}
             placeholder={I18n.t('editProfile.first_name')}
             color={lightTextColor}
+            onChangeText={value => this.onFieldChange('firstName', value)}
             component={EditProfileField}
             id="EditProfile.firtsNameInput"
             autoCapitalize="words"
@@ -161,14 +191,16 @@ class EditProfileScreen extends Component {
             input={{ value: lastName }}
             placeholder={I18n.t('editProfile.last_name')}
             color={lightTextColor}
+            onChangeText={value => this.onFieldChange('lastName', value)}
             component={EditProfileField}
             id="EditProfile.lastNameInput"
             autoCapitalize="words"
           />
           <FieldInput
             name="phone"
-            input={{ value: phoneNumber }}
+            input={{ value: phoneNumber.toString() }}
             placeholder={I18n.t('editProfile.phone_number')}
+            onChangeText={value => this.onFieldChange('phoneNumber', value)}
             color={lightTextColor}
             component={EditProfileField}
             id="EditProfile.phoneNumberInput"
@@ -177,6 +209,7 @@ class EditProfileScreen extends Component {
             name="email"
             input={{ value: email }}
             placeholder={I18n.t('common.email')}
+            onChangeText={value => this.onFieldChange('email', value)}
             color={lightTextColor}
             disabled
             component={EditProfileField}
@@ -187,7 +220,7 @@ class EditProfileScreen extends Component {
             block
             success
             disabled={this.state.loading}
-            // onPress={handleSubmit(this.onSubmitForm.bind(this))}
+            onPress={this.onSubmitForm}
           >
             {I18n.t('common.done')}
           </Button>
@@ -201,4 +234,4 @@ const mapStateToProps = state => ({
   user: state.user,
 });
 
-export default connect(mapStateToProps, { fetchProfile })(EditProfileScreen);
+export default connect(mapStateToProps, { fetchProfile, updateProfile })(EditProfileScreen);

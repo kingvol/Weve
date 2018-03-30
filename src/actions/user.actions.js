@@ -17,3 +17,10 @@ export const fetchProfile = _id => (dispatch) => {
     payload: api.fetchProfile(_id),
   });
 };
+
+export const updateProfile = body => (dispatch) => {
+  dispatch({
+    type: types.UPDATE_USER_PROFILE,
+    payload: api.updateProfile(body),
+  });
+};
