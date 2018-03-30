@@ -37,16 +37,14 @@ class ProfileScreen extends Component {
     });
   };
 
-  renderProfileImageName = (firstName, lastName, profileImageURL) => (
+  renderProfileImageName = (firstName, lastName) => (
     <Row style={{ height: 150 }}>
       <Col style={{ alignItems: 'center' }}>
         <Row size={65}>
           <Thumbnail
             id="Profile.profileImage"
             large
-            source={{
-              uri: profileImageURL || defaultProfile,
-            }}
+            source={{ uri: this.props.user.profile.profileImageURL || defaultProfile }}
           />
         </Row>
         <Row size={35} style={{ height: 20 }}>

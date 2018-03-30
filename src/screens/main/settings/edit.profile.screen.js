@@ -74,11 +74,11 @@ class EditProfileScreen extends Component {
     if (this.state.values.profileImageURL !== this.props.user.profile.profileImageURL) {
       try {
         this.setState({ imageUploading: true });
-        const { url } = await this.uploadProfileImage(this.state.values.profileImageURL);
+        const { secure_url } = await this.uploadProfileImage(this.state.values.profileImageURL);
         this.setState({
           values: {
             ...this.state.values,
-            profileImageURL: url,
+            profileImageURL: secure_url,
           },
           imageUploading: false,
         });
@@ -94,7 +94,7 @@ class EditProfileScreen extends Component {
   uploadProfileImage = (uri) => {
     const { cloudinary: { apiKey, cloud } } = config;
     const timestamp = Date.now().toString();
-    const uploadUrl = `https://api.cloudinary.com/v1_1/${cloud}/image/upload?upload_preset=profileImg`;
+    const uploadUrl = `https://api.cloudinary.com/v1_1/${cloud}/image/upload?upload_preset=profileImg&secure=true`;
 
     const formdata = new FormData();
     formdata.append('file', { uri, type: 'image/png', name: 'image.png' });
@@ -179,7 +179,7 @@ class EditProfileScreen extends Component {
                 id="EditProfile.profileImage"
                 large
                 source={{
-                  uri: this.props.user.profile.profileImageURL || defaultProfile,
+                  uri: this.state.values.profileImageURL || this.props.user.profile.profileImageURL || defaultProfile,
                 }}
               />
             </Button>
