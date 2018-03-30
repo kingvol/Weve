@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, ImageBackground, View } from 'react-native';
+import { Image, ImageBackground, TouchableOpacity, View } from 'react-native';
 import { CardItem, Container, Form, Icon, Item, Input, Label, Title } from 'native-base';
 import I18n from '../../locales';
 import { primaryColor, backgroundColor, contrastColor, primaryFont } from '../../theme';
@@ -7,14 +7,19 @@ import images from '../../images';
 import { Button, Center, Text } from '../../components/common';
 
 class LoginForm extends Component {
-  state = {
-    email: '',
-    password: '',
-    passwordLabel: I18n.t('common.password'),
-    passwordError: false,
-    emailLabel: I18n.t('common.email'),
-    emailError: false,
-  };
+  constructor() {
+    super();
+    this.switchSecure = this.switchSecure.bind(this);
+    this.state = {
+      secureVisible: false,
+      email: '',
+      password: '',
+      passwordLabel: I18n.t('common.password'),
+      passwordError: false,
+      emailLabel: I18n.t('common.email'),
+      emailError: false,
+    };
+  }
 
   onForgotPress = () => {
     this.props.onForgotPress();
@@ -59,6 +64,10 @@ class LoginForm extends Component {
     }
   }
 
+  switchSecure() {
+    this.setState({ secureVisible: !this.state.secureVisible });
+  }
+
   handleSubmit = () => {
     const { email, password } = this.state;
     this.props.onSubmitPress(email, password);
@@ -74,6 +83,8 @@ class LoginForm extends Component {
       form,
       logoOuterCircle,
       logoInnerCircle,
+      itemStyle,
+      itemPassword,
       item,
       label,
       input,
@@ -90,6 +101,8 @@ class LoginForm extends Component {
 
     const disabled = !this.state.email || !this.state.password;
 
+    const secure = !this.state.secureVisible;
+
     return (
       <Container containerStyle={containerStyle} id="LoginPage.main-content">
         <ImageBackground resizeMode="cover" style={background} source={images.backGround}>
@@ -104,40 +117,56 @@ class LoginForm extends Component {
             </View>
           </CardItem>
           <Form id="LoginPage.form-container" style={form}>
-            <Item
-              error={this.state.emailError}
-              id="LoginPage.emailInput"
-              floatingLabel
-              style={item}
-            >
-              <Label style={label}>{this.state.emailLabel}</Label>
-              <Input
-                style={input}
-                autoCapitalize="none"
-                autoCorrect={false}
-                value={this.state.email}
-                onChangeText={text => this.onFieldChange('email', text)}
-                onBlur={() => this.onBlur('email', this.state.email)}
-              />
-              {this.state.emailError && <Icon name="close-circle" />}
-            </Item>
-            <Item
-              error={this.state.passwordError}
-              id="LoginPage.passwordInput"
-              floatingLabel
-              style={item}
-            >
-              <Label style={label}>{this.state.passwordLabel}</Label>
-              <Input
-                style={input}
-                value={this.state.password}
-                onChangeText={text => this.onFieldChange('password', text)}
-                // onFocus={this.onFocus('password', this.state.password)}
-                onBlur={() => this.onBlur('password', this.state.password)}
-                secureTextEntry
-              />
-              {this.state.passwordError && <Icon name="close-circle" />}
-            </Item>
+            <View style={itemStyle}>
+              <Item
+                error={this.state.emailError}
+                id="LoginPage.emailInput"
+                floatingLabel
+                style={item}
+              >
+                <Label style={label}>{this.state.emailLabel}</Label>
+                <Input
+                  style={input}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  value={this.state.email}
+                  onChangeText={text => this.onFieldChange('email', text)}
+                  onBlur={() => this.onBlur('email', this.state.email)}
+                />
+                {this.state.emailError && <Icon name="close-circle" style={{ color: 'red' }} />}
+              </Item>
+              <View />
+            </View>
+            <View style={itemStyle}>
+              <Item
+                error={this.state.passwordError}
+                id="LoginPage.passwordInput"
+                floatingLabel
+                style={itemPassword}
+              >
+                <Label style={label}>{this.state.passwordLabel}</Label>
+                <Input
+                  style={input}
+                  value={this.state.password}
+                  onChangeText={text => this.onFieldChange('password', text)}
+                  // onFocus={this.onFocus('password', this.state.password)}
+                  onBlur={() => this.onBlur('password', this.state.password)}
+                  secureTextEntry={secure}
+                />
+                {this.state.passwordError && <Icon name="close-circle" style={{ color: 'red' }} />}
+              </Item>
+              <View
+                style={{
+                  alignSelf: 'flex-end',
+                  bottom: 2,
+                  flex: 0,
+                }}
+              >
+                <TouchableOpacity onPress={this.switchSecure}>
+                  <Icon style={{ color: 'white' }} size={24} name={secure ? 'md-eye-off' : 'eye'} />
+                </TouchableOpacity>
+              </View>
+            </View>
             {error && (
               <View style={styles.errorContainer}>
                 <Text
@@ -243,11 +272,22 @@ const styles = {
     marginRight: 15,
     marginBottom: 15,
   },
+
   item: {
+    flex: 1,
+    // marginTop: 15,
+    // marginLeft: 20,
+    marginRight: 34,
+  },
+  itemStyle: {
+    flexDirection: 'row',
     flex: 2,
-    marginTop: 15,
-    marginLeft: 20,
-    marginRight: 20,
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  itemPassword: {
+    flex: 1,
+    marginRight: 10,
   },
   label: {
     flex: 1,
