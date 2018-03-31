@@ -1,39 +1,27 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { Container, Icon } from 'native-base';
 import { connect } from 'react-redux';
-import { onPending, onFulfilled, onRejected } from '../../actions/inbox.actions';
+import { fetchRooms } from '../../actions/chat.actions';
 
 class InboxTab extends Component {
-  onFocus() {
-    this.props.onPending(true);
-  }
-
-  onChange() {
-    this.props.onFulfilled(true);
-  }
-
-  onBlur() {
-    this.props.onRejected(true);
+  onPress() {
+    this.props.fetchRooms();
   }
 
   render() {
     return (
       <Container>
         <View>
-          <Text>Inbox</Text>
-          <Icon type="FontAwesome" name="inbox" />
-          <TextInput
-            placeholder="chat with me"
-            onFocus={() => this.onFocus()}
-            onChangeText={() => this.onChange()}
-            onBlur={() => this.onBlur()}
-          />
+          <Text>Touch me</Text>
+          <TouchableOpacity onPress={() => this.onPress()}>
+            <Icon type="FontAwesome" name="inbox" />
+          </TouchableOpacity>
         </View>
         <View>
-          {this.props.pending && <Text>Pending</Text>}
+          {/* {this.props.pending && <Text>Pending</Text>}
           {this.props.fulfilled && <Text>Fulfilled</Text>}
-          {this.props.rejected && <Text>Rejected</Text>}
+          {this.props.rejected && <Text>Rejected</Text>} */}
         </View>
       </Container>
     );
@@ -41,13 +29,7 @@ class InboxTab extends Component {
 }
 
 const mapStateToProps = state => ({
-  pending: state.inbox.pending,
-  fulfilled: state.inbox.fulfilled,
-  rejected: state.inbox.rejected,
+  rooms: state.chat,
 });
 
-export default connect(mapStateToProps, {
-  onPending,
-  onFulfilled,
-  onRejected,
-})(InboxTab);
+export default connect(mapStateToProps, { fetchRooms })(InboxTab);

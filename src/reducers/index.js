@@ -3,13 +3,13 @@ import { combineReducers } from 'redux';
 import RootReducer from './root.reducer';
 import AuthReducer from './auth.reducer';
 import UserReducer from './user.reducer';
-import InboxReducer from './inbox.reducer';
+import ChatReducer from './chat.reducer';
 
 const reducers = {
   root: RootReducer,
   auth: AuthReducer,
   user: UserReducer,
-  inbox: InboxReducer,
+  chat: ChatReducer,
 };
 
 const rootReducer = combineReducers(reducers);
