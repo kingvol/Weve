@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle, react/no-unused-state */
 import React, { Component } from 'react';
-import { StyleSheet, Dimensions, View } from 'react-native';
+import { Dimensions, View } from 'react-native';
 import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
 
 import ProviderList from '../../../components/home/ProviderList';
@@ -52,13 +52,13 @@ class ProviderTabList extends Component {
   DecorationRoute = () => <ProviderList category="Decoration" navigator={this.props.navigator} />;
   CakeRoute = () => <ProviderList category="Cake" navigator={this.props.navigator} />;
 
-  _handleIndexChange = index => {
+  _handleIndexChange = (index) => {
     this.setState({
       tabBarState: {
         ...this.state.tabBarState,
         index,
-      }
-    })
+      },
+    });
   }
 
   _renderHeader = props => (

@@ -21,6 +21,7 @@ class ProviderList extends PureComponent {
     this.props.navigator.push({
       screen: 'wevedo.ProviderProfile',
       title: `${provider.firstName} ${provider.lastName || ''}`,
+      passProps: { provider },
       navigatorStyle: {
         navBarBackgroundColor: '#d64635',
         navBarTextColor: 'white',
