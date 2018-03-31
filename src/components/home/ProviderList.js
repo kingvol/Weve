@@ -2,6 +2,7 @@
 import React, { PureComponent } from 'react';
 import { View, ActivityIndicator, FlatList, Alert } from 'react-native';
 import ProviderListItem from './ProviderListItem';
+import { primaryFont } from '../../theme';
 import APIs from '../../api';
 
 const { ProviderApi } = APIs;
@@ -14,6 +15,20 @@ class ProviderList extends PureComponent {
 
   componentDidMount() {
     this.fetchProvidersList(this.props.category);
+  }
+
+  onPressItem = (provider) => {
+    this.props.navigator.push({
+      screen: 'wevedo.ProviderProfile',
+      title: `${provider.firstName} ${provider.lastName || ''}`,
+      passProps: { provider },
+      navigatorStyle: {
+        navBarBackgroundColor: '#d64635',
+        navBarTextColor: 'white',
+        navBarButtonColor: 'white',
+        navBarTextFontFamily: primaryFont,
+      },
+    });
   }
 
   fetchProvidersList = async (category) => {
@@ -31,7 +46,7 @@ class ProviderList extends PureComponent {
     <ProviderListItem
       provider={item}
       id={item._id}
-      onPressItem={this.onPressItem}
+      onPress={this.onPressItem}
     />
   );
 

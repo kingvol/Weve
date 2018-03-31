@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle, react/no-unused-state */
 import React, { Component } from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
+import { Dimensions, View } from 'react-native';
 import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
 
 import ProviderList from '../../../components/home/ProviderList';
@@ -10,76 +10,93 @@ const initialLayout = {
   width: Dimensions.get('window').width,
 };
 
-const VenueRoute = () => <ProviderList category="Venue" />;
-const ArtistRoute = () => <ProviderList category="Artist" />;
-const PhotoRoute = () => <ProviderList category="Photo" />;
-const VideoRoute = () => <ProviderList category="Video" />;
-const EntertainmentRoute = () => <ProviderList category="Entertainment" />;
-const MakeupRoute = () => <ProviderList category="Make up" />;
-const ConstumeRoute = () => <ProviderList category="Costume" />;
-const DecorationRoute = () => <ProviderList category="Decoration" />;
-const CakeRoute = () => <ProviderList category="Cake" />;
 
 class ProviderTabList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      index: this.props.routeIndex || 0,
-      routes: [
-        { key: 'venue', title: 'Venue' },
-        { key: 'artist', title: 'Artist' },
-        { key: 'photo', title: 'Photo' },
-        { key: 'video', title: 'Video' },
-        { key: 'entertainment', title: 'Entertainment' },
-        { key: 'makeup', title: 'Make up' },
-        { key: 'costume', title: 'Costume' },
-        { key: 'decoration', title: 'Decoration' },
-        { key: 'cake', title: 'Cake' },
-      ],
+      tabBarState: {
+        index: this.props.routeIndex || 0,
+        routes: [
+          { key: 'venue', title: 'Venue' },
+          { key: 'artist', title: 'Artist' },
+          { key: 'photo', title: 'Photo' },
+          { key: 'video', title: 'Video' },
+          { key: 'entertainment', title: 'Entertainment' },
+          { key: 'makeup', title: 'Make up' },
+          { key: 'costume', title: 'Costume' },
+          { key: 'decoration', title: 'Decoration' },
+          { key: 'cake', title: 'Cake' },
+        ],
+      },
+      visible: false,
     };
+    this.props.navigator.setOnNavigatorEvent(this.handleNavigatorEvent.bind(this));
   }
 
-  _handleIndexChange = index => this.setState({ index });
+  handleNavigatorEvent(event) {
+    if (event.id === 'willAppear') {
+      this.setState({ visible: true });
+    } else if (event.id === 'willDisappear') {
+      this.setState({ visible: false });
+    }
+  }
 
-_renderHeader = props => (
-  <TabBar
-    {...props}
-    scrollEnabled
-    useNativeDriver
-    style={{ backgroundColor: 'white' }}
-    labelStyle={{ color: 'red' }}
-    indicatorStyle={{ backgroundColor: 'red' }}
-  />);
+  VenueRoute = () => <ProviderList category="Venue" navigator={this.props.navigator} />;
+  ArtistRoute = () => <ProviderList category="Artist" navigator={this.props.navigator} />;
+  PhotoRoute = () => <ProviderList category="Photo" navigator={this.props.navigator} />;
+  VideoRoute = () => <ProviderList category="Video" navigator={this.props.navigator} />;
+  EntertainmentRoute = () => <ProviderList category="Entertainment" navigator={this.props.navigator} />;
+  MakeupRoute = () => <ProviderList category="Make up" navigator={this.props.navigator} />;
+  ConstumeRoute = () => <ProviderList category="Costume" navigator={this.props.navigator} />;
+  DecorationRoute = () => <ProviderList category="Decoration" navigator={this.props.navigator} />;
+  CakeRoute = () => <ProviderList category="Cake" navigator={this.props.navigator} />;
+
+  _handleIndexChange = (index) => {
+    this.setState({
+      tabBarState: {
+        ...this.state.tabBarState,
+        index,
+      },
+    });
+  }
+
+  _renderHeader = props => (
+    <TabBar
+      {...props}
+      scrollEnabled
+      useNativeDriver
+      style={{ backgroundColor: 'white' }}
+      labelStyle={{ color: 'red' }}
+      indicatorStyle={{ backgroundColor: 'red' }}
+    />);
 
   _renderScene = SceneMap({
-    venue: VenueRoute,
-    artist: ArtistRoute,
-    photo: PhotoRoute,
-    video: VideoRoute,
-    entertainment: EntertainmentRoute,
-    makeup: MakeupRoute,
-    costume: ConstumeRoute,
-    decoration: DecorationRoute,
-    cake: CakeRoute,
+    venue: this.VenueRoute,
+    artist: this.ArtistRoute,
+    photo: this.PhotoRoute,
+    video: this.VideoRoute,
+    entertainment: this.EntertainmentRoute,
+    makeup: this.MakeupRoute,
+    costume: this.ConstumeRoute,
+    decoration: this.DecorationRoute,
+    cake: this.CakeRoute,
   });
 
   render() {
+    const { visible } = this.state;
     return (
-      <TabViewAnimated
-        navigationState={this.state}
-        renderScene={this._renderScene}
-        renderHeader={this._renderHeader}
-        onIndexChange={this._handleIndexChange}
-        initialLayout={initialLayout}
-      />
+      <View style={{ flex: visible === true ? 1 : 0 }}>
+        <TabViewAnimated
+          navigationState={this.state.tabBarState}
+          renderScene={this._renderScene}
+          renderHeader={this._renderHeader}
+          onIndexChange={this._handleIndexChange}
+          initialLayout={initialLayout}
+        />
+      </View>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
 
 export default ProviderTabList;
