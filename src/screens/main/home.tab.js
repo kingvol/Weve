@@ -79,7 +79,7 @@ class HomeTab extends Component {
   onCategoryPress = (category) => {
     this.props.navigator.push({
       screen: 'wevedo.ProviderTabList',
-      title: 'Advertisers',
+      title: I18n.t('categories.categories'),
       passProps: { routeIndex: category.screenIndex },
       navigatorStyle: {
         navBarBackgroundColor: '#d64635',

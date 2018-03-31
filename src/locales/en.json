@@ -43,6 +43,7 @@
     "success_message": "Please check your email."
   },
   "categories": {
+    "categories": "Categories",
     "artist": "Artist",
     "photo": "Photo",
     "venue": "Venue",
