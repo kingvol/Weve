@@ -8,6 +8,10 @@ class InboxTab extends Component {
   state: {
     rooms: [],
   };
+  componentDidMount() {
+    this.props.fetchRooms();
+  }
+
   onPress() {
     this.props.fetchRooms();
   }

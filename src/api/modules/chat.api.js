@@ -3,7 +3,7 @@ import Api from '../api.base';
 const resource = 'api/chat';
 
 /**
- * @name Class UserApi
+ * @name Class ChatApi
  * @extends Api
  */
 export default class ChatApi extends Api {
@@ -14,7 +14,6 @@ export default class ChatApi extends Api {
   fetchRooms = async () => {
     try {
       const response = await this.request('api/chat/rooms');
-      await this.request('api/chat/rooms');
       if (response.message || response.error) {
         return Promise.reject(response);
       }
