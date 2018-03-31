@@ -5,6 +5,9 @@ import { connect } from 'react-redux';
 import { fetchRooms } from '../../actions/chat.actions';
 
 class InboxTab extends Component {
+  state: {
+    rooms: [],
+  };
   onPress() {
     this.props.fetchRooms();
   }
@@ -17,11 +20,6 @@ class InboxTab extends Component {
           <TouchableOpacity onPress={() => this.onPress()}>
             <Icon type="FontAwesome" name="inbox" />
           </TouchableOpacity>
-        </View>
-        <View>
-          {/* {this.props.pending && <Text>Pending</Text>}
-          {this.props.fulfilled && <Text>Fulfilled</Text>}
-          {this.props.rejected && <Text>Rejected</Text>} */}
         </View>
       </Container>
     );

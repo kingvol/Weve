@@ -11,9 +11,10 @@ export default class ChatApi extends Api {
     super(resource);
   }
 
-  fetchRooms = async (_id) => {
+  fetchRooms = async () => {
     try {
-      const response = await this.getOne(_id);
+      const response = await this.request('api/chat/rooms');
+      await this.request('api/chat/rooms');
       if (response.message || response.error) {
         return Promise.reject(response);
       }
