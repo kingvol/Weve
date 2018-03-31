@@ -1,22 +1,24 @@
 /* eslint-disable no-underscore-dangle, react/no-unused-state */
 import React, { Component } from 'react';
-import { View, StyleSheet, Dimensions, Text } from 'react-native';
+import { View, StyleSheet, Dimensions } from 'react-native';
 import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
+
+import ProviderList from '../../../components/home/ProviderList';
 
 const initialLayout = {
   height: 0,
   width: Dimensions.get('window').width,
 };
 
-const VenueRoute = () => <View style={[ styles.container, { backgroundColor: 'green', } ]} />;
-const ArtistRoute = () => <View style={[ styles.container, { backgroundColor: 'yellow', } ]} />;
-const PhotoRoute = () => <View style={[ styles.container, { backgroundColor: 'red', } ]} />;
-const VideoRoute = () => <View style={[ styles.container, { backgroundColor: 'blue', } ]} />;
-const EntertainmentRoute = () => <View style={[ styles.container ]} />;
-const MakeupRoute = () => <View style={[ styles.container ]} />;
-const ConstumeRoute = () => <View style={[ styles.container ]} />;
-const DecorationRoute = () => <View style={[ styles.container ]} />;
-const CakeRoute = () => <View style={[ styles.container ]} />;
+const VenueRoute = () => <ProviderList category="Venue" />;
+const ArtistRoute = () => <ProviderList category="Artist" />;
+const PhotoRoute = () => <ProviderList category="Photo" />;
+const VideoRoute = () => <ProviderList category="Video" />;
+const EntertainmentRoute = () => <ProviderList category="Entertainment" />;
+const MakeupRoute = () => <ProviderList category="Make up" />;
+const ConstumeRoute = () => <ProviderList category="Costume" />;
+const DecorationRoute = () => <ProviderList category="Decoration" />;
+const CakeRoute = () => <ProviderList category="Cake" />;
 
 class ProviderTabList extends Component {
   constructor(props) {
