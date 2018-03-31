@@ -43,6 +43,7 @@
     "success_message": "Lütfen e-postanızı kontrol edin"
   },
   "categories": {
+    "categories": "Kategoriler",
     "artist": "Sanatçı",
     "photo": "Fotoğrafçı",
     "venue": "Mekan",
