@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
-import { primaryColor, contrastColor, primaryFont } from '../../theme';
+import { View, Text, StyleSheet, Image, TouchableWithoutFeedback } from 'react-native';
+import { primaryFont } from '../../theme';
 
 class ProviderListItem extends Component {
   render() {
     const { firstName, lastName, profileImageURL } = this.props.provider;
     return (
-      <View style={styles.listItem}>
-        <Image style={styles.image} source={{ uri: profileImageURL }} />
-        <View style={{ margin: 10, justifyContent: 'center' }}>
-          <Text style={styles.artistTitle}>{`${firstName} ${lastName || ''}`}</Text>
+      <TouchableWithoutFeedback onPress={() => this.props.onPress(this.props.provider)}>
+        <View style={styles.listItem}>
+          <Image style={styles.image} source={{ uri: profileImageURL }} />
+          <View style={{ margin: 10, justifyContent: 'center' }}>
+            <Text style={styles.artistTitle}>{`${firstName} ${lastName || ''}`}</Text>
+          </View>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     );
   }
 }
