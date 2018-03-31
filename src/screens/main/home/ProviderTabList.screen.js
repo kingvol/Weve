@@ -45,7 +45,7 @@ _renderHeader = props => (
   <TabBar
     {...props}
     scrollEnabled
-    useNativaDriver
+    useNativeDriver
     style={{ backgroundColor: 'white' }}
     labelStyle={{ color: 'red' }}
     indicatorStyle={{ backgroundColor: 'red' }}
