@@ -17,6 +17,11 @@ const calendarTheme = {
 };
 
 class ProviderProfileScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+  }
+
   componentDidMount() {
     if (!this.props.user.profile.isProvider) {
       Promise.all([Icon.getImageSource('comments-o', 20, '#ffffff')]).then((sources) => {
@@ -29,6 +34,15 @@ class ProviderProfileScreen extends Component {
           ],
           animated: true,
         });
+      });
+    }
+  }
+
+  onNavigatorEvent(event) {
+    if (event.id === 'bottomTabReselected') {
+      this.props.navigator.popToRoot({
+        animated: true,
+        animationType: 'fade',
       });
     }
   }

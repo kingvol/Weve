@@ -20,8 +20,22 @@ const { fetchProfile } = UserActions;
 const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png';
 
 class ProfileScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+  }
+
   componentDidMount() {
     this.props.fetchProfile('me');
+  }
+
+  onNavigatorEvent(event) {
+    if (event.id === 'bottomTabReselected') {
+      this.props.navigator.popToRoot({
+        animated: true,
+        animationType: 'fade',
+      });
+    }
   }
 
   onEditPress = () => {
@@ -48,9 +62,7 @@ class ProfileScreen extends Component {
           />
         </Row>
         <Row size={35} style={{ height: 20 }}>
-          <Label id="Profile.first_lastName">
-            {`${firstName || ''} ${lastName || ''}`}
-          </Label>
+          <Label id="Profile.first_lastName">{`${firstName || ''} ${lastName || ''}`}</Label>
         </Row>
       </Col>
     </Row>

@@ -11,7 +11,6 @@ const initialLayout = {
   width: Dimensions.get('window').width,
 };
 
-
 class ProviderTabList extends Component {
   constructor(props) {
     super(props);
@@ -40,6 +39,11 @@ class ProviderTabList extends Component {
       this.setState({ visible: true });
     } else if (event.id === 'willDisappear') {
       this.setState({ visible: false });
+    } else if (event.id === 'bottomTabReselected') {
+      this.props.navigator.popToRoot({
+        animated: true,
+        animationType: 'fade',
+      });
     }
   }
 
@@ -47,7 +51,9 @@ class ProviderTabList extends Component {
   ArtistRoute = () => <ProviderList category="Artist" navigator={this.props.navigator} />;
   PhotoRoute = () => <ProviderList category="Photo" navigator={this.props.navigator} />;
   VideoRoute = () => <ProviderList category="Video" navigator={this.props.navigator} />;
-  EntertainmentRoute = () => <ProviderList category="Entertainment" navigator={this.props.navigator} />;
+  EntertainmentRoute = () => (
+    <ProviderList category="Entertainment" navigator={this.props.navigator} />
+  );
   MakeupRoute = () => <ProviderList category="Make up" navigator={this.props.navigator} />;
   ConstumeRoute = () => <ProviderList category="Costume" navigator={this.props.navigator} />;
   DecorationRoute = () => <ProviderList category="Decoration" navigator={this.props.navigator} />;
@@ -60,7 +66,7 @@ class ProviderTabList extends Component {
         index,
       },
     });
-  }
+  };
 
   _renderHeader = props => (
     <TabBar
@@ -70,7 +76,8 @@ class ProviderTabList extends Component {
       style={{ backgroundColor: 'white' }}
       labelStyle={{ color: 'red' }}
       indicatorStyle={{ backgroundColor: 'red' }}
-    />);
+    />
+  );
 
   _renderScene = SceneMap({
     venue: this.VenueRoute,

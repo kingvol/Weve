@@ -91,7 +91,7 @@ class HomeTab extends Component {
         navBarTextFontFamily: primaryFont,
       },
     });
-  }
+  };
 
   renderItem = ({ item }) => (
     <View
