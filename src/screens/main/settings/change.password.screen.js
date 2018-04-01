@@ -9,38 +9,37 @@ import { UserActions } from '../../../actions';
 const { changePassword } = UserActions;
 
 class ChangePasswordScreen extends Component {
-  state = {
-    values: {
-      currentPassword: '',
-      newPassword: '',
-      confirmPassword: '',
-    },
-    errors: {
-      currentPassword: {
-        isError: false,
-        error: '',
+  constructor(props) {
+    super(props);
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+    this.state = {
+      values: {
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: '',
       },
-      newPassword: {
-        isError: false,
-        error: '',
+      errors: {
+        currentPassword: {
+          isError: false,
+          error: '',
+        },
+        newPassword: {
+          isError: false,
+          error: '',
+        },
+        confirmPassword: {
+          isError: false,
+          error: '',
+        },
       },
-      confirmPassword: {
-        isError: false,
-        error: '',
-      },
-    },
-    processing: false,
-  };
+      processing: false,
+    };
+  }
 
   componentWillMount() {
     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
   }
-
-  componentWillUnmount() {
-    this.keyboardDidShowListener.remove();
-    this.keyboardDidHideListener.remove();
-  };
 
   componentWillReceiveProps({ user }) {
     if (!user.isLoading && user.error && this.state.processing) {
@@ -51,6 +50,20 @@ class ChangePasswordScreen extends Component {
     if (!user.isLoading && this.state.processing) {
       Alert.alert(I18n.t('changePassword.success_message'));
       this.switchProcessing();
+    }
+  }
+
+  componentWillUnmount() {
+    this.keyboardDidShowListener.remove();
+    this.keyboardDidHideListener.remove();
+  }
+
+  onNavigatorEvent(event) {
+    if (event.id === 'bottomTabReselected') {
+      this.props.navigator.popToRoot({
+        animated: true,
+        animationType: 'fade',
+      });
     }
   }
 
@@ -112,12 +125,12 @@ class ChangePasswordScreen extends Component {
         },
       });
     }
-  }
+  };
 
   onFormSubmit = () => {
     this.setState({ processing: true });
     this.props.changePassword({ password: this.state.values.newPassword });
-  }
+  };
 
   keyboardDidShow = () => {
     this.props.navigator.toggleTabs({
@@ -135,7 +148,7 @@ class ChangePasswordScreen extends Component {
 
   switchProcessing = () => {
     this.setState({ processing: false });
-  }
+  };
 
   render() {
     const disabled = this.props.user.loading || !this.state.values.newPassword;

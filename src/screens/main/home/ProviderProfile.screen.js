@@ -15,14 +15,25 @@ const calendarTheme = {
 };
 
 class ProviderProfileScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+  }
+
+  onNavigatorEvent(event) {
+    if (event.id === 'bottomTabReselected') {
+      this.props.navigator.popToRoot({
+        animated: true,
+        animationType: 'fade',
+      });
+    }
+  }
+
   render() {
     return (
       <Content contentContainerStyle={{ flexGrow: 1 }}>
         <View style={{ minHeight: 500, flex: 2 }}>
-          <Image
-            style={styles.image}
-            source={{ uri: this.props.provider.profileImageURL }}
-          />
+          <Image style={styles.image} source={{ uri: this.props.provider.profileImageURL }} />
           <Calendar
             theme={calendarTheme}
             style={styles.calendar}

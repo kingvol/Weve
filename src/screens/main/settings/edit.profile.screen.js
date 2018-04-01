@@ -22,6 +22,7 @@ const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png
 class EditProfileScreen extends Component {
   constructor(props) {
     super(props);
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     this.state = {
       values: {
         firstName: this.props.user.profile.firstName || '',
@@ -62,6 +63,15 @@ class EditProfileScreen extends Component {
     this.keyboardDidHideListener.remove();
   }
 
+  onNavigatorEvent(event) {
+    if (event.id === 'bottomTabReselected') {
+      this.props.navigator.popToRoot({
+        animated: true,
+        animationType: 'fade',
+      });
+    }
+  }
+
   onFieldChange = (key, value) => {
     this.setState({
       values: {
@@ -69,7 +79,7 @@ class EditProfileScreen extends Component {
         [key]: value,
       },
     });
-  }
+  };
 
   onSubmitForm = async () => {
     if (this.state.values.profileImageURL !== this.props.user.profile.profileImageURL) {
@@ -90,7 +100,7 @@ class EditProfileScreen extends Component {
     }
     this.props.updateProfile(this.state.values);
     this.setState({ loading: true });
-  }
+  };
 
   uploadProfileImage = (uri) => {
     const { cloudinary: { apiKey, cloud } } = config;
@@ -107,7 +117,7 @@ class EditProfileScreen extends Component {
       headers: { 'Content-Type': 'multipart/form-data' },
       body: formdata,
     }).then(raw => raw.json());
-  }
+  };
 
   keyboardDidShow = () => {
     this.props.navigator.toggleTabs({
@@ -126,7 +136,7 @@ class EditProfileScreen extends Component {
   updateProfile = () => {
     this.props.fetchProfile('me');
     this.setState({ loading: false });
-  }
+  };
 
   captureImage = () => {
     const options = {
@@ -156,7 +166,7 @@ class EditProfileScreen extends Component {
         });
       }
     });
-  }
+  };
 
   render() {
     const { firstName, lastName, phoneNumber, email } = this.state.values;
@@ -180,7 +190,10 @@ class EditProfileScreen extends Component {
                 id="EditProfile.profileImage"
                 large
                 source={{
-                  uri: this.state.values.profileImageURL || this.props.user.profile.profileImageURL || defaultProfile,
+                  uri:
+                    this.state.values.profileImageURL ||
+                    this.props.user.profile.profileImageURL ||
+                    defaultProfile,
                 }}
               />
             </Button>

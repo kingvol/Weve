@@ -38,7 +38,6 @@ export const startTabBasedApp = () => {
           label: I18n.t('menu.home').toUpperCase(),
           screen: 'wevedo.HomeTab', // this is a registered name for a screen
           icon: sources[0],
-          // selectedIcon: sources[1],
           title: I18n.t('menu.home'),
           overrideBackPress: true,
           navigatorStyle: {
@@ -75,8 +74,6 @@ export const startTabBasedApp = () => {
       tabsStyle: {
         tabBarButtonColor: '#c4c4c4',
         tabBarSelectedButtonColor: '#e91e63',
-        // tabBarBackgroundColor: '#551A8B',
-        // initialTabIndex: 1,
       },
     });
   });
