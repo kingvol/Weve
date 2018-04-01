@@ -3,7 +3,7 @@ import { View, Text, Thumbnail, Button } from 'native-base';
 import ImagePicker from 'react-native-image-picker';
 import I18n from 'react-native-i18n';
 
-const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png'
+const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png';
 
 export default class SignupImageForm extends Component {
   state = {
