@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
+import { last, orderBy } from 'lodash';
 import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList } from 'react-native';
 import { Icon, Container, Content, Body, Left, Right, Badge } from 'native-base';
 import { Center } from '../../components/common';
@@ -24,7 +25,7 @@ class InboxTab extends Component {
       username, lastMessage, image, messageBody, badge, badgeText } = styles;
     const { dialogUser, messages, lastMessageTime, lastMessageText, unreadMessages = [] } = item;
 
-    return (dialogUser && messages &&
+    return (dialogUser && messages.length &&
       <TouchableOpacity style={listItem}>
         <Body style={body}>
           <Left style={avatar}>
@@ -63,23 +64,19 @@ class InboxTab extends Component {
     if (rooms.length) {
       inbox = rooms.map(({ _id, user, provider, messages, unreadByProvider, unreadByUser, updatedAt }) => {
         const dialogUser = profile.isProvider ? user : provider;
-        /* messages = messages && values(messages)
-        if (!(messages && messages.length)) return null
-        const {time, text} = last(orderBy(messages, 'time')) */
-
+        const { body } = last(orderBy(messages, 'createdAt'));
         const unreadMessages = profile.isProvider ? unreadByProvider : unreadByUser;
         return {
           _id,
           dialogUser,
           messages,
           lastMessageTime: updatedAt,
-          lastMessageText: 'Last message text',
+          lastMessageText: body,
           unreadMessages,
         };
       });
     }
-    // inbox = inbox.filter(dialog => dialog && (dialog.user && dialog.messages));
-    // inbox = orderBy(inbox, 'lastMessageTime', 'desc');
+    inbox = orderBy(inbox, 'lastMessageTime', 'desc');
 
     return !this.props.chat.rooms.length ? (
       <Container>
