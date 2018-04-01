@@ -1,9 +1,9 @@
 /* eslint-disable no-underscore-dangle */
 import React, { Component } from 'react';
 import moment from 'moment';
+import { connect } from 'react-redux';
 import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList } from 'react-native';
 import { Icon, Container, Content, Body, Left, Right } from 'native-base';
-import { connect } from 'react-redux';
 import { Center } from '../../components/common';
 import { primaryFont, black, lighterTextColor } from '../../theme';
 import { fetchRooms } from '../../actions/chat.actions';
@@ -16,9 +16,9 @@ class InboxTab extends Component {
     this.props.fetchRooms();
   }
 
-  _formatDate = unixTime => moment.unix(unixTime).format('DD.MM.YY')
+  formatDate = unixTime => moment.unix(unixTime).format('DD.MM.YY')
 
-  _renderInboxItem = ({ item }) => {
+  renderInboxItem = ({ item }) => {
     const {
       body, avatar, contentWrapper, content, listItem, listItemHeader,
       username, lastMessage, image, messageBody } = styles;
@@ -34,7 +34,7 @@ class InboxTab extends Component {
             <View style={content}>
               <View style={listItemHeader}>
                 <Text numberOfLines={1} style={username}>{`${dialogUser.firstName} ${dialogUser.lastName || ''}`}</Text>
-                <Text style={lastMessage}>{this._formatDate(lastMessageTime)}</Text>
+                <Text style={lastMessage}>{this.formatDate(lastMessageTime)}</Text>
               </View>
               <View style={messageBody}>
                 <Text numberOfLines={2}>{lastMessageText}</Text>
@@ -61,24 +61,21 @@ class InboxTab extends Component {
     if (rooms.length) {
       inbox = rooms.map(({ _id, user, provider, messages }) => {
         const dialogUser = profile.isProvider ? user : provider;
-  
         /* messages = messages && values(messages)
         if (!(messages && messages.length)) return null
         const {time, text} = last(orderBy(messages, 'time'))
   
         let unreadDialog = && unreadDialogs && unreadDialogs[id] && Object.keys(unreadDialogs[id]); */
-  
         return {
           _id,
           dialogUser,
           messages,
-          lastMessageTime: Date.now(),
+          lastMessageTime: new Date(Date.now()),
           lastMessageText: 'Last message text',
           // unreadDialog,
         };
       });
     }
-
     // inbox = inbox.filter(dialog => dialog && (dialog.user && dialog.messages));
     // inbox = orderBy(inbox, 'lastMessageTime', 'desc');
 
@@ -94,7 +91,7 @@ class InboxTab extends Component {
           <FlatList
             data={inbox}
             keyExtractor={item => item._id}
-            renderItem={this._renderInboxItem}
+            renderItem={this.renderInboxItem}
           />
         </Content>
       </Container>
