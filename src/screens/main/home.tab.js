@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { Image, FlatList, Platform, TouchableOpacity, Text, View } from 'react-native';
+import { connect } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import { Content } from 'native-base';
 
 import I18n from '../../locales';
 import images from '../../images';
 import { primaryFont, backgroundColor } from '../../theme';
+import { fetchProfile } from '../../actions/user.actions';
 
 const categories = [
   {
@@ -74,6 +76,7 @@ class HomeTab extends Component {
     if (Platform.OS === 'ios') {
       SplashScreen.hide();
     }
+    this.props.fetchProfile('me');
   }
 
   onCategoryPress = (category) => {
@@ -141,4 +144,8 @@ class HomeTab extends Component {
   }
 }
 
-export default HomeTab;
+const mapStateToProps = state => ({
+  user: state.user,
+});
+
+export default connect(mapStateToProps, { fetchProfile })(HomeTab);
