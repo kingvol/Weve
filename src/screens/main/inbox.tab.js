@@ -2,8 +2,9 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
+import { last, orderBy } from 'lodash';
 import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList } from 'react-native';
-import { Icon, Container, Content, Body, Left, Right } from 'native-base';
+import { Icon, Container, Content, Body, Left, Right, Badge } from 'native-base';
 import { Center } from '../../components/common';
 import { primaryFont, black, lighterTextColor } from '../../theme';
 import { fetchRooms } from '../../actions/chat.actions';
@@ -16,15 +17,15 @@ class InboxTab extends Component {
     this.props.fetchRooms();
   }
 
-  formatDate = unixTime => moment.unix(unixTime).format('DD.MM.YY')
+  formatDate = date => moment(date).format('DD.MM.YY')
 
   renderInboxItem = ({ item }) => {
     const {
       body, avatar, contentWrapper, content, listItem, listItemHeader,
-      username, lastMessage, image, messageBody } = styles;
-    const { dialogUser, messages, lastMessageTime, lastMessageText } = item;
+      username, lastMessage, image, messageBody, badge, badgeText } = styles;
+    const { dialogUser, messages, lastMessageTime, lastMessageText, unreadMessages = [] } = item;
 
-    return (dialogUser && messages &&
+    return (dialogUser && messages.length &&
       <TouchableOpacity style={listItem}>
         <Body style={body}>
           <Left style={avatar}>
@@ -38,9 +39,11 @@ class InboxTab extends Component {
               </View>
               <View style={messageBody}>
                 <Text numberOfLines={2}>{lastMessageText}</Text>
-                { /* unreadDialog &&
-                  <Badge warning style={badge}><Text
-                style={badgeText}>{unreadDialog.length}</Text></Badge> */}
+                {unreadMessages.length > 0 &&
+                  <Badge warning style={badge}>
+                    <Text style={badgeText}>{unreadMessages.length}</Text>
+                  </Badge>
+                }
               </View>
             </View>
             <Right style={{ flex: 0 }}>
@@ -59,25 +62,21 @@ class InboxTab extends Component {
     let inbox = [];
 
     if (rooms.length) {
-      inbox = rooms.map(({ _id, user, provider, messages }) => {
+      inbox = rooms.map(({ _id, user, provider, messages, unreadByProvider, unreadByUser, updatedAt }) => {
         const dialogUser = profile.isProvider ? user : provider;
-        /* messages = messages && values(messages)
-        if (!(messages && messages.length)) return null
-        const {time, text} = last(orderBy(messages, 'time'))
-  
-        let unreadDialog = && unreadDialogs && unreadDialogs[id] && Object.keys(unreadDialogs[id]); */
+        const { body } = last(orderBy(messages, 'createdAt'));
+        const unreadMessages = profile.isProvider ? unreadByProvider : unreadByUser;
         return {
           _id,
           dialogUser,
           messages,
-          lastMessageTime: new Date(Date.now()),
-          lastMessageText: 'Last message text',
-          // unreadDialog,
+          lastMessageTime: updatedAt,
+          lastMessageText: body,
+          unreadMessages,
         };
       });
     }
-    // inbox = inbox.filter(dialog => dialog && (dialog.user && dialog.messages));
-    // inbox = orderBy(inbox, 'lastMessageTime', 'desc');
+    inbox = orderBy(inbox, 'lastMessageTime', 'desc');
 
     return !this.props.chat.rooms.length ? (
       <Container>
