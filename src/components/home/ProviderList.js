@@ -29,7 +29,7 @@ class ProviderList extends PureComponent {
         navBarTextFontFamily: primaryFont,
       },
     });
-  }
+  };
 
   fetchProvidersList = async (category) => {
     try {
@@ -43,11 +43,7 @@ class ProviderList extends PureComponent {
   _keyExtractor = item => item._id;
 
   _renderItem = ({ item }) => (
-    <ProviderListItem
-      provider={item}
-      id={item._id}
-      onPress={this.onPressItem}
-    />
+    <ProviderListItem provider={item} id={item._id} onPress={this.onPressItem} />
   );
 
   render() {
@@ -68,4 +64,3 @@ class ProviderList extends PureComponent {
 }
 
 export default ProviderList;
-
