@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, ActivityIndicator, Alert, Keyboard } from 'react-native';
+import { ActivityIndicator, Alert } from 'react-native';
 
 import APIs from '../../../api';
 import ChatView from '../../../components/chat/ChatView';
