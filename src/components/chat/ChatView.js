@@ -20,7 +20,7 @@ class ChatView extends Component {
           },
         },
       ],
-    })
+    });
   }
 
   onSend(messages = []) {

@@ -15,11 +15,6 @@ class Chat extends Component {
     intervalId: '',
   }
 
-  componentWillMount() {
-    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
-    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
-  }
-
   async componentDidMount() {
     const { from, roomId } = this.props;
     if (from === 'inbox' && roomId) {
@@ -30,8 +25,6 @@ class Chat extends Component {
 
   componentWillUnmount() {
     this.stopMessagePolling();
-    this.keyboardDidShowListener.remove();
-    this.keyboardDidHideListener.remove();
     /* this.props.fetchRooms */ // update inbox;
   }
 
@@ -66,20 +59,6 @@ class Chat extends Component {
     const { intervalId } = this.state;
     clearInterval(intervalId);
   }
-
-  keyboardDidShow = () => {
-    this.props.navigator.toggleTabs({
-      to: 'hidden', // required, 'hidden' = hide tab bar, 'shown' = show tab bar
-      animated: false,
-    });
-  };
-
-  keyboardDidHide = () => {
-    this.props.navigator.toggleTabs({
-      to: 'shown', // required, 'hidden' = hide tab bar, 'shown' = show tab bar
-      animated: false,
-    });
-  };
 
   render() {
     return this.state.room ? (
