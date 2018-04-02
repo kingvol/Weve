@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { View, Text, ActivityIndicator, Alert } from 'react-native';
+import { View, Text, ActivityIndicator, Alert, Keyboard } from 'react-native';
 
 import APIs from '../../../api';
+import ChatView from '../../../components/chat/ChatView';
 import { Center, Container } from '../../../components/common';
 
 const { ChatApi } = APIs;
@@ -14,6 +15,11 @@ class Chat extends Component {
     intervalId: '',
   }
 
+  componentWillMount() {
+    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
+    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
+  }
+
   async componentDidMount() {
     const { from, roomId } = this.props;
     if (from === 'inbox' && roomId) {
@@ -24,6 +30,8 @@ class Chat extends Component {
 
   componentWillUnmount() {
     this.stopMessagePolling();
+    this.keyboardDidShowListener.remove();
+    this.keyboardDidHideListener.remove();
     /* this.props.fetchRooms */ // update inbox;
   }
 
@@ -59,9 +67,26 @@ class Chat extends Component {
     clearInterval(intervalId);
   }
 
+  keyboardDidShow = () => {
+    this.props.navigator.toggleTabs({
+      to: 'hidden', // required, 'hidden' = hide tab bar, 'shown' = show tab bar
+      animated: false,
+    });
+  };
+
+  keyboardDidHide = () => {
+    this.props.navigator.toggleTabs({
+      to: 'shown', // required, 'hidden' = hide tab bar, 'shown' = show tab bar
+      animated: false,
+    });
+  };
+
   render() {
     return this.state.room ? (
-      <View><Text>Chat here...{JSON.stringify(this.state.messages)}</Text></View>
+      <ChatView
+        room={this.state.room}
+        messages={this.state.messages}
+      />
     ) : (
       <Container>
         <Center>
@@ -72,5 +97,4 @@ class Chat extends Component {
   }
 }
 
-export default Chat;
-
+export default Chat; /* Don;t forget to use PureComponent after connecting redux */
