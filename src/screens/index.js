@@ -13,6 +13,8 @@ import EditProfileScreen from './main/settings/edit.profile.screen';
 import ProviderTabList from './main/home/ProviderTabList.screen';
 import ProviderProfileScreen from './main/home/ProviderProfile.screen';
 
+import ChatScreen from './main/chat/chat.screen';
+
 const registerScreens = (store = {}, Provider = {}) => {
   Navigation.registerComponent('wevedo.loginScreen', () => LoginScreen, store, Provider);
   Navigation.registerComponent('wevedo.registerScreen', () => RegisterScreen, store, Provider);
@@ -35,6 +37,7 @@ const registerScreens = (store = {}, Provider = {}) => {
   );
   Navigation.registerComponent('wevedo.ProviderTabList', () => ProviderTabList, store, Provider);
   Navigation.registerComponent('wevedo.ProviderProfile', () => ProviderProfileScreen, store, Provider);
+  Navigation.registerComponent('wevedo.ChatScreen', () => ChatScreen, store, Provider);
 };
 
 export default registerScreens;

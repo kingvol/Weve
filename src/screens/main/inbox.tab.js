@@ -17,6 +17,20 @@ class InboxTab extends Component {
     this.props.fetchRooms();
   }
 
+  onDialogPress = ({ _id }) => {
+    this.props.navigator.push({
+      screen: 'wevedo.ChatScreen',
+      title: I18n.t('menu.inbox'),
+      passProps: { roomId: _id, from: 'inbox' },
+      navigatorStyle: {
+        navBarBackgroundColor: '#d64635',
+        navBarTextColor: 'white',
+        navBarButtonColor: 'white',
+        navBarTextFontFamily: primaryFont,
+      },
+    });
+  }
+
   formatDate = date => moment(date).format('DD.MM.YY')
 
   renderInboxItem = ({ item }) => {
@@ -26,7 +40,7 @@ class InboxTab extends Component {
     const { dialogUser, messages, lastMessageTime, lastMessageText, unreadMessages = [] } = item;
 
     return (dialogUser && messages.length &&
-      <TouchableOpacity style={listItem}>
+      <TouchableOpacity style={listItem} onPress={() => this.onDialogPress(item)}>
         <Body style={body}>
           <Left style={avatar}>
             <Image style={image} source={{ uri: dialogUser.profileImageURL || defaultProfile }} />
