@@ -53,13 +53,17 @@ class Chat extends Component {
     // create room by the provided data. Then set the result to the state.
   }
 
-  fetchMessages = () => {
-    // fetch messages for current room and set them to the state. ChatView should re-render.
+  fetchMessages = async () => {
+    try {
+      const messages = await api.fetchRoomMessages(this.state.room._id);
+      this.setState({ messages });
+    } catch (error) {
+      Alert.alert('Failed to fetch messages: ', error);
+    }
   }
 
   startMessagePolling = () => {
-    console.warn('Message polling started.');
-    // setTimeout(this.fetchMessages, 1000);
+    setInterval(this.fetchMessages, 4000);
   }
 
   render() {
