@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { ActivityIndicator, Alert } from 'react-native';
 
 import APIs from '../../../api';
@@ -65,6 +66,7 @@ class Chat extends Component {
       <ChatView
         room={this.state.room}
         messages={this.state.messages}
+        authUser={this.props.user.profile}
       />
     ) : (
       <Container>
@@ -76,4 +78,8 @@ class Chat extends Component {
   }
 }
 
-export default Chat; /* Don;t forget to use PureComponent after connecting redux */
+const mapStateToProps = state => ({
+  user: state.user,
+});
+
+export default connect(mapStateToProps)(Chat);
