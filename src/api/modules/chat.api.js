@@ -46,4 +46,19 @@ export default class ChatApi extends Api {
       throw Error(message);
     }
   }
+
+  addMessage = async (roomId, body) => {
+    try {
+      const response = await this.request(`api/chat/rooms/${roomId}/messages`, {
+        method: 'POST',
+        body: JSON.stringify(body),
+      });
+      if (response.error) {
+        return Promise.reject(response);
+      }
+      return response;
+    } catch ({ message }) {
+      throw Error(message);
+    }
+  }
 }

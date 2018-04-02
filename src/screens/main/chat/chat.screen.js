@@ -5,6 +5,7 @@ import { ActivityIndicator, Alert } from 'react-native';
 import APIs from '../../../api';
 import ChatView from '../../../components/chat/ChatView';
 import { Center, Container } from '../../../components/common';
+import { fetchRooms } from '../../../actions/chat.actions';
 
 const { ChatApi } = APIs;
 const api = new ChatApi();
@@ -24,9 +25,19 @@ class Chat extends Component {
     }
   }
 
-  componentWillUnmount() {
+  async componentWillUnmount() {
+    await this.fetchRoom(this.state.room._id); // to mark messages as read.
     this.stopMessagePolling();
-    /* this.props.fetchRooms */ // update inbox;
+    this.props.fetchRooms();
+  }
+
+  onMessageSend = async (body) => {
+    const { _id } = this.state.room;
+    try {
+      await api.addMessage(_id, body);
+    } catch (error) {
+      Alert.alert('Cannot send message: ', error);
+    }
   }
 
   fetchRoom = async (roomId) => {
@@ -52,7 +63,7 @@ class Chat extends Component {
   }
 
   startMessagePolling = () => {
-    const intervalId = setInterval(this.fetchMessages, 4000);
+    const intervalId = setInterval(this.fetchMessages, 500);
     this.setState({ intervalId });
   }
 
@@ -67,6 +78,7 @@ class Chat extends Component {
         room={this.state.room}
         messages={this.state.messages}
         authUser={this.props.user.profile}
+        onMessageSend={this.onMessageSend}
       />
     ) : (
       <Container>
@@ -82,4 +94,4 @@ const mapStateToProps = state => ({
   user: state.user,
 });
 
-export default connect(mapStateToProps)(Chat);
+export default connect(mapStateToProps, { fetchRooms })(Chat);

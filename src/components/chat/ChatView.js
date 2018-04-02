@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
 import { GiftedChat } from 'react-native-gifted-chat';
+import I18n from '../../locales';
 
 class ChatView extends Component {
   onSend(messages = []) {
-    this.setState(previousState => ({
-      messages: GiftedChat.append(previousState.messages, messages),
-    }));
+    const { authUser, room } = this.props;
+
+    const messageBody = {
+      sender: authUser._id,
+      recipient: authUser.isProvider ? room.user._id : room.provider._id,
+      body: messages[0].text,
+    };
+
+    this.props.onMessageSend(messageBody);
   }
 
   transformMessages = (messages) => {
@@ -24,7 +31,7 @@ class ChatView extends Component {
         text: body,
         createdAt,
         user: {
-          _id: authUser._id === sender ? 1 : 2,
+          _id: senderUser._id,
           name: `${senderUser.firstName} ${senderUser.lastName || ''}`,
           avatar: senderUser.profileImageURL,
         },
@@ -35,12 +42,14 @@ class ChatView extends Component {
   }
 
   render() {
+    const { _id, firstName, profileImageURL } = this.props.authUser;
     return (
       <GiftedChat
         messages={this.transformMessages(this.props.messages)}
         bottomOffset={48.5}
+        placeholder={I18n.t('chat.type_a_message')}
         onSend={messages => this.onSend(messages)}
-        user={{ _id: 1 }}
+        user={{ _id, name: firstName, avatar: profileImageURL }}
       />
     );
   }
