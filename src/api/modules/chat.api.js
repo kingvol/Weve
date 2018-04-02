@@ -1,6 +1,6 @@
 import Api from '../api.base';
 
-const resource = 'api/chat';
+const resource = 'api/chat/rooms';
 
 /**
  * @name Class ChatApi
@@ -13,7 +13,7 @@ export default class ChatApi extends Api {
 
   fetchRooms = async () => {
     try {
-      const response = await this.request('api/chat/rooms');
+      const response = await this.getList();
       if (response.message || response.error) {
         return Promise.reject(response);
       }
@@ -22,4 +22,43 @@ export default class ChatApi extends Api {
       throw Error(message);
     }
   };
+
+  fetchRoom = async (id) => {
+    try {
+      const response = await this.getOne(id);
+      if (response.message || response.error) {
+        return Promise.reject(response);
+      }
+      return response;
+    } catch ({ message }) {
+      throw Error(message);
+    }
+  }
+
+  fetchRoomMessages = async (id) => {
+    try {
+      const response = await this.request(`api/chat/rooms/${id}/messages`);
+      if (response.message || response.error) {
+        return Promise.reject(response);
+      }
+      return response;
+    } catch ({ message }) {
+      throw Error(message);
+    }
+  }
+
+  addMessage = async (roomId, body) => {
+    try {
+      const response = await this.request(`api/chat/rooms/${roomId}/messages`, {
+        method: 'POST',
+        body: JSON.stringify(body),
+      });
+      if (response.error) {
+        return Promise.reject(response);
+      }
+      return response;
+    } catch ({ message }) {
+      throw Error(message);
+    }
+  }
 }
