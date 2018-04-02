@@ -1,18 +1,3 @@
-/* Here we have to:
-
-1) if (from === 'inbox')
-
-* show chatView
-* start fetching messages every 3 seconds
-
-2) if (from === 'providerProfile')
-
-* create new room, then get it and disaplay chat view.
-
-componendDidMount() => room_id -> fetch room every 3 seconds.
-componentWillUnmount() => fetch rooms (to get updated list in the inbox
-
-*/
 import React, { Component } from 'react';
 import { View, Text, ActivityIndicator, Alert } from 'react-native';
 
@@ -26,6 +11,7 @@ class Chat extends Component {
   state = {
     room: null,
     messages: [],
+    intervalId: '',
   }
 
   async componentDidMount() {
@@ -37,6 +23,7 @@ class Chat extends Component {
   }
 
   componentWillUnmount() {
+    this.stopMessagePolling();
     /* this.props.fetchRooms */ // update inbox;
   }
 
@@ -49,9 +36,9 @@ class Chat extends Component {
     }
   }
 
-  createRoom = (data) => {
+  /* createRoom = (data) => {
     // create room by the provided data. Then set the result to the state.
-  }
+  } */
 
   fetchMessages = async () => {
     try {
@@ -63,7 +50,13 @@ class Chat extends Component {
   }
 
   startMessagePolling = () => {
-    setInterval(this.fetchMessages, 4000);
+    const intervalId = setInterval(this.fetchMessages, 4000);
+    this.setState({ intervalId });
+  }
+
+  stopMessagePolling = () => {
+    const { intervalId } = this.state;
+    clearInterval(intervalId);
   }
 
   render() {
