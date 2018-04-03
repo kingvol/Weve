@@ -11,10 +11,20 @@ const { ChatApi } = APIs;
 const api = new ChatApi();
 
 class Chat extends Component {
+  constructor(props) {
+    super(props);
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent);
+  }
+
   state = {
     room: null,
     messages: [],
     intervalId: '',
+  }
+
+  componentWillMount() {
+    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
+    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
   }
 
   async componentDidMount() {
@@ -27,11 +37,6 @@ class Chat extends Component {
       await this.fetchRoom(room._id);
       this.startMessagePolling();
     }
-  }
-
-  componentWillMount() {
-    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
-    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
   }
 
   async componentWillUnmount() {
@@ -48,6 +53,15 @@ class Chat extends Component {
       await api.addMessage(_id, body);
     } catch (error) {
       Alert.alert('Cannot send message: ', error);
+    }
+  }
+
+  onNavigatorEvent = ({ id }) => {
+    if (id === 'bottomTabReselected') {
+      this.props.navigator.popToRoot({
+        animated: true,
+        animationType: 'fade',
+      });
     }
   }
 
