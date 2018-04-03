@@ -18,9 +18,13 @@ class Chat extends Component {
   }
 
   async componentDidMount() {
-    const { from, roomId } = this.props;
+    const { from, roomId, provider } = this.props;
     if (from === 'inbox' && roomId) {
       await this.fetchRoom(roomId);
+      this.startMessagePolling();
+    } else {
+      const room = await this.createRoom(this.props.user.profile._id, provider._id);
+      await this.fetchRoom(room._id);
       this.startMessagePolling();
     }
   }
@@ -49,9 +53,14 @@ class Chat extends Component {
     }
   }
 
-  /* createRoom = (data) => {
-    // create room by the provided data. Then set the result to the state.
-  } */
+  createRoom = async (user, provider) => {
+    try {
+      const room = await api.createRoom({ user, provider });
+      return room;
+    } catch (error) {
+      Alert.alert('Cannot create a room: ', error);
+    }
+  }
 
   fetchMessages = async () => {
     try {

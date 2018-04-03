@@ -76,19 +76,21 @@ class InboxTab extends Component {
     let inbox = [];
 
     if (rooms.length) {
-      inbox = rooms.map(({ _id, user, provider, messages, unreadByProvider, unreadByUser, updatedAt }) => {
-        const dialogUser = profile.isProvider ? user : provider;
-        const { body } = last(orderBy(messages, 'createdAt'));
-        const unreadMessages = profile.isProvider ? unreadByProvider : unreadByUser;
-        return {
-          _id,
-          dialogUser,
-          messages,
-          lastMessageTime: updatedAt,
-          lastMessageText: body,
-          unreadMessages,
-        };
-      });
+      inbox = rooms
+        .filter(room => room.messages.length) /* remove rooms with no messages */
+        .map(({ _id, user, provider, messages, unreadByProvider, unreadByUser, updatedAt }) => {
+          const dialogUser = profile.isProvider ? user : provider;
+          const { body } = last(orderBy(messages, 'createdAt'));
+          const unreadMessages = profile.isProvider ? unreadByProvider : unreadByUser;
+          return {
+            _id,
+            dialogUser,
+            messages,
+            lastMessageTime: updatedAt,
+            lastMessageText: body,
+            unreadMessages,
+          };
+        });
     }
     inbox = orderBy(inbox, 'lastMessageTime', 'desc');
 
