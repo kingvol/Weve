@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Platform } from 'react-native';
 import { GiftedChat } from 'react-native-gifted-chat';
 import I18n from '../../locales';
 
@@ -46,7 +47,7 @@ class ChatView extends Component {
     return (
       <GiftedChat
         messages={this.transformMessages(this.props.messages)}
-        bottomOffset={48.5}
+        bottomOffset={Platform.OS === 'ios' ? 48.5 : 0}
         placeholder={I18n.t('chat.type_a_message')}
         onSend={messages => this.onSend(messages)}
         user={{ _id, name: firstName, avatar: profileImageURL }}
