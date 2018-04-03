@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { ActivityIndicator, Alert } from 'react-native';
+import { ActivityIndicator, Alert, Platform, Keyboard } from 'react-native';
 
 import APIs from '../../../api';
 import ChatView from '../../../components/chat/ChatView';
@@ -29,7 +29,14 @@ class Chat extends Component {
     }
   }
 
+  componentWillMount() {
+    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
+    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
+  }
+
   async componentWillUnmount() {
+    this.keyboardDidShowListener.remove();
+    this.keyboardDidHideListener.remove();
     await this.fetchRoom(this.state.room._id); // to mark messages as read.
     this.stopMessagePolling();
     this.props.fetchRooms();
@@ -80,6 +87,24 @@ class Chat extends Component {
     const { intervalId } = this.state;
     clearInterval(intervalId);
   }
+
+  keyboardDidShow = () => {
+    if (Platform.OS === 'android') {
+      this.props.navigator.toggleTabs({
+        to: 'hidden',
+        animated: false,
+      });
+    }
+  };
+
+  keyboardDidHide = () => {
+    if (Platform.OS === 'android') {
+      this.props.navigator.toggleTabs({
+        to: 'shown',
+        animated: true,
+      });
+    }
+  };
 
   render() {
     return this.state.room ? (
