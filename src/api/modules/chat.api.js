@@ -23,6 +23,18 @@ export default class ChatApi extends Api {
     }
   };
 
+  createRoom = async (body) => {
+    try {
+      const response = await this.create(body);
+      if (response.message || response.error) {
+        return Promise.reject(response);
+      }
+      return response;
+    } catch ({ message }) {
+      throw Error(message);
+    }
+  }
+
   fetchRoom = async (id) => {
     try {
       const response = await this.getOne(id);

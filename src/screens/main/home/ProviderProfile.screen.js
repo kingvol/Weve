@@ -7,6 +7,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { lightTextColor, primaryFont } from '../../../theme';
 import { secondaryColor } from '../../../theme/colors';
 
+import I18n from '../../../locales';
+
 const calendarTheme = {
   selectedDayBackgroundColor: lightTextColor,
   todayTextColor: secondaryColor,
@@ -43,6 +45,21 @@ class ProviderProfileScreen extends Component {
       this.props.navigator.popToRoot({
         animated: true,
         animationType: 'fade',
+      });
+    } else if (event.id === 'chat') {
+      this.props.navigator.push({
+        screen: 'wevedo.ChatScreen',
+        title: I18n.t('menu.inbox'),
+        passProps: {
+          from: 'providerProfile',
+          provider: this.props.provider,
+        },
+        navigatorStyle: {
+          navBarBackgroundColor: '#d64635',
+          navBarTextColor: 'white',
+          navBarButtonColor: 'white',
+          navBarTextFontFamily: primaryFont,
+        },
       });
     }
   }
