@@ -15,6 +15,26 @@ const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png
 class InboxTab extends Component {
   componentDidMount() {
     this.props.fetchRooms();
+    this.startRoomPolling();
+  }
+
+  componentWillReceiveProps({ chat, user }) {
+    let unreadDialogs = 0;
+    const { isProvider } = user.profile;
+
+    if (chat.rooms.length) {
+      chat.rooms.forEach((room) => {
+        if ((isProvider && room.unreadByProvider.length) || (!isProvider && room.unreadByUser.length)) {
+          unreadDialogs += 1;
+        }
+      });
+    }
+  
+    this.props.navigator.setTabBadge({
+      tabIndex: 1,
+      badge: unreadDialogs || null,
+      badgeColor: '#ef8c28',
+    });
   }
 
   onDialogPress = ({ _id }) => {
@@ -32,6 +52,12 @@ class InboxTab extends Component {
   }
 
   formatDate = date => moment(date).format('DD.MM.YY')
+
+  startRoomPolling = () => {
+    setInterval(() => {
+      this.props.fetchRooms();
+    }, 3000);
+  }
 
   renderInboxItem = ({ item }) => {
     const {
