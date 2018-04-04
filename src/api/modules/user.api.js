@@ -27,7 +27,11 @@ export default class UserApi extends Api {
       if (response.message || response.error) { // check for error
         return Promise.reject(response);
       }
-      return response;
+      const user = await this.getOne('me');
+      if (user.message || user.error) { // check for error
+        return Promise.reject(user);
+      }
+      return user;
     } catch ({ message }) { throw Error(message); }
   }
 

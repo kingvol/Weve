@@ -46,11 +46,6 @@ class ProviderProfileScreen extends Component {
     const { isLoading, error } = user;
     if (!isLoading && error) {
       Alert.alert('Error booking date!', 'Please try again later.');
-    } else if (!user.isLoading && (
-      user.error === null &&
-      user.profile.bookedDates !== this.props.user.profile.bookedDates)
-    ) {
-      Alert.alert('Booked!');
     }
   }
 
@@ -101,7 +96,6 @@ class ProviderProfileScreen extends Component {
     this.props.updateProfile({
       bookedDates: [...this.props.user.profile.bookedDates, timestamp],
     });
-    this.props.fetchProfile('me');
   }
 
   render() {
