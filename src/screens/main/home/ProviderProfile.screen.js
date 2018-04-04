@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Content } from 'native-base';
-import { View, Alert, Image, Text } from 'react-native';
+import { View, Alert, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { Calendar } from 'react-native-calendars';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import moment from 'moment';
 import { lightTextColor, primaryFont } from '../../../theme';
 import { secondaryColor } from '../../../theme/colors';
 import { updateProfile, fetchProfile } from '../../../actions/user.actions';
@@ -109,15 +110,23 @@ class ProviderProfileScreen extends Component {
 
     const markedDates = (profile._id === provider._id) ? profile.bookedDates : provider.bookedDates;
 
+    let transformedMarkedDates = {};
+
+    markedDates.forEach((date) => {
+      transformedMarkedDates = {
+        ...transformedMarkedDates,
+        [moment(date).format('YYYY-MM-DD')]: { disabled: true, selected: true },
+      };
+    });
+
     return (
       <Content contentContainerStyle={{ flexGrow: 1 }}>
         <View style={{ minHeight: 500, flex: 2 }}>
           <Image style={styles.image} source={{ uri: this.props.provider.profileImageURL }} />
-          <Text>{JSON.stringify(markedDates)}</Text>
           <Calendar
             theme={calendarTheme}
             style={styles.calendar}
-            // markedDates={//markedDates}
+            markedDates={transformedMarkedDates}
             onDayPress={this.handleDayPress}
           />
         </View>
