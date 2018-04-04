@@ -244,7 +244,7 @@ export default ({ isModalVisible, handleDecline, handleAccept }) => (
           continuing to install the application, you consent to be bound by this
           EULA.
         </Text>
-        <Text style={{ marginTop: 20 }}>Last updated: January 6, 2016</Text>
+        <Text style={{ marginTop: 20 }}>Last updated: April 1, 2018</Text>
         <View style={{ justifyContent: "space-around", flexDirection: "row" }}>
           <Button transparent primary onPress={handleDecline}>
             <Text style={{ fontWeight: "bold" }}>{`${I18n.t(
