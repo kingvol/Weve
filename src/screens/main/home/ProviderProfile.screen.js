@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { Content } from 'native-base';
-import { View, Image } from 'react-native';
+import { View, Alert, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { Calendar } from 'react-native-calendars';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import moment from 'moment';
 import { lightTextColor, primaryFont } from '../../../theme';
 import { secondaryColor } from '../../../theme/colors';
+import { updateProfile, fetchProfile } from '../../../actions/user.actions';
 
 import I18n from '../../../locales';
 
@@ -40,6 +42,18 @@ class ProviderProfileScreen extends Component {
     }
   }
 
+  componentWillReceiveProps({ user }) {
+    const { isLoading, error } = user;
+    if (!isLoading && error) {
+      Alert.alert('Error booking date!', 'Please try again later.');
+    } else if (!user.isLoading && (
+      user.error === null &&
+      user.profile.bookedDates !== this.props.user.profile.bookedDates)
+    ) {
+      Alert.alert('Booked!');
+    }
+  }
+
   onNavigatorEvent(event) {
     if (event.id === 'bottomTabReselected') {
       this.props.navigator.popToRoot({
@@ -64,7 +78,47 @@ class ProviderProfileScreen extends Component {
     }
   }
 
+  handleDayPress = ({ timestamp, dateString }) => {
+    if (this.props.user.profile.isProvider) {
+      const { _id } = this.props.user.profile;
+      if (_id === this.props.provider._id) {
+        Alert.alert('Book the date?', `You are booking for ${dateString}.`, [
+          { text: 'Cancel' },
+          {
+            text: 'Book Now',
+            onPress: () => this.handleBookDate(timestamp),
+          },
+        ]);
+      } else {
+        Alert.alert('Cannot book!', 'You do not have the authority to book the dates.', [
+          { text: 'Ok' },
+        ]);
+      }
+    }
+  }
+
+  handleBookDate = (timestamp) => {
+    this.props.updateProfile({
+      bookedDates: [...this.props.user.profile.bookedDates, timestamp],
+    });
+    this.props.fetchProfile('me');
+  }
+
   render() {
+    const { profile } = this.props.user; // authUser
+    const { provider } = this.props;
+
+    const markedDates = (profile._id === provider._id) ? profile.bookedDates : provider.bookedDates;
+
+    let transformedMarkedDates = {};
+
+    markedDates.forEach((date) => {
+      transformedMarkedDates = {
+        ...transformedMarkedDates,
+        [moment(date).format('YYYY-MM-DD')]: { disabled: true, selected: true },
+      };
+    });
+
     return (
       <Content contentContainerStyle={{ flexGrow: 1 }}>
         <View style={{ minHeight: 500, flex: 2 }}>
@@ -72,8 +126,8 @@ class ProviderProfileScreen extends Component {
           <Calendar
             theme={calendarTheme}
             style={styles.calendar}
-            // markedDates={//markedDates}
-            // onDayPress={this.handleDayPress.bind(this)}
+            markedDates={transformedMarkedDates}
+            onDayPress={this.handleDayPress}
           />
         </View>
       </Content>
@@ -92,4 +146,4 @@ const mapStateToProps = state => ({
   user: state.user,
 });
 
-export default connect(mapStateToProps)(ProviderProfileScreen);
+export default connect(mapStateToProps, { updateProfile, fetchProfile })(ProviderProfileScreen);
