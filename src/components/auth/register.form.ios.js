@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import I18n from 'react-native-i18n';
 import { CheckBox, Left, Icon, Picker } from 'native-base';
-import { Alert, ImageBackground, StyleSheet, View, Platform } from 'react-native';
+import { Alert, ImageBackground, StyleSheet, View } from 'react-native';
 import { contrastColor, primaryFont } from '../../theme';
 import { Button, Container, Content, FieldInput, Text } from '../../components/common';
 import SignupImageForm from './signupImage.form';
@@ -297,10 +297,9 @@ class SignupForm extends Component {
 
             {this.state.isProvider && this.state.step === 1 && (
               <View style={{ flexDirection: 'row' }}>
-                {Platform.OS === 'android' && <Text style={styles.categoryText}>{I18n.t('common.category')}</Text>}
                 <Picker
                   mode="dropdown"
-                  style={{ color: 'white', flex: Platform.OS === 'ios' ? 0 : 1 }}
+                  style={{ color: 'white', flex: 0 }}
                   placeholder={I18n.t('logIn.select_category')}
                   selectedValue={this.state.values.category}
                   onValueChange={this.onCategorySelect}
