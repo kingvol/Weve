@@ -101,7 +101,6 @@ class ProviderProfileScreen extends Component {
     this.props.updateProfile({
       bookedDates: [...this.props.user.profile.bookedDates, timestamp],
     });
-    this.props.fetchProfile('me');
   }
 
   render() {

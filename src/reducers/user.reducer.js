@@ -57,6 +57,7 @@ export default (state = initialState, action = {}) => {
     case types.UPDATE_USER_PROFILE_FULFILLED:
       return {
         ...state,
+        profile: action.payload,
         isLoading: false,
       };
 
