@@ -13,6 +13,10 @@ import I18n from '../../locales';
 const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png';
 
 class InboxTab extends Component {
+  state = {
+    intervalId: null,
+  }
+
   componentDidMount() {
     this.props.fetchRooms();
     this.startRoomPolling();
@@ -37,6 +41,10 @@ class InboxTab extends Component {
     });
   }
 
+  componentWillUnmount() {
+    clearInterval(this.state.intervalId);
+  }
+
   onDialogPress = ({ _id }) => {
     this.props.navigator.push({
       screen: 'wevedo.ChatScreen',
@@ -54,9 +62,10 @@ class InboxTab extends Component {
   formatDate = date => moment(date).format('DD.MM.YY')
 
   startRoomPolling = () => {
-    setInterval(() => {
+    const intervalId = setInterval(() => {
       this.props.fetchRooms();
     }, 3000);
+    this.setState({ intervalId });
   }
 
   renderInboxItem = ({ item }) => {
