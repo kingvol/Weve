@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { ActivityIndicator, Alert, Platform, Keyboard } from 'react-native';
+import { ActivityIndicator, Alert, Platform, Keyboard, ActionSheetIOS } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import APIs from '../../../api';
 import ChatView from '../../../components/chat/ChatView';
@@ -37,6 +38,7 @@ class Chat extends Component {
       await this.fetchRoom(room._id);
       this.startMessagePolling();
     }
+    this.initChatOptions();
   }
 
   async componentWillUnmount() {
@@ -62,7 +64,21 @@ class Chat extends Component {
         animated: true,
         animationType: 'fade',
       });
+    } else if (id === 'options') {
+      this.handleOptionsPress();
     }
+  }
+
+  initChatOptions = () => {
+    Promise.all([Icon.getImageSource('ellipsis-v', 20, '#000000')]).then((sources) => {
+      this.props.navigator.setButtons({
+        rightButtons: [{
+          icon: sources[0],
+          id: 'options',
+        }],
+        animated: true,
+      });
+    });
   }
 
   fetchRoom = async (roomId) => {
@@ -119,6 +135,29 @@ class Chat extends Component {
       });
     }
   };
+
+  handleOptionsPress = () => {
+    if (Platform.OS === 'ios') {
+      ActionSheetIOS.showActionSheetWithOptions({
+        options: ['Cancel', 'Block user'],
+        cancelButtonIndex: 0,
+        blockingButtonIndex: 1,
+      }, (buttonIndex) => {
+        if (buttonIndex === 1) {
+          return this.handleBlockUserPress();
+        }
+      });
+    } else {
+      this.props.navigator.showContextualMenu({
+        rightButtons: [{ title: 'Block user' }],
+        onButtonPressed: index => index === 0 && this.handleBlockUserPress(),
+      });
+    }
+  }
+
+  handleBlockUserPress = () => {
+    console.warn('Block pressed...');
+  }
 
   render() {
     return this.state.room ? (
