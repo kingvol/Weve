@@ -73,7 +73,11 @@ export const startTabBasedApp = () => {
       ],
       tabsStyle: {
         tabBarButtonColor: '#c4c4c4',
-        tabBarSelectedButtonColor: '#e91e63',
+        tabBarSelectedButtonColor: '#d64635',
+      },
+      appStyle: {
+        tabBarButtonColor: '#c4c4c4',
+        tabBarSelectedButtonColor: '#d64635',
       },
     });
   });
