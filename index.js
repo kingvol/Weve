@@ -79,7 +79,7 @@ export const startTabBasedApp = () => {
   });
 };
 
-const init = async () => {
+export const init = async () => {
   try {
     const token = await AsyncStorage.getItem('wevedo_access_token');
     if (token) {
