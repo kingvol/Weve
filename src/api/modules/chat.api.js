@@ -65,7 +65,7 @@ export default class ChatApi extends Api {
         method: 'POST',
         body: JSON.stringify(body),
       });
-      if (response.error) {
+      if (response.message) {
         return Promise.reject(response);
       }
       return response;

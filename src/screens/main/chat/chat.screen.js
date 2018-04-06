@@ -54,8 +54,8 @@ class Chat extends Component {
     const { _id } = this.state.room;
     try {
       await api.addMessage(_id, body);
-    } catch (error) {
-      Alert.alert('Cannot send message: ', error);
+    } catch ({ message }) {
+      Alert.alert('Cannot send message: ', message);
     }
   }
 
