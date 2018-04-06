@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { ActivityIndicator, Alert, Platform, Keyboard } from 'react-native';
+import { ActivityIndicator, Alert, Platform, Keyboard, ActionSheetIOS } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import APIs from '../../../api';
 import ChatView from '../../../components/chat/ChatView';
 import { Center, Container } from '../../../components/common';
 import { fetchRooms } from '../../../actions/chat.actions';
+import { updateProfile } from '../../../actions/user.actions';
 
 const { ChatApi } = APIs;
 const api = new ChatApi();
@@ -37,6 +39,7 @@ class Chat extends Component {
       await this.fetchRoom(room._id);
       this.startMessagePolling();
     }
+    this.initChatOptions();
   }
 
   async componentWillUnmount() {
@@ -51,8 +54,8 @@ class Chat extends Component {
     const { _id } = this.state.room;
     try {
       await api.addMessage(_id, body);
-    } catch (error) {
-      Alert.alert('Cannot send message: ', error);
+    } catch ({ message }) {
+      Alert.alert('Cannot send message: ', message);
     }
   }
 
@@ -62,7 +65,21 @@ class Chat extends Component {
         animated: true,
         animationType: 'fade',
       });
+    } else if (id === 'options') {
+      this.handleOptionsPress();
     }
+  }
+
+  initChatOptions = () => {
+    Promise.all([Icon.getImageSource('ellipsis-v', 20, '#000000')]).then((sources) => {
+      this.props.navigator.setButtons({
+        rightButtons: [{
+          icon: sources[0],
+          id: 'options',
+        }],
+        animated: true,
+      });
+    });
   }
 
   fetchRoom = async (roomId) => {
@@ -120,6 +137,47 @@ class Chat extends Component {
     }
   };
 
+  handleOptionsPress = () => {
+    const { room } = this.state;
+    const authUser = this.props.user.profile;
+    const targetUser = authUser.isProvider ? room.user._id : room.provider._id;
+
+    const isUserBlocked = authUser.blockedUsers.includes(targetUser);
+
+    if (Platform.OS === 'ios') {
+      ActionSheetIOS.showActionSheetWithOptions({
+        options: ['Cancel', isUserBlocked ? 'Unblock user' : 'Block user'],
+        cancelButtonIndex: 0,
+        blockingButtonIndex: 1,
+      }, (buttonIndex) => {
+        if (buttonIndex === 1) {
+          return isUserBlocked ? this.handleUnblockPress() : this.handleBlockUserPress();
+        }
+      });
+    } else {
+      this.props.navigator.showContextualMenu({
+        rightButtons: [{ title: isUserBlocked ? 'Unblock user' : 'Block user' }],
+        onButtonPressed: index => index === 0 && (isUserBlocked ? this.handleUnblockPress() : this.handleBlockUserPress()),
+      });
+    }
+  }
+
+  handleBlockUserPress = () => {
+    const { room } = this.state;
+    const authUser = this.props.user.profile;
+    const userToBlock = authUser.isProvider ? room.user._id : room.provider._id;
+    this.props.updateProfile({ blockedUsers: [...authUser.blockedUsers, userToBlock] });
+  }
+
+  handleUnblockPress = () => {
+    const { room } = this.state;
+    const authUser = this.props.user.profile;
+    const userToUnblock = authUser.isProvider ? room.user._id : room.provider._id;
+    this.props.updateProfile({
+      blockedUsers: authUser.blockedUsers.filter(user => user._id === userToUnblock),
+    });
+  }
+
   render() {
     return this.state.room ? (
       <ChatView
@@ -142,4 +200,4 @@ const mapStateToProps = state => ({
   user: state.user,
 });
 
-export default connect(mapStateToProps, { fetchRooms })(Chat);
+export default connect(mapStateToProps, { fetchRooms, updateProfile })(Chat);

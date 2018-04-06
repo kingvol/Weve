@@ -1,15 +1,21 @@
 import React, { Component } from 'react';
-import { Platform } from 'react-native';
+import { Platform, Alert } from 'react-native';
 import { GiftedChat } from 'react-native-gifted-chat';
 import I18n from '../../locales';
 
 class ChatView extends Component {
   onSend(messages = []) {
     const { authUser, room } = this.props;
+    const recipient = authUser.isProvider ? room.user._id : room.provider._id;
+
+    if (authUser.blockedUsers.includes(recipient)) {
+      Alert.alert('Unlock user to send a messsage');
+      return;
+    }
 
     const messageBody = {
       sender: authUser._id,
-      recipient: authUser.isProvider ? room.user._id : room.provider._id,
+      recipient,
       body: messages[0].text,
     };
 
