@@ -7,6 +7,7 @@ import APIs from '../../../api';
 import ChatView from '../../../components/chat/ChatView';
 import { Center, Container } from '../../../components/common';
 import { fetchRooms } from '../../../actions/chat.actions';
+import { updateProfile } from '../../../actions/user.actions';
 
 const { ChatApi } = APIs;
 const api = new ChatApi();
@@ -137,26 +138,44 @@ class Chat extends Component {
   };
 
   handleOptionsPress = () => {
+    const { room } = this.state;
+    const authUser = this.props.user.profile;
+    const targetUser = authUser.isProvider ? room.user._id : room.provider._id;
+
+    const isUserBlocked = authUser.blockedUsers.includes(targetUser);
+
     if (Platform.OS === 'ios') {
       ActionSheetIOS.showActionSheetWithOptions({
-        options: ['Cancel', 'Block user'],
+        options: ['Cancel', isUserBlocked ? 'Unblock user' : 'Block user'],
         cancelButtonIndex: 0,
         blockingButtonIndex: 1,
       }, (buttonIndex) => {
         if (buttonIndex === 1) {
-          return this.handleBlockUserPress();
+          return isUserBlocked ? this.handleUnblockPress() : this.handleBlockUserPress();
         }
       });
     } else {
       this.props.navigator.showContextualMenu({
-        rightButtons: [{ title: 'Block user' }],
-        onButtonPressed: index => index === 0 && this.handleBlockUserPress(),
+        rightButtons: [{ title: isUserBlocked ? 'Unblock user' : 'Block user' }],
+        onButtonPressed: index => index === 0 && (isUserBlocked ? this.handleUnblockPress() : this.handleBlockUserPress()),
       });
     }
   }
 
   handleBlockUserPress = () => {
-    console.warn('Block pressed...');
+    const { room } = this.state;
+    const authUser = this.props.user.profile;
+    const userToBlock = authUser.isProvider ? room.user._id : room.provider._id;
+    this.props.updateProfile({ blockedUsers: [...authUser.blockedUsers, userToBlock] });
+  }
+
+  handleUnblockPress = () => {
+    const { room } = this.state;
+    const authUser = this.props.user.profile;
+    const userToUnblock = authUser.isProvider ? room.user._id : room.provider._id;
+    this.props.updateProfile({
+      blockedUsers: authUser.blockedUsers.filter(user => user._id === userToUnblock),
+    });
   }
 
   render() {
@@ -181,4 +200,4 @@ const mapStateToProps = state => ({
   user: state.user,
 });
 
-export default connect(mapStateToProps, { fetchRooms })(Chat);
+export default connect(mapStateToProps, { fetchRooms, updateProfile })(Chat);
