@@ -8,9 +8,6 @@ import { View } from 'react-native';
 import init from '../index';
 
 class AppBootstrap extends Component {
-  componentDidMount() {
-    init();
-  }
   render() {
     return <View />;
   }
