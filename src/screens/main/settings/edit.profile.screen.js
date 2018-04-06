@@ -3,6 +3,7 @@ import { Alert, Keyboard, View } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import { connect } from 'react-redux';
 import SpinnerOverlay from 'react-native-loading-spinner-overlay';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import I18n from '../../../locales';
 import config from '../../../../config';
 import {
@@ -196,6 +197,24 @@ class EditProfileScreen extends Component {
                     defaultProfile,
                 }}
               />
+              {!this.state.values.profileImageURL && !this.props.user.profile.profileImageURL ? (
+                <View
+                  style={{
+                    flex: 0,
+                    bottom: 10,
+                    paddingLeft: 35,
+                    position: 'absolute',
+                  }}
+                >
+                  <Icon
+                    style={{
+                      color: '#d64635',
+                    }}
+                    size={24}
+                    name="plus"
+                  />
+                </View>
+              ) : null}
             </Button>
           </View>
           <FieldInput
