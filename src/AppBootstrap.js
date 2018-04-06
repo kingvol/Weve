@@ -5,7 +5,6 @@
  * */
 import React, { Component } from 'react';
 import { View } from 'react-native';
-import init from '../index';
 
 class AppBootstrap extends Component {
   render() {

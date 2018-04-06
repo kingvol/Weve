@@ -15,7 +15,7 @@ const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png
 class InboxTab extends Component {
   state = {
     intervalId: null,
-  }
+  };
 
   componentDidMount() {
     this.props.fetchRooms();
@@ -28,12 +28,15 @@ class InboxTab extends Component {
 
     if (chat.rooms.length) {
       chat.rooms.forEach((room) => {
-        if ((isProvider && room.unreadByProvider.length) || (!isProvider && room.unreadByUser.length)) {
+        if (
+          (isProvider && room.unreadByProvider.length) ||
+          (!isProvider && room.unreadByUser.length)
+        ) {
           unreadDialogs += 1;
         }
       });
     }
-  
+
     this.props.navigator.setTabBadge({
       tabIndex: 1,
       badge: unreadDialogs || null,
@@ -57,50 +60,66 @@ class InboxTab extends Component {
         navBarTextFontFamily: primaryFont,
       },
     });
-  }
+  };
 
-  formatDate = date => moment(date).format('DD.MM.YY')
+  formatDate = date => moment(date).format('DD.MM.YY');
 
   startRoomPolling = () => {
     const intervalId = setInterval(() => {
       this.props.fetchRooms();
     }, 3000);
     this.setState({ intervalId });
-  }
+  };
 
   renderInboxItem = ({ item }) => {
     const {
-      body, avatar, contentWrapper, content, listItem, listItemHeader,
-      username, lastMessage, image, messageBody, badge, badgeText } = styles;
+      body,
+      avatar,
+      contentWrapper,
+      content,
+      listItem,
+      listItemHeader,
+      username,
+      lastMessage,
+      image,
+      messageBody,
+      badge,
+      badgeText,
+    } = styles;
     const { dialogUser, messages, lastMessageTime, lastMessageText, unreadMessages = [] } = item;
 
-    return (dialogUser && messages.length &&
-      <TouchableOpacity style={listItem} onPress={() => this.onDialogPress(item)}>
-        <Body style={body}>
-          <Left style={avatar}>
-            <Image style={image} source={{ uri: dialogUser.profileImageURL || defaultProfile }} />
-          </Left>
-          <View style={contentWrapper}>
-            <View style={content}>
-              <View style={listItemHeader}>
-                <Text numberOfLines={1} style={username}>{`${dialogUser.firstName} ${dialogUser.lastName || ''}`}</Text>
-                <Text style={lastMessage}>{this.formatDate(lastMessageTime)}</Text>
+    return (
+      dialogUser &&
+      messages.length && (
+        <TouchableOpacity style={listItem} onPress={() => this.onDialogPress(item)}>
+          <Body style={body}>
+            <Left style={avatar}>
+              <Image style={image} source={{ uri: dialogUser.profileImageURL || defaultProfile }} />
+            </Left>
+            <View style={contentWrapper}>
+              <View style={content}>
+                <View style={listItemHeader}>
+                  <Text numberOfLines={1} style={username}>
+                    {`${dialogUser.firstName} ${dialogUser.lastName || ''}`}
+                  </Text>
+                  <Text style={lastMessage}>{this.formatDate(lastMessageTime)}</Text>
+                </View>
+                <View style={messageBody}>
+                  <Text numberOfLines={2}>{lastMessageText}</Text>
+                  {unreadMessages.length > 0 && (
+                    <Badge warning style={badge}>
+                      <Text style={badgeText}>{unreadMessages.length}</Text>
+                    </Badge>
+                  )}
+                </View>
               </View>
-              <View style={messageBody}>
-                <Text numberOfLines={2}>{lastMessageText}</Text>
-                {unreadMessages.length > 0 &&
-                  <Badge warning style={badge}>
-                    <Text style={badgeText}>{unreadMessages.length}</Text>
-                  </Badge>
-                }
-              </View>
+              <Right style={{ flex: 1 }}>
+                <Icon style={{ fontSize: 18, margin: 10 }} name="ios-arrow-forward" />
+              </Right>
             </View>
-            <Right style={{ flex: 0 }}>
-              <Icon style={{ fontSize: 18, margin: 10 }} name="ios-arrow-forward" />
-            </Right>
-          </View>
-        </Body>
-      </TouchableOpacity>
+          </Body>
+        </TouchableOpacity>
+      )
     );
   };
 
@@ -184,7 +203,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   content: {
-    flex: 1,
+    flex: 5,
     flexDirection: 'column',
     paddingRight: 10,
   },
