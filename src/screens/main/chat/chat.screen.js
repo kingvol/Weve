@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { ActivityIndicator, Alert, Platform, Keyboard, ActionSheetIOS } from 'react-native';
+import { ActivityIndicator, Alert, Platform, Keyboard, ActionSheetIOS, Linking } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import I18n from 'react-native-i18n';
 import APIs from '../../../api';
+import config from '../../../../config';
 import ChatView from '../../../components/chat/ChatView';
 import { Center, Container } from '../../../components/common';
 import { fetchRooms } from '../../../actions/chat.actions';
@@ -186,7 +187,15 @@ class Chat extends Component {
   }
 
   handleReportPress = () => {
-    console.warn('Report pressed...');
+    const { room } = this.state;
+    const authUser = this.props.user.profile;
+
+    const targetEmail = authUser.isProvider ? room.user.email : room.provider.email;
+    
+    const subject = I18n.t('report.subject');
+    const body = `${I18n.t('report.body')} ${targetEmail}`;
+
+    Linking.openURL(`mailto:${config.adminEmail}?subject=${subject}&body=${body}`);
   }
 
   render() {
