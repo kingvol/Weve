@@ -201,16 +201,16 @@ class EditProfileScreen extends Component {
                 <View
                   style={{
                     flex: 0,
-                    bottom: 10,
-                    paddingLeft: 35,
+                    bottom: 13,
+                    paddingLeft: 40,
                     position: 'absolute',
                   }}
                 >
                   <Icon
                     style={{
-                      color: '#d64635',
+                      color: 'grey',
                     }}
-                    size={24}
+                    size={20}
                     name="plus"
                   />
                 </View>
