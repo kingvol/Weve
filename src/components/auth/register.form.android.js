@@ -60,7 +60,8 @@ class SignupForm extends Component {
       this.setState({
         categories,
         values: {
-          ...this.state.values, category: categories[0], // Predefine 'Venue category'
+          ...this.state.values,
+          category: categories[0], // Predefine 'Venue category'
         },
       });
     } catch ({ message }) {
@@ -78,7 +79,7 @@ class SignupForm extends Component {
     this.setState({
       step: 2,
     });
-  }
+  };
 
   onCategorySelect = (category) => {
     this.setState({
@@ -87,7 +88,7 @@ class SignupForm extends Component {
         category,
       },
     });
-  }
+  };
 
   onImageSelect = (image) => {
     this.setState({
@@ -96,7 +97,7 @@ class SignupForm extends Component {
         image,
       },
     });
-  }
+  };
 
   onFieldChange = (key, value) => {
     this.setState({
@@ -207,10 +208,7 @@ class SignupForm extends Component {
     const ucFirst = s => (s.substr(0, 1).toLowerCase() + s.substr(1)).replace(' ', '');
 
     return (
-      <Container
-        id="SignUp.content"
-        contentContainerStyle={{ flex: 1, justifyContent: 'space-between' }}
-      >
+      <Container id="SignUp.content" contentContainerStyle={{ justifyContent: 'space-between' }}>
         <View id="Signup.backButtonAndTitleWrapper" style={styles.header}>
           <Button
             id="Signup.backButton"
@@ -228,7 +226,10 @@ class SignupForm extends Component {
           </Text>
         </View>
 
-        <View id="Signup.formWrapper" style={{ flex: 3, justifyContent: 'flex-start' }}>
+        <View
+          id="Signup.formWrapper"
+          style={{ flex: 3, justifyContent: 'flex-start', marginTop: 30 }}
+        >
           <View style={styles.formWrapper}>
             {this.state.step === 1 && (
               <View>
@@ -293,37 +294,42 @@ class SignupForm extends Component {
               </View>
             )}
 
-            {this.state.isProvider && this.state.step === 1 && (
-              <View style={{ flexDirection: 'row' }}>
-                <Text style={styles.categoryText}>{I18n.t('common.category')}</Text>
-                <Picker
-                  mode="dropdown"
-                  style={{ color: 'white', flex: 1 }}
-                  placeholder={I18n.t('logIn.select_category')}
-                  selectedValue={this.state.values.category}
-                  onValueChange={this.onCategorySelect}
-                  placeholderTextColor="white"
-                  placeholderStyle={{ color: 'white' }}
-                  textStyle={{ color: 'white' }}
-                >
-                  {this.state.categories.map(item => (
-                    <Item key={item._id} label={this.localiseCategory(ucFirst(item.name))} value={item} />
-                  ))}
-                </Picker>
-              </View>
-            )}
+            {this.state.isProvider &&
+              this.state.step === 1 && (
+                <View style={{ flexDirection: 'row' }}>
+                  <Text style={styles.categoryText}>{I18n.t('common.category')}</Text>
+                  <Picker
+                    mode="dropdown"
+                    style={{ color: 'white', flex: 1 }}
+                    placeholder={I18n.t('logIn.select_category')}
+                    selectedValue={this.state.values.category}
+                    onValueChange={this.onCategorySelect}
+                    placeholderTextColor="white"
+                    placeholderStyle={{ color: 'white' }}
+                    textStyle={{ color: 'white' }}
+                  >
+                    {this.state.categories.map(item => (
+                      <Item
+                        key={item._id}
+                        label={this.localiseCategory(ucFirst(item.name))}
+                        value={item}
+                      />
+                    ))}
+                  </Picker>
+                </View>
+              )}
 
-            {this.state.isProvider && this.state.step === 1 && (
-              <View style={{ alignItems: 'center', borderTopColor: 'white', borderTopWidth: 1 }}>
-                <Text note style={{ color: 'white', margin: 10, marginBottom: 0 }}>{I18n.t('logIn.account_activation')}</Text>
-              </View>
-            )}
+            {this.state.isProvider &&
+              this.state.step === 1 && (
+                <View style={{ alignItems: 'center', borderTopColor: 'white', borderTopWidth: 1 }}>
+                  <Text note style={{ color: 'white', margin: 10, marginBottom: 0 }}>
+                    {I18n.t('logIn.account_activation')}
+                  </Text>
+                </View>
+              )}
 
-            {this.state.isProvider && this.state.step === 2 && (
-              <SignupImageForm
-                onImageSelect={this.onImageSelect}
-              />
-            )}
+            {this.state.isProvider &&
+              this.state.step === 2 && <SignupImageForm onImageSelect={this.onImageSelect} />}
 
             <Button
               id="Signup.submitButton"
