@@ -14,6 +14,8 @@ target 'wevedo_app' do
   pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
 
   platform :ios, '9.0'  
+  pod 'react-native-fcm', :path => '../node_modules/react-native-fcm'
+
   target 'wevedo_appTests' do
     inherit! :search_paths
     # Pods for testing
