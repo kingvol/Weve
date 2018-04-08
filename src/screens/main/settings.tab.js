@@ -76,6 +76,8 @@ class SettingsTab extends Component {
               </ListItem>
             ))}
           </List>
+          {__DEV__ && //  eslint-disable-line no-undef
+          <Text style={{ alignSelf: 'center' }}>DEV</Text>}
         </Content>
       </Container>
     );
