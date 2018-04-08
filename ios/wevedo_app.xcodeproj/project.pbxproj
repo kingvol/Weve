@@ -510,6 +510,8 @@
 		D00B07C1207AC2D6005F4EC5 /* GoogleToolboxForMac.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleToolboxForMac.framework; sourceTree = "<group>"; };
 		D00B07C9207AC315005F4EC5 /* Protobuf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Protobuf.framework; sourceTree = "<group>"; };
 		D00B07CA207AC316005F4EC5 /* FirebaseMessaging.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseMessaging.framework; sourceTree = "<group>"; };
+		D00B07CD207AC7B4005F4EC5 /* Firebase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Firebase.h; sourceTree = "<group>"; };
+		D00B07CE207AC874005F4EC5 /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		D045521720695BBA0021B2F7 /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
 		D070B509205C38730012BE8E /* RNI18n.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNI18n.xcodeproj; path = "../node_modules/react-native-i18n/ios/RNI18n.xcodeproj"; sourceTree = "<group>"; };
 		D078704A205DC473001EAB6D /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
@@ -720,6 +722,8 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D00B07CE207AC874005F4EC5 /* module.modulemap */,
+				D00B07CD207AC7B4005F4EC5 /* Firebase.h */,
 				D00B07CA207AC316005F4EC5 /* FirebaseMessaging.framework */,
 				D00B07C9207AC315005F4EC5 /* Protobuf.framework */,
 				D00B07BE207AC2D5005F4EC5 /* FirebaseAnalytics.framework */,
