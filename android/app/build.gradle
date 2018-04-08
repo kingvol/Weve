@@ -150,7 +150,7 @@ android {
 dependencies {
     compile project(':react-native-fcm')
     //compile 'com.google.android.gms:play-services-base:12.2.21'
-    compile 'com.google.firebase:firebase-core:10.0.1' 
+    compile 'com.google.firebase:firebase-core:10.0.1'
     compile 'com.google.firebase:firebase-messaging:10.0.1'
     compile project(':react-native-image-picker')
     compile project(':react-native-vector-icons')
