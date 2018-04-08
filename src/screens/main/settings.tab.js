@@ -8,6 +8,7 @@ import { backgroundColor, primaryFont } from '../../theme';
 import { Body, Container, Content, List, ListItem, Right, Text } from '../../components/common';
 import { AuthActions } from '../../actions';
 import { startSingleScreenApp } from '../../../index';
+import vars from '../../env/vars';
 
 const { signOut } = AuthActions;
 
@@ -76,8 +77,7 @@ class SettingsTab extends Component {
               </ListItem>
             ))}
           </List>
-          {__DEV__ && //  eslint-disable-line no-undef
-          <Text style={{ alignSelf: 'center' }}>DEV</Text>}
+          {vars.DB_ENV === 'test' && <Text style={{ alignSelf: 'center' }}>DEV</Text>}
         </Content>
       </Container>
     );
