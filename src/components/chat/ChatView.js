@@ -8,11 +8,6 @@ class ChatView extends Component {
     const { authUser, room } = this.props;
     const recipient = authUser.isProvider ? room.user._id : room.provider._id;
 
-    if (authUser.blockedUsers.includes(recipient)) {
-      Alert.alert('Unlock user to send a messsage');
-      return;
-    }
-
     const messageBody = {
       sender: authUser._id,
       recipient,
@@ -20,6 +15,20 @@ class ChatView extends Component {
     };
 
     this.props.onMessageSend(messageBody);
+  }
+
+  getInputOptions = () => {
+    const { authUser, room } = this.props;
+    const recipient = authUser.isProvider ? room.user._id : room.provider._id;
+
+    let options = {};
+
+    if (authUser.blockedUsers.includes(recipient)) {
+      return {
+        editable: false,
+        placeholder: 'To send message unblock user'
+      };
+    }
   }
 
   transformMessages = (messages) => {
@@ -50,8 +59,10 @@ class ChatView extends Component {
 
   render() {
     const { _id, firstName, profileImageURL } = this.props.authUser;
+    const textMessageInputProps = this.getInputOptions();
     return (
       <GiftedChat
+        textInputProps={textMessageInputProps}
         messages={this.transformMessages(this.props.messages)}
         bottomOffset={Platform.OS === 'ios' ? 48.5 : 0}
         placeholder={I18n.t('chat.type_a_message')}
