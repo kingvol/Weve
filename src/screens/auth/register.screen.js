@@ -13,7 +13,7 @@ class RegisterScreen extends Component {
     nextStepSignIn: false,
     email: '',
     password: '',
-  }
+  };
 
   async componentWillUpdate({ auth }) {
     /* Automatically sign in after registration.
@@ -28,7 +28,7 @@ class RegisterScreen extends Component {
 
   onBackPress = () => {
     this.props.navigator.pop();
-  }
+  };
 
   onFormSubmit = (email, password, fullName) => {
     /* divide fullName to first and last */
@@ -50,7 +50,7 @@ class RegisterScreen extends Component {
 
     this.setState({ nextStepSignIn: true, email, password });
     this.props.registerUser(body);
-  }
+  };
 
   onProviderFormSubmit = async (email, password, fullName, image, category) => {
     /* divide fullName to first and last */
@@ -90,7 +90,7 @@ class RegisterScreen extends Component {
     this.setState({
       nextStepSignIn: false,
     });
-  }
+  };
 
   uploadProfileImage = (uri) => {
     const { cloudinary: { apiKey, cloud } } = config;
@@ -107,7 +107,7 @@ class RegisterScreen extends Component {
       headers: { 'Content-Type': 'multipart/form-data' },
       body: formdata,
     }).then(raw => raw.json());
-  }
+  };
 
   render() {
     return (
@@ -126,4 +126,3 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, { registerUser, loginUser })(RegisterScreen);
-

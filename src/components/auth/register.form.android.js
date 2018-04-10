@@ -2,7 +2,9 @@
 import React, { Component } from 'react';
 import I18n from 'react-native-i18n';
 import { CheckBox, Left, Icon, Picker } from 'native-base';
-import { Alert, ImageBackground, StyleSheet, View } from 'react-native';
+import { Alert, ImageBackground, ScrollView, StyleSheet, View } from 'react-native';
+import DeviceInfo from 'react-native-device-info';
+import CountryPicker from 'react-native-country-picker-modal';
 import { contrastColor, primaryFont } from '../../theme';
 import { Button, Container, FieldInput, Text } from '../../components/common';
 import SignupImageForm from './signupImage.form';
@@ -19,7 +21,10 @@ const api = new AuthApi();
 class SignupForm extends Component {
   constructor(props) {
     super(props);
+    const userLocaleCountryCode = DeviceInfo.getDeviceCountry();
+    const cca2 = userLocaleCountryCode;
     this.state = {
+      cca2,
       step: 1,
       values: {
         fullName: '',
@@ -208,7 +213,7 @@ class SignupForm extends Component {
     const ucFirst = s => (s.substr(0, 1).toLowerCase() + s.substr(1)).replace(' ', '');
 
     return (
-      <Container id="SignUp.content" contentContainerStyle={{ justifyContent: 'space-between' }}>
+      <ScrollView id="SignUp.content" contentContainerStyle={{ justifyContent: 'space-between' }}>
         <View id="Signup.backButtonAndTitleWrapper" style={styles.header}>
           <Button
             id="Signup.backButton"
@@ -280,6 +285,30 @@ class SignupForm extends Component {
                   isError={this.state.errors.confirmPassword.isError}
                   error={this.state.errors.confirmPassword.error}
                 />
+
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 1,
+                    marginTop: 10,
+                    marginBottom: 30,
+                    alignItems: 'center',
+                  }}
+                >
+                  <View style={{ flex: 3, alignSelf: 'flex-start' }}>
+                    <Text style={{ color: 'white' }}>Choose the country</Text>
+                  </View>
+                  <View style={{ flex: 1, alignSelf: 'flex-end' }}>
+                    <CountryPicker
+                      // countryList={NORTH_AMERICA}
+                      onChange={(value) => {
+                        this.setState({ cca2: value.cca2 });
+                      }}
+                      cca2={this.state.cca2}
+                      translation="eng"
+                    />
+                  </View>
+                </View>
 
                 <View style={{ flexDirection: 'row' }}>
                   <CheckBox
@@ -358,7 +387,7 @@ class SignupForm extends Component {
             />
           </View>
         </View>
-      </Container>
+      </ScrollView>
     );
   };
 
