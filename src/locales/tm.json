@@ -68,7 +68,10 @@
     "last_name": "Familiýasy",
     "phone_number": "Telefon belgi",
     "select_avatar": "Suratyňyzy saýlaň",
-    "avatar_error": "Surat alynmady"
+    "avatar_error": "Surat alynmady",
+    "country": "Döwlet",
+    "countryLang": "rus",
+    "city": "Şäher"
   },
   "inbox": {
     "no_active_dialog": "Häzirki wagtda hiç hili hatyňyz ýok"

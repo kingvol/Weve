@@ -4,7 +4,7 @@ import I18n from 'react-native-i18n';
 import { CheckBox, Left, Icon, Picker } from 'native-base';
 import { Alert, ImageBackground, ScrollView, StyleSheet, View } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
-import CountryPicker from 'react-native-country-picker-modal';
+import CountryPicker, { getAllCountries } from 'react-native-country-picker-modal';
 import { contrastColor, primaryFont } from '../../theme';
 import { Button, Container, FieldInput, Text } from '../../components/common';
 import SignupImageForm from './signupImage.form';
@@ -72,6 +72,34 @@ class SignupForm extends Component {
     } catch ({ message }) {
       alert(message);
     }
+  }
+
+  componentDidMount() {
+    const url = 'https://freegeoip.net/json/';
+    // `const userCountryData = getAllCountries();
+    // console.log(getAllCountries().includes('RU'));
+    // console.log(getAllCountries());
+    // console.log(getAllCountries()
+    //   .filter((element) => {
+    //     element.cca2;
+    //   })
+    // );`
+
+    fetch(url)
+      .then(response => response.json())
+      .then((responseJson) => {
+        this.setState({
+          cca2: responseJson.country_code,
+          // regionName: responseJson.region_name,
+        });
+      });
+    console.log(this.state.cca2);
+    // .catch((error) => {
+    //   this.setState({
+    //     cca2: DeviceInfo.getDeviceCountry(),
+    //   });
+    //   // console.error(error);
+    // });
   }
 
   onCheckboxPress = () => {
@@ -296,16 +324,16 @@ class SignupForm extends Component {
                   }}
                 >
                   <View style={{ flex: 3, alignSelf: 'flex-start' }}>
-                    <Text style={{ color: 'white' }}>Choose the country</Text>
+                    <Text style={{ color: 'white' }}>{I18n.t('editProfile.country')}</Text>
                   </View>
-                  <View style={{ flex: 1, alignSelf: 'flex-end' }}>
+                  <View style={{ flex: 1, alignItems: 'flex-end' }}>
                     <CountryPicker
-                      // countryList={NORTH_AMERICA}
                       onChange={(value) => {
                         this.setState({ cca2: value.cca2 });
                       }}
                       cca2={this.state.cca2}
-                      translation="eng"
+                      translation={I18n.t('editProfile.countryLang')}
+                      closeable
                     />
                   </View>
                 </View>
