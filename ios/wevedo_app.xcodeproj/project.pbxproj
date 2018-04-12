@@ -88,7 +88,7 @@
 		F8DF0F1F207F64BE007D2631 /* Firebase.h in Frameworks */ = {isa = PBXBuildFile; fileRef = F8DF0F14207F64BD007D2631 /* Firebase.h */; };
 		F8DF0F20207F64BE007D2631 /* FirebaseMessaging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8DF0F15207F64BE007D2631 /* FirebaseMessaging.framework */; };
 		F8DF0FAA207F669A007D2631 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8DF0F7A207F669A007D2631 /* StoreKit.framework */; };
-		F8DF0FAC207F67CC007D2631 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F8DF0FAB207F67CC007D2631 /* GoogleService-Info.plist */; };
+		F8DF1037207F6913007D2631 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F8DF1036207F6913007D2631 /* GoogleService-Info.plist */; };
 		FBBA7F46622E463EB25A9926 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C95A0BF40EDB48C2B309E543 /* MaterialIcons.ttf */; };
 /* End PBXBuildFile section */
 
@@ -531,8 +531,7 @@
 		F8DF0F14207F64BD007D2631 /* Firebase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Firebase.h; path = Frameworks/Firebase.h; sourceTree = "<group>"; };
 		F8DF0F15207F64BE007D2631 /* FirebaseMessaging.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseMessaging.framework; path = Frameworks/FirebaseMessaging.framework; sourceTree = "<group>"; };
 		F8DF0F7A207F669A007D2631 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
-		F8DF0FAB207F67CC007D2631 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Documents/GoogleService-Info.plist"; sourceTree = "<group>"; };
-		F8DF0FAD207F67E0007D2631 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		F8DF1036207F6913007D2631 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FC8D25C36683430B8B4F4A41 /* libAppCenterReactNative.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAppCenterReactNative.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -697,7 +696,6 @@
 		13B07FAE1A68108700A75B9A /* wevedo_app */ = {
 			isa = PBXGroup;
 			children = (
-				F8DF0FAD207F67E0007D2631 /* GoogleService-Info.plist */,
 				F8DF0E21207F5C15007D2631 /* wevedo_app.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -850,7 +848,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				F8DF0FAB207F67CC007D2631 /* GoogleService-Info.plist */,
+				F8DF1036207F6913007D2631 /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* wevedo_app */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* wevedo_appTests */,
@@ -1575,7 +1573,7 @@
 				1E680DD5949249B1A798FB7F /* Zocial.ttf in Resources */,
 				D3FF5A85EB9A4D39B7952CC1 /* AppCenter-Config.plist in Resources */,
 				6278DD90A9EE4E9D9B7C5502 /* Avenir-Light.ttf in Resources */,
-				F8DF0FAC207F67CC007D2631 /* GoogleService-Info.plist in Resources */,
+				F8DF1037207F6913007D2631 /* GoogleService-Info.plist in Resources */,
 				C2A98FC0F7C94493950F1BA2 /* Avenir-Medium.ttf in Resources */,
 				02CAFA79578D43298E99B540 /* Entypo.ttf in Resources */,
 				73EEA991FB48437E9B821874 /* EvilIcons.ttf in Resources */,
