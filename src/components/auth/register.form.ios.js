@@ -26,6 +26,7 @@ class SignupForm extends Component {
     const cca2 = userLocaleCountryCode;
     this.state = {
       cca2,
+      regionName: '',
       step: 1,
       values: {
         fullName: '',
@@ -75,25 +76,20 @@ class SignupForm extends Component {
   }
 
   componentDidMount() {
-    const url = 'https://freegeoip.net/json/';
-    // `const userCountryData = getAllCountries();
-    // console.log(getAllCountries().includes('RU'));
-    console.log(getAllCountries().join());
-    // console.log(getAllCountries()
-    //   .filter((element) => {
-    //     element.cca2;
-    //   })
-    // );`
-
+    const url = 'http://api.ipstack.com/check?access_key=e1a9033da20c96cf61c52598eb00cfb9&format=1';
     fetch(url)
       .then(response => response.json())
       .then((responseJson) => {
         this.setState({
-          cca2: responseJson.country_code,
-          // regionName: responseJson.region_name,
+          cca2: countries.includes(responseJson.country_code)
+            ? responseJson.country_code
+            : countries.includes(DeviceInfo.getDeviceCountry())
+              ? DeviceInfo.getDeviceCountry()
+              : 'GB',
+          regionName: responseJson.region_name,
         });
       });
-    console.log(this.state.cca2);
+
     // .catch((error) => {
     //   this.setState({
     //     cca2: DeviceInfo.getDeviceCountry(),
@@ -323,12 +319,12 @@ class SignupForm extends Component {
                     marginTop: 10,
                     marginBottom: 30,
                     alignItems: 'center',
+                    borderColor: 'white',
+                    borderBottomWidth: 1,
                   }}
                 >
-                  <View style={{ flex: 3, alignSelf: 'flex-start' }}>
-                    <Text style={{ color: 'white' }}>{I18n.t('editProfile.country')}</Text>
-                  </View>
-                  <View style={{ flex: 1, alignItems: 'flex-end' }}>
+                  <Text style={{ flex: 3, color: 'white' }}>{`${I18n.t('editProfile.country')} / ${I18n.t('editProfile.region')}`}</Text>
+                  <View style={{ flex: 1, alignItems: 'flex-start' }}>
                     <CountryPicker
                       onChange={(value) => {
                         this.setState({ cca2: value.cca2 });
@@ -338,6 +334,21 @@ class SignupForm extends Component {
                       closeable
                     />
                   </View>
+                  <Picker
+                    mode="dropdown"
+                    style={{ color: 'white', flex: 2, alignItems: 'flex-end' }}
+                    placeholder={I18n.t('logIn.select_category')}
+                    selectedValue={this.state.regionName}
+                    // onValueChange={}
+                    placeholderTextColor="white"
+                    placeholderStyle={{ color: 'white' }}
+                    textStyle={{ color: 'white' }}
+                  >
+                    <Item
+                      // key={item._id}
+                      label={this.state.regionName}
+                    />
+                  </Picker>
                 </View>
 
                 <View style={{ flexDirection: 'row' }}>
