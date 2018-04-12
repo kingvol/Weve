@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import com.facebook.react.ReactApplication;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.imagepicker.ImagePickerPackage;
+import com.evollu.react.fcm.FIRMessagingPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.microsoft.appcenter.reactnative.crashes.AppCenterReactNativeCrashesPackage;
@@ -34,6 +35,7 @@ public class MainApplication extends NavigationApplication  {
     return Arrays.<ReactPackage>asList(
     new MainReactPackage(),
     new RNDeviceInfo(),
+    new FIRMessagingPackage(),
     new ImagePickerPackage(),
     new VectorIconsPackage(),
     new SplashScreenReactPackage(),           
