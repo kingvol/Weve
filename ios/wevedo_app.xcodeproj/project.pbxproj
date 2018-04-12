@@ -75,6 +75,20 @@
 		F30406F8142E0EB3B878A346 /* libPods-wevedo_app-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F2F08547E0D84840726FC3F6 /* libPods-wevedo_app-tvOSTests.a */; };
 		F6599AACD92B43BA98631DA1 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AC81860492A24AEDAE65899C /* MaterialIcons.ttf */; };
 		F881820D204F515C0012547F /* libReactNativeNavigation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F881820B204F511A0012547F /* libReactNativeNavigation.a */; };
+		F8DF0E0B207F5704007D2631 /* libRNFIRMessaging.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F8DF0E05207F56D5007D2631 /* libRNFIRMessaging.a */; };
+		F8DF0F16207F64BE007D2631 /* module.modulemap in Frameworks */ = {isa = PBXBuildFile; fileRef = F8DF0EDC207F64BD007D2631 /* module.modulemap */; };
+		F8DF0F17207F64BE007D2631 /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8DF0F0C207F64BD007D2631 /* FirebaseCore.framework */; };
+		F8DF0F18207F64BE007D2631 /* FirebaseCoreDiagnostics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8DF0F0D207F64BD007D2631 /* FirebaseCoreDiagnostics.framework */; };
+		F8DF0F19207F64BE007D2631 /* GoogleToolboxForMac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8DF0F0E207F64BD007D2631 /* GoogleToolboxForMac.framework */; };
+		F8DF0F1A207F64BE007D2631 /* Protobuf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8DF0F0F207F64BD007D2631 /* Protobuf.framework */; };
+		F8DF0F1B207F64BE007D2631 /* nanopb.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8DF0F10207F64BD007D2631 /* nanopb.framework */; };
+		F8DF0F1C207F64BE007D2631 /* FirebaseAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8DF0F11207F64BD007D2631 /* FirebaseAnalytics.framework */; };
+		F8DF0F1D207F64BE007D2631 /* FirebaseNanoPB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8DF0F12207F64BD007D2631 /* FirebaseNanoPB.framework */; };
+		F8DF0F1E207F64BE007D2631 /* FirebaseInstanceID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8DF0F13207F64BD007D2631 /* FirebaseInstanceID.framework */; };
+		F8DF0F1F207F64BE007D2631 /* Firebase.h in Frameworks */ = {isa = PBXBuildFile; fileRef = F8DF0F14207F64BD007D2631 /* Firebase.h */; };
+		F8DF0F20207F64BE007D2631 /* FirebaseMessaging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8DF0F15207F64BE007D2631 /* FirebaseMessaging.framework */; };
+		F8DF0FAA207F669A007D2631 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8DF0F7A207F669A007D2631 /* StoreKit.framework */; };
+		F8DF0FAC207F67CC007D2631 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F8DF0FAB207F67CC007D2631 /* GoogleService-Info.plist */; };
 		FBBA7F46622E463EB25A9926 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C95A0BF40EDB48C2B309E543 /* MaterialIcons.ttf */; };
 /* End PBXBuildFile section */
 
@@ -415,6 +429,13 @@
 			remoteGlobalIDString = 3D7682761D8E76B80014119E;
 			remoteInfo = SplashScreen;
 		};
+		F8DF0E04207F56D5007D2631 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F8DF0DD7207F56D5007D2631 /* RNFIRMessaging.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNFIRMessaging;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -494,6 +515,24 @@
 		F74D4A370B5A4C009A7DFE43 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/native-base/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		F8682C9F3B52752012152ADA /* libPods-wevedo_appTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-wevedo_appTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F88181E1204F511A0012547F /* ReactNativeNavigation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeNavigation.xcodeproj; path = "../node_modules/react-native-navigation/ios/ReactNativeNavigation.xcodeproj"; sourceTree = "<group>"; };
+		F8DF0DD7207F56D5007D2631 /* RNFIRMessaging.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNFIRMessaging.xcodeproj; path = "../node_modules/react-native-fcm/ios/RNFIRMessaging.xcodeproj"; sourceTree = "<group>"; };
+		F8DF0E21207F5C15007D2631 /* wevedo_app.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = wevedo_app.entitlements; path = wevedo_app/wevedo_app.entitlements; sourceTree = "<group>"; };
+		F8DF0EAC207F6170007D2631 /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; name = module.modulemap; path = ../../../../Documents/Firebase/module.modulemap; sourceTree = "<group>"; };
+		F8DF0EAD207F6170007D2631 /* Firebase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Firebase.h; path = ../../../../Documents/Firebase/Firebase.h; sourceTree = "<group>"; };
+		F8DF0EDC207F64BD007D2631 /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; name = module.modulemap; path = Frameworks/module.modulemap; sourceTree = "<group>"; };
+		F8DF0F0C207F64BD007D2631 /* FirebaseCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseCore.framework; path = Frameworks/FirebaseCore.framework; sourceTree = "<group>"; };
+		F8DF0F0D207F64BD007D2631 /* FirebaseCoreDiagnostics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseCoreDiagnostics.framework; path = Frameworks/FirebaseCoreDiagnostics.framework; sourceTree = "<group>"; };
+		F8DF0F0E207F64BD007D2631 /* GoogleToolboxForMac.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleToolboxForMac.framework; path = Frameworks/GoogleToolboxForMac.framework; sourceTree = "<group>"; };
+		F8DF0F0F207F64BD007D2631 /* Protobuf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Protobuf.framework; path = Frameworks/Protobuf.framework; sourceTree = "<group>"; };
+		F8DF0F10207F64BD007D2631 /* nanopb.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = nanopb.framework; path = Frameworks/nanopb.framework; sourceTree = "<group>"; };
+		F8DF0F11207F64BD007D2631 /* FirebaseAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseAnalytics.framework; path = Frameworks/FirebaseAnalytics.framework; sourceTree = "<group>"; };
+		F8DF0F12207F64BD007D2631 /* FirebaseNanoPB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseNanoPB.framework; path = Frameworks/FirebaseNanoPB.framework; sourceTree = "<group>"; };
+		F8DF0F13207F64BD007D2631 /* FirebaseInstanceID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseInstanceID.framework; path = Frameworks/FirebaseInstanceID.framework; sourceTree = "<group>"; };
+		F8DF0F14207F64BD007D2631 /* Firebase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Firebase.h; path = Frameworks/Firebase.h; sourceTree = "<group>"; };
+		F8DF0F15207F64BE007D2631 /* FirebaseMessaging.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseMessaging.framework; path = Frameworks/FirebaseMessaging.framework; sourceTree = "<group>"; };
+		F8DF0F7A207F669A007D2631 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		F8DF0FAB207F67CC007D2631 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Documents/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		F8DF0FAD207F67E0007D2631 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FC8D25C36683430B8B4F4A41 /* libAppCenterReactNative.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAppCenterReactNative.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -511,6 +550,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F8DF0FAA207F669A007D2631 /* StoreKit.framework in Frameworks */,
+				F8DF0F16207F64BE007D2631 /* module.modulemap in Frameworks */,
+				F8DF0F17207F64BE007D2631 /* FirebaseCore.framework in Frameworks */,
+				F8DF0F18207F64BE007D2631 /* FirebaseCoreDiagnostics.framework in Frameworks */,
+				F8DF0F19207F64BE007D2631 /* GoogleToolboxForMac.framework in Frameworks */,
+				F8DF0F1A207F64BE007D2631 /* Protobuf.framework in Frameworks */,
+				F8DF0F1B207F64BE007D2631 /* nanopb.framework in Frameworks */,
+				F8DF0F1C207F64BE007D2631 /* FirebaseAnalytics.framework in Frameworks */,
+				F8DF0F1D207F64BE007D2631 /* FirebaseNanoPB.framework in Frameworks */,
+				F8DF0F1E207F64BE007D2631 /* FirebaseInstanceID.framework in Frameworks */,
+				F8DF0F1F207F64BE007D2631 /* Firebase.h in Frameworks */,
+				F8DF0F20207F64BE007D2631 /* FirebaseMessaging.framework in Frameworks */,
 				D045524A20695BED0021B2F7 /* libRNImagePicker.a in Frameworks */,
 				D078707C205DC4C5001EAB6D /* libRNVectorIcons.a in Frameworks */,
 				D070B53C205C38A30012BE8E /* libRNI18n.a in Frameworks */,
@@ -518,6 +569,7 @@
 				F881820D204F515C0012547F /* libReactNativeNavigation.a in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
+				F8DF0E0B207F5704007D2631 /* libRNFIRMessaging.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
@@ -645,6 +697,8 @@
 		13B07FAE1A68108700A75B9A /* wevedo_app */ = {
 			isa = PBXGroup;
 			children = (
+				F8DF0FAD207F67E0007D2631 /* GoogleService-Info.plist */,
+				F8DF0E21207F5C15007D2631 /* wevedo_app.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -681,6 +735,20 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F8DF0F7A207F669A007D2631 /* StoreKit.framework */,
+				F8DF0F14207F64BD007D2631 /* Firebase.h */,
+				F8DF0F11207F64BD007D2631 /* FirebaseAnalytics.framework */,
+				F8DF0F0C207F64BD007D2631 /* FirebaseCore.framework */,
+				F8DF0F0D207F64BD007D2631 /* FirebaseCoreDiagnostics.framework */,
+				F8DF0F13207F64BD007D2631 /* FirebaseInstanceID.framework */,
+				F8DF0F15207F64BE007D2631 /* FirebaseMessaging.framework */,
+				F8DF0F12207F64BD007D2631 /* FirebaseNanoPB.framework */,
+				F8DF0F0E207F64BD007D2631 /* GoogleToolboxForMac.framework */,
+				F8DF0EAD207F6170007D2631 /* Firebase.h */,
+				F8DF0EAC207F6170007D2631 /* module.modulemap */,
+				F8DF0EDC207F64BD007D2631 /* module.modulemap */,
+				F8DF0F10207F64BD007D2631 /* nanopb.framework */,
+				F8DF0F0F207F64BD007D2631 /* Protobuf.framework */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
 				4FB4C6F3F8DCAEF5C629B0CF /* libPods-wevedo_app.a */,
 				4C63A5B6C9913B83C7BCD84A /* libPods-wevedo_app-tvOS.a */,
@@ -745,6 +813,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				F8DF0DD7207F56D5007D2631 /* RNFIRMessaging.xcodeproj */,
 				D045521720695BBA0021B2F7 /* RNImagePicker.xcodeproj */,
 				D078704A205DC473001EAB6D /* RNVectorIcons.xcodeproj */,
 				D070B509205C38730012BE8E /* RNI18n.xcodeproj */,
@@ -781,6 +850,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				F8DF0FAB207F67CC007D2631 /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* wevedo_app */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* wevedo_appTests */,
@@ -907,6 +977,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		F8DF0DD8207F56D5007D2631 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F8DF0E05207F56D5007D2631 /* libRNFIRMessaging.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1009,6 +1087,14 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = EATD32UY83;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -1096,6 +1182,10 @@
 				{
 					ProductGroup = F88181E2204F511A0012547F /* Products */;
 					ProjectRef = F88181E1204F511A0012547F /* ReactNativeNavigation.xcodeproj */;
+				},
+				{
+					ProductGroup = F8DF0DD8207F56D5007D2631 /* Products */;
+					ProjectRef = F8DF0DD7207F56D5007D2631 /* RNFIRMessaging.xcodeproj */;
 				},
 				{
 					ProductGroup = D070B50A205C38730012BE8E /* Products */;
@@ -1447,6 +1537,13 @@
 			remoteRef = F894A6292042F8D000EFA64B /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		F8DF0E05207F56D5007D2631 /* libRNFIRMessaging.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNFIRMessaging.a;
+			remoteRef = F8DF0E04207F56D5007D2631 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -1478,6 +1575,7 @@
 				1E680DD5949249B1A798FB7F /* Zocial.ttf in Resources */,
 				D3FF5A85EB9A4D39B7952CC1 /* AppCenter-Config.plist in Resources */,
 				6278DD90A9EE4E9D9B7C5502 /* Avenir-Light.ttf in Resources */,
+				F8DF0FAC207F67CC007D2631 /* GoogleService-Info.plist in Resources */,
 				C2A98FC0F7C94493950F1BA2 /* Avenir-Medium.ttf in Resources */,
 				02CAFA79578D43298E99B540 /* Entypo.ttf in Resources */,
 				73EEA991FB48437E9B821874 /* EvilIcons.ttf in Resources */,
@@ -1857,15 +1955,25 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = wevedo_app/wevedo_app.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = EATD32UY83;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Frameworks",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
 					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
 					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
 					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
+					"$(SRCROOT)/../node_modules/react-native-fcm/ios",
+					"$(PROJECT_DIR)/",
+					"$(PROJECT_DIR)/Frameworks",
+					"$(SRCROOT)/../",
 				);
 				"HEADER_SEARCH_PATHS[arch=*]" = (
 					"$(inherited)",
@@ -1892,14 +2000,21 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = wevedo_app/wevedo_app.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = EATD32UY83;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Frameworks",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
 					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
 					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
 					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
+					"$(SRCROOT)/../node_modules/react-native-fcm/ios",
 				);
 				INFOPLIST_FILE = wevedo_app/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;

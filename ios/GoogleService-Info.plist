@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
+	<string>ca-app-pub-3940256099942544/2934735716</string>
+	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
+	<string>ca-app-pub-3940256099942544/4411468910</string>
+	<key>CLIENT_ID</key>
+	<string>602024550235-vvsi86sltjd3l4tnd8h38c75f0fj9fi0.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.602024550235-vvsi86sltjd3l4tnd8h38c75f0fj9fi0</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBp9tYsvz-zFrKHB05wsz7UvYjx4G5QJ1U</string>
+	<key>GCM_SENDER_ID</key>
+	<string>602024550235</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.wevedo.wevedo</string>
+	<key>PROJECT_ID</key>
+	<string>wevedo-test</string>
+	<key>STORAGE_BUCKET</key>
+	<string>wevedo-test.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<true></true>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<false></false>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:602024550235:ios:a7deeb94a7483a96</string>
+	<key>DATABASE_URL</key>
+	<string>https://wevedo-test.firebaseio.com</string>
+</dict>
+</plist>
