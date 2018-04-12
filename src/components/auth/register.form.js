@@ -2,13 +2,14 @@
 import React, { Component } from 'react';
 import I18n from 'react-native-i18n';
 import { CheckBox, Left, Icon, Picker } from 'native-base';
-import { Alert, ImageBackground, StyleSheet, View } from 'react-native';
+import { Alert, ImageBackground, ScrollView, StyleSheet, View } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
-import CountryPicker, { getAllCountries } from 'react-native-country-picker-modal';
+import CountryPicker from 'react-native-country-picker-modal';
 import { contrastColor, primaryFont } from '../../theme';
-import { Button, Container, Content, FieldInput, Text } from '../../components/common';
+import { Button, Container, FieldInput, Text } from '../../components/common';
 import SignupImageForm from './signupImage.form';
 import Eula from './EULA';
+import { countries } from './countries';
 
 import APIs from '../../api';
 
@@ -22,9 +23,10 @@ class SignupForm extends Component {
   constructor(props) {
     super(props);
     const userLocaleCountryCode = DeviceInfo.getDeviceCountry();
-    const cca2 = userLocaleCountryCode;
+    const cca2 = countries.includes(userLocaleCountryCode) ? userLocaleCountryCode : 'GB';
     this.state = {
       cca2,
+      regionName: '',
       step: 1,
       values: {
         fullName: '',
@@ -65,7 +67,8 @@ class SignupForm extends Component {
       this.setState({
         categories,
         values: {
-          ...this.state.values, category: categories[0], // Predefine 'Venue category'
+          ...this.state.values,
+          category: categories[0], // Predefine 'Venue category'
         },
       });
     } catch ({ message }) {
@@ -73,26 +76,22 @@ class SignupForm extends Component {
     }
   }
 
-  componentDidMount() {
-    const url = 'https://freegeoip.net/json/';
-    // `const userCountryData = getAllCountries();
-    // console.log(getAllCountries().includes('RU'));
-    // console.log(getAllCountries());
-    // console.log(getAllCountries()
-    //   .filter((element) => {
-    //     element.cca2;
-    //   })
-    // );`
 
+  componentDidMount() {
+    const url = 'http://api.ipstack.com/check?access_key=e1a9033da20c96cf61c52598eb00cfb9&format=1';
     fetch(url)
       .then(response => response.json())
       .then((responseJson) => {
         this.setState({
-          cca2: responseJson.country_code,
-          // regionName: responseJson.region_name,
+          cca2: countries.includes(responseJson.country_code)
+            ? responseJson.country_code
+            : countries.includes(DeviceInfo.getDeviceCountry())
+              ? DeviceInfo.getDeviceCountry()
+              : 'GB',
+          regionName: responseJson.region_name,
         });
       });
-    console.log(this.state.cca2);
+
     // .catch((error) => {
     //   this.setState({
     //     cca2: DeviceInfo.getDeviceCountry(),
@@ -111,7 +110,7 @@ class SignupForm extends Component {
     this.setState({
       step: 2,
     });
-  }
+  };
 
   onCategorySelect = (category) => {
     this.setState({
@@ -120,7 +119,7 @@ class SignupForm extends Component {
         category,
       },
     });
-  }
+  };
 
   onImageSelect = (image) => {
     this.setState({
@@ -129,7 +128,7 @@ class SignupForm extends Component {
         image,
       },
     });
-  }
+  };
 
   onFieldChange = (key, value) => {
     this.setState({
@@ -240,12 +239,7 @@ class SignupForm extends Component {
     const ucFirst = s => (s.substr(0, 1).toLowerCase() + s.substr(1)).replace(' ', '');
 
     return (
-      <Content
-        id="SignUp.content"
-        padder
-        keyboardShouldPersistTaps="always"
-        contentContainerStyle={{ flex: 1, justifyContent: 'space-between' }}
-      >
+      <ScrollView id="SignUp.content" contentContainerStyle={{ justifyContent: 'space-between' }}>
         <View id="Signup.backButtonAndTitleWrapper" style={styles.header}>
           <Button
             id="Signup.backButton"
@@ -263,7 +257,10 @@ class SignupForm extends Component {
           </Text>
         </View>
 
-        <View id="Signup.formWrapper" style={{ flex: 0, justifyContent: 'flex-start' }}>
+        <View
+          id="Signup.formWrapper"
+          style={{ flex: 3, justifyContent: 'flex-start', marginTop: 30 }}
+        >
           <View style={styles.formWrapper}>
             {this.state.step === 1 && (
               <View>
@@ -322,12 +319,12 @@ class SignupForm extends Component {
                     marginTop: 10,
                     marginBottom: 30,
                     alignItems: 'center',
+                    borderColor: 'white',
+                    borderBottomWidth: 1,
                   }}
                 >
-                  <View style={{ flex: 3, alignSelf: 'flex-start' }}>
-                    <Text style={{ color: 'white' }}>{I18n.t('editProfile.country')}</Text>
-                  </View>
-                  <View style={{ flex: 1, alignItems: 'flex-end' }}>
+                  <Text style={{ flex: 3, color: 'white' }}>{`${I18n.t('editProfile.country')} / ${I18n.t('editProfile.region')}`}</Text>
+                  <View style={{ flex: 1, alignItems: 'flex-start' }}>
                     <CountryPicker
                       onChange={(value) => {
                         this.setState({ cca2: value.cca2 });
@@ -337,7 +334,23 @@ class SignupForm extends Component {
                       closeable
                     />
                   </View>
+                  <Picker
+                    mode="dropdown"
+                    style={{ color: 'white', flex: 2, alignItems: 'flex-end' }}
+                    placeholder={I18n.t('logIn.select_category')}
+                    selectedValue={this.state.regionName}
+                    // onValueChange={}
+                    placeholderTextColor="white"
+                    placeholderStyle={{ color: 'white' }}
+                    textStyle={{ color: 'white' }}
+                  >
+                    <Item
+                      // key={item._id}
+                      label={this.state.regionName}
+                    />
+                  </Picker>
                 </View>
+
 
                 <View style={{ flexDirection: 'row' }}>
                   <CheckBox
@@ -352,36 +365,42 @@ class SignupForm extends Component {
               </View>
             )}
 
-            {this.state.isProvider && this.state.step === 1 && (
-              <View style={{ flexDirection: 'row' }}>
-                <Picker
-                  mode="dropdown"
-                  style={{ color: 'white', flex: 0 }}
-                  placeholder={I18n.t('logIn.select_category')}
-                  selectedValue={this.state.values.category}
-                  onValueChange={this.onCategorySelect}
-                  placeholderTextColor="white"
-                  placeholderStyle={{ color: 'white' }}
-                  textStyle={{ color: 'white' }}
-                >
-                  {this.state.categories.map(item => (
-                    <Item key={item._id} label={this.localiseCategory(ucFirst(item.name))} value={item} />
-                  ))}
-                </Picker>
-              </View>
-            )}
+            {this.state.isProvider &&
+              this.state.step === 1 && (
+                <View style={{ flexDirection: 'row' }}>
+                  <Text style={styles.categoryText}>{I18n.t('common.category')}</Text>
+                  <Picker
+                    mode="dropdown"
+                    style={{ color: 'white', flex: 1 }}
+                    placeholder={I18n.t('logIn.select_category')}
+                    selectedValue={this.state.values.category}
+                    onValueChange={this.onCategorySelect}
+                    placeholderTextColor="white"
+                    placeholderStyle={{ color: 'white' }}
+                    textStyle={{ color: 'white' }}
+                  >
+                    {this.state.categories.map(item => (
+                      <Item
+                        key={item._id}
+                        label={this.localiseCategory(ucFirst(item.name))}
+                        value={item}
+                      />
+                    ))}
+                  </Picker>
+                </View>
+              )}
 
-            {this.state.isProvider && this.state.step === 1 && (
-              <View style={{ alignItems: 'center', borderTopColor: 'white', borderTopWidth: 1 }}>
-                <Text note style={{ color: 'white', margin: 10, marginBottom: 0 }}>{I18n.t('logIn.account_activation')}</Text>
-              </View>
-            )}
+            {this.state.isProvider &&
+              this.state.step === 1 && (
+                <View style={{ alignItems: 'center', borderTopColor: 'white', borderTopWidth: 1 }}>
+                  <Text note style={{ color: 'white', margin: 10, marginBottom: 0 }}>
+                    {I18n.t('logIn.account_activation')}
+                  </Text>
+                </View>
+              )}
 
-            {this.state.isProvider && this.state.step === 2 && (
-              <SignupImageForm
-                onImageSelect={this.onImageSelect}
-              />
-            )}
+            {this.state.isProvider &&
+              this.state.step === 2 && <SignupImageForm onImageSelect={this.onImageSelect} />}
 
             <Button
               id="Signup.submitButton"
@@ -410,7 +429,7 @@ class SignupForm extends Component {
             />
           </View>
         </View>
-      </Content>
+      </ScrollView>
     );
   };
 
@@ -443,6 +462,7 @@ const styles = StyleSheet.create({
     zIndex: -1,
   },
   header: {
+    flex: 1,
     justifyContent: 'flex-start',
     top: 20,
     flexDirection: 'row',

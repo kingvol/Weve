@@ -71,7 +71,7 @@
     "avatar_error": "Fotoğraf alınamadı",
     "country": "Ülke",
     "countryLang": "eng",
-    "city": "Şehir"
+    "region": "Bölge"
   },
   "inbox": {
     "no_active_dialog": "Etkin iletişim kutusu yok"

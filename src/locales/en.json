@@ -71,7 +71,7 @@
     "avatar_error": "Unable to get photo",
     "country": "Country",
     "countryLang": "eng",
-    "city": "City"
+    "region": "Region"
   },
   "inbox": {
     "no_active_dialog": "There are no active dialogs"

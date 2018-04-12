@@ -72,7 +72,7 @@
     "avatar_error": "Не удалось получить фото",
     "country": "Страна",
     "countryLang": "rus",
-    "city": "Город"
+    "region": "Область"
   },
   "inbox": {
     "no_active_dialog": "Нет активных диалогов"
