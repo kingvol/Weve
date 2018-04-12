@@ -565,9 +565,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-<<<<<<< HEAD
 				D0591B4E207D506B00A51D42 /* libRNDeviceInfo.a in Frameworks */,
-=======
 				F8DF0FAA207F669A007D2631 /* StoreKit.framework in Frameworks */,
 				F8DF0F16207F64BE007D2631 /* module.modulemap in Frameworks */,
 				F8DF0F17207F64BE007D2631 /* FirebaseCore.framework in Frameworks */,
@@ -580,7 +578,6 @@
 				F8DF0F1E207F64BE007D2631 /* FirebaseInstanceID.framework in Frameworks */,
 				F8DF0F1F207F64BE007D2631 /* Firebase.h in Frameworks */,
 				F8DF0F20207F64BE007D2631 /* FirebaseMessaging.framework in Frameworks */,
->>>>>>> dev
 				D045524A20695BED0021B2F7 /* libRNImagePicker.a in Frameworks */,
 				D078707C205DC4C5001EAB6D /* libRNVectorIcons.a in Frameworks */,
 				D070B53C205C38A30012BE8E /* libRNI18n.a in Frameworks */,
@@ -831,11 +828,8 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-<<<<<<< HEAD
 				D0591B17207D503600A51D42 /* RNDeviceInfo.xcodeproj */,
-=======
 				F8DF0DD7207F56D5007D2631 /* RNFIRMessaging.xcodeproj */,
->>>>>>> dev
 				D045521720695BBA0021B2F7 /* RNImagePicker.xcodeproj */,
 				D078704A205DC473001EAB6D /* RNVectorIcons.xcodeproj */,
 				D070B509205C38730012BE8E /* RNI18n.xcodeproj */,
@@ -1215,13 +1209,10 @@
 					ProjectRef = F88181E1204F511A0012547F /* ReactNativeNavigation.xcodeproj */;
 				},
 				{
-<<<<<<< HEAD
 					ProductGroup = D0591B18207D503600A51D42 /* Products */;
 					ProjectRef = D0591B17207D503600A51D42 /* RNDeviceInfo.xcodeproj */;
-=======
 					ProductGroup = F8DF0DD8207F56D5007D2631 /* Products */;
 					ProjectRef = F8DF0DD7207F56D5007D2631 /* RNFIRMessaging.xcodeproj */;
->>>>>>> dev
 				},
 				{
 					ProductGroup = D070B50A205C38730012BE8E /* Products */;
