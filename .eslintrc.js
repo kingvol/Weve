@@ -21,6 +21,7 @@ module.exports = {
     'import/no-unresolved': 'off',
     'import/extensions': 'off',
     'import/prefer-default-export': 0,
+    'max-len': ['error', 100],
   },
   parser: 'babel-eslint',
   env: {

@@ -9,7 +9,8 @@ import { contrastColor, primaryFont } from '../../theme';
 import { Button, Container, FieldInput, Text } from '../../components/common';
 import SignupImageForm from './signupImage.form';
 import Eula from './EULA';
-import { countries } from './countries';
+import countries from '../../countryLib/countries';
+import countryLib from '../../countryLib';
 
 import APIs from '../../api';
 
@@ -22,11 +23,11 @@ const api = new AuthApi();
 class SignupForm extends Component {
   constructor(props) {
     super(props);
+    this.onRegionSelect = this.onRegionSelect.bind(this);
     const userLocaleCountryCode = DeviceInfo.getDeviceCountry();
     const cca2 = countries.includes(userLocaleCountryCode) ? userLocaleCountryCode : 'GB';
+    const regionName = countryLib[`${cca2}`].provinces[0];
     this.state = {
-      cca2,
-      regionName: '',
       step: 1,
       values: {
         fullName: '',
@@ -35,6 +36,8 @@ class SignupForm extends Component {
         confirmPassword: '',
         category: null,
         image: null,
+        cca2,
+        regionName,
       },
       errors: {
         fullName: {
@@ -74,30 +77,32 @@ class SignupForm extends Component {
     } catch ({ message }) {
       alert(message);
     }
-  }
-
-
-  componentDidMount() {
     const url = 'http://api.ipstack.com/check?access_key=e1a9033da20c96cf61c52598eb00cfb9&format=1';
-    fetch(url)
+    await fetch(url)
       .then(response => response.json())
       .then((responseJson) => {
         this.setState({
-          cca2: countries.includes(responseJson.country_code)
-            ? responseJson.country_code
-            : countries.includes(DeviceInfo.getDeviceCountry())
-              ? DeviceInfo.getDeviceCountry()
-              : 'GB',
-          regionName: responseJson.region_name,
+          values: {
+            ...this.state.values,
+            cca2: countries.includes(responseJson.country_code)
+              ? responseJson.country_code
+              : countries.includes(DeviceInfo.getDeviceCountry())
+                ? DeviceInfo.getDeviceCountry()
+                : 'GB',
+            regionName: responseJson.region_name,
+            // regionName: countryLib[`${this.state.values.cca2}`].provinces.find(item => (item.substr(0, 2) === responseJson.region_name.substr(0, 2) ? item : null)),
+          },
         });
       });
-
-    // .catch((error) => {
-    //   this.setState({
-    //     cca2: DeviceInfo.getDeviceCountry(),
-    //   });
-    //   // console.error(error);
-    // });
+    this.setState({
+      values: {
+        ...this.state.values,
+        regionName: countryLib[`${this.state.values.cca2}`].provinces.find(item =>
+          (item.substr(0, 2) === this.state.values.regionName.substr(0, 2)
+            ? item
+            : null)),
+      },
+    });
   }
 
   onCheckboxPress = () => {
@@ -120,6 +125,15 @@ class SignupForm extends Component {
       },
     });
   };
+
+  onRegionSelect(region) {
+    this.setState({
+      values: {
+        ...this.state.values,
+        regionName: region,
+      },
+    });
+  }
 
   onImageSelect = (image) => {
     this.setState({
@@ -327,30 +341,33 @@ class SignupForm extends Component {
                   <View style={{ flex: 1, alignItems: 'flex-start' }}>
                     <CountryPicker
                       onChange={(value) => {
-                        this.setState({ cca2: value.cca2 });
+                        this.setState({
+                          values: {
+                            ...this.state.values,
+                          cca2: value.cca2,
+                          },
+                        });
                       }}
-                      cca2={this.state.cca2}
+                      cca2={this.state.values.cca2}
+                      excludeCountries={['AD', 'AQ', 'BV', 'VG', 'CW', 'XK', 'ME', 'PS', 'BL', 'MF', 'RS', 'SX', 'TC', 'UM', 'VI', 'VA', 'AX']}
                       translation={I18n.t('editProfile.countryLang')}
                       closeable
                     />
                   </View>
                   <Picker
                     mode="dropdown"
-                    style={{ color: 'white', flex: 2, alignItems: 'flex-end' }}
+                    style={{ color: 'white', flex: 3, alignItems: 'flex-end' }}
                     placeholder={I18n.t('logIn.select_category')}
-                    selectedValue={this.state.regionName}
-                    // onValueChange={}
+                    selectedValue={this.state.values.regionName}
+                    onValueChange={this.onRegionSelect}
                     placeholderTextColor="white"
                     placeholderStyle={{ color: 'white' }}
                     textStyle={{ color: 'white' }}
                   >
-                    <Item
-                      // key={item._id}
-                      label={this.state.regionName}
-                    />
+                    {countryLib[`${this.state.values.cca2}`].provinces.map(item =>
+                      <Picker.Item label={item} value={item} key={item} />)}
                   </Picker>
                 </View>
-
 
                 <View style={{ flexDirection: 'row' }}>
                   <CheckBox
