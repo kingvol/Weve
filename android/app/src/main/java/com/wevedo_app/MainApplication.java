@@ -4,6 +4,7 @@ import android.app.Application;
 import android.support.annotation.NonNull;
 
 import com.facebook.react.ReactApplication;
+import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.imagepicker.ImagePickerPackage;
 import com.evollu.react.fcm.FIRMessagingPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -33,6 +34,7 @@ public class MainApplication extends NavigationApplication  {
   public List<ReactPackage> createAdditionalReactPackages() {
     return Arrays.<ReactPackage>asList(
     new MainReactPackage(),
+    new RNDeviceInfo(),
     new FIRMessagingPackage(),
     new ImagePickerPackage(),
     new VectorIconsPackage(),

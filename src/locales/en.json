@@ -68,7 +68,10 @@
     "last_name": "Last Name",
     "phone_number": "Phone Number",
     "select_avatar": "Select Avatar",
-    "avatar_error": "Unable to get photo"
+    "avatar_error": "Unable to get photo",
+    "country": "Country",
+    "countryLang": "eng",
+    "region": "Region"
   },
   "inbox": {
     "no_active_dialog": "There are no active dialogs"

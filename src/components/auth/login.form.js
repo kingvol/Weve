@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, ImageBackground, TouchableOpacity, View } from 'react-native';
+import { Image, ImageBackground, TouchableOpacity, View, ScrollView } from 'react-native';
 import { CardItem, Container, Form, Icon, Item, Input, Label, Title } from 'native-base';
 import I18n from '../../locales';
 import { primaryColor, backgroundColor, contrastColor, primaryFont } from '../../theme';
@@ -104,117 +104,125 @@ class LoginForm extends Component {
     const secure = !this.state.secureVisible;
 
     return (
-      <Container containerStyle={containerStyle} id="LoginPage.main-content">
-        <ImageBackground resizeMode="cover" style={background} source={images.backGround}>
-          <CardItem style={header} id="LoginPage.logo-container">
-            <Title style={headerText} id="LoginPage.accountLoginText">
-              {I18n.t('logIn.account_login')}
-            </Title>
-          </CardItem>
-          <CardItem style={pic} id="LoginPage.logoWrapper">
-            <View style={logoOuterCircle} id="LoginPage.logoOuterCircle">
-              <Image id="LoginPage.logo" source={images.logo} style={logoInnerCircle} />
-            </View>
-          </CardItem>
-          <Form id="LoginPage.form-container" style={form}>
-            <View style={itemStyle}>
-              <Item
-                error={this.state.emailError}
-                id="LoginPage.emailInput"
-                floatingLabel
-                style={item}
-              >
-                <Label style={label}>{this.state.emailLabel}</Label>
-                <Input
-                  style={input}
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  value={this.state.email}
-                  onChangeText={text => this.onFieldChange('email', text)}
-                  onBlur={() => this.onBlur('email', this.state.email)}
-                />
-                {this.state.emailError && <Icon name="close-circle" style={{ color: 'red' }} />}
-              </Item>
-              <View />
-            </View>
-            <View style={itemStyle}>
-              <Item
-                error={this.state.passwordError}
-                id="LoginPage.passwordInput"
-                floatingLabel
-                style={itemPassword}
-              >
-                <Label style={label}>{this.state.passwordLabel}</Label>
-                <Input
-                  style={input}
-                  value={this.state.password}
-                  onChangeText={text => this.onFieldChange('password', text)}
-                  // onFocus={this.onFocus('password', this.state.password)}
-                  onBlur={() => this.onBlur('password', this.state.password)}
-                  secureTextEntry={secure}
-                />
-                {this.state.passwordError && <Icon name="close-circle" style={{ color: 'red' }} />}
-              </Item>
-              <View
-                style={{
-                  alignSelf: 'flex-end',
-                  bottom: 2,
-                  flex: 0,
-                }}
-              >
-                <TouchableOpacity onPress={this.switchSecure}>
-                  <Icon style={{ color: 'white' }} size={24} name={secure ? 'md-eye-off' : 'eye'} />
-                </TouchableOpacity>
+      <ScrollView>
+        <Container containerStyle={containerStyle} id="LoginPage.main-content">
+          <ImageBackground resizeMode="cover" style={background} source={images.backGround}>
+            <CardItem style={header} id="LoginPage.logo-container">
+              <Title style={headerText} id="LoginPage.accountLoginText">
+                {I18n.t('logIn.account_login')}
+              </Title>
+            </CardItem>
+            <CardItem style={pic} id="LoginPage.logoWrapper">
+              <View style={logoOuterCircle} id="LoginPage.logoOuterCircle">
+                <Image id="LoginPage.logo" source={images.logo} style={logoInnerCircle} />
               </View>
-            </View>
-            {error && (
-              <View style={styles.errorContainer}>
-                <Text
-                  id="LoginPage.errorText"
-                  style={{ color: contrastColor, textAlign: 'center' }}
+            </CardItem>
+            <Form id="LoginPage.form-container" style={form}>
+              <View style={itemStyle}>
+                <Item
+                  error={this.state.emailError}
+                  id="LoginPage.emailInput"
+                  floatingLabel
+                  style={item}
                 >
-                  {error}
-                </Text>
+                  <Label style={label}>{this.state.emailLabel}</Label>
+                  <Input
+                    style={input}
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    value={this.state.email}
+                    onChangeText={text => this.onFieldChange('email', text)}
+                    onBlur={() => this.onBlur('email', this.state.email)}
+                  />
+                  {this.state.emailError && <Icon name="close-circle" style={{ color: 'red' }} />}
+                </Item>
+                <View />
               </View>
-            )}
-            <Button
-              id="LoginPage.forgotPasswordButton"
-              style={{ flex: error ? 1 : 2 }}
-              block
-              transparent
-              onPress={this.onForgotPress}
-            >
-              <Text style={Object.assign({ marginTop: error ? 0 : 35 }, textForgot)}>
-                {I18n.t('logIn.forgot_your_password').toUpperCase()}
-              </Text>
-            </Button>
-            <Button
-              id="LoginPage.loginButton"
-              block
-              style={loginButton}
-              onPress={this.handleSubmit}
-              disabled={disabled}
-              spinner={isLoading}
-            >
-              <Text style={loginButtonText}>{I18n.t('logIn.log_in')}</Text>
-            </Button>
-            <Center id="LoginPage.dontHaveAnAccountContainer" style={OR}>
-              <View style={or} />
-              <Text style={orText}>{I18n.t('logIn.or')}</Text>
-              <View style={or} />
-            </Center>
-            <Button
-              id="LoginPage.signUpButton"
-              style={register}
-              block
-              transparent
-              onPress={this.props.onRegisterPress}
-            >
-              <Text style={textRegister}>{I18n.t('logIn.register').toUpperCase()}</Text>
-            </Button>
-          </Form>
-        </ImageBackground>
-      </Container>
+              <View style={itemStyle}>
+                <Item
+                  error={this.state.passwordError}
+                  id="LoginPage.passwordInput"
+                  floatingLabel
+                  style={itemPassword}
+                >
+                  <Label style={label}>{this.state.passwordLabel}</Label>
+                  <Input
+                    style={input}
+                    value={this.state.password}
+                    onChangeText={text => this.onFieldChange('password', text)}
+                    // onFocus={this.onFocus('password', this.state.password)}
+                    onBlur={() => this.onBlur('password', this.state.password)}
+                    secureTextEntry={secure}
+                  />
+                  {this.state.passwordError && (
+                    <Icon name="close-circle" style={{ color: 'red' }} />
+                  )}
+                </Item>
+                <View
+                  style={{
+                    alignSelf: 'flex-end',
+                    bottom: 2,
+                    flex: 0,
+                  }}
+                >
+                  <TouchableOpacity onPress={this.switchSecure}>
+                    <Icon
+                      style={{ color: 'white' }}
+                      size={24}
+                      name={secure ? 'md-eye-off' : 'eye'}
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
+              {error && (
+                <View style={styles.errorContainer}>
+                  <Text
+                    id="LoginPage.errorText"
+                    style={{ color: contrastColor, textAlign: 'center' }}
+                  >
+                    {error}
+                  </Text>
+                </View>
+              )}
+              <Button
+                id="LoginPage.forgotPasswordButton"
+                style={{ flex: error ? 1 : 2 }}
+                block
+                transparent
+                onPress={this.onForgotPress}
+              >
+                <Text style={Object.assign({ marginTop: error ? 0 : 35 }, textForgot)}>
+                  {I18n.t('logIn.forgot_your_password').toUpperCase()}
+                </Text>
+              </Button>
+              <Button
+                id="LoginPage.loginButton"
+                block
+                style={loginButton}
+                onPress={this.handleSubmit}
+                disabled={disabled}
+                spinner={isLoading}
+              >
+                <Text style={loginButtonText}>{I18n.t('logIn.log_in')}</Text>
+              </Button>
+              <Center id="LoginPage.dontHaveAnAccountContainer" style={OR}>
+                <View style={or} />
+                <Text style={orText}>{I18n.t('logIn.or')}</Text>
+                <View style={or} />
+              </Center>
+              <Button
+                id="LoginPage.signUpButton"
+                style={register}
+                block
+                transparent
+                onPress={this.props.onRegisterPress}
+              >
+                <Text style={textRegister}>{I18n.t('logIn.register').toUpperCase()}</Text>
+              </Button>
+            </Form>
+          </ImageBackground>
+        </Container>
+      </ScrollView>
     );
   }
 }

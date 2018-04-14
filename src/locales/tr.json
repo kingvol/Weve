@@ -68,7 +68,10 @@
     "last_name": "Soyadınız",
     "phone_number": "Telefon numara",
     "select_avatar": "Profil fotoğrafı seç",
-    "avatar_error": "Fotoğraf alınamadı"
+    "avatar_error": "Fotoğraf alınamadı",
+    "country": "Ülke",
+    "countryLang": "eng",
+    "region": "Bölge"
   },
   "inbox": {
     "no_active_dialog": "Etkin iletişim kutusu yok"

@@ -69,7 +69,10 @@
     "last_name": "Фамилия",
     "phone_number": "Телефон номер",
     "select_avatar": "Выберите фото профиля",
-    "avatar_error": "Не удалось получить фото"
+    "avatar_error": "Не удалось получить фото",
+    "country": "Страна",
+    "countryLang": "rus",
+    "region": "Область"
   },
   "inbox": {
     "no_active_dialog": "Нет активных диалогов"
