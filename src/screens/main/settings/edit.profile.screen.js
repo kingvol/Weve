@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
 import { Alert, Keyboard, View } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
+import { Picker } from 'native-base';
+import CountryPicker from 'react-native-country-picker-modal';
 import { connect } from 'react-redux';
 import SpinnerOverlay from 'react-native-loading-spinner-overlay';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import DeviceInfo from 'react-native-device-info';
 import I18n from '../../../locales';
 import config from '../../../../config';
+import countries from '../../../countryLib/countries';
+import countryLib from '../../../countryLib';
 import {
   Button,
   Container,
@@ -13,16 +18,21 @@ import {
   EditProfileField,
   FieldInput,
   Thumbnail,
+  Text,
 } from '../../../components/common';
 import { backgroundColor, lightTextColor } from '../../../theme';
 import { UserActions } from '../../../actions';
 
 const { fetchProfile, updateProfile } = UserActions;
 const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png';
+const userLocaleCountryCode = DeviceInfo.getDeviceCountry();
+const cca2 = countries.includes(userLocaleCountryCode) ? userLocaleCountryCode : 'GB';
+const regionName = countryLib[`${cca2}`].provinces[0];
 
 class EditProfileScreen extends Component {
   constructor(props) {
     super(props);
+    this.onRegionSelect = this.onRegionSelect.bind(this);
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     this.state = {
       values: {
@@ -31,15 +41,51 @@ class EditProfileScreen extends Component {
         phoneNumber: this.props.user.profile.phoneNumber || '',
         email: this.props.user.profile.email || '',
         profileImageURL: this.props.user.profile.profileImageURL || '',
+        cca2,
+        regionName,
       },
       loading: false,
       imageUploading: false,
     };
   }
 
-  componentWillMount() {
+  async componentWillMount() {
     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
+    if (this.props.user.profile.cca2 && this.props.user.profile.regionName) {
+      this.setState({
+        values: {
+          ...this.state.values,
+          cca2: this.props.user.profile.cca2,
+          regionName: this.props.user.profile.regionName,
+        },
+      });
+    } else {
+      const url =
+        'http://api.ipstack.com/check?access_key=e1a9033da20c96cf61c52598eb00cfb9&format=1';
+      await fetch(url)
+        .then(response => response.json())
+        .then((responseJson) => {
+          this.setState({
+            values: {
+              ...this.state.values,
+              cca2: countries.includes(responseJson.country_code)
+                ? responseJson.country_code
+                : countries.includes(DeviceInfo.getDeviceCountry())
+                  ? DeviceInfo.getDeviceCountry()
+                  : 'GB',
+              regionName: responseJson.region_name,
+              // regionName: countryLib[`${this.state.values.cca2}`].provinces.find(item => (item.substr(0, 2) === responseJson.region_name.substr(0, 2) ? item : null)),
+            },
+          });
+        });
+      this.setState({
+        values: {
+          ...this.state.values,
+          regionName: countryLib[`${this.state.values.cca2}`].provinces.find(item => (item.substr(0, 2) === this.state.values.regionName.substr(0, 2) ? item : null)),
+        },
+      });
+    }
   }
 
   componentDidMount() {
@@ -81,6 +127,15 @@ class EditProfileScreen extends Component {
       },
     });
   };
+
+  onRegionSelect(region) {
+    this.setState({
+      values: {
+        ...this.state.values,
+        regionName: region,
+      },
+    });
+  }
 
   onSubmitForm = async () => {
     if (this.state.values.profileImageURL !== this.props.user.profile.profileImageURL) {
@@ -256,6 +311,69 @@ class EditProfileScreen extends Component {
             component={EditProfileField}
             id="EditProfile.emailInput"
           />
+          <View
+            style={{
+              flexDirection: 'row',
+              flex: 1,
+              marginTop: 10,
+              marginBottom: 30,
+              alignItems: 'center',
+              borderColor: lightTextColor,
+              borderBottomWidth: 1,
+            }}
+          >
+            <Text style={{ flex: 3, color: lightTextColor }}>
+              {`${I18n.t('editProfile.country')} / ${I18n.t('editProfile.region')}`}
+            </Text>
+            <View style={{ flex: 1, alignItems: 'flex-start' }}>
+              <CountryPicker
+                onChange={(value) => {
+                  this.setState({
+                    values: {
+                      ...this.state.values,
+                      cca2: value.cca2,
+                    },
+                  });
+                }}
+                cca2={this.state.values.cca2}
+                excludeCountries={[
+                  'AD',
+                  'AQ',
+                  'BV',
+                  'VG',
+                  'CW',
+                  'XK',
+                  'ME',
+                  'PS',
+                  'BL',
+                  'MF',
+                  'RS',
+                  'SX',
+                  'TC',
+                  'UM',
+                  'VI',
+                  'VA',
+                  'AX',
+                ]}
+                translation={I18n.t('editProfile.countryLang')}
+                closeable
+              />
+            </View>
+            <Picker
+              mode="dropdown"
+              style={{ color: lightTextColor, flex: 3, alignItems: 'flex-end' }}
+              placeholder={I18n.t('logIn.select_category')}
+              selectedValue={this.state.values.regionName}
+              onValueChange={this.onRegionSelect}
+              placeholderTextColor={lightTextColor}
+              placeholderStyle={{ color: lightTextColor }}
+              textStyle={{ color: lightTextColor }}
+            >
+              {countryLib[`${this.state.values.cca2}`].provinces.map(item => (
+                <Picker.Item label={item} value={item} key={item} />
+              ))}
+            </Picker>
+          </View>
           <Button
             id="EditProfile.subbmitButton"
             block
