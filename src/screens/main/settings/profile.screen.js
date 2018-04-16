@@ -12,6 +12,7 @@ import {
   Grid,
   Col,
   ProfileField,
+  ProfileFieldForCountry,
 } from '../../../components/common';
 import { backgroundColor, primaryFont } from '../../../theme';
 import { UserActions } from '../../../actions';
@@ -96,6 +97,12 @@ class ProfileScreen extends Component {
               icon="envelope"
               title={I18n.t('common.email')}
               subTitle={email || ''}
+            />
+            <ProfileFieldForCountry
+              id="Profile.countryField"
+              icon="GB"
+              title={I18n.t('editProfile.region')}
+              subTitle="Barnsley"
             />
           </Grid>
         </Content>
