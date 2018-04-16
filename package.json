@@ -6,7 +6,7 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "lint": "node_modules/eslint/bin/eslint.js --ext .js,.jsx ./src",
     "fixcode": "node_modules/eslint/bin/eslint.js --ext .js,.jsx ./src --fix",
-    "fix_fcm": "./fix_fcm.sh",
+    "fix_fcm": "cmod +x ./fix_fcm.sh && ./fix_fcm.sh",
     "postinstall": "npm run fix_fcm",
     "test": "jest"
   },
