@@ -26,6 +26,7 @@ import Center from './Center';
 export * from './FieldInput';
 export * from './ProfileField';
 export * from './EditProfileField';
+export * from './ProfileFieldForCountry';
 
 export {
   Container,

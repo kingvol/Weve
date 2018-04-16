@@ -12,12 +12,17 @@ export default class ProviderApi extends Api {
   }
 
   fetchListByCategory = async (categoryName) => {
+    // fetchListByCategory = async (categoryName, country, region) => {
     try {
       const response = await this.request(`api/providers/categories/${categoryName}`);
-      if (response.message || response.error) { // check for error
+      // const response = await this.request(`api/providers/categories/${categoryName}?${country}&${region}`);
+      if (response.message || response.error) {
+        // check for error
         return Promise.reject(response);
       }
       return response;
-    } catch ({ message }) { throw Error(message); }
-  }
+    } catch ({ message }) {
+      throw Error(message);
+    }
+  };
 }
