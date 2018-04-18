@@ -1,4 +1,4 @@
-import { Navigation } from 'react-native-navigation';
+import { Navigation, NativeEventsReceiver } from 'react-native-navigation';
 import { Provider } from 'react-redux';
 import { AppRegistry, AsyncStorage } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -96,4 +96,12 @@ export const init = async () => {
   }
 };
 
-init();
+ Navigation.isAppLaunched()
+  .then(appLaunched => {
+    if (appLaunched) {
+      init(); // App is launched -> show UI
+    }
+    new NativeEventsReceiver().appLaunched(init); // App hasn't been launched yet -> show the UI only when needed.
+  });
+
+//init();

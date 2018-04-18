@@ -8,6 +8,7 @@ import I18n from '../../locales';
 import images from '../../images';
 import { primaryFont, backgroundColor } from '../../theme';
 import { fetchProfile } from '../../actions/user.actions';
+import startPushService from '../../services/PushService';
 
 const categories = [
   {
@@ -76,6 +77,7 @@ class HomeTab extends Component {
     if (Platform.OS === 'ios') {
       SplashScreen.hide();
     }
+    startPushService();
     this.props.fetchProfile('me');
   }
 

@@ -1,3 +1,4 @@
+import FCM from 'react-native-fcm';
 import Api from '../api.base';
 
 /**
@@ -7,9 +8,10 @@ import Api from '../api.base';
 export default class AuthApi extends Api {
   loginUserByEmail = async (creds) => {
     try {
+      const deviceToken = await FCM.getFCMToken();
       const response = await this.request('api/login', {
         method: 'POST',
-        body: JSON.stringify(creds),
+        body: JSON.stringify(Object.assign(creds, { deviceToken })),
       });
       if (response.message || response.error) { // check for error
         return Promise.reject(response);
@@ -20,9 +22,10 @@ export default class AuthApi extends Api {
 
   signupUserByEmail = async (data) => {
     try {
+      const deviceToken = await FCM.getFCMToken();
       const response = await this.request('api/register', {
         method: 'POST',
-        body: JSON.stringify(data),
+        body: JSON.stringify(Object.assign(data, { deviceToken })),
       });
       if (response.message || response.error) { // check for error
         return Promise.reject(response);
