@@ -361,7 +361,7 @@ class EditProfileScreen extends Component {
             </View>
             <Picker
               mode="dropdown"
-              style={{ flex: 3, alignItems: 'flex-end' }}
+              style={{ color: lightTextColor, flex: 3, alignItems: 'flex-end' }}
               itemTextStyle={{ color: lightTextColor }}
               placeholder={I18n.t('logIn.select_category')}
               selectedValue={this.state.values.regionName}
