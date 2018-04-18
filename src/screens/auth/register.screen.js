@@ -30,7 +30,7 @@ class RegisterScreen extends Component {
     this.props.navigator.pop();
   };
 
-  onFormSubmit = (email, password, fullName) => {
+  onFormSubmit = (email, password, fullName, countryCode, regionName) => {
     /* divide fullName to first and last */
     const firstName = fullName.replace(/ .*/, '');
     const wordsLength = fullName.split(' ').length;
@@ -44,6 +44,8 @@ class RegisterScreen extends Component {
       password,
       firstName,
       lastName,
+      countryCode,
+      regionName,
       eulaAccepted: true,
       deviceToken: 'somerandomtoken',
     };
@@ -52,7 +54,15 @@ class RegisterScreen extends Component {
     this.props.registerUser(body);
   };
 
-  onProviderFormSubmit = async (email, password, fullName, image, category) => {
+  onProviderFormSubmit = async (
+    email,
+    password,
+    fullName,
+    image,
+    category,
+    countryCode,
+    regionName,
+  ) => {
     /* divide fullName to first and last */
     const firstName = fullName.replace(/ .*/, '');
     const wordsLength = fullName.split(' ').length;
@@ -75,6 +85,8 @@ class RegisterScreen extends Component {
       password,
       firstName,
       lastName,
+      countryCode,
+      regionName,
       eulaAccepted: true,
       isProvider: true,
       deviceToken: 'somerandomtoken',

@@ -25,8 +25,8 @@ class SignupForm extends Component {
     super(props);
     this.onRegionSelect = this.onRegionSelect.bind(this);
     const userLocaleCountryCode = DeviceInfo.getDeviceCountry();
-    const cca2 = countries.includes(userLocaleCountryCode) ? userLocaleCountryCode : 'GB';
-    const regionName = countryLib[`${cca2}`].provinces[0];
+    const countryCode = countries.includes(userLocaleCountryCode) ? userLocaleCountryCode : 'GB';
+    const regionName = countryLib[`${countryCode}`].provinces[0];
     this.state = {
       step: 1,
       values: {
@@ -36,7 +36,7 @@ class SignupForm extends Component {
         confirmPassword: '',
         category: null,
         image: null,
-        cca2,
+        countryCode,
         regionName,
       },
       errors: {
@@ -83,20 +83,20 @@ class SignupForm extends Component {
         this.setState({
           values: {
             ...this.state.values,
-            cca2: countries.includes(responseJson.country_code)
+            countryCode: countries.includes(responseJson.country_code)
               ? responseJson.country_code
               : countries.includes(DeviceInfo.getDeviceCountry())
                 ? DeviceInfo.getDeviceCountry()
                 : 'GB',
             regionName: responseJson.region_name,
-            // regionName: countryLib[`${this.state.values.cca2}`].provinces.find(item => (item.substr(0, 2) === responseJson.region_name.substr(0, 2) ? item : null)),
+            // regionName: countryLib[`${this.state.values.countryCode}`].provinces.find(item => (item.substr(0, 2) === responseJson.region_name.substr(0, 2) ? item : null)),
           },
         });
       });
     this.setState({
       values: {
         ...this.state.values,
-        regionName: countryLib[`${this.state.values.cca2}`].provinces.find(item =>
+        regionName: countryLib[`${this.state.values.countryCode}`].provinces.find(item =>
           (item.substr(0, 2) === this.state.values.regionName.substr(0, 2)
             ? item
             : null)),
@@ -227,15 +227,15 @@ class SignupForm extends Component {
 
   handleAccept = () => {
     this.setState({ isModalVisible: !this.state.isModalVisible });
-    const { email, password, fullName } = this.state.values;
+    const { email, password, fullName, countryCode, regionName } = this.state.values;
     const arrFN = fullName.split(' ').map(a => a.charAt(0).toUpperCase() + a.substr(1));
     const capitalFullName = arrFN.join(' ');
 
     if (this.state.isProvider) {
       const { image, category } = this.state.values;
-      this.props.onProviderFormSubmit(email, password, capitalFullName, image, category);
+      this.props.onProviderFormSubmit(email, password, capitalFullName, image, category, countryCode, regionName);
     } else {
-      this.props.onFormSubmit(email, password, capitalFullName);
+      this.props.onFormSubmit(email, password, capitalFullName, countryCode, regionName);
     }
   };
 
@@ -345,11 +345,11 @@ class SignupForm extends Component {
                         this.setState({
                           values: {
                             ...this.state.values,
-                          cca2: value.cca2,
+                          countryCode: value.cca2,
                           },
                         });
                       }}
-                      cca2={this.state.values.cca2}
+                      cca2={this.state.values.countryCode}
                       excludeCountries={['AD', 'AQ', 'BV', 'VG', 'CW', 'XK', 'ME', 'PS', 'BL', 'MF', 'RS', 'SX', 'TC', 'UM', 'VI', 'VA', 'AX']}
                       translation={I18n.t('editProfile.countryLang')}
                       closeable
@@ -365,7 +365,7 @@ class SignupForm extends Component {
                     placeholderStyle={{ color: 'white' }}
                     textStyle={{ color: 'white' }}
                   >
-                    {countryLib[`${this.state.values.cca2}`].provinces.map(item =>
+                    {countryLib[`${this.state.values.countryCode}`].provinces.map(item =>
                       <Picker.Item label={item} value={item} key={item} />)}
                   </Picker>
                 </View>

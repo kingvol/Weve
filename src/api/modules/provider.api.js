@@ -11,11 +11,9 @@ export default class ProviderApi extends Api {
     super(resource);
   }
 
-  fetchListByCategory = async (categoryName) => {
-    // fetchListByCategory = async (categoryName, country, region) => {
+  fetchListByCategory = async (categoryName, country, region) => {
     try {
-      const response = await this.request(`api/providers/categories/${categoryName}`);
-      // const response = await this.request(`api/providers/categories/${categoryName}?${country}&${region}`);
+      const response = await this.request(`api/providers/categories/${categoryName}?countryCode=${country}&regionName=${region}`);
       if (response.message || response.error) {
         // check for error
         return Promise.reject(response);
