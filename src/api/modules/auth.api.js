@@ -2,7 +2,7 @@ import Api from '../api.base';
 
 /**
  * @name Class AuthApi
- * @extends Api
+ * @extends Api 
  */
 export default class AuthApi extends Api {
   loginUserByEmail = async (creds) => {
