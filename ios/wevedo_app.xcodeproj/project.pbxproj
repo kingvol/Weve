@@ -75,6 +75,7 @@
 		EC2D028E3BFA4638B4BE248C /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1D5FDE99E44141AEB49E12FB /* MaterialCommunityIcons.ttf */; };
 		F30406F8142E0EB3B878A346 /* libPods-wevedo_app-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F2F08547E0D84840726FC3F6 /* libPods-wevedo_app-tvOSTests.a */; };
 		F6599AACD92B43BA98631DA1 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AC81860492A24AEDAE65899C /* MaterialIcons.ttf */; };
+		F810BD2120872C1E00ECF0A0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F810BD2020872C1E00ECF0A0 /* GoogleService-Info.plist */; };
 		F881820D204F515C0012547F /* libReactNativeNavigation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F881820B204F511A0012547F /* libReactNativeNavigation.a */; };
 		F8DF0E0B207F5704007D2631 /* libRNFIRMessaging.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F8DF0E05207F56D5007D2631 /* libRNFIRMessaging.a */; };
 		F8DF0F16207F64BE007D2631 /* module.modulemap in Frameworks */ = {isa = PBXBuildFile; fileRef = F8DF0EDC207F64BD007D2631 /* module.modulemap */; };
@@ -89,7 +90,6 @@
 		F8DF0F1F207F64BE007D2631 /* Firebase.h in Frameworks */ = {isa = PBXBuildFile; fileRef = F8DF0F14207F64BD007D2631 /* Firebase.h */; };
 		F8DF0F20207F64BE007D2631 /* FirebaseMessaging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8DF0F15207F64BE007D2631 /* FirebaseMessaging.framework */; };
 		F8DF0FAA207F669A007D2631 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8DF0F7A207F669A007D2631 /* StoreKit.framework */; };
-		F8DF1037207F6913007D2631 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F8DF1036207F6913007D2631 /* GoogleService-Info.plist */; };
 		FBBA7F46622E463EB25A9926 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C95A0BF40EDB48C2B309E543 /* MaterialIcons.ttf */; };
 /* End PBXBuildFile section */
 
@@ -536,6 +536,7 @@
 		F2F08547E0D84840726FC3F6 /* libPods-wevedo_app-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-wevedo_app-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5A4FE5719D8434595D99CB8 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/native-base/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		F74D4A370B5A4C009A7DFE43 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/native-base/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
+		F810BD2020872C1E00ECF0A0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "wevedo_app/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F8682C9F3B52752012152ADA /* libPods-wevedo_appTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-wevedo_appTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F88181E1204F511A0012547F /* ReactNativeNavigation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeNavigation.xcodeproj; path = "../node_modules/react-native-navigation/ios/ReactNativeNavigation.xcodeproj"; sourceTree = "<group>"; };
 		F8DF0DD7207F56D5007D2631 /* RNFIRMessaging.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNFIRMessaging.xcodeproj; path = "../node_modules/react-native-fcm/ios/RNFIRMessaging.xcodeproj"; sourceTree = "<group>"; };
@@ -554,7 +555,6 @@
 		F8DF0F14207F64BD007D2631 /* Firebase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Firebase.h; path = Frameworks/Firebase.h; sourceTree = "<group>"; };
 		F8DF0F15207F64BE007D2631 /* FirebaseMessaging.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseMessaging.framework; path = Frameworks/FirebaseMessaging.framework; sourceTree = "<group>"; };
 		F8DF0F7A207F669A007D2631 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
-		F8DF1036207F6913007D2631 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FC8D25C36683430B8B4F4A41 /* libAppCenterReactNative.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAppCenterReactNative.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -720,6 +720,7 @@
 		13B07FAE1A68108700A75B9A /* wevedo_app */ = {
 			isa = PBXGroup;
 			children = (
+				F810BD2020872C1E00ECF0A0 /* GoogleService-Info.plist */,
 				F8DF0E21207F5C15007D2631 /* wevedo_app.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -873,7 +874,6 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				F8DF1036207F6913007D2631 /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* wevedo_app */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* wevedo_appTests */,
@@ -1631,9 +1631,9 @@
 				A5A2B8260D8A4002AC1BFD8D /* rubicon-icon-font.ttf in Resources */,
 				E2DD4D4A2721440D8F6E8132 /* SimpleLineIcons.ttf in Resources */,
 				1E680DD5949249B1A798FB7F /* Zocial.ttf in Resources */,
+				F810BD2120872C1E00ECF0A0 /* GoogleService-Info.plist in Resources */,
 				D3FF5A85EB9A4D39B7952CC1 /* AppCenter-Config.plist in Resources */,
 				6278DD90A9EE4E9D9B7C5502 /* Avenir-Light.ttf in Resources */,
-				F8DF1037207F6913007D2631 /* GoogleService-Info.plist in Resources */,
 				C2A98FC0F7C94493950F1BA2 /* Avenir-Medium.ttf in Resources */,
 				02CAFA79578D43298E99B540 /* Entypo.ttf in Resources */,
 				73EEA991FB48437E9B821874 /* EvilIcons.ttf in Resources */,
