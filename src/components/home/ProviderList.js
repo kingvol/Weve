@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import React, { PureComponent } from 'react';
 import { View, ActivityIndicator, FlatList, Alert } from 'react-native';
+import { connect } from 'react-redux';
 import ProviderListItem from './ProviderListItem';
 import { primaryFont } from '../../theme';
 import APIs from '../../api';
@@ -14,7 +15,11 @@ class ProviderList extends PureComponent {
   };
 
   componentDidMount() {
-    this.fetchProvidersList(this.props.category);
+    this.fetchProvidersList(
+      this.props.category,
+      this.props.profile.countryCode,
+      this.props.profile.regionName,
+    );
   }
 
   onPressItem = (provider) => {
@@ -31,9 +36,9 @@ class ProviderList extends PureComponent {
     });
   };
 
-  fetchProvidersList = async (category) => {
+  fetchProvidersList = async (category, country, region) => {
     try {
-      const providers = await api.fetchListByCategory(category);
+      const providers = await api.fetchListByCategory(category, country, region);
       this.setState({ providers });
     } catch ({ message }) {
       Alert.alert(message);
@@ -63,4 +68,8 @@ class ProviderList extends PureComponent {
   }
 }
 
-export default ProviderList;
+const mapStateToProps = state => ({
+  profile: state.user.profile,
+});
+
+export default connect(mapStateToProps)(ProviderList);
