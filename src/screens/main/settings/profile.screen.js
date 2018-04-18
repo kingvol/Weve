@@ -70,7 +70,15 @@ class ProfileScreen extends Component {
   );
 
   render() {
-    const { firstName, lastName, phoneNumber, email, profileImageURL } = this.props.profile;
+    const {
+      firstName,
+      lastName,
+      phoneNumber,
+      email,
+      profileImageURL,
+      countryCode,
+      regionName,
+    } = this.props.profile;
     return (
       <Container id="Profile.container" style={{ backgroundColor }}>
         <Content id="Profile.content" padder>
@@ -100,9 +108,9 @@ class ProfileScreen extends Component {
             />
             <ProfileFieldForCountry
               id="Profile.countryField"
-              icon="GB"
+              icon={countryCode || 'GB'}
               title={I18n.t('editProfile.region')}
-              subTitle="Barnsley"
+              subTitle={regionName || ''}
             />
           </Grid>
         </Content>

@@ -26,8 +26,8 @@ import { UserActions } from '../../../actions';
 const { fetchProfile, updateProfile } = UserActions;
 const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png';
 const userLocaleCountryCode = DeviceInfo.getDeviceCountry();
-const cca2 = countries.includes(userLocaleCountryCode) ? userLocaleCountryCode : 'GB';
-const regionName = countryLib[`${cca2}`].provinces[0];
+const countryCode = countries.includes(userLocaleCountryCode) ? userLocaleCountryCode : 'GB';
+const regionName = countryLib[`${countryCode}`].provinces[0];
 
 class EditProfileScreen extends Component {
   constructor(props) {
@@ -41,7 +41,7 @@ class EditProfileScreen extends Component {
         phoneNumber: this.props.user.profile.phoneNumber || '',
         email: this.props.user.profile.email || '',
         profileImageURL: this.props.user.profile.profileImageURL || '',
-        cca2,
+        countryCode,
         regionName,
       },
       loading: false,
@@ -52,11 +52,11 @@ class EditProfileScreen extends Component {
   async componentWillMount() {
     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
-    if (this.props.user.profile.cca2 && this.props.user.profile.regionName) {
+    if (this.props.user.profile.countryCode && this.props.user.profile.regionName) {
       this.setState({
         values: {
           ...this.state.values,
-          cca2: this.props.user.profile.cca2,
+          countryCode: this.props.user.profile.countryCode,
           regionName: this.props.user.profile.regionName,
         },
       });
@@ -69,20 +69,20 @@ class EditProfileScreen extends Component {
           this.setState({
             values: {
               ...this.state.values,
-              cca2: countries.includes(responseJson.country_code)
+              countryCode: countries.includes(responseJson.country_code)
                 ? responseJson.country_code
                 : countries.includes(DeviceInfo.getDeviceCountry())
                   ? DeviceInfo.getDeviceCountry()
                   : 'GB',
               regionName: responseJson.region_name,
-              // regionName: countryLib[`${this.state.values.cca2}`].provinces.find(item => (item.substr(0, 2) === responseJson.region_name.substr(0, 2) ? item : null)),
+              // regionName: countryLib[`${this.state.values.countryCode}`].provinces.find(item => (item.substr(0, 2) === responseJson.region_name.substr(0, 2) ? item : null)),
             },
           });
         });
       this.setState({
         values: {
           ...this.state.values,
-          regionName: countryLib[`${this.state.values.cca2}`].provinces.find(item => (item.substr(0, 2) === this.state.values.regionName.substr(0, 2) ? item : null)),
+          regionName: countryLib[`${this.state.values.countryCode}`].provinces.find(item => (item.substr(0, 2) === this.state.values.regionName.substr(0, 2) ? item : null)),
         },
       });
     }
@@ -331,11 +331,11 @@ class EditProfileScreen extends Component {
                   this.setState({
                     values: {
                       ...this.state.values,
-                      cca2: value.cca2,
+                      countryCode: value.cca2,
                     },
                   });
                 }}
-                cca2={this.state.values.cca2}
+                cca2={this.state.values.countryCode}
                 excludeCountries={[
                   'AD',
                   'AQ',
@@ -362,6 +362,7 @@ class EditProfileScreen extends Component {
             <Picker
               mode="dropdown"
               style={{ color: lightTextColor, flex: 3, alignItems: 'flex-end' }}
+              itemTextStyle={{ color: lightTextColor }}
               placeholder={I18n.t('logIn.select_category')}
               selectedValue={this.state.values.regionName}
               onValueChange={this.onRegionSelect}
@@ -369,7 +370,7 @@ class EditProfileScreen extends Component {
               placeholderStyle={{ color: lightTextColor }}
               textStyle={{ color: lightTextColor }}
             >
-              {countryLib[`${this.state.values.cca2}`].provinces.map(item => (
+              {countryLib[`${this.state.values.countryCode}`].provinces.map(item => (
                 <Picker.Item label={item} value={item} key={item} />
               ))}
             </Picker>
