@@ -1,6 +1,5 @@
 /* eslint-disable global-require, max-len */
 import React, { Component } from 'react';
-import I18n from 'react-native-i18n';
 import { CheckBox, Left, Icon, Picker } from 'native-base';
 import { Alert, ImageBackground, StyleSheet, View } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
@@ -10,6 +9,7 @@ import { Button, Container, Content, FieldInput, Text } from '../../components/c
 import SignupImageForm from './signupImage.form';
 import Eula from './EULA';
 import countries from '../../countryLib/countries';
+import I18n from '../../locales';
 import countryLib from '../../countryLib';
 
 import APIs from '../../api';
@@ -357,7 +357,8 @@ class SignupForm extends Component {
                   </View>
                   <Picker
                     mode="dropdown"
-                    style={{ color: 'white', flex: 3, alignItems: 'flex-end' }}
+                    style={{ flex: 3, alignItems: 'flex-end' }}
+                    itemTextStyle={{ color: 'white' }}
                     placeholder={I18n.t('logIn.select_category')}
                     selectedValue={this.state.values.regionName}
                     onValueChange={this.onRegionSelect}
