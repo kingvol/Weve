@@ -7,8 +7,6 @@ const startPushService = (navigator) => {
 
   FCM.on(FCMEvent.Notification, async (notification) => {
     try {
-      console.warn(notification);
-      // process intent here...;
     } catch (err) {
       console.warn(err)
     }
