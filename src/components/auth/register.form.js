@@ -357,7 +357,6 @@ class SignupForm extends Component {
                   <Picker
                     mode="dropdown"
                     style={{ color: 'white', flex: 3, alignItems: 'flex-end' }}
-                    // itemTextStyle={{ color: 'white' }}
                     placeholder={I18n.t('logIn.select_category')}
                     selectedValue={this.state.values.regionName}
                     onValueChange={this.onRegionSelect}

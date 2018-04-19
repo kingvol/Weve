@@ -110,7 +110,7 @@ class ProfileScreen extends Component {
               id="Profile.countryField"
               icon={countryCode || 'GB'}
               title={I18n.t('editProfile.region')}
-              subTitle={regionName || ''}
+              subTitle={regionName || 'Barnsley'}
             />
           </Grid>
         </Content>
