@@ -9,9 +9,16 @@ import { init } from '../index';
 import SplashScreen from 'react-native-splash-screen';
 
 class AppBootstrap extends Component {
-  componentDidMount() {
+  componentWillMount() {
     SplashScreen.hide();
+  }
+
+  componentDidMount() {
     init();
+  }
+
+  componentWillUnmount() {
+    SplashScreen.hide();
   }
   render() {
     return <View />;

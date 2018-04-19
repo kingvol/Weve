@@ -100,8 +100,7 @@ export const init = async () => {
   .then(appLaunched => {
     if (appLaunched) {
       init(); // App is launched -> show UI
-    }
-    new NativeEventsReceiver().appLaunched(init); // App hasn't been launched yet -> show the UI only when needed.
+    } else {
+      new NativeEventsReceiver().appLaunched(init);
+    } // App hasn't been launched yet -> show the UI only when needed.
   });
-
-//init();
