@@ -74,9 +74,7 @@ for (let i = 0; i <= categories.length; i += 3) {
 
 class HomeTab extends Component {
   componentDidMount() {
-    if (Platform.OS === 'ios') {
-      SplashScreen.hide();
-    }
+    SplashScreen.hide();
     startPushService();
     this.props.fetchProfile('me');
   }
