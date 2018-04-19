@@ -417,8 +417,8 @@ class SignupForm extends Component {
               )}
 
             {this.state.isProvider &&
-              this.state.step === 2 && <SignupImageForm onImageSelect={this.onImageSelect} />}
-
+              this.state.step === 2 && <SignupImageForm key="imf" onImageSelect={this.onImageSelect} />}
+            
             <Button
               id="Signup.submitButton"
               block
