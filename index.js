@@ -1,6 +1,6 @@
 import { Navigation, NativeEventsReceiver } from 'react-native-navigation';
 import { Provider } from 'react-redux';
-import { AppRegistry, AsyncStorage } from 'react-native';
+import { AppRegistry, AsyncStorage, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import I18n from './src/locales';
@@ -96,11 +96,14 @@ export const init = async () => {
   }
 };
 
- Navigation.isAppLaunched()
-  .then(appLaunched => {
-    if (appLaunched) {
-      init(); // App is launched -> show UI
-    } else {
-      new NativeEventsReceiver().appLaunched(init);
-    } // App hasn't been launched yet -> show the UI only when needed.
-  });
+if (Platform.OS === 'android') {
+  Navigation.isAppLaunched()
+    .then((appLaunched) => {
+      if (appLaunched) {
+        init(); // App is launched -> show UI
+      }
+      new NativeEventsReceiver().appLaunched(init); // App hasn't been launched yet -> show the UI only when needed.
+    });
+} else {
+  init();
+}
