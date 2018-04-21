@@ -64,7 +64,6 @@
 		D0591B4E207D506B00A51D42 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D0591B46207D503600A51D42 /* libRNDeviceInfo.a */; };
 		D070B53C205C38A30012BE8E /* libRNI18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D070B538205C38730012BE8E /* libRNI18n.a */; };
 		D078707C205DC4C5001EAB6D /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D078707A205DC473001EAB6D /* libRNVectorIcons.a */; };
-		D0E4AF5D2059EA9800C30C33 /* libSplashScreen.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F894A62A2042F8D000EFA64B /* libSplashScreen.a */; };
 		D3FF5A85EB9A4D39B7952CC1 /* AppCenter-Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = E65C2469801D4858B5E1CE8C /* AppCenter-Config.plist */; };
 		D4B6619D8EFB45C989B9F814 /* Avenir-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 47F4A9070F6F440D84F3908C /* Avenir-Medium.ttf */; };
 		D676D6EF87DD450294E00E75 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 274B3E10674F48709F2ACCFA /* Ionicons.ttf */; };
@@ -444,13 +443,6 @@
 			remoteGlobalIDString = 9936F32F1F5F2E5B0010BF04;
 			remoteInfo = "privatedata-tvOS";
 		};
-		F894A6292042F8D000EFA64B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 78C7BE0A51EF4D869B18C550 /* SplashScreen.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 3D7682761D8E76B80014119E;
-			remoteInfo = SplashScreen;
-		};
 		F8DF0E04207F56D5007D2631 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F8DF0DD7207F56D5007D2631 /* RNFIRMessaging.xcodeproj */;
@@ -504,7 +496,6 @@
 		71517057CC0D4AED99EB385A /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/native-base/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		725E102A3FBC42FBA2AC4BCE /* AppCenterReactNativeCrashes.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = AppCenterReactNativeCrashes.xcodeproj; path = "../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
-		78C7BE0A51EF4D869B18C550 /* SplashScreen.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = SplashScreen.xcodeproj; path = "../node_modules/react-native-splash-screen/ios/SplashScreen.xcodeproj"; sourceTree = "<group>"; };
 		7AD193E721034A60AEC42F5D /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		878AB956E40A4BE8BD41DDFD /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/native-base/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
@@ -588,7 +579,6 @@
 				D045524A20695BED0021B2F7 /* libRNImagePicker.a in Frameworks */,
 				D078707C205DC4C5001EAB6D /* libRNVectorIcons.a in Frameworks */,
 				D070B53C205C38A30012BE8E /* libRNI18n.a in Frameworks */,
-				D0E4AF5D2059EA9800C30C33 /* libSplashScreen.a in Frameworks */,
 				F881820D204F515C0012547F /* libReactNativeNavigation.a in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
@@ -854,7 +844,6 @@
 				832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */,
 				00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */,
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
-				78C7BE0A51EF4D869B18C550 /* SplashScreen.xcodeproj */,
 				34B6CBD6D1A44A878F3E9D1B /* AppCenterReactNative.xcodeproj */,
 				676A5E6B7136421CBC3329B8 /* AppCenterReactNativeAnalytics.xcodeproj */,
 				725E102A3FBC42FBA2AC4BCE /* AppCenterReactNativeCrashes.xcodeproj */,
@@ -1000,14 +989,6 @@
 				D0591B46207D503600A51D42 /* libRNDeviceInfo.a */,
 			);
 			name = "Recovered References";
-			sourceTree = "<group>";
-		};
-		F894A6262042F8CF00EFA64B /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				F894A62A2042F8D000EFA64B /* libSplashScreen.a */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		F8DF0DD8207F56D5007D2631 /* Products */ = {
@@ -1235,10 +1216,6 @@
 				{
 					ProductGroup = D078704B205DC473001EAB6D /* Products */;
 					ProjectRef = D078704A205DC473001EAB6D /* RNVectorIcons.xcodeproj */;
-				},
-				{
-					ProductGroup = F894A6262042F8CF00EFA64B /* Products */;
-					ProjectRef = 78C7BE0A51EF4D869B18C550 /* SplashScreen.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -1586,13 +1563,6 @@
 			fileType = archive.ar;
 			path = "libprivatedata-tvOS.a";
 			remoteRef = F894A6242042F8CF00EFA64B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		F894A62A2042F8D000EFA64B /* libSplashScreen.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libSplashScreen.a;
-			remoteRef = F894A6292042F8D000EFA64B /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		F8DF0E05207F56D5007D2631 /* libRNFIRMessaging.a */ = {
@@ -1951,7 +1921,6 @@
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
 					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
 					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
 					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
@@ -1983,7 +1952,6 @@
 				COPY_PHASE_STRIP = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
 					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
 					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
 					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
@@ -2024,7 +1992,6 @@
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
 					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
 					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
 					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
@@ -2033,10 +2000,7 @@
 					"$(PROJECT_DIR)/Frameworks",
 					"$(SRCROOT)/../",
 				);
-				"HEADER_SEARCH_PATHS[arch=*]" = (
-					"$(inherited)",
-					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
-				);
+				"HEADER_SEARCH_PATHS[arch=*]" = "$(inherited)";
 				INFOPLIST_FILE = wevedo_app/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -2068,7 +2032,6 @@
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
 					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
 					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
 					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
@@ -2104,7 +2067,6 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
 					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
 					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
 					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
@@ -2145,7 +2107,6 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
 					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
 					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
 					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
