@@ -47,4 +47,30 @@ export default class AuthApi extends Api {
       return response;
     } catch ({ message }) { throw Error(message); }
   }
+
+  resetPasswordRequest = async (email, resetPassword) => {
+    try {
+      const response = await this.request('api/reset-password', {
+        method: 'POST',
+        body: JSON.stringify({ email, resetPassword }),
+      });
+      if (response.message || response.error) {
+        return Promise.reject(response);
+      }
+      return response;
+    } catch ({ message }) { throw Error(message); }
+  }
+
+  checkResetCode = async (email, resetToken) => {
+    try {
+      const response = await this.request('api/check-reset-password', {
+        method: 'POST',
+        body: JSON.stringify({ email, resetToken }),
+      });
+      if (response.message || response.error) {
+        return Promise.reject(response);
+      }
+      return response;
+    } catch ({ message }) { throw Error(message); }
+  }
 }

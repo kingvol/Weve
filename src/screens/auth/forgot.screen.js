@@ -9,44 +9,68 @@ import { connect } from 'react-redux';
 import I18n from 'react-native-i18n';
 import { Button, Container, Content, FieldInput, Text } from '../../components/common';
 import { white } from '../../theme/colors';
+import APIs from '../../api';
+
+const { AuthApi } = APIs;
+const api = new AuthApi();
 
 class ForgotPassword extends Component {
   state = {
+    step: 1,
+    isLoading: false,
     email: '',
+    resetPassword: '',
+    resetToken: '',
   };
 
   onBackPress = () => {
     this.props.navigator.pop();
   };
 
-  onEmailChange = (email) => {
-    this.setState({ email });
-  };
+  onTextChange = (key, value) => {
+    this.setState({
+      [key]: value,
+    });
+  }
+
+  requestResetToken = async () => {
+    this.setState({ isLoading: true });
+
+    try {
+      await api.resetPasswordRequest(this.state.email, this.state.resetPassword);
+      this.setState({
+        isLoading: false,
+        step: 2,
+      })
+    } catch (error) {
+      alert(error);
+    }
+  }
+
+  checkCode = async () => {
+    this.setState({ isLoading: true });
+
+    try {
+      await api.checkResetCode(this.state.email, this.state.resetToken);
+      this.props.navigator.pop();
+      Alert.alert(
+        `${I18n.t('resetPassword.success')}`,
+        'You can sign in with your new password',
+        [{ text: `${I18n.t('common.ok')}` }],
+        { cancelable: false }
+      );
+    } catch (error) {
+      alert(error.message);
+      this.setState({ isLoading: false });
+    }
+  }
 
   onSubmitForm = () => {
-    console.warn(this.state.email);
-    /* const {email} = values;
-        this.setState({loading: true});
-        this.props.resetPassword(email, error => {
-            this.setState({loading: false});
-            if (error) {
-                Alert.alert(
-                    `${I18n.t('resetPassword.error_title')}`,
-                    `${error.error}`,
-                    [{text: `${I18n.t('common.ok')}`}],
-                    {cancelable: false}
-                );
-                return
-            }
-
-            Alert.alert(
-                `${I18n.t('resetPassword.success')}`,
-                `${I18n.t('resetPassword.success_message')}`,
-                [{text: `${I18n.t('common.ok')}`}],
-                {cancelable: false}
-            );
-            this.props.navigation.goBack()
-        })  */
+    if (this.state.step === 1) {
+      this.requestResetToken();
+    } else {
+      this.checkCode();
+    }
   };
 
   renderForm() {
@@ -64,17 +88,28 @@ class ForgotPassword extends Component {
           </Button>
           <Text style={styles.headerText}>{I18n.t('logIn.forgot_password_title')}</Text>
         </View>
-        <View id="ForgotPassword.formWrapper" style={styles.formWrapper}>
+        {this.state.step === 1 ? (
+          <View id="ForgotPassword.formWrapper" style={styles.formWrapper}>
           <View id="ForgotPassword.form" style={styles.form}>
             <FieldInput
               color={white}
               name="email"
               placeholder={I18n.t('common.email')}
               id="ForgotPassword.emailInput"
+              onChangeText={text => this.onTextChange('email', text)}
+            />
+            <FieldInput
+              color={white}
+              name="passowrd"
+              secureTextEntry
+              placeholder="New password"
+              id="ForgotPassword.emailInput"
+              onChangeText={text => this.onTextChange('resetPassword', text)}
             />
             <Button
               block
               style={styles.button}
+              spinner={this.state.isLoading}
               id="ForgotPassword.resetButton"
               onPress={this.onSubmitForm}
             >
@@ -82,7 +117,29 @@ class ForgotPassword extends Component {
             </Button>
           </View>
         </View>
-        {/* </Content> */}
+        ) : (
+          <View id="ForgotPassword.formWrapper" style={styles.formWrapper}>
+          <Text style={styles.codeText}>Verification code was sent to {this.state.email}</Text>
+          <View id="ForgotPassword.form" style={styles.form}>
+            <FieldInput
+              color={white}
+              name="code"
+              placeholder="Enter verification code here"
+              id="ForgotPassword.emailInput"
+              onChangeText={text => this.onTextChange('resetToken', text)}
+            />
+            <Button
+              block
+              style={styles.button}
+              spinner={this.state.isLoading}
+              id="ForgotPassword.resetButton"
+              onPress={this.onSubmitForm}
+            >
+              <Text style={styles.buttonText}>{I18n.t('logIn.reset_password')}</Text>
+            </Button>
+          </View>
+        </View>
+        )}
       </Container>
     );
   }
@@ -146,6 +203,12 @@ const styles = StyleSheet.create({
     color: 'red',
     fontWeight: 'bold',
   },
+  codeText: {
+    margin: 10,
+    marginBottom: 50,
+    alignSelf: 'center',
+    color: 'white',
+  }
 });
 
 export default ForgotPassword;
