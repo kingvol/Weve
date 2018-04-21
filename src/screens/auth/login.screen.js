@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, AsyncStorage } from 'react-native';
-import SplashScreen from 'react-native-splash-screen';
+import { AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
 
 import { AuthActions } from '../../actions';
@@ -10,12 +9,6 @@ import LoginForm from '../../components/auth/login.form';
 const { loginUser } = AuthActions;
 
 class LoginScreen extends Component {
-  componentDidMount() {
-    if (Platform.OS === 'ios') {
-      SplashScreen.hide();
-    }
-  }
-
   async componentWillUpdate({ auth }) {
     if (auth.isAuthorized && auth.accessToken) {
       await AsyncStorage.setItem('wevedo_access_token', auth.accessToken);
@@ -25,7 +18,7 @@ class LoginScreen extends Component {
 
   onSubmitPress = (email, password) => {
     this.props.loginUser({ email, password });
-  }
+  };
 
   onRegisterPress = () => {
     this.props.navigator.push({
@@ -44,7 +37,7 @@ class LoginScreen extends Component {
         navBarHidden: true,
       },
     });
-  }
+  };
 
   render() {
     return (

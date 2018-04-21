@@ -97,13 +97,13 @@ export const init = async () => {
 };
 
 if (Platform.OS === 'android') {
-  Navigation.isAppLaunched()
-    .then((appLaunched) => {
-      if (appLaunched) {
-        init(); // App is launched -> show UI
-      }
-      new NativeEventsReceiver().appLaunched(init); // App hasn't been launched yet -> show the UI only when needed.
-    });
+  Navigation.isAppLaunched().then((appLaunched) => {
+    if (appLaunched) {
+      init(); // App is launched -> show UI
+    }
+    // App hasn't been launched yet -> show the UI only when needed
+    new NativeEventsReceiver().appLaunched(init);
+  });
 } else {
   init();
 }

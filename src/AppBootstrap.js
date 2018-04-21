@@ -6,20 +6,12 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { init } from '../index';
-import SplashScreen from 'react-native-splash-screen';
 
 class AppBootstrap extends Component {
-  componentWillMount() {
-    SplashScreen.hide();
-  }
-
   componentDidMount() {
     init();
   }
 
-  componentWillUnmount() {
-    SplashScreen.hide();
-  }
   render() {
     return <View />;
   }

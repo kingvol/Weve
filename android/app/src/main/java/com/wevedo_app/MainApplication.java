@@ -12,7 +12,6 @@ import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.microsoft.appcenter.reactnative.crashes.AppCenterReactNativeCrashesPackage;
 import com.microsoft.appcenter.reactnative.analytics.AppCenterReactNativeAnalyticsPackage;
 import com.microsoft.appcenter.reactnative.appcenter.AppCenterReactNativePackage;
-import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -37,8 +36,7 @@ public class MainApplication extends NavigationApplication  {
     new RNDeviceInfo(),
     new FIRMessagingPackage(),
     new ImagePickerPackage(),
-    new VectorIconsPackage(),
-    new SplashScreenReactPackage(),           
+    new VectorIconsPackage(),          
     new RNI18nPackage(),            
     new AppCenterReactNativeCrashesPackage(MainApplication.this, getResources().getString(R.string.appCenterCrashes_whenToSendCrashes)),
     new AppCenterReactNativeAnalyticsPackage(MainApplication.this, getResources().getString(R.string.appCenterAnalytics_whenToEnableAnalytics)),

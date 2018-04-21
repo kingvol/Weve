@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Image, FlatList, Platform, TouchableOpacity, Text, View } from 'react-native';
+import { Image, FlatList, TouchableOpacity, Text, View } from 'react-native';
 import { connect } from 'react-redux';
-import SplashScreen from 'react-native-splash-screen';
 import { Content } from 'native-base';
 
 import I18n from '../../locales';
@@ -74,9 +73,6 @@ for (let i = 0; i <= categories.length; i += 3) {
 
 class HomeTab extends Component {
   componentDidMount() {
-    if (Platform.OS === 'ios') {
-      SplashScreen.hide();
-    }
     startPushService();
     this.props.fetchProfile('me');
   }
