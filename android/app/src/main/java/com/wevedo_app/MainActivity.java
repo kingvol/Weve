@@ -1,9 +1,7 @@
 package com.wevedo_app;
 
-import android.os.Bundle;
 import android.content.Intent;
 import com.facebook.react.ReactActivity;
-import org.devio.rn.splashscreen.SplashScreen;
 
 import com.reactnativenavigation.controllers.SplashActivity;
 
@@ -16,12 +14,6 @@ public class MainActivity extends SplashActivity {
     // @Override
     protected String getMainComponentName() {
         return "wevedo_app";
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        SplashScreen.show(this);
-        super.onCreate(savedInstanceState);
     }
 
     @Override
