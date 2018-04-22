@@ -1,7 +1,7 @@
 package com.wevedo_app;
 
+import android.os.Bundle;
 import android.content.Intent;
-import com.facebook.react.ReactActivity;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.widget.LinearLayout;
@@ -17,6 +17,13 @@ public class MainActivity extends SplashActivity {
     // @Override
     protected String getMainComponentName() {
         return "wevedo_app";
+    }
+
+
+    @Override
+
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     @Override
