@@ -40,7 +40,10 @@
   "resetPassword": {
     "error_title": "Unable to reset password!",
     "success": "Password reset success",
-    "success_message": "Please check your email."
+    "success_message": "Please check your email.",
+    "verification_code_send": "Verification code sent to",
+    "can_signin": "You can sign in with new password",
+    "code_is_not_valid": "Verification code is not valid"
   },
   "categories": {
     "categories": "Categories",

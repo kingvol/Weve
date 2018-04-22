@@ -40,7 +40,10 @@
   "resetPassword": {
     "error_title": "Açar sözüňiz pozulmady",
     "success": "Açar sözüňiz üstünlikli pozuldy",
-    "success_message": "E-poçtaňyzy barlaň"
+    "success_message": "E-poçtaňyzy barlaň",
+    "verification_code_send": "Tassyklama kodyňyz e-poçtaňyza ugradyldy",
+    "can_signin": "Täze kod parol bilen girip bilerisňiz",
+    "code_is_not_valid": "Tassyklama kodyňyz ýalňyş"
   },
   "categories": {
     "categories": "Kategoriýalar",
