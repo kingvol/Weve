@@ -73,7 +73,7 @@ for (let i = 0; i <= categories.length; i += 3) {
 
 class HomeTab extends Component {
   componentDidMount() {
-    startPushService();
+    startPushService(this.props.navigator);
     this.props.fetchProfile('me');
   }
 
