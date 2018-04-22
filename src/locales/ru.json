@@ -41,7 +41,10 @@
   "resetPassword": {
     "error_title": "Не удалось сбросить пароль",
     "success": "Пароль успешно сброшен",
-    "success_message": "Пожалуйста проверьте свою почту"
+    "success_message": "Пожалуйста проверьте свою почту",
+    "verification_code_send": "Код проверки отправлен на",
+    "can_signin": "Можете использовать новый пароль",
+    "code_is_not_valid": "Неправильный проверочный код"
   },
   "categories": {
     "categories": "Категории",

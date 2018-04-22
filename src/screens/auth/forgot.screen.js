@@ -55,7 +55,7 @@ class ForgotPassword extends Component {
       this.props.navigator.pop();
       Alert.alert(
         `${I18n.t('resetPassword.success')}`,
-        'You can sign in with your new password',
+        `${I18n.t('resetPassword.can_signin')}`,
         [{ text: `${I18n.t('common.ok')}` }],
         { cancelable: false }
       );
@@ -109,6 +109,7 @@ class ForgotPassword extends Component {
             <Button
               block
               style={styles.button}
+              disabled={!this.state.email || !this.state.resetPassword}
               spinner={this.state.isLoading}
               id="ForgotPassword.resetButton"
               onPress={this.onSubmitForm}
@@ -119,7 +120,7 @@ class ForgotPassword extends Component {
         </View>
         ) : (
           <View id="ForgotPassword.formWrapper" style={styles.formWrapper}>
-          <Text style={styles.codeText}>Verification code was sent to {this.state.email}</Text>
+          <Text style={styles.codeText}>{I18n.t('resetPassword.verification_code_send')} {this.state.email}</Text>
           <View id="ForgotPassword.form" style={styles.form}>
             <FieldInput
               color={white}
