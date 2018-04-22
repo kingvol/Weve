@@ -73,4 +73,12 @@ export default class AuthApi extends Api {
       return response;
     } catch ({ message }) { throw Error(message); }
   }
+
+  signout = async () => {
+    try {
+      await this.request('api/signout');
+    } catch ({ message }) {
+      throw Error(message);
+    }
+  }
 }
