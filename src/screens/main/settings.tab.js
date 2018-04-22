@@ -9,6 +9,10 @@ import { Body, Container, Content, List, ListItem, Right, Text } from '../../com
 import { AuthActions } from '../../actions';
 import { startSingleScreenApp } from '../../../index';
 import vars from '../../env/vars';
+import APIs from '../../api';
+
+const { AuthApi } = APIs;
+const api = new AuthApi();
 
 const { signOut } = AuthActions;
 
@@ -30,9 +34,10 @@ const SETTINGS = [
 class SettingsTab extends Component {
   onItemPress = async (name, route) => {
     if (route === 'SIGN_OUT') {
+      await api.signout();
       this.props.signOut();
-      await AsyncStorage.removeItem('wevedo_access_token');
       startSingleScreenApp();
+      await AsyncStorage.removeItem('wevedo_access_token');
     } else {
       this.props.navigator.push({
         screen: `wevedo.${route}`,
