@@ -63,7 +63,11 @@
     "inbox": "Inbox",
     "my_profile": "My Profile",
     "settings": "Settings",
-    "sign_out": "Sign Out"
+    "sign_out": "Sign Out",
+    "homeTab": {
+      "buttonTextGrid": "Grid",
+      "buttonTextList": "List"
+    }
   },
   "editProfile": {
     "title": "Edit Profile",

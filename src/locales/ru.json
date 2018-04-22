@@ -64,7 +64,11 @@
     "inbox": "Входящие",
     "my_profile": "Мой профиль",
     "settings": "Настройки",
-    "sign_out": "Выйти"
+    "sign_out": "Выйти",
+    "homeTab": {
+      "buttonTextGrid": "Сетка",
+      "buttonTextList": "Список"
+    }
   },
   "editProfile": {
     "title": "Редактировать профиль",

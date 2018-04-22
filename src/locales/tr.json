@@ -63,7 +63,11 @@
     "inbox": "Gelen kutusu",
     "my_profile": "Benim profilim",
     "settings": "Ayarlar",
-    "sign_out": "Oturumu kapat"
+    "sign_out": "Oturumu kapat",
+    "homeTab": {
+      "buttonTextGrid": "Resim",
+      "buttonTextList": "Liste"
+    }
   },
   "editProfile": {
     "title": "Profili düzenle",

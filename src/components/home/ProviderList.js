@@ -1,10 +1,12 @@
 /* eslint-disable no-underscore-dangle */
 import React, { PureComponent } from 'react';
-import { View, ActivityIndicator, FlatList, Alert } from 'react-native';
+import { View, ActivityIndicator, FlatList, Alert, TouchableOpacity, Text } from 'react-native';
 import { connect } from 'react-redux';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import ProviderListItem from './ProviderListItem';
 import { primaryFont } from '../../theme';
 import APIs from '../../api';
+import I18n from '../../locales';
 
 const { ProviderApi } = APIs;
 const api = new ProviderApi();
@@ -12,6 +14,7 @@ const api = new ProviderApi();
 class ProviderList extends PureComponent {
   state = {
     providers: null,
+    grid: false,
   };
 
   componentDidMount() {
@@ -36,6 +39,12 @@ class ProviderList extends PureComponent {
     });
   };
 
+  onPressGridButton = () => {
+    this.setState({
+      grid: !this.state.grid,
+    });
+  };
+
   fetchProvidersList = async (category, country, region) => {
     try {
       const providers = await api.fetchListByCategory(category, country, region);
@@ -54,6 +63,32 @@ class ProviderList extends PureComponent {
   render() {
     return this.state.providers ? (
       <View style={{ flex: 1 }}>
+        <View
+          style={{
+            alignItems: 'center',
+            backgroundColor: 'white',
+          }}
+        >
+          <View
+            style={{
+              alignSelf: 'center',
+              flexDirection: 'row',
+            }}
+          >
+            <TouchableOpacity onPress={this.onPressGridButton}>
+              <Icon
+                style={{ color: 'lightgrey', alignSelf: 'center', marginTop: 4 }}
+                size={24}
+                name={this.state.grid ? 'bars' : 'th-large'}
+              />
+            </TouchableOpacity>
+            <Text style={{ alignSelf: 'center', marginLeft: 7 }}>
+              {this.state.grid
+                ? I18n.t('menu.homeTab.buttonTextList')
+                : I18n.t('menu.homeTab.buttonTextGrid')}
+            </Text>
+          </View>
+        </View>
         <FlatList
           data={this.state.providers}
           keyExtractor={this._keyExtractor}
