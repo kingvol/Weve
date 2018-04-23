@@ -14,7 +14,7 @@ const startPushService = (navigator) => {
   FCM.requestPermissions();
 
   FCM.on(FCMEvent.Notification, async (notification) => { 
-    if (notification.fcm.action && notification.collapse_key) {
+    if (notification.fcm.action && notification.collapse_key && Platform.OS === 'android') {
       const rooms = await api.fetchRooms();
       let list = rooms.filter(room => room.messages.length); 
       list = orderBy(list, 'lastMessageTime', 'desc');
