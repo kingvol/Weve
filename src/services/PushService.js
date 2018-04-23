@@ -37,8 +37,7 @@ const startPushService = (navigator) => {
 
     try {
       if (Platform.OS === 'ios') {
-        const { notification, click_action } = event;
-        const { title, body, group } = JSON.parse(notification);
+        const { title, body, group } = JSON.parse(notification.notification);
 
         FCM.presentLocalNotification({
           id: body,
@@ -47,7 +46,7 @@ const startPushService = (navigator) => {
           ticker: body,
           wake_screen: true,
           priority: "high",
-          notification
+          notification: notification.notification,
         });
       }
     } catch (err) {
