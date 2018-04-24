@@ -96,7 +96,6 @@ class EditProfileScreen extends Component {
 
   componentWillReceiveProps({ user }) {
     if (!user.isLoading && user.error && this.state.loading) {
-      Alert.alert(user.error);
       return;
     }
     if (!user.isLoading && this.state.loading) {
