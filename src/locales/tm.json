@@ -84,7 +84,8 @@
     "password_length": "Açar sözüňiziň iň az sany 8 bolmalydyr",
     "password_mismatch": "Açar sözüňiz deň gelmedi",
     "password_matches_old": "Öňki açar söz bilen deň",
-    "email_invalid": "E-poçtaňyz ýalňyş"
+    "email_invalid": "E-poçtaňyz ýalňyş",
+    "phone_invalid": "Telefon belgi ýalňyş"
   },
   "common": {
     "ok": "Bolýa",
@@ -93,6 +94,7 @@
     "save": "Ýatda sakla",
     "email": "Elektron poçta",
     "phone": "Telefon belgi",
+    "phoneNumber": "Telefon belgi",
     "password": "Açar söz",
     "loading": "Ýüklenýä...",
     "fullName": "Ady Familiýasy",

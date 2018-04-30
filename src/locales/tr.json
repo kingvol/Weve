@@ -84,7 +84,8 @@
     "password_length": "En az 8 karakter olmalı",
     "password_mismatch": "Yazdığınız iki şife tutmuyor.",
     "password_matches_old": "Eski şifre ile aynı",
-    "email_invalid": "Geçersiz e-posta adresi"
+    "email_invalid": "Geçersiz e-posta adresi",
+    "phone_invalid": "Geçersiz cep numara"
   },
   "common": {
     "ok": "Tamam",
@@ -93,6 +94,7 @@
     "save": "Kayıt et",
     "email": "E-posta",
     "phone": "Cep numara",
+    "phoneNumber": "Cep numara",
     "password": "Şifre",
     "loading": "Yükleniyor...",
     "fullName": "Ad Soyad",

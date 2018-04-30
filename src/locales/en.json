@@ -84,7 +84,8 @@
     "password_length": "Min password length is 8",
     "password_mismatch": "Password does not match",
     "password_matches_old": "Matches old password",
-    "email_invalid": "Invalid email address"
+    "email_invalid": "Invalid email address",
+    "phone_invalid": "Invalid phone number"
   },
   "common": {
     "ok": "OK",
@@ -93,6 +94,7 @@
     "save": "Save",
     "email": "Email",
     "phone": "Phone",
+    "phoneNumber": "Phone number",
     "password": "Password",
     "loading": "Loading...",
     "fullName": "Full name",
