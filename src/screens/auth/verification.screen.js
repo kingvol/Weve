@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ImageBackground } from 'react-native';
+import { ImageBackground, ScrollView } from 'react-native';
 import { Container, Icon, View, Form } from 'native-base';
 import PhoneInput from 'react-native-phone-input';
 import I18n from '../../locales';
@@ -11,6 +11,11 @@ class VerificationScreen extends Component {
     mobileNumber: '',
     loading: false,
     step: 1,
+  }
+
+  onContinuePress = () => {
+    this.setState({ isLoading: true });
+    console.log('Loading verification....');
   }
 
   onBackPress = () => {
@@ -26,6 +31,7 @@ class VerificationScreen extends Component {
           style={styles.background}
           source={require('../../images/loginBackground.png')}
         >
+        <ScrollView>
           <View id="Signup.backButtonAndTitleWrapper" style={styles.header}>
             <Button
               id="Signup.backButton"
@@ -45,11 +51,27 @@ class VerificationScreen extends Component {
           <View style={styles.contentContainer}>
             <Text style={styles.titleText}>Mobile number</Text>
             <Form>
-            <View style={styles.inputConteiner}>
-              <PhoneInput style={styles.input} textStyle={styles.inputTextStyle}/>
-            </View>
+              <View style={styles.inputConteiner}>
+                <PhoneInput style={styles.input} textStyle={styles.inputTextStyle}/>
+              </View>
             </Form>
+            <Button
+              id="Verification.submitButton"
+              block
+              style={styles.button}
+              onPress={
+                this.state.step === 1
+                  ? this.onContinuePress
+                  : this.handleSubmit
+              }
+              spinner={this.state.isLoading}
+            >
+              <Text style={styles.buttonText}>
+                {I18n.t('common.continue')}
+              </Text>
+            </Button>
           </View>
+          </ScrollView>
         </ImageBackground>
       </Container>
     );
@@ -76,6 +98,7 @@ const styles = {
   },
   contentContainer: {
     flex: 1,
+    marginTop: 100,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -97,6 +120,15 @@ const styles = {
   inputTextStyle: {
     fontSize: 18,
     color: 'white',
+  },
+  button: {
+    margin: 5,
+    marginLeft: 20,
+    marginRight: 20,
+    backgroundColor: '#f3c200',
+  },
+  buttonText: {
+    color: 'red',
   },
 };
 
