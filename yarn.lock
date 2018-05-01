@@ -2532,6 +2532,10 @@ glogg@^1.0.0:
   dependencies:
     sparkles "^1.0.0"
 
+google-libphonenumber@^2.0.9:
+  version "2.0.19"
+  resolved "https://registry.yarnpkg.com/google-libphonenumber/-/google-libphonenumber-2.0.19.tgz#a6d5ff60412aa33b161bb830d70aa39682583054"
+
 graceful-fs@^4.1.11, graceful-fs@^4.1.2, graceful-fs@^4.1.3, graceful-fs@^4.1.6, graceful-fs@^4.1.9:
   version "4.1.11"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.1.11.tgz#0e8bdfe4d1ddb8854d64e04ea7c00e2a026e5658"
@@ -4626,6 +4630,14 @@ react-native-parsed-text@^0.0.20:
   resolved "https://registry.yarnpkg.com/react-native-parsed-text/-/react-native-parsed-text-0.0.20.tgz#7bd35fec88c3ca0eb0e8250a98e24092b4ee7fef"
   dependencies:
     babel-plugin-check-es2015-constants "6.22.0"
+    prop-types "^15.5.10"
+
+react-native-phone-input@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/react-native-phone-input/-/react-native-phone-input-0.2.1.tgz#ac6852a1ea37d8d58ff83ded52d18d7b6303e667"
+  dependencies:
+    google-libphonenumber "^2.0.9"
+    lodash "^4.17.4"
     prop-types "^15.5.10"
 
 react-native-scrollable-mixin@^1.0.1:

@@ -1,12 +1,18 @@
 import React, { Component } from 'react';
-import { Image, ImageBackground, TouchableOpacity, View, ScrollView } from 'react-native';
-import { CardItem, Container, Form, Icon, Item, Input, Label, Title } from 'native-base';
+import { ImageBackground } from 'react-native';
+import { Container, Icon, View, Form } from 'native-base';
+import PhoneInput from 'react-native-phone-input';
 import I18n from '../../locales';
 import { primaryColor, backgroundColor, contrastColor, primaryFont } from '../../theme';
-import images from '../../images';
-import { Button, Center, Text } from '../../components/common';
+import { Button, Text } from '../../components/common';
 
 class VerificationScreen extends Component {
+  state = {
+    mobileNumber: '',
+    loading: false,
+    step: 1,
+  }
+
   onBackPress = () => {
     this.props.navigator.pop();
   }
@@ -27,14 +33,22 @@ class VerificationScreen extends Component {
               transparent
               onPress={this.onBackPress}
             >
-            <Icon style={{ color: 'white', fontSize: 40 }} name="ios-arrow-back" />
-          </Button>
-          <Text
-            id="Verification.titleText"
-            style={{ color: contrastColor, fontSize: 25, flex: 1.6, ...primaryFont }}
-          >
-            Register
-          </Text>
+              <Icon style={{ color: 'white', fontSize: 40 }} name="ios-arrow-back" />
+            </Button>
+            <Text
+              id="Verification.titleText"
+              style={{ color: contrastColor, fontSize: 25, flex: 1.6, ...primaryFont }}
+            >
+              Register
+            </Text>
+          </View>
+          <View style={styles.contentContainer}>
+            <Text style={styles.titleText}>Mobile number</Text>
+            <Form>
+            <View style={styles.inputConteiner}>
+              <PhoneInput style={styles.input} textStyle={styles.inputTextStyle}/>
+            </View>
+            </Form>
           </View>
         </ImageBackground>
       </Container>
@@ -44,7 +58,7 @@ class VerificationScreen extends Component {
 
 const styles = {
   header: {
-    flex: 1,
+    flex: 0.1,
     justifyContent: 'flex-start',
     top: 20,
     flexDirection: 'row',
@@ -59,6 +73,30 @@ const styles = {
     left: 0,
     right: 0,
     zIndex: -1,
+  },
+  contentContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  titleText: {
+    fontSize: 22,
+    color: 'white',
+  },
+  inputConteiner: {
+    margin: 50,
+    width: 200,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  input: {
+    borderBottomWidth: 1,
+    height: 40,
+    borderColor: 'gray',
+  },
+  inputTextStyle: {
+    fontSize: 18,
+    color: 'white',
   },
 };
 
