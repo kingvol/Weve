@@ -22,7 +22,7 @@ class LoginScreen extends Component {
 
   onRegisterPress = () => {
     this.props.navigator.push({
-      screen: 'wevedo.registerScreen',
+      screen: 'wevedo.verificationScreen',
       navigatorStyle: {
         navBarHidden: true,
         screenBackgroundColor: 'orange',
