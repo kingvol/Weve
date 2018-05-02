@@ -16,8 +16,8 @@ class LoginScreen extends Component {
     }
   }
 
-  onSubmitPress = (email, password) => {
-    this.props.loginUser({ email, password });
+  onSubmitPress = (phoneNumber, password) => {
+    this.props.loginUser({ phoneNumber, password });
   };
 
   onRegisterPress = () => {
