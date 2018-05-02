@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ImageBackground, ScrollView, Alert } from 'react-native';
+import { ImageBackground, ScrollView, Alert, TouchableOpacity } from 'react-native';
 import { Container, Icon, View, Form } from 'native-base';
 import PhoneInput from 'react-native-phone-input';
 import I18n from '../../locales';
@@ -16,6 +16,7 @@ class VerificationScreen extends Component {
     verificationCode: '',
     enteredCode: '',
     mobileNumber: '',
+    showResend: false,
     isLoading: false,
     step: 1,
   }
@@ -42,6 +43,12 @@ class VerificationScreen extends Component {
     this.setState({ [key]: value });
   }
 
+  onResendPress = () => {
+    this.setState({ showResend: false });
+    this.requestVerification();
+    Alert.alert('New code successfuly sent');
+  }
+
   requestVerification = async (number) => {
     try {
       await api.checkPhone(number);
@@ -50,6 +57,7 @@ class VerificationScreen extends Component {
         isLoading: false,
         verificationCode: code,
       });
+      this.startResendTimeout();
     } catch ({ message }) {
       this.setState({ isLoading: false });
       Alert.alert(message);
@@ -65,6 +73,12 @@ class VerificationScreen extends Component {
       Alert.alert('Wrong verification code...');
       this.setState({ enteredCode: '' });
     }
+  }
+
+  startResendTimeout = () => {
+    setTimeout(() => {
+      this.setState({ showResend: true });
+    }, 30000);
   }
 
   render() {
@@ -120,6 +134,11 @@ class VerificationScreen extends Component {
                   </View>
                 )}
               </Form>
+              {this.state.showResend && (
+                <TouchableOpacity style={styles.resend} onPress={this.onResendPress}>
+                  <Text style={styles.resendText}>Resend code</Text>
+                </TouchableOpacity>
+              )}
               <Button
                 id="Verification.submitButton"
                 block
@@ -195,6 +214,14 @@ const styles = {
   },
   buttonText: {
     color: 'red',
+  },
+  resend: {
+    marginTop: -40,
+    marginBottom: 20,
+  },
+  resendText: {
+    color: 'white',
+    fontSize: 18,
   },
 };
 
