@@ -56,6 +56,17 @@ class VerificationScreen extends Component {
     }
   }
 
+  handleSubmit = () => {
+    const { enteredCode, verificationCode } = this.state;
+    console.warn(enteredCode, verificationCode);
+    if (enteredCode === verificationCode.toString()) {
+      console.warn('Success!');
+    } else {
+      Alert.alert('Wrong verification code...');
+      this.setState({ enteredCode: '' });
+    }
+  }
+
   render() {
     const disabled = (this.state.step === 2 && this.state.enteredCode.length !== 4);
 
@@ -103,6 +114,7 @@ class VerificationScreen extends Component {
                       placeholder="      4 digit code       "
                       textAlign="center"
                       id="Verification.codeInput"
+                      input={{ value: this.state.enteredCode }}
                       onChangeText={text => this.onTextChange('enteredCode', text)}
                     />
                   </View>
