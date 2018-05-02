@@ -4,7 +4,7 @@ import { Container, Icon, View, Form } from 'native-base';
 import PhoneInput from 'react-native-phone-input';
 import I18n from '../../locales';
 import { contrastColor, primaryFont } from '../../theme';
-import { Button, Text } from '../../components/common';
+import { Button, Text, FieldInput } from '../../components/common';
 
 import APIs from '../../api';
 
@@ -14,6 +14,7 @@ const api = new AuthApi();
 class VerificationScreen extends Component {
   state = {
     verificationCode: '',
+    enteredCode: '',
     mobileNumber: '',
     isLoading: false,
     step: 1,
@@ -37,6 +38,10 @@ class VerificationScreen extends Component {
     this.props.navigator.pop();
   }
 
+  onTextChange = (key, value) => {
+    this.setState({ [key]: value });
+  }
+
   requestVerification = async (number) => {
     try {
       await api.checkPhone(number);
@@ -52,6 +57,8 @@ class VerificationScreen extends Component {
   }
 
   render() {
+    const disabled = (this.state.step === 2 && this.state.enteredCode.length !== 4);
+
     return (
       <Container id="Verification.container" style={{ backgroundColor: 'red' }}>
         <ImageBackground
@@ -78,15 +85,28 @@ class VerificationScreen extends Component {
               </Text>
             </View>
             <View style={styles.contentContainer}>
-              <Text style={styles.titleText}>Mobile number</Text>
+              <Text style={styles.titleText}>{this.state.step === 1 ? 'Mobile number' : 'Enter verification code'}</Text>
               <Form>
-                <View style={styles.inputConteiner}>
-                  <PhoneInput
-                    ref={(ref) => { this.phoneInput = ref; }}
-                    style={styles.input}
-                    textStyle={styles.inputTextStyle}
-                  />
-                </View>
+                {this.state.step === 1 ? (
+                  <View style={styles.inputConteiner}>
+                    <PhoneInput
+                      ref={(ref) => { this.phoneInput = ref; }}
+                      style={styles.input}
+                      textStyle={styles.inputTextStyle}
+                    />
+                  </View>
+                ) : (
+                  <View style={styles.inputConteiner}>
+                    <FieldInput
+                      color="white"
+                      name="code"
+                      placeholder="      4 digit code       "
+                      textAlign="center"
+                      id="Verification.codeInput"
+                      onChangeText={text => this.onTextChange('enteredCode', text)}
+                    />
+                  </View>
+                )}
               </Form>
               <Button
                 id="Verification.submitButton"
@@ -98,6 +118,7 @@ class VerificationScreen extends Component {
                     : this.handleSubmit
                 }
                 spinner={this.state.isLoading}
+                disabled={disabled}
               >
                 <Text style={styles.buttonText}>
                   {I18n.t('common.continue')}
