@@ -23,6 +23,7 @@ export default class AuthApi extends Api {
 
   signupUserByEmail = async (data) => {
     try {
+      console.warn(data);
       const deviceToken = await FCM.requestPermissions().then(() => FCM.getFCMToken());
       const response = await this.request('api/register', {
         method: 'POST',

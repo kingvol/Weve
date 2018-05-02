@@ -65,10 +65,17 @@ class VerificationScreen extends Component {
   }
 
   handleSubmit = () => {
-    const { enteredCode, verificationCode } = this.state;
+    const { enteredCode, verificationCode, mobileNumber } = this.state;
     console.warn(enteredCode, verificationCode);
     if (enteredCode === verificationCode.toString()) {
-      console.warn('Success!');
+      this.props.navigator.push({
+        screen: 'wevedo.registerScreen',
+        passProps: { phoneNumber: mobileNumber },
+        navigatorStyle: {
+          navBarHidden: true,
+          screenBackgroundColor: 'orange',
+        },
+      });
     } else {
       Alert.alert('Wrong verification code...');
       this.setState({ enteredCode: '' });
