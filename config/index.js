@@ -1,5 +1,5 @@
 export default {
-  backendUrl: 'http://localhost:8000',
+  backendUrl: 'https://wevedo-backend.appspot.com',
   adminEmail: 'ckurban@me.com',
   cloudinary: {
     apiKey: '294357151451223',
