@@ -74,7 +74,6 @@ class ProfileScreen extends Component {
       firstName,
       lastName,
       phoneNumber,
-      email,
       profileImageURL,
       countryCode,
       regionName,
@@ -99,12 +98,6 @@ class ProfileScreen extends Component {
               icon="phone"
               title={I18n.t('common.phone')}
               subTitle={phoneNumber || ''}
-            />
-            <ProfileField
-              id="Profile.emailField"
-              icon="envelope"
-              title={I18n.t('common.email')}
-              subTitle={email || ''}
             />
             <ProfileFieldForCountry
               id="Profile.countryField"

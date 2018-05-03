@@ -39,7 +39,6 @@ class EditProfileScreen extends Component {
         firstName: this.props.user.profile.firstName || '',
         lastName: this.props.user.profile.lastName || '',
         phoneNumber: this.props.user.profile.phoneNumber || '',
-        email: this.props.user.profile.email || '',
         profileImageURL: this.props.user.profile.profileImageURL || '',
         countryCode,
         regionName,
@@ -224,7 +223,7 @@ class EditProfileScreen extends Component {
   };
 
   render() {
-    const { firstName, lastName, phoneNumber, email } = this.state.values;
+    const { firstName, lastName, phoneNumber } = this.state.values;
 
     return (
       <Container id="EditProfile.container" style={{ backgroundColor }}>
@@ -299,16 +298,6 @@ class EditProfileScreen extends Component {
             color={lightTextColor}
             component={EditProfileField}
             id="EditProfile.phoneNumberInput"
-          />
-          <FieldInput
-            name="email"
-            input={{ value: email }}
-            placeholder={I18n.t('common.email')}
-            onChangeText={value => this.onFieldChange('email', value)}
-            color={lightTextColor}
-            disabled
-            component={EditProfileField}
-            id="EditProfile.emailInput"
           />
           <View
             style={{
