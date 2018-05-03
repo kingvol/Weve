@@ -102,6 +102,10 @@
     "category": "Category"
   },
   "auth": {
+    "enter_code": "Enter verification code",
+    "4_dig_code": "      4 digit code       ",
+    "code_sent": "New code successfuly sent",
+    "resend_code": "Resend code",
     "error_incorrect_password": "Incorrect password",
     "error_user_not_found": "User not found",
     "error_app_deleted": "Authentication application deleted",

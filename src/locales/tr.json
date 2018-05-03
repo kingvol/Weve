@@ -102,6 +102,10 @@
     "category": "Kategori"
   },
   "auth": {
+    "enter_code": "Onay şifrenizi giriniz",
+    "4_dig_code": "     4 haneli şifre     ",
+    "code_sent": "Täze parolyňyz üstünlükli goýberildi",
+    "resend_code": "Täze parol",
     "error_incorrect_password": "Yalnış şifre",
     "error_user_not_found": "Kullanıcı bulunamadı",
     "error_app_deleted": "Kimlik doğrulama uygulaması silindi",

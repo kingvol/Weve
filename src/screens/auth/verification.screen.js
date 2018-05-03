@@ -46,7 +46,7 @@ class VerificationScreen extends Component {
   onResendPress = () => {
     this.setState({ showResend: false });
     this.requestVerification();
-    Alert.alert('New code successfuly sent');
+    Alert.alert(I18n.t('auth.code_send'));
   }
 
   requestVerification = async (number) => {
@@ -77,7 +77,7 @@ class VerificationScreen extends Component {
         },
       });
     } else {
-      Alert.alert('Wrong verification code...');
+      Alert.alert(I18n.t('resetPassword.code_is_not_valid'));
       this.setState({ enteredCode: '' });
     }
   }
@@ -113,11 +113,11 @@ class VerificationScreen extends Component {
                 id="Verification.titleText"
                 style={{ color: contrastColor, fontSize: 25, flex: 1.6, ...primaryFont }}
               >
-                Register
+                {I18n.t('logIn.sign_up')}
               </Text>
             </View>
             <View style={styles.contentContainer}>
-              <Text style={styles.titleText}>{this.state.step === 1 ? 'Mobile number' : 'Enter verification code'}</Text>
+              <Text style={styles.titleText}>{this.state.step === 1 ? I18n.t('common.phoneNumber') : I18n.t('auth.enter_code')}</Text>
               <Form>
                 {this.state.step === 1 ? (
                   <View style={styles.inputConteiner}>
@@ -132,7 +132,7 @@ class VerificationScreen extends Component {
                     <FieldInput
                       color="white"
                       name="code"
-                      placeholder="      4 digit code       "
+                      placeholder={I18n.t('auth.4_dig_code')}
                       textAlign="center"
                       id="Verification.codeInput"
                       input={{ value: this.state.enteredCode }}
@@ -143,7 +143,7 @@ class VerificationScreen extends Component {
               </Form>
               {this.state.showResend && (
                 <TouchableOpacity style={styles.resend} onPress={this.onResendPress}>
-                  <Text style={styles.resendText}>Resend code</Text>
+                  <Text style={styles.resendText}>{I18n.t('auth.resend_code')}</Text>
                 </TouchableOpacity>
               )}
               <Button

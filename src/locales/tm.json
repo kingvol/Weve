@@ -102,6 +102,10 @@
     "category": "Kategoriýa"
   },
   "auth": {
+    "enter_code": "Tassyklama kodyny ýazyň",
+    "4_dig_code": "      4 sanly kod      ",
+    "code_sent": "Yeni şifreniz başarıyla gönderildi",
+    "resend_code": "Yeni şifre",
     "error_incorrect_password": "Açar söz ýalňyş",
     "error_user_not_found": "Ulanjyny tapylmady",
     "error_app_deleted": "Esasy programma pozuldy",
