@@ -21,18 +21,24 @@ class VerificationScreen extends Component {
     step: 1,
   }
 
-  onContinuePress = () => {
+  onContinuePress = async () => {
     const isValid = this.phoneInput.isValidNumber();
     if (!isValid) {
       return;
     }
     const mobileNumber = this.phoneInput.getValue();
-    this.setState({
-      step: 2,
-      isLoading: true,
-      mobileNumber,
-    });
-    this.requestVerification(mobileNumber);
+    try {
+      await api.checkPhone(mobileNumber);
+      this.setState({
+        step: 2,
+        isLoading: true,
+        mobileNumber,
+      });
+      this.requestVerification(mobileNumber);
+    } catch ({ message }) {
+      this.setState({ isLoading: false });
+      Alert.alert(message);
+    }
   }
 
   onBackPress = () => {
@@ -51,7 +57,6 @@ class VerificationScreen extends Component {
 
   requestVerification = async (number) => {
     try {
-      await api.checkPhone(number);
       const { code } = await api.requestVerification(number);
       this.setState({
         isLoading: false,
