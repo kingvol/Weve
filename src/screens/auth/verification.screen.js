@@ -8,6 +8,8 @@ import { Button, Text, FieldInput } from '../../components/common';
 
 import APIs from '../../api';
 
+const testNumber = '+447890000000';
+
 const { AuthApi } = APIs;
 const api = new AuthApi();
 
@@ -22,11 +24,23 @@ class VerificationScreen extends Component {
   }
 
   onContinuePress = async () => {
+    const mobileNumber = this.phoneInput.getValue();
+    // check for test case
+    if (mobileNumber === testNumber) {
+      this.props.navigator.push({
+        screen: 'wevedo.registerScreen',
+        passProps: { phoneNumber: mobileNumber },
+        navigatorStyle: {
+          navBarHidden: true,
+          screenBackgroundColor: 'orange',
+        },
+      });
+      return;
+    }
     const isValid = this.phoneInput.isValidNumber();
     if (!isValid) {
       return;
     }
-    const mobileNumber = this.phoneInput.getValue();
     try {
       await api.checkPhone(mobileNumber);
       this.setState({
