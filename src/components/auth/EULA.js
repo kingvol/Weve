@@ -21,7 +21,7 @@ export default ({ isModalVisible, handleDecline, handleAccept }) => (
         <Text style={{ marginTop: 20 }}>
           This EULA creates a legal agreement between you ("you", "your" or
           "User") and
-          <Text style={styles.boldTitle}> "32bitcode.com"</Text> ("we", "us" or
+          <Text style={styles.boldTitle}> "wevedo.com"</Text> ("we", "us" or
           "our") for use of our software application
           <Text style={styles.boldTitle}> "wevedo"</Text>, either web-based
           platform made available to you at http://wevedo.com or mobile
