@@ -32,6 +32,7 @@ class FieldInput extends PureComponent {
       error,
       isError,
       onBlur,
+      value,
       input,
     } = this.props;
 
@@ -48,6 +49,7 @@ class FieldInput extends PureComponent {
             autoCapitalize={autoCapitalize}
             onChangeText={this.onChangeText}
             onBlur={onBlur}
+            value={value}
             selectionColor={Color(color)
               .alpha(0.5)
               .toString()}
