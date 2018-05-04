@@ -31,7 +31,6 @@ class SignupForm extends Component {
       step: 1,
       values: {
         fullName: '',
-        email: '',
         password: '',
         confirmPassword: '',
         category: null,
@@ -41,10 +40,6 @@ class SignupForm extends Component {
       },
       errors: {
         fullName: {
-          isError: false,
-          error: '',
-        },
-        email: {
           isError: false,
           error: '',
         },
@@ -159,11 +154,6 @@ class SignupForm extends Component {
                 isError: true,
                 error: I18n.t('validations.required'),
               };
-            case key === 'email' && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value):
-              return {
-                isError: true,
-                error: I18n.t('validations.email_invalid'),
-              };
             case key === 'password' && value.length < 8:
               return {
                 isError: true,
@@ -200,17 +190,10 @@ class SignupForm extends Component {
   }
 
   handleSubmit = async () => {
-    this.setState({ loading: true });
-    try {
-      await api.checkEmail(this.state.values.email);
-      this.setState({
-        loading: false,
-        isModalVisible: !this.state.isModalVisible,
-      });
-    } catch ({ message }) {
-      this.setState({ loading: false });
-      Alert.alert('Cannot create user', message);
-    }
+    this.setState({
+      loading: false,
+      isModalVisible: !this.state.isModalVisible,
+    });
   };
 
   handleDecline = () => {
@@ -228,24 +211,23 @@ class SignupForm extends Component {
 
   handleAccept = () => {
     this.setState({ isModalVisible: !this.state.isModalVisible });
-    const { email, password, fullName, countryCode, regionName } = this.state.values;
+    const { password, fullName, countryCode, regionName } = this.state.values;
     const arrFN = fullName.split(' ').map(a => a.charAt(0).toUpperCase() + a.substr(1));
     const capitalFullName = arrFN.join(' ');
 
     if (this.state.isProvider) {
       const { image, category } = this.state.values;
-      this.props.onProviderFormSubmit(email, password, capitalFullName, image, category, countryCode, regionName);
+      this.props.onProviderFormSubmit(password, capitalFullName, image, category, countryCode, regionName);
     } else {
-      this.props.onFormSubmit(email, password, capitalFullName, countryCode, regionName);
+      this.props.onFormSubmit(password, capitalFullName, countryCode, regionName);
     }
   };
 
   renderSignUp = () => {
-    const { email, password, confirmPassword } = this.state.values;
+    const { password, confirmPassword } = this.state.values;
     const disabled =
       this.props.isLoading ||
       this.state.loading ||
-      !email ||
       !password ||
       !confirmPassword ||
       (this.state.step === 2 && !this.state.values.image);
@@ -289,17 +271,6 @@ class SignupForm extends Component {
                   autoCapitalize="words"
                   isError={this.state.errors.fullName.isError}
                   error={this.state.errors.fullName.error}
-                />
-                <FieldInput
-                  color={contrastColor}
-                  name="email"
-                  placeholder={I18n.t('common.email')}
-                  errorColor={contrastColor}
-                  onChangeText={text => this.onFieldChange('email', text)}
-                  onBlur={() => this.onBlur('email', this.state.values.email)}
-                  id="SignUp.emailInput"
-                  isError={this.state.errors.email.isError}
-                  error={this.state.errors.email.error}
                 />
                 <FieldInput
                   color={contrastColor}

@@ -110,6 +110,7 @@ class ForgotPassword extends Component {
                 id="ForgotPassword.phoneInput"
                 onChangeText={text => this.numberPhoneCheck(text)}
                 value={this.state.phone}
+                keyboardType="numeric"
               />
               <FieldInput
                 color={white}

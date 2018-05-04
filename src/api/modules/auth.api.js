@@ -26,6 +26,7 @@ export default class AuthApi extends Api {
 
   signupUserByEmail = async (data) => {
     try {
+      console.warn(data);
       const deviceToken = await FCM.requestPermissions().then(() => FCM.getFCMToken());
       const response = await this.request('api/register', {
         method: 'POST',
@@ -55,6 +56,29 @@ export default class AuthApi extends Api {
       throw Error(message);
     }
   };
+
+  checkPhone = async (phoneNumber) => {
+    try {
+      const response = await this.request('api/check-phone', {
+        method: 'POST',
+        body: JSON.stringify({ phoneNumber }),
+      });
+      if (response.message || response.error) {
+        return Promise.reject(response);
+      }
+      return response;
+    } catch ({ message }) { throw Error(message); }
+  }
+
+  requestVerification = async (number) => {
+    try {
+      const response = await this.request(`api/verify-mobile/${number}`);
+      if (response.message || response.error) {
+        return Promise.reject(response);
+      }
+      return response;
+    } catch ({ message }) { throw Error(message); }
+  }
 
   resetPasswordRequest = async (phoneNumber, resetPassword) => {
     try {

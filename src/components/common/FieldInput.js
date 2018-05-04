@@ -33,7 +33,9 @@ class FieldInput extends PureComponent {
       isError,
       onBlur,
       value,
+      keyboardType,
       input,
+      textAlign,
     } = this.props;
 
     const secure = secureTextEntry ? !this.state.secureVisible : false;
@@ -50,10 +52,13 @@ class FieldInput extends PureComponent {
             onChangeText={this.onChangeText}
             onBlur={onBlur}
             value={value}
+            keyboardType={keyboardType}
+            textAlign={textAlign}
             selectionColor={Color(color)
               .alpha(0.5)
               .toString()}
             {...input}
+            
           />
           <View
             style={{
