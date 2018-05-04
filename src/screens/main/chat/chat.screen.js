@@ -190,10 +190,10 @@ class Chat extends Component {
     const { room } = this.state;
     const authUser = this.props.user.profile;
 
-    const targetEmail = authUser.isProvider ? room.user.email : room.provider.email;
+    const targetPhone = authUser.isProvider ? room.user.phoneNumber : room.provider.phoneNumber;
     
     const subject = I18n.t('report.subject');
-    const body = `${I18n.t('report.body')} ${targetEmail}`;
+    const body = `${I18n.t('report.body')} ${targetPhone}`;
 
     Linking.openURL(`mailto:${config.adminEmail}?subject=${subject}&body=${body}`);
   }
