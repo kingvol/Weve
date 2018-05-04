@@ -62,8 +62,8 @@ class ForgotPassword extends Component {
         isLoading: false,
         step: 2,
       });
-    } catch (error) {
-      alert(error);
+    } catch ({ message }) {
+      alert(message);
     }
   };
 
@@ -110,7 +110,7 @@ class ForgotPassword extends Component {
                 id="ForgotPassword.phoneInput"
                 onChangeText={text => this.numberPhoneCheck(text)}
                 value={this.state.phone}
-                keyboardType="numeric"
+                keyboardType="phone-pad"
               />
               <FieldInput
                 color={white}
