@@ -11,7 +11,7 @@ class RegisterScreen extends Component {
   state = {
     loading: false,
     nextStepSignIn: false,
-    email: '',
+    phoneNumber: '',
     password: '',
   };
 
@@ -20,9 +20,9 @@ class RegisterScreen extends Component {
        Navigating to tabBasedApp is handled by login screen.
     */
     if (!auth.isLoading && this.state.nextStepSignIn) {
-      const { email, password } = this.state;
+      const { phoneNumber, password } = this.state;
       this.switchNextStep();
-      this.props.loginUser({ email, password });
+      this.props.loginUser({ phoneNumber, password });
     }
   }
 
@@ -30,17 +30,18 @@ class RegisterScreen extends Component {
     this.props.navigator.pop();
   };
 
-  onFormSubmit = (email, password, fullName, countryCode, regionName) => {
+  onFormSubmit = (password, fullName, countryCode, regionName) => {
     /* divide fullName to first and last */
     const firstName = fullName.replace(/ .*/, '');
     const wordsLength = fullName.split(' ').length;
+    const { phoneNumber } = this.props;
     let lastName = '';
     if (wordsLength > 1) {
       lastName = fullName.split(' ').pop();
     }
 
     const body = {
-      email,
+      phoneNumber,
       password,
       firstName,
       lastName,
@@ -50,12 +51,11 @@ class RegisterScreen extends Component {
       deviceToken: 'somerandomtoken',
     };
 
-    this.setState({ nextStepSignIn: true, email, password });
+    this.setState({ nextStepSignIn: true, phoneNumber, password });
     this.props.registerUser(body);
   };
 
   onProviderFormSubmit = async (
-    email,
     password,
     fullName,
     image,
@@ -66,6 +66,7 @@ class RegisterScreen extends Component {
     /* divide fullName to first and last */
     const firstName = fullName.replace(/ .*/, '');
     const wordsLength = fullName.split(' ').length;
+    const { phoneNumber } = this.props;
     let lastName = '';
     if (wordsLength > 1) {
       lastName = fullName.split(' ').pop();
@@ -81,7 +82,7 @@ class RegisterScreen extends Component {
     }
 
     const body = {
-      email,
+      phoneNumber,
       password,
       firstName,
       lastName,
@@ -94,7 +95,7 @@ class RegisterScreen extends Component {
       profileImageURL: image,
     };
 
-    this.setState({ nextStepSignIn: true, email, password });
+    this.setState({ nextStepSignIn: true, phoneNumber, password });
     this.props.registerUser(body);
   };
 

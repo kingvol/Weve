@@ -12,12 +12,12 @@ class LoginForm extends Component {
     this.switchSecure = this.switchSecure.bind(this);
     this.state = {
       secureVisible: false,
-      email: '',
+      phoneNumber: '',
       password: '',
       passwordLabel: I18n.t('common.password'),
       passwordError: false,
-      emailLabel: I18n.t('common.email'),
-      emailError: false,
+      phoneNumberLabel: I18n.t('common.phone'),
+      phoneNumberError: false,
     };
   }
 
@@ -38,7 +38,7 @@ class LoginForm extends Component {
           };
         case key === 'password'
           ? value.length < 8
-          : !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value):
+          : !/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im.test(value):
           return {
             [`${key}Error`]: false,
             [`${key}Label`]: I18n.t(`common.${key}`),
@@ -49,7 +49,7 @@ class LoginForm extends Component {
             [`${key}Label`]:
                 key === 'password'
                   ? I18n.t('validations.password_length')
-                  : I18n.t('validations.email_invalid'),
+                  : I18n.t('validations.phone_invalid'),
           };
       }
     })());
@@ -69,8 +69,8 @@ class LoginForm extends Component {
   }
 
   handleSubmit = () => {
-    const { email, password } = this.state;
-    this.props.onSubmitPress(email, password);
+    const { phoneNumber, password } = this.state;
+    this.props.onSubmitPress(phoneNumber, password);
   };
 
   render() {
@@ -99,7 +99,7 @@ class LoginForm extends Component {
     } = styles;
     const { isLoading, error } = this.props;
 
-    const disabled = !this.state.email || !this.state.password;
+    const disabled = !this.state.phoneNumber || !this.state.password;
 
     const secure = !this.state.secureVisible;
 
@@ -120,21 +120,22 @@ class LoginForm extends Component {
             <Form id="LoginPage.form-container" style={form}>
               <View style={itemStyle}>
                 <Item
-                  error={this.state.emailError}
-                  id="LoginPage.emailInput"
+                  error={this.state.phoneNumberError}
+                  id="LoginPage.phoneNumberInput"
                   floatingLabel
                   style={item}
                 >
-                  <Label style={label}>{this.state.emailLabel}</Label>
+                  <Label style={label}>{this.state.phoneNumberLabel}</Label>
                   <Input
                     style={input}
                     autoCapitalize="none"
+                    keyboardType="phone-pad"
                     autoCorrect={false}
-                    value={this.state.email}
-                    onChangeText={text => this.onFieldChange('email', text)}
-                    onBlur={() => this.onBlur('email', this.state.email)}
+                    value={this.state.phoneNumber}
+                    onChangeText={text => this.onFieldChange('phoneNumber', text)}
+                    onBlur={() => this.onBlur('phoneNumber', this.state.phoneNumber)}
                   />
-                  {this.state.emailError && <Icon name="close-circle" style={{ color: 'red' }} />}
+                  {this.state.phoneNumberError && <Icon name="close-circle" style={{ color: 'red' }} />}
                 </Item>
                 <View />
               </View>

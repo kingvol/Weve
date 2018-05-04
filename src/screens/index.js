@@ -2,6 +2,7 @@ import { Navigation } from 'react-native-navigation';
 
 import LoginScreen from './auth/login.screen';
 import RegisterScreen from './auth/register.screen';
+import VerificationScreen from './auth/verification.screen';
 import ForgotScreen from './auth/forgot.screen';
 import HomeTab from './main/home.tab';
 import InboxTab from './main/inbox.tab';
@@ -18,6 +19,7 @@ import ChatScreen from './main/chat/chat.screen';
 const registerScreens = (store = {}, Provider = {}) => {
   Navigation.registerComponent('wevedo.loginScreen', () => LoginScreen, store, Provider);
   Navigation.registerComponent('wevedo.registerScreen', () => RegisterScreen, store, Provider);
+  Navigation.registerComponent('wevedo.verificationScreen', () => VerificationScreen, store, Provider);
   Navigation.registerComponent('wevedo.forgotScreen', () => ForgotScreen, store, Provider);
   Navigation.registerComponent('wevedo.HomeTab', () => HomeTab, store, Provider);
   Navigation.registerComponent('wevedo.InboxTab', () => InboxTab, store, Provider);

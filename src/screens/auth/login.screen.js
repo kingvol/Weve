@@ -16,13 +16,13 @@ class LoginScreen extends Component {
     }
   }
 
-  onSubmitPress = (email, password) => {
-    this.props.loginUser({ email, password });
+  onSubmitPress = (phoneNumber, password) => {
+    this.props.loginUser({ phoneNumber, password });
   };
 
   onRegisterPress = () => {
     this.props.navigator.push({
-      screen: 'wevedo.registerScreen',
+      screen: 'wevedo.verificationScreen',
       navigatorStyle: {
         navBarHidden: true,
         screenBackgroundColor: 'orange',

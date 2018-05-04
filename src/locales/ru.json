@@ -85,7 +85,8 @@
     "password_length": "Минимальная длина пароля - 8",
     "password_mismatch": "Пароли не совпадают",
     "password_matches_old": "Совпадает со старым паролем",
-    "email_invalid": "Неверный e-mail"
+    "email_invalid": "Неверный e-mail",
+    "phone_invalid": "Неверный номер телефона"
   },
   "common": {
     "ok": "ОК",
@@ -94,6 +95,7 @@
     "save": "Сохранить",
     "email": "Электронная почта",
     "phone": "Телефон номер",
+    "phoneNumber": "Номер телефона",
     "password": "Пароль",
     "loading": "Загружается...",
     "fullName": "Имя и фамилия",
@@ -101,6 +103,9 @@
     "category": "Категория"
   },
   "auth": {
+    "enter_code": "   Введите код проверки   ",
+    "code_sent": "Код успешно отправлен",
+    "resend_code": "Не получили код?",
     "error_incorrect_password": "Неверный пароль",
     "error_user_not_found": "Пользователь не найден",
     "error_app_deleted": "Подлинное приложение удалено",
