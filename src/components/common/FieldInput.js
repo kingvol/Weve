@@ -32,6 +32,8 @@ class FieldInput extends PureComponent {
       error,
       isError,
       onBlur,
+      value,
+      keyboardType,
       input,
       textAlign,
     } = this.props;
@@ -49,6 +51,8 @@ class FieldInput extends PureComponent {
             autoCapitalize={autoCapitalize}
             onChangeText={this.onChangeText}
             onBlur={onBlur}
+            value={value}
+            keyboardType={keyboardType}
             textAlign={textAlign}
             selectionColor={Color(color)
               .alpha(0.5)
