@@ -27,14 +27,21 @@ class VerificationScreen extends Component {
     const mobileNumber = this.phoneInput.getValue();
     // check for test case
     if (mobileNumber === testNumber) {
-      this.props.navigator.push({
-        screen: 'wevedo.registerScreen',
-        passProps: { phoneNumber: mobileNumber },
-        navigatorStyle: {
-          navBarHidden: true,
-          screenBackgroundColor: 'orange',
-        },
-      });
+      try {
+        await api.checkPhone(mobileNumber);
+        this.props.navigator.push({
+          screen: 'wevedo.registerScreen',
+          passProps: { phoneNumber: mobileNumber },
+          navigatorStyle: {
+            navBarHidden: true,
+            screenBackgroundColor: 'orange',
+          },
+        });
+      } catch ({ message }) {
+        this.setState({ isLoading: false });
+        Alert.alert(message);
+      }
+      
       return;
     }
     const isValid = this.phoneInput.isValidNumber();
