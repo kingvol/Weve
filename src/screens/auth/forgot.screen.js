@@ -40,7 +40,7 @@ class ForgotPassword extends Component {
     }
   };
 
-  number = (phone) => {
+  numberPhoneCheck = (phone) => {
     if (phone.match(/[*+*][0-9]*[*+*]/) !== null) {
       if (phone.match(/\+$/)) {
         phone = phone.replace(/\+$/, '');
@@ -108,7 +108,7 @@ class ForgotPassword extends Component {
                 name="phone"
                 placeholder={I18n.t('common.phone')}
                 id="ForgotPassword.phoneInput"
-                onChangeText={text => this.number(text)}
+                onChangeText={text => this.numberPhoneCheck(text)}
                 value={this.state.phone}
               />
               <FieldInput
