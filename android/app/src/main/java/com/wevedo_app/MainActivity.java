@@ -1,4 +1,4 @@
-package com.wevedo_app;
+package com.wevedo;
 
 import android.os.Bundle;
 import android.content.Intent;
