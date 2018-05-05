@@ -1,0 +1,137 @@
+{
+  "logIn": {
+    "log_in": "Oturumu aç",
+    "sign_up": "Kayıt ol",
+    "account_login": "Hesap girişi",
+    "or": "veya",
+    "confirm_password": "Şifreyi onayla",
+    "forgot_your_password": "Şifreyi unuttunuzmu?",
+    "dont_have_an_account": "Hala bir hesabınız yok mu?",
+    "register": "Kayıt ol",
+    "reset_password": "Şifreyi yenile",
+    "forgot_password_title": "Şifreyi unuttunuzmu?",
+    "create_user_error": "Kullanıcı oluşturulamadı",
+    "weak_password": "Şifreniz çok zayıf.",
+    "email_used": "E-posta zaten kullanımda",
+    "no_category": "Kategori seçiniz",
+    "no_image": "Resminiz yüklenmedi",
+    "advertiser": "Hizmet veriyorum",
+    "select_category": "Kategori seçiniz",
+    "account_activation": "Hesabınız 24 saat içinde aktif olacak",
+    "upload_photo": "Resminizi yükleme vakti",
+    "photo_saved": "Resminiz yüklendi",
+    "tap_on_icon": "Resim simgesine dokunun",
+    "landscape": "*Lütfen manzara resminizi yükleyiniz - profiliniz harika görünecek"
+  },
+  "eula": {
+    "error": "Maalesef kaydolamazsınız",
+    "error_message": "Devam etmek için Kullanıcı sözleşmesini kabul edin",
+    "accept": "Kabul etmek",
+    "decline": "Reddetmek"
+  },
+  "changePassword": {
+    "title": "Şifreyi değiştir",
+    "success": "Şifreniz başarıyla değiştirildi",
+    "success_message": "Şifreniz yenilendi",
+    "current_password": "Şimdiki şifre",
+    "new_password": "Yeni şifre",
+    "confirm_password": "Şifreyi onayla"
+  },
+  "resetPassword": {
+    "error_title": "Şifreniz sıfırlanamadı",
+    "success": "Şifreniz başarıyla sıfırlandı",
+    "success_message": "Lütfen e-postanızı kontrol edin",
+    "verification_code_send": "Onay kodunuz emailinize gönderildi",
+    "can_signin": "Yeni şifreniz ile giriş yapabilirsiniz",
+    "code_is_not_valid": "Onay kodunuz geçersiz"
+  },
+  "categories": {
+    "categories": "Kategoriler",
+    "artist": "Sanatçı",
+    "photo": "Fotoğrafçı",
+    "venue": "Mekan",
+    "makeup": "Makyaj",
+    "entertainment": "Eğlence",
+    "decoration": "Dekorasyon",
+    "costume": "Kıyafet",
+    "video": "Kameraman",
+    "cake": "Pasta"
+  },
+  "menu": {
+    "home": "Ana sayfa",
+    "categories": "Kategoriler",
+    "inbox": "Gelen kutusu",
+    "my_profile": "Benim profilim",
+    "settings": "Ayarlar",
+    "sign_out": "Oturumu kapat"
+  },
+  "editProfile": {
+    "title": "Profili düzenle",
+    "first_name": "Adınız",
+    "last_name": "Soyadınız",
+    "phone_number": "Telefon numara",
+    "select_avatar": "Profil fotoğrafı seç",
+    "avatar_error": "Fotoğraf alınamadı",
+    "country": "Ülke",
+    "countryLang": "eng",
+    "region": "Bölge"
+  },
+  "inbox": {
+    "no_active_dialog": "Etkin iletişim kutusu yok"
+  },
+  "validations": {
+    "required": "Gerekli",
+    "password_length": "En az 8 karakter olmalı",
+    "password_mismatch": "Yazdığınız iki şife tutmuyor.",
+    "password_matches_old": "Eski şifre ile aynı",
+    "email_invalid": "Geçersiz e-posta adresi",
+    "phone_invalid": "Geçersiz cep numara"
+  },
+  "common": {
+    "ok": "Tamam",
+    "error": "Hata",
+    "done": "Tamam",
+    "save": "Kayıt et",
+    "email": "E-posta",
+    "phone": "Cep numara",
+    "phoneNumber": "Cep numara",
+    "password": "Şifre",
+    "loading": "Yükleniyor...",
+    "fullName": "Ad Soyad",
+    "continue": "Devam",
+    "category": "Kategori"
+  },
+  "auth": {
+    "enter_code": "Onay şifrenizi giriniz",
+    "4_dig_code": "     4 haneli şifre     ",
+    "code_sent": "Täze parolyňyz üstünlükli goýberildi",
+    "resend_code": "Täze parol",
+    "error_incorrect_password": "Yalnış şifre",
+    "error_user_not_found": "Kullanıcı bulunamadı",
+    "error_app_deleted": "Kimlik doğrulama uygulaması silindi",
+    "error_app_not_authorized": "Başvuru yetkilendirilmedi",
+    "error_argument_error": "Yanlış argümanlar",
+    "error_invalid_api_key": "API anahtarı geçersiz",
+    "error_invalid_user_token": "Geçersiz bilgiler,tekrar oturum açın",
+    "error_network_request_failed": "Ağ hatası oluştu",
+    "error_requires_recent_login": "Son oturum açma süresi aynı değil",
+    "error_too_many_requests": "Çok fazla istek var az sonra yeniden deneyin",
+    "error_unauthorized_domain": "Yetkisiz alan",
+    "error_user_disabled": "Kullanıcı devre dışı",
+    "error_user_token_expired": "Kullanıcı süresi dolmuş",
+    "error_web_storage_unsupported": "Web depolama alanı desteklenmiyor",
+    "error_user_mismatch": "Verilen bilgiler aynı gelmiyor",
+    "error_invalid_credential": "Kimlik bilgileriniz geçersiz",
+    "error_invalid_email": "Geçersiz e-posta",
+    "error_invalid_verification_code": "Geçersiz doğrulama kodu",
+    "error_invalid_verification_id": "Geçersiz doğrulama kimliği"
+  },
+  "chat": {
+    "type_a_message": "Mesaj yaz..."
+  },
+  "report": {
+    "name": "Şikayet",
+    "subject": "Şikayet etmek",
+    "body": "Bu kullanıcıyı şikayet etmek istiyorum:"
+  }
+}

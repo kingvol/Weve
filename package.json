@@ -6,9 +6,14 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "lint": "node_modules/eslint/bin/eslint.js --ext .js,.jsx ./src",
     "fixcode": "node_modules/eslint/bin/eslint.js --ext .js,.jsx ./src --fix",
+    "fix_fcm": "chmod +x ./fix_fcm.sh && ./fix_fcm.sh",
+    "postinstall": "npm run fix_fcm",
     "test": "jest"
   },
   "dependencies": {
+    "appcenter": "^1.4.0",
+    "appcenter-analytics": "^1.4.0",
+    "appcenter-crashes": "^1.4.0",
     "color": "^3.0.0",
     "eslint": "^4.18.1",
     "eslint-config-airbnb": "^16.1.0",
@@ -16,21 +21,47 @@
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.7.0",
     "eslint-plugin-react-native": "^3.2.1",
+    "lodash": "^4.17.5",
+    "moment": "^2.22.0",
     "native-base": "^2.3.9",
     "prop-types": "^15.6.0",
     "react": "16.2.0",
     "react-native": "0.53.3",
+    "react-native-calendars": "^1.17.7",
+    "react-native-country-picker-modal": "^0.5.1",
+    "react-native-device-info": "^0.21.5",
     "react-native-easy-grid": "^0.1.17",
+    "react-native-fcm": "^14.1.3",
+    "react-native-gesture-handler": "^1.0.0-alpha.41",
+    "react-native-gifted-chat": "^0.4.3",
+    "react-native-i18n": "^2.0.12",
+    "react-native-image-picker": "^0.26.7",
+    "react-native-loading-spinner-overlay": "^0.5.2",
+    "react-native-modal": "^5.3.0",
     "react-native-navigation": "^1.1.388",
-    "react-native-splash-screen": "3.0.1"
+    "react-native-phone-input": "^0.2.1",
+    "react-native-tab-view": "^0.0.77",
+    "react-native-vector-icons": "^4.5.0",
+    "react-redux": "^5.0.7",
+    "redux": "^3.7.2",
+    "redux-promise-middleware": "^5.0.0",
+    "redux-thunk": "^2.2.0",
+    "seamless-immutable": "^7.1.3"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.1",
-    "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-jest": "22.4.1",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-preset-react-native": "4.0.0",
     "jest": "22.4.2",
-    "react-test-renderer": "16.2.0"
+    "prettier-eslint": "^8.8.1",
+    "react-test-renderer": "16.2.0",
+    "redux-logger": "^3.0.6"
+  },
+  "rnpm": {
+    "assets": [
+      "./src/assets/Fonts/"
+    ]
   },
   "jest": {
     "preset": "react-native"

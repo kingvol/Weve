@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "paths": {
+      "wevedo_app/*": "./*"
+    }
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}

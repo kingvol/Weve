@@ -107,6 +107,16 @@ android {
             abiFilters "armeabi-v7a", "x86"
         }
     }
+    signingConfigs {
+        release {
+            if (project.hasProperty('WEVEDO_RELEASE_STORE_FILE')) {
+                storeFile file(WEVEDO_RELEASE_STORE_FILE)
+                storePassword WEVEDO_RELEASE_STORE_PASSWORD
+                keyAlias WEVEDO_RELEASE_KEY_ALIAS
+                keyPassword WEVEDO_RELEASE_KEY_PASSWORD
+            }
+        }
+    }
     splits {
         abi {
             reset()
@@ -119,6 +129,7 @@ android {
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release
         }
     }
     // applicationVariants are e.g. debug, release
@@ -137,11 +148,21 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-splash-screen')
+    compile project(':react-native-device-info')
+    compile project(':react-native-fcm')
+    compile project(':react-native-image-picker')
+    compile project(':react-native-vector-icons')
+    compile project(':react-native-i18n')
+    compile project(':appcenter-crashes')
+    compile project(':appcenter-analytics')
+    compile project(':appcenter')    
+    compile project(':react-native-fcm')
+    compile 'com.google.firebase:firebase-core:10.0.1' //this decides your firebase SDK version
+    compile 'com.google.firebase:firebase-messaging:10.0.1'
     compile fileTree(dir: "libs", include: ["*.jar"])
     compile "com.android.support:appcompat-v7:23.0.1"
     compile "com.facebook.react:react-native:+"  // From node_modules
-    compile project(':react-native-navigation') 
+    compile project(':react-native-navigation')     
 }
 
 // Run this once to be able to run the application with BUCK
@@ -150,3 +171,5 @@ task copyDownloadableDepsToLibs(type: Copy) {
     from configurations.compile
     into 'libs'
 }
+
+apply plugin: 'com.google.gms.google-services'
