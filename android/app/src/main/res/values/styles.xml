@@ -3,11 +3,6 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-    </style>
-    <style name="AppTheme.Launcher">
-        <item name="android:windowBackground">@drawable/launch_screen_bitmap</item>
-        <!-- для Android 5+ вы можете поменять цвет colorPrimaryDark, чтобы соответствовать цвету windowBackground -->
-        <item name="colorPrimaryDark">@color/splashBackground</item>
-    </style>
+    </style>  
 
 </resources>
