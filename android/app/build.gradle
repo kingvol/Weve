@@ -101,7 +101,7 @@ android {
         applicationId "com.wevedo"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 94
+        versionCode 95
         versionName "2.4"
         ndk {
             abiFilters "armeabi-v7a", "x86"
