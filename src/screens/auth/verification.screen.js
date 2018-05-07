@@ -21,7 +21,7 @@ class VerificationScreen extends Component {
     showResend: false,
     isLoading: false,
     step: 1,
-  }
+  };
 
   onContinuePress = async () => {
     const mobileNumber = this.phoneInput.getValue();
@@ -41,7 +41,7 @@ class VerificationScreen extends Component {
         this.setState({ isLoading: false });
         Alert.alert(message);
       }
-      
+
       return;
     }
     const isValid = this.phoneInput.isValidNumber();
@@ -60,21 +60,21 @@ class VerificationScreen extends Component {
       this.setState({ isLoading: false });
       Alert.alert(message);
     }
-  }
+  };
 
   onBackPress = () => {
     this.props.navigator.pop();
-  }
+  };
 
   onTextChange = (key, value) => {
     this.setState({ [key]: value });
-  }
+  };
 
   onResendPress = () => {
     this.setState({ showResend: false });
     this.requestVerification();
     Alert.alert(I18n.t('auth.code_send'));
-  }
+  };
 
   requestVerification = async (number) => {
     try {
@@ -88,7 +88,7 @@ class VerificationScreen extends Component {
       this.setState({ isLoading: false });
       Alert.alert(message);
     }
-  }
+  };
 
   handleSubmit = () => {
     const { enteredCode, verificationCode, mobileNumber } = this.state;
@@ -106,16 +106,16 @@ class VerificationScreen extends Component {
       Alert.alert(I18n.t('resetPassword.code_is_not_valid'));
       this.setState({ enteredCode: '' });
     }
-  }
+  };
 
   startResendTimeout = () => {
     setTimeout(() => {
       this.setState({ showResend: true });
     }, 30000);
-  }
+  };
 
   render() {
-    const disabled = (this.state.step === 2 && this.state.enteredCode.length !== 4);
+    const disabled = this.state.step === 2 && this.state.enteredCode.length !== 4;
 
     return (
       <Container id="Verification.container" style={{ backgroundColor: 'red' }}>
@@ -143,12 +143,17 @@ class VerificationScreen extends Component {
               </Text>
             </View>
             <View style={styles.contentContainer}>
-              <Text style={styles.titleText}>{this.state.step === 1 ? I18n.t('common.phoneNumber') : I18n.t('auth.enter_code')}</Text>
+              <Text style={styles.titleText}>
+                {this.state.step === 1 ? I18n.t('common.phoneNumber') : I18n.t('auth.enter_code')}
+              </Text>
+
               <Form>
                 {this.state.step === 1 ? (
                   <View style={styles.inputConteiner}>
                     <PhoneInput
-                      ref={(ref) => { this.phoneInput = ref; }}
+                      ref={(ref) => {
+                        this.phoneInput = ref;
+                      }}
                       style={styles.input}
                       textStyle={styles.inputTextStyle}
                     />
@@ -176,17 +181,11 @@ class VerificationScreen extends Component {
                 id="Verification.submitButton"
                 block
                 style={styles.button}
-                onPress={
-                  this.state.step === 1
-                    ? this.onContinuePress
-                    : this.handleSubmit
-                }
+                onPress={this.state.step === 1 ? this.onContinuePress : this.handleSubmit}
                 spinner={this.state.isLoading}
                 disabled={disabled}
               >
-                <Text style={styles.buttonText}>
-                  {I18n.t('common.continue')}
-                </Text>
+                <Text style={styles.buttonText}>{I18n.t('common.continue')}</Text>
               </Button>
             </View>
           </ScrollView>
@@ -238,6 +237,7 @@ const styles = {
   inputTextStyle: {
     fontSize: 18,
     color: 'white',
+    flex: 1,
   },
   button: {
     margin: 5,
@@ -258,6 +258,4 @@ const styles = {
   },
 };
 
-
 export default VerificationScreen;
-

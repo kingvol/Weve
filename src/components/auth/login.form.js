@@ -125,7 +125,7 @@ class LoginForm extends Component {
                   floatingLabel
                   style={item}
                 >
-                  <Label style={label}>{this.state.phoneNumberLabel}</Label>
+                  <Label style={label}>{I18n.t('common.phone')}</Label>
                   <Input
                     style={input}
                     autoCapitalize="none"
@@ -139,6 +139,7 @@ class LoginForm extends Component {
                 </Item>
                 <View />
               </View>
+              {/* <Text style={{ fontSize: 12, paddingHorizontal: 2 }}>{this.state.phoneNumberLabel}</Text> */}
               <View style={itemStyle}>
                 <Item
                   error={this.state.passwordError}
