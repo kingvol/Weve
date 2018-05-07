@@ -14,9 +14,9 @@ class LoginForm extends Component {
       secureVisible: false,
       phoneNumber: '',
       password: '',
-      passwordLabel: I18n.t('common.password'),
+      passwordLabel: '',
       passwordError: false,
-      phoneNumberLabel: I18n.t('common.phone'),
+      phoneNumberLabel: '',
       phoneNumberError: false,
     };
   }
@@ -41,7 +41,7 @@ class LoginForm extends Component {
           : !/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im.test(value):
           return {
             [`${key}Error`]: false,
-            [`${key}Label`]: I18n.t(`common.${key}`),
+            [`${key}Label`]: '',
           };
         default:
           return {
@@ -96,6 +96,7 @@ class LoginForm extends Component {
       orText,
       register,
       textRegister,
+      errorText,
     } = styles;
     const { isLoading, error } = this.props;
 
@@ -135,11 +136,13 @@ class LoginForm extends Component {
                     onChangeText={text => this.onFieldChange('phoneNumber', text)}
                     onBlur={() => this.onBlur('phoneNumber', this.state.phoneNumber)}
                   />
-                  {this.state.phoneNumberError && <Icon name="close-circle" style={{ color: 'red' }} />}
+                  {this.state.phoneNumberError && (
+                    <Icon name="close-circle" style={{ color: 'red' }} />
+                  )}
                 </Item>
                 <View />
               </View>
-              {/* <Text style={{ fontSize: 12, paddingHorizontal: 2 }}>{this.state.phoneNumberLabel}</Text> */}
+              <Text style={errorText}>{this.state.phoneNumberLabel}</Text>
               <View style={itemStyle}>
                 <Item
                   error={this.state.passwordError}
@@ -147,7 +150,7 @@ class LoginForm extends Component {
                   floatingLabel
                   style={itemPassword}
                 >
-                  <Label style={label}>{this.state.passwordLabel}</Label>
+                  <Label style={label}>{I18n.t('common.password')}</Label>
                   <Input
                     style={input}
                     value={this.state.password}
@@ -176,6 +179,7 @@ class LoginForm extends Component {
                   </TouchableOpacity>
                 </View>
               </View>
+              <Text style={errorText}>{this.state.passwordLabel}</Text>
               {error && (
                 <View style={styles.errorContainer}>
                   <Text
@@ -276,7 +280,7 @@ const styles = {
     margin: 3,
   },
   form: {
-    flex: 2.5,
+    flex: 3,
     backgroundColor: 'rgba(0,0,0,0.5)',
     marginLeft: 15,
     marginRight: 15,
@@ -285,30 +289,30 @@ const styles = {
 
   item: {
     flex: 1,
-    // marginTop: 15,
-    // marginLeft: 20,
+    marginTop: 4,
     marginRight: 34,
   },
   itemStyle: {
     flexDirection: 'row',
     flex: 2,
+    marginTop: 4,
     marginLeft: 10,
     marginRight: 10,
   },
   itemPassword: {
     flex: 1,
+    marginTop: 4,
     marginRight: 10,
   },
   label: {
     flex: 1,
     textAlign: 'left',
-    marginLeft: 10,
     color: contrastColor,
     ...primaryFont,
   },
   input: {
     flex: 1,
-    marginLeft: 10,
+    // textAlignVertical: 'center',
     color: contrastColor,
     ...primaryFont,
   },
@@ -356,6 +360,13 @@ const styles = {
   errorContainer: {
     flex: 1,
     marginTop: 30,
+  },
+  errorText: {
+    fontSize: 10,
+    paddingHorizontal: 2,
+    textAlignVertical: 'center',
+    textAlign: 'center',
+    color: 'red',
   },
 };
 
