@@ -38,12 +38,12 @@ class EditProfileScreen extends Component {
       values: {
         firstName: this.props.user.profile.firstName || '',
         lastName: this.props.user.profile.lastName || '',
-        fullName: `${this.props.user.profile.firstName} ${this.props.user.profile.lastName}` || '',
         phoneNumber: this.props.user.profile.phoneNumber || '',
         profileImageURL: this.props.user.profile.profileImageURL || '',
         countryCode,
         regionName,
       },
+      fullName: `${this.props.user.profile.firstName} ${this.props.user.profile.lastName}` || '',
       loading: false,
       imageUploading: false,
     };
@@ -118,9 +118,19 @@ class EditProfileScreen extends Component {
   }
 
   onFullNameChange = (value) => {
-    const arrFN = value.split(' ').map(a => a.charAt(0).toUpperCase() + a.substr(1));
-    const firstName = arrFN.shift();
-    const lastName = arrFN.shift() || '';
+    this.setState({
+      fullName: value,
+    });
+    let firstName;
+    let lastName;
+    if (value.includes(' ')) {
+      const arrFN = value.split(' ').map(a => a.charAt(0).toUpperCase() + a.substr(1));
+      firstName = arrFN.shift() || '';
+      lastName = arrFN.join(' ') || '';
+    } else {
+      firstName = value || '';
+      lastName = '';
+    }
     this.onFieldChange('firstName', firstName);
     this.onFieldChange('lastName', lastName);
   }
@@ -231,7 +241,7 @@ class EditProfileScreen extends Component {
   };
 
   render() {
-    const { firstName, lastName, phoneNumber } = this.state.values;
+    const { phoneNumber } = this.state.values;
 
     return (
       <Container id="EditProfile.container" style={{ backgroundColor }}>
@@ -280,22 +290,12 @@ class EditProfileScreen extends Component {
           </View>
           <FieldInput
             name="fullName"
-            input={{ value: `${firstName} ${lastName}` }}
+            input={{ value: this.state.fullName }}
             placeholder={I18n.t('common.fullName')}
             color={lightTextColor}
             onChangeText={value => this.onFullNameChange(value)}
             component={EditProfileField}
             id="EditProfile.fullNameInput"
-            autoCapitalize="words"
-          />
-          <FieldInput
-            name="lastName"
-            input={{ value: lastName }}
-            placeholder={I18n.t('editProfile.last_name')}
-            color={lightTextColor}
-            onChangeText={value => this.onFieldChange('lastName', value)}
-            component={EditProfileField}
-            id="EditProfile.lastNameInput"
             autoCapitalize="words"
           />
           <FieldInput
