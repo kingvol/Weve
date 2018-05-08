@@ -38,6 +38,7 @@ class EditProfileScreen extends Component {
       values: {
         firstName: this.props.user.profile.firstName || '',
         lastName: this.props.user.profile.lastName || '',
+        fullName: `${this.props.user.profile.firstName} ${this.props.user.profile.lastName}` || '',
         phoneNumber: this.props.user.profile.phoneNumber || '',
         profileImageURL: this.props.user.profile.profileImageURL || '',
         countryCode,
@@ -74,7 +75,6 @@ class EditProfileScreen extends Component {
                   ? DeviceInfo.getDeviceCountry()
                   : 'GB',
               regionName: responseJson.region_name,
-              // regionName: countryLib[`${this.state.values.countryCode}`].provinces.find(item => (item.substr(0, 2) === responseJson.region_name.substr(0, 2) ? item : null)),
             },
           });
         });
@@ -115,6 +115,14 @@ class EditProfileScreen extends Component {
         animationType: 'fade',
       });
     }
+  }
+
+  onFullNameChange = (value) => {
+    const arrFN = value.split(' ').map(a => a.charAt(0).toUpperCase() + a.substr(1));
+    const firstName = arrFN.shift();
+    const lastName = arrFN.shift() || '';
+    this.onFieldChange('firstName', firstName);
+    this.onFieldChange('lastName', lastName);
   }
 
   onFieldChange = (key, value) => {
@@ -271,13 +279,13 @@ class EditProfileScreen extends Component {
             </Button>
           </View>
           <FieldInput
-            name="firstName"
-            input={{ value: firstName }}
-            placeholder={I18n.t('editProfile.first_name')}
+            name="fullName"
+            input={{ value: `${firstName} ${lastName}` }}
+            placeholder={I18n.t('common.fullName')}
             color={lightTextColor}
-            onChangeText={value => this.onFieldChange('firstName', value)}
+            onChangeText={value => this.onFullNameChange(value)}
             component={EditProfileField}
-            id="EditProfile.firtsNameInput"
+            id="EditProfile.fullNameInput"
             autoCapitalize="words"
           />
           <FieldInput
