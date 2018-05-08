@@ -131,8 +131,13 @@ class EditProfileScreen extends Component {
       firstName = value || '';
       lastName = '';
     }
-    this.onFieldChange('firstName', firstName);
-    this.onFieldChange('lastName', lastName);
+    this.setState({
+      values: {
+        ...this.state.values,
+        firstName: firstName || '',
+        lastName: lastName || '',
+      },
+    });
   }
 
   onFieldChange = (key, value) => {
@@ -297,6 +302,15 @@ class EditProfileScreen extends Component {
             component={EditProfileField}
             id="EditProfile.fullNameInput"
             autoCapitalize="words"
+          />
+          <FieldInput
+            name="phone"
+            input={{ value: this.state.values.firstName }}
+            placeholder={I18n.t('editProfile.first_name')}
+            onChangeText={value => this.onFieldChange('firstName', value)}
+            color={lightTextColor}
+            component={EditProfileField}
+            id="EditProfile.phoneNumberInput"
           />
           <FieldInput
             name="phone"
