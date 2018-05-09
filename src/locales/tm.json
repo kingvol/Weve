@@ -66,7 +66,8 @@
     "sign_out": "Çykalga",
     "homeTab": {
       "buttonTextGrid": "Surat",
-      "buttonTextList": "List"
+      "buttonTextList": "List",
+      "buttonTextFilter": "Filter"
     }
   },
   "editProfile": {

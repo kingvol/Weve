@@ -67,7 +67,8 @@
     "sign_out": "Выйти",
     "homeTab": {
       "buttonTextGrid": "Сетка",
-      "buttonTextList": "Список"
+      "buttonTextList": "Список",
+      "buttonTextFilter": "Фильтр"
     }
   },
   "editProfile": {
@@ -98,7 +99,7 @@
     "done": "Подтвердить",
     "save": "Сохранить",
     "email": "Электронная почта",
-    "phone": "Номер телефона",    
+    "phone": "Номер телефона",
     "phoneNumber": "Номер телефона",
     "password": "Пароль",
     "loading": "Загружается...",

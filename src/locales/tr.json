@@ -66,7 +66,8 @@
     "sign_out": "Oturumu kapat",
     "homeTab": {
       "buttonTextGrid": "Resim",
-      "buttonTextList": "Liste"
+      "buttonTextList": "Liste",
+      "buttonTextFilter": "Filtre"
     }
   },
   "editProfile": {

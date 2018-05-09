@@ -66,7 +66,8 @@
     "sign_out": "Sign Out",
     "homeTab": {
       "buttonTextGrid": "Grid",
-      "buttonTextList": "List"
+      "buttonTextList": "List",
+      "buttonTextFilter": "Filter"
     }
   },
   "editProfile": {

@@ -1,17 +1,36 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground, TouchableWithoutFeedback } from 'react-native';
 import { primaryFont } from '../../theme';
 
 class ProviderGridItem extends Component {
   render() {
     const { firstName, lastName, profileImageURL } = this.props.provider;
+    const { itemWidth } = this.props;
     return (
       <TouchableWithoutFeedback onPress={() => this.props.onPress(this.props.provider)}>
         <View style={styles.GridItem}>
-          <Image style={styles.image} source={{ uri: profileImageURL }} />
-          <View style={{ justifyContent: 'center' }}>
-            <Text style={styles.artistTitle}>{`${firstName} ${lastName || ''}`}</Text>
-          </View>
+          <ImageBackground
+            style={{
+              height: itemWidth,
+              width: itemWidth,
+              marginTop: 5,
+              marginBottom: 2,
+              borderColor: 'white',
+              borderWidth: 5,
+            }}
+            source={{ uri: profileImageURL }}
+          >
+            <View
+              style={{
+                height: itemWidth,
+                width: itemWidth,
+                justifyContent: 'flex-end',
+                backgroundColor: 'rgba(0,0,0,0)',
+              }}
+            >
+              <Text style={styles.artistTitle}>{`${firstName} ${lastName || ''}`}</Text>
+            </View>
+          </ImageBackground>
         </View>
       </TouchableWithoutFeedback>
     );
@@ -19,13 +38,6 @@ class ProviderGridItem extends Component {
 }
 
 const styles = StyleSheet.create({
-  image: {
-    height: 80,
-    width: 80,
-    marginTop: 10,
-    marginBottom: 5,
-    resizeMode: 'contain',
-  },
   GridItem: {
     borderBottomColor: '#efefef',
     borderBottomWidth: 1,
@@ -34,7 +46,10 @@ const styles = StyleSheet.create({
   },
   artistTitle: {
     ...primaryFont,
-    color: 'red',
+    color: 'white',
+    margin: 10,
+    textAlign: 'left',
+    backgroundColor: 'rgba(0,0,0,0)',
   },
 });
 
