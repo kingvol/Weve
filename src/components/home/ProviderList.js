@@ -4,6 +4,7 @@ import { View, ActivityIndicator, FlatList, Alert, TouchableOpacity, Text } from
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ProviderListItem from './ProviderListItem';
+import ProviderGridItem from './ProviderGridItem';
 import { primaryFont } from '../../theme';
 import APIs from '../../api';
 import I18n from '../../locales';
@@ -56,6 +57,10 @@ class ProviderList extends PureComponent {
 
   _keyExtractor = item => item._id;
 
+  _renderGridItem = ({ item }) => (
+    <ProviderGridItem provider={item} id={item._id} onPress={this.onPressItem} />
+  );
+
   _renderItem = ({ item }) => (
     <ProviderListItem provider={item} id={item._id} onPress={this.onPressItem} />
   );
@@ -92,7 +97,9 @@ class ProviderList extends PureComponent {
         <FlatList
           data={this.state.providers}
           keyExtractor={this._keyExtractor}
-          renderItem={this._renderItem}
+          renderItem={this.state.grid ? this._renderGridItem : this._renderItem}
+          key={this.state.grid ? 1 : 0}
+          numColumns={this.state.grid ? 2 : 1}
         />
       </View>
     ) : (
