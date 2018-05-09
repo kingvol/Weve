@@ -14,7 +14,7 @@ const startPushService = (navigator) => {
   FCM.requestPermissions();
 
   FCM.on(FCMEvent.Notification, async (notification) => { 
-    if (notification.fcm.action && notification.collapse_key) {
+    if (notification.fcm.action && notification.collapse_key && Platform.OS === 'android') {
       const rooms = await api.fetchRooms();
       let list = rooms.filter(room => room.messages.length); 
       list = orderBy(list, 'lastMessageTime', 'desc');
@@ -37,8 +37,7 @@ const startPushService = (navigator) => {
 
     try {
       if (Platform.OS === 'ios') {
-        const { notification, click_action } = event;
-        const { title, body, group } = JSON.parse(notification);
+        const { title, body, group } = JSON.parse(notification.notification);
 
         FCM.presentLocalNotification({
           id: body,
@@ -47,7 +46,7 @@ const startPushService = (navigator) => {
           ticker: body,
           wake_screen: true,
           priority: "high",
-          notification
+          notification: notification.notification,
         });
       }
     } catch (err) {

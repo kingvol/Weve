@@ -4,7 +4,7 @@ import Api from '../api.base';
 
 /**
  * @name Class AuthApi
- * @extends Api 
+ * @extends Api
  */
 export default class AuthApi extends Api {
   loginUserByEmail = async (creds) => {
@@ -14,26 +14,33 @@ export default class AuthApi extends Api {
         method: 'POST',
         body: JSON.stringify(Object.assign(creds, { deviceToken, deviceOS: Platform.OS })),
       });
-      if (response.message || response.error) { // check for error
+      if (response.message || response.error) {
+        // check for error
         return Promise.reject(response);
       }
       return response;
-    } catch ({ message }) { throw Error(message); }
-  }
+    } catch ({ message }) {
+      throw Error(message);
+    }
+  };
 
   signupUserByEmail = async (data) => {
     try {
+      console.warn(data);
       const deviceToken = await FCM.requestPermissions().then(() => FCM.getFCMToken());
       const response = await this.request('api/register', {
         method: 'POST',
         body: JSON.stringify(Object.assign(data, { deviceToken, deviceOS: Platform.OS })),
       });
-      if (response.message || response.error) { // check for error
+      if (response.message || response.error) {
+        // check for error
         return Promise.reject(response);
       }
       return response;
-    } catch ({ message }) { throw Error(message); }
-  }
+    } catch ({ message }) {
+      throw Error(message);
+    }
+  };
 
   checkEmail = async (email) => {
     try {
@@ -45,34 +52,63 @@ export default class AuthApi extends Api {
         return Promise.reject(response);
       }
       return response;
+    } catch ({ message }) {
+      throw Error(message);
+    }
+  };
+
+  checkPhone = async (phoneNumber) => {
+    try {
+      const response = await this.request('api/check-phone', {
+        method: 'POST',
+        body: JSON.stringify({ phoneNumber }),
+      });
+      if (response.message || response.error) {
+        return Promise.reject(response);
+      }
+      return response;
     } catch ({ message }) { throw Error(message); }
   }
 
-  resetPasswordRequest = async (email, resetPassword) => {
+  requestVerification = async (number) => {
+    try {
+      const response = await this.request(`api/verify-mobile/${number}`);
+      if (response.message || response.error) {
+        return Promise.reject(response);
+      }
+      return response;
+    } catch ({ message }) { throw Error(message); }
+  }
+
+  resetPasswordRequest = async (phoneNumber, resetPassword) => {
     try {
       const response = await this.request('api/reset-password', {
         method: 'POST',
-        body: JSON.stringify({ email, resetPassword }),
+        body: JSON.stringify({ phoneNumber, resetPassword }),
       });
       if (response.message || response.error) {
         return Promise.reject(response);
       }
       return response;
-    } catch ({ message }) { throw Error(message); }
-  }
+    } catch ({ message }) {
+      throw Error(message);
+    }
+  };
 
-  checkResetCode = async (email, resetToken) => {
+  checkResetCode = async (phoneNumber, resetToken) => {
     try {
       const response = await this.request('api/check-reset-password', {
         method: 'POST',
-        body: JSON.stringify({ email, resetToken }),
+        body: JSON.stringify({ phoneNumber, resetToken }),
       });
       if (response.message || response.error) {
         return Promise.reject(response);
       }
       return response;
-    } catch ({ message }) { throw Error(message); }
-  }
+    } catch ({ message }) {
+      throw Error(message);
+    }
+  };
 
   signout = async () => {
     try {
@@ -80,5 +116,5 @@ export default class AuthApi extends Api {
     } catch ({ message }) {
       throw Error(message);
     }
-  }
+  };
 }

@@ -17,7 +17,7 @@ module.exports = {
     'no-param-reassign': 1,
     'no-underscore-dangle': ['error', { allow: ['_id', '__STATE'] }],
     'object-curly-newline': 0,
-    semi: ['error', 'always'],
+    'semi': ['error', 'always'],
     'import/no-unresolved': 'off',
     'import/extensions': 'off',
     'import/prefer-default-export': 0,

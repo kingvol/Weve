@@ -88,7 +88,8 @@
     "password_length": "En az 8 karakter olmalı",
     "password_mismatch": "Yazdığınız iki şife tutmuyor.",
     "password_matches_old": "Eski şifre ile aynı",
-    "email_invalid": "Geçersiz e-posta adresi"
+    "email_invalid": "Geçersiz e-posta adresi",
+    "phone_invalid": "Geçersiz cep numara"
   },
   "common": {
     "ok": "Tamam",
@@ -97,6 +98,7 @@
     "save": "Kayıt et",
     "email": "E-posta",
     "phone": "Cep numara",
+    "phoneNumber": "Cep numara",
     "password": "Şifre",
     "loading": "Yükleniyor...",
     "fullName": "Ad Soyad",
@@ -104,6 +106,10 @@
     "category": "Kategori"
   },
   "auth": {
+    "enter_code": "Onay şifrenizi giriniz",
+    "4_dig_code": "     4 haneli şifre     ",
+    "code_sent": "Täze parolyňyz üstünlükli goýberildi",
+    "resend_code": "Täze parol",
     "error_incorrect_password": "Yalnış şifre",
     "error_user_not_found": "Kullanıcı bulunamadı",
     "error_app_deleted": "Kimlik doğrulama uygulaması silindi",

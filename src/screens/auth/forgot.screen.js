@@ -5,9 +5,8 @@
 import React, { Component } from 'react';
 import { Alert, ImageBackground, StyleSheet, View } from 'react-native';
 import { Icon } from 'native-base';
-import { connect } from 'react-redux';
 import I18n from 'react-native-i18n';
-import { Button, Container, Content, FieldInput, Text } from '../../components/common';
+import { Button, Container, FieldInput, Text } from '../../components/common';
 import { white } from '../../theme/colors';
 import APIs from '../../api';
 
@@ -18,7 +17,7 @@ class ForgotPassword extends Component {
   state = {
     step: 1,
     isLoading: false,
-    email: '',
+    phone: '',
     resetPassword: '',
     resetToken: '',
   };
@@ -31,45 +30,58 @@ class ForgotPassword extends Component {
     this.setState({
       [key]: value,
     });
-  }
-
-  requestResetToken = async () => {
-    this.setState({ isLoading: true });
-
-    try {
-      await api.resetPasswordRequest(this.state.email, this.state.resetPassword);
-      this.setState({
-        isLoading: false,
-        step: 2,
-      })
-    } catch (error) {
-      alert(error);
-    }
-  }
-
-  checkCode = async () => {
-    this.setState({ isLoading: true });
-
-    try {
-      await api.checkResetCode(this.state.email, this.state.resetToken);
-      this.props.navigator.pop();
-      Alert.alert(
-        `${I18n.t('resetPassword.success')}`,
-        `${I18n.t('resetPassword.can_signin')}`,
-        [{ text: `${I18n.t('common.ok')}` }],
-        { cancelable: false }
-      );
-    } catch (error) {
-      alert(error.message);
-      this.setState({ isLoading: false });
-    }
-  }
+  };
 
   onSubmitForm = () => {
     if (this.state.step === 1) {
       this.requestResetToken();
     } else {
       this.checkCode();
+    }
+  };
+
+  numberPhoneCheck = (phone) => {
+    if (phone.match(/[*+*][0-9]*[*+*]/) !== null) {
+      if (phone.match(/\+$/)) {
+        phone = phone.replace(/\+$/, '');
+      } else {
+        phone = phone.replace(/[+]/, '');
+      }
+    } else if (phone.match(/[0-9]*[*+*]/) !== null) {
+      phone = phone.replace(/[^\d+]/g, '');
+    }
+    this.onTextChange('phone', phone.replace(/[^\d+]/g, ''));
+  };
+
+  requestResetToken = async () => {
+    this.setState({ isLoading: true });
+
+    try {
+      await api.resetPasswordRequest(this.state.phone, this.state.resetPassword);
+      this.setState({
+        isLoading: false,
+        step: 2,
+      });
+    } catch ({ message }) {
+      alert(message);
+    }
+  };
+
+  checkCode = async () => {
+    this.setState({ isLoading: true });
+
+    try {
+      await api.checkResetCode(this.state.phone, this.state.resetToken);
+      this.props.navigator.pop();
+      Alert.alert(
+        `${I18n.t('resetPassword.success')}`,
+        `${I18n.t('resetPassword.can_signin')}`,
+        [{ text: `${I18n.t('common.ok')}` }],
+        { cancelable: false },
+      );
+    } catch (error) {
+      alert(error.message);
+      this.setState({ isLoading: false });
     }
   };
 
@@ -90,56 +102,60 @@ class ForgotPassword extends Component {
         </View>
         {this.state.step === 1 ? (
           <View id="ForgotPassword.formWrapper" style={styles.formWrapper}>
-          <View id="ForgotPassword.form" style={styles.form}>
-            <FieldInput
-              color={white}
-              name="email"
-              placeholder={I18n.t('common.email')}
-              id="ForgotPassword.emailInput"
-              onChangeText={text => this.onTextChange('email', text)}
-            />
-            <FieldInput
-              color={white}
-              name="passowrd"
-              secureTextEntry
-              placeholder="New password"
-              id="ForgotPassword.emailInput"
-              onChangeText={text => this.onTextChange('resetPassword', text)}
-            />
-            <Button
-              block
-              style={styles.button}
-              disabled={!this.state.email || !this.state.resetPassword}
-              spinner={this.state.isLoading}
-              id="ForgotPassword.resetButton"
-              onPress={this.onSubmitForm}
-            >
-              <Text style={styles.buttonText}>{I18n.t('logIn.reset_password')}</Text>
-            </Button>
+            <View id="ForgotPassword.form" style={styles.form}>
+              <FieldInput
+                color={white}
+                name="phone"
+                placeholder={I18n.t('common.phone')}
+                id="ForgotPassword.phoneInput"
+                onChangeText={text => this.numberPhoneCheck(text)}
+                value={this.state.phone}
+                keyboardType="phone-pad"
+              />
+              <FieldInput
+                color={white}
+                name="password"
+                secureTextEntry
+                placeholder={I18n.t('changePassword.new_password')}
+                id="ForgotPassword.passwordInput"
+                onChangeText={text => this.onTextChange('resetPassword', text)}
+              />
+              <Button
+                block
+                style={styles.button}
+                disabled={!this.state.phone || !this.state.resetPassword}
+                spinner={this.state.isLoading}
+                id="ForgotPassword.resetButton"
+                onPress={this.onSubmitForm}
+              >
+                <Text style={styles.buttonText}>{I18n.t('logIn.reset_password')}</Text>
+              </Button>
+            </View>
           </View>
-        </View>
         ) : (
           <View id="ForgotPassword.formWrapper" style={styles.formWrapper}>
-          <Text style={styles.codeText}>{I18n.t('resetPassword.verification_code_send')} {this.state.email}</Text>
-          <View id="ForgotPassword.form" style={styles.form}>
-            <FieldInput
-              color={white}
-              name="code"
-              placeholder="Enter verification code here"
-              id="ForgotPassword.emailInput"
-              onChangeText={text => this.onTextChange('resetToken', text)}
-            />
-            <Button
-              block
-              style={styles.button}
-              spinner={this.state.isLoading}
-              id="ForgotPassword.resetButton"
-              onPress={this.onSubmitForm}
-            >
-              <Text style={styles.buttonText}>{I18n.t('logIn.reset_password')}</Text>
-            </Button>
+            <Text style={styles.codeText}>
+              {I18n.t('resetPassword.verification_code_send')} {this.state.phone}
+            </Text>
+            <View id="ForgotPassword.form" style={styles.form}>
+              <FieldInput
+                color={white}
+                name="code"
+                placeholder="Enter verification code here"
+                id="ForgotPassword.codeInput"
+                onChangeText={text => this.onTextChange('resetToken', text)}
+              />
+              <Button
+                block
+                style={styles.button}
+                spinner={this.state.isLoading}
+                id="ForgotPassword.resetButton"
+                onPress={this.onSubmitForm}
+              >
+                <Text style={styles.buttonText}>{I18n.t('logIn.reset_password')}</Text>
+              </Button>
+            </View>
           </View>
-        </View>
         )}
       </Container>
     );
@@ -209,7 +225,7 @@ const styles = StyleSheet.create({
     marginBottom: 50,
     alignSelf: 'center',
     color: 'white',
-  }
+  },
 });
 
 export default ForgotPassword;

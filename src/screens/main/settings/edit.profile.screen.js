@@ -39,11 +39,11 @@ class EditProfileScreen extends Component {
         firstName: this.props.user.profile.firstName || '',
         lastName: this.props.user.profile.lastName || '',
         phoneNumber: this.props.user.profile.phoneNumber || '',
-        email: this.props.user.profile.email || '',
         profileImageURL: this.props.user.profile.profileImageURL || '',
         countryCode,
         regionName,
       },
+      fullName: `${this.props.user.profile.firstName} ${this.props.user.profile.lastName}` || '',
       loading: false,
       imageUploading: false,
     };
@@ -75,7 +75,6 @@ class EditProfileScreen extends Component {
                   ? DeviceInfo.getDeviceCountry()
                   : 'GB',
               regionName: responseJson.region_name,
-              // regionName: countryLib[`${this.state.values.countryCode}`].provinces.find(item => (item.substr(0, 2) === responseJson.region_name.substr(0, 2) ? item : null)),
             },
           });
         });
@@ -96,7 +95,6 @@ class EditProfileScreen extends Component {
 
   componentWillReceiveProps({ user }) {
     if (!user.isLoading && user.error && this.state.loading) {
-      Alert.alert(user.error);
       return;
     }
     if (!user.isLoading && this.state.loading) {
@@ -117,6 +115,29 @@ class EditProfileScreen extends Component {
         animationType: 'fade',
       });
     }
+  }
+
+  onFullNameChange = (value) => {
+    this.setState({
+      fullName: value,
+    });
+    let firstName;
+    let lastName;
+    if (value.includes(' ')) {
+      const arrFN = value.split(' ').map(a => a.charAt(0).toUpperCase() + a.substr(1));
+      firstName = arrFN.shift() || '';
+      lastName = arrFN.join(' ') || '';
+    } else {
+      firstName = value || '';
+      lastName = '';
+    }
+    this.setState({
+      values: {
+        ...this.state.values,
+        firstName: firstName || '',
+        lastName: lastName || '',
+      },
+    });
   }
 
   onFieldChange = (key, value) => {
@@ -225,7 +246,7 @@ class EditProfileScreen extends Component {
   };
 
   render() {
-    const { firstName, lastName, phoneNumber, email } = this.state.values;
+    const { phoneNumber } = this.state.values;
 
     return (
       <Container id="EditProfile.container" style={{ backgroundColor }}>
@@ -273,25 +294,15 @@ class EditProfileScreen extends Component {
             </Button>
           </View>
           <FieldInput
-            name="firstName"
-            input={{ value: firstName }}
-            placeholder={I18n.t('editProfile.first_name')}
+            name="fullName"
+            input={{ value: this.state.fullName }}
+            placeholder={I18n.t('common.fullName')}
             color={lightTextColor}
-            onChangeText={value => this.onFieldChange('firstName', value)}
+            onChangeText={value => this.onFullNameChange(value)}
             component={EditProfileField}
-            id="EditProfile.firtsNameInput"
+            id="EditProfile.fullNameInput"
             autoCapitalize="words"
-          />
-          <FieldInput
-            name="lastName"
-            input={{ value: lastName }}
-            placeholder={I18n.t('editProfile.last_name')}
-            color={lightTextColor}
-            onChangeText={value => this.onFieldChange('lastName', value)}
-            component={EditProfileField}
-            id="EditProfile.lastNameInput"
-            autoCapitalize="words"
-          />
+          />          
           <FieldInput
             name="phone"
             input={{ value: phoneNumber.toString() }}
@@ -300,16 +311,6 @@ class EditProfileScreen extends Component {
             color={lightTextColor}
             component={EditProfileField}
             id="EditProfile.phoneNumberInput"
-          />
-          <FieldInput
-            name="email"
-            input={{ value: email }}
-            placeholder={I18n.t('common.email')}
-            onChangeText={value => this.onFieldChange('email', value)}
-            color={lightTextColor}
-            disabled
-            component={EditProfileField}
-            id="EditProfile.emailInput"
           />
           <View
             style={{

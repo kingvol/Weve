@@ -74,7 +74,7 @@
     "title": "Редактировать профиль",
     "first_name": "Имя",
     "last_name": "Фамилия",
-    "phone_number": "Телефон номер",
+    "phone_number": "Номер телефона",
     "select_avatar": "Выберите фото профиля",
     "avatar_error": "Не удалось получить фото",
     "country": "Страна",
@@ -89,7 +89,8 @@
     "password_length": "Минимальная длина пароля - 8",
     "password_mismatch": "Пароли не совпадают",
     "password_matches_old": "Совпадает со старым паролем",
-    "email_invalid": "Неверный e-mail"
+    "email_invalid": "Неверный e-mail",
+    "phone_invalid": "Неверный номер телефона"
   },
   "common": {
     "ok": "ОК",
@@ -97,7 +98,8 @@
     "done": "Подтвердить",
     "save": "Сохранить",
     "email": "Электронная почта",
-    "phone": "Телефон номер",
+    "phone": "Номер телефона",    
+    "phoneNumber": "Номер телефона",
     "password": "Пароль",
     "loading": "Загружается...",
     "fullName": "Имя и фамилия",
@@ -105,6 +107,9 @@
     "category": "Категория"
   },
   "auth": {
+    "enter_code": "   Введите код проверки   ",
+    "code_sent": "Код успешно отправлен",
+    "resend_code": "Не получили код?",
     "error_incorrect_password": "Неверный пароль",
     "error_user_not_found": "Пользователь не найден",
     "error_app_deleted": "Подлинное приложение удалено",

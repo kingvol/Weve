@@ -1,7 +1,7 @@
-package com.wevedo_app;
+package com.wevedo;
 
+import android.os.Bundle;
 import android.content.Intent;
-import com.facebook.react.ReactActivity;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.widget.LinearLayout;
@@ -19,14 +19,21 @@ public class MainActivity extends SplashActivity {
         return "wevedo_app";
     }
 
+
+    @Override
+
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
     @Override
     public LinearLayout createSplashLayout() {
         LinearLayout splash = new LinearLayout(this);
         Drawable launch_screen_bitmap = ContextCompat.getDrawable(getApplicationContext(),R.drawable.launch_screen_bitmap);
         splash.setBackground(launch_screen_bitmap);
-
         return splash;
     }
+
 
     @Override
     public void onNewIntent(Intent intent) {
