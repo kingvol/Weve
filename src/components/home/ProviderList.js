@@ -201,7 +201,7 @@ const mapStateToProps = state => ({
   grid: state.appView.grid,
 });
 
-export default connect(mapStateToProps, { GridChanged })(ProviderList);
+export default connect(mapStateToProps)(ProviderList);
 
 const styles = {
   containerStyle: { flex: 1 },
