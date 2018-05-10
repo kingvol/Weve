@@ -55,6 +55,10 @@ class ProviderList extends PureComponent {
     });
   };
 
+  onGridChange() {
+    this.props.GridChanged();
+  }
+
   fetchProvidersList = async (category, country, region) => {
     try {
       const providers = await api.fetchListByCategory(category, country, region);
@@ -194,9 +198,10 @@ class ProviderList extends PureComponent {
 
 const mapStateToProps = state => ({
   profile: state.user.profile,
+  grid: state.appView.grid,
 });
 
-export default connect(mapStateToProps)(ProviderList);
+export default connect(mapStateToProps, { GridChanged })(ProviderList);
 
 const styles = {
   containerStyle: { flex: 1 },
