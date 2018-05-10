@@ -8,13 +8,23 @@ class ProviderGridItem extends Component {
     const { itemWidth } = this.props;
     return (
       <TouchableWithoutFeedback onPress={() => this.props.onPress(this.props.provider)}>
-        <View style={styles.GridItem}>
+        <View
+          style={{
+            borderBottomColor: '#efefef',
+            borderBottomWidth: 2,
+            flex: 1,
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            width: itemWidth,
+          }}
+        >
           <ImageBackground
             style={{
+              paddingTop: itemWidth - itemWidth / 4.5,
               height: itemWidth,
               width: itemWidth,
-              marginTop: 5,
-              marginBottom: 2,
+              marginTop: 3,
+              marginBottom: 5,
               borderColor: 'white',
               borderWidth: 5,
             }}
@@ -24,8 +34,7 @@ class ProviderGridItem extends Component {
               style={{
                 height: itemWidth,
                 width: itemWidth,
-                justifyContent: 'flex-end',
-                backgroundColor: 'rgba(0,0,0,0)',
+                backgroundColor: 'rgba(52, 52, 52, 0.5)',
               }}
             >
               <Text style={styles.artistTitle}>{`${firstName} ${lastName || ''}`}</Text>
@@ -38,18 +47,11 @@ class ProviderGridItem extends Component {
 }
 
 const styles = StyleSheet.create({
-  GridItem: {
-    borderBottomColor: '#efefef',
-    borderBottomWidth: 1,
-    flex: 1,
-    alignItems: 'center',
-  },
   artistTitle: {
     ...primaryFont,
     color: 'white',
     margin: 10,
     textAlign: 'left',
-    backgroundColor: 'rgba(0,0,0,0)',
   },
 });
 
