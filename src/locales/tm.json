@@ -63,7 +63,12 @@
     "inbox": "Gelen hatlar",
     "my_profile": "Meniň profilim",
     "settings": "Sazlamalar",
-    "sign_out": "Çykalga"
+    "sign_out": "Çykalga",
+    "homeTab": {
+      "buttonTextGrid": "Surat",
+      "buttonTextList": "List",
+      "buttonTextFilter": "Filter"
+    }
   },
   "editProfile": {
     "title": "Profili düzetmek",
