@@ -17,15 +17,22 @@ import { primaryFont, backgroundColor } from '../../theme';
 import APIs from '../../api';
 import I18n from '../../locales';
 
+import { appViewActions } from '../../actions';
+
+const { gridChanged } = appViewActions;
+
 const { ProviderApi } = APIs;
 const api = new ProviderApi();
 const ITEM_WIDTH = Dimensions.get('window').width;
 
 class ProviderList extends PureComponent {
-  state = {
-    providers: null,
-    grid: false,
-  };
+  constructor() {
+    super();
+    this.onGridChange = this.onGridChange.bind(this);
+    this.state = {
+      providers: null,
+    };
+  }
 
   componentDidMount() {
     this.fetchProvidersList(
@@ -49,14 +56,8 @@ class ProviderList extends PureComponent {
     });
   };
 
-  onPressGridButton = () => {
-    this.setState({
-      grid: !this.state.grid,
-    });
-  };
-
   onGridChange() {
-    this.props.GridChanged();
+    this.props.gridChanged();
   }
 
   fetchProvidersList = async (category, country, region) => {
@@ -98,11 +99,11 @@ class ProviderList extends PureComponent {
               style={{
                 flexDirection: 'row',
               }}
-              onPress={this.onPressGridButton}
+              onPress={this.onGridChange}
             >
               <Icon
                 style={{
-                  color: this.state.grid ? '#d64635' : '#c4c4c4',
+                  color: this.props.grid ? '#d64635' : '#c4c4c4',
                   alignSelf: 'center',
                   marginTop: 4,
                 }}
@@ -113,7 +114,7 @@ class ProviderList extends PureComponent {
                 style={{
                   alignSelf: 'center',
                   marginLeft: 7,
-                  color: this.state.grid ? '#d64635' : '#c4c4c4',
+                  color: this.props.grid ? '#d64635' : '#c4c4c4',
                 }}
               >
                 {I18n.t('menu.homeTab.buttonTextGrid')}
@@ -125,11 +126,11 @@ class ProviderList extends PureComponent {
               style={{
                 flexDirection: 'row',
               }}
-              onPress={this.onPressGridButton}
+              onPress={this.onGridChange}
             >
               <Icon
                 style={{
-                  color: this.state.grid ? '#c4c4c4' : '#d64635',
+                  color: this.props.grid ? '#c4c4c4' : '#d64635',
                   alignSelf: 'center',
                   marginTop: 4,
                 }}
@@ -140,7 +141,7 @@ class ProviderList extends PureComponent {
                 style={{
                   alignSelf: 'center',
                   marginLeft: 7,
-                  color: this.state.grid ? '#c4c4c4' : '#d64635',
+                  color: this.props.grid ? '#c4c4c4' : '#d64635',
                 }}
               >
                 {I18n.t('menu.homeTab.buttonTextList')}
@@ -182,9 +183,9 @@ class ProviderList extends PureComponent {
         <FlatList
           data={this.state.providers}
           keyExtractor={this._keyExtractor}
-          renderItem={this.state.grid ? this._renderGridItem : this._renderItem}
-          key={this.state.grid ? 1 : 0}
-          numColumns={this.state.grid ? 2 : 1}
+          renderItem={this.props.grid ? this._renderGridItem : this._renderItem}
+          key={this.props.grid ? 1 : 0}
+          numColumns={this.props.grid ? 2 : 1}
           style={{ backgroundColor, borderLeftWidth: 3, borderRightWidth: 3, borderColor: 'white' }}
         />
       </View>
@@ -201,7 +202,7 @@ const mapStateToProps = state => ({
   grid: state.appView.grid,
 });
 
-export default connect(mapStateToProps)(ProviderList);
+export default connect(mapStateToProps, { gridChanged })(ProviderList);
 
 const styles = {
   containerStyle: { flex: 1 },
