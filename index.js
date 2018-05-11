@@ -67,6 +67,7 @@ export const startTabBasedApp = () => {
           navigatorStyle: {
             navBarBackgroundColor: '#d64635',
             navBarTextColor: 'white',
+            navBarButtonColor: 'white',
             navBarTextFontFamily: primaryFont,
           },
         },

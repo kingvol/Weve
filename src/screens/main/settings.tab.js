@@ -25,31 +25,51 @@ const SETTINGS = [
     name: 'menu.my_profile',
     route: 'ProfileScreen',
   },
-  {
-    name: 'menu.sign_out',
-    route: 'SIGN_OUT',
-  },
 ];
 
 class SettingsTab extends Component {
-  onItemPress = async (name, route) => {
-    if (route === 'SIGN_OUT') {
-      await api.signout();
-      this.props.signOut();
-      startSingleScreenApp();
-      await AsyncStorage.removeItem('wevedo_access_token');
-    } else {
-      this.props.navigator.push({
-        screen: `wevedo.${route}`,
-        title: I18n.t(name),
-        navigatorStyle: {
-          navBarBackgroundColor: '#d64635',
-          navBarTextColor: 'white',
-          navBarButtonColor: 'white',
-          navBarTextFontFamily: primaryFont,
-        },
+  constructor(props) {
+    super(props);
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+  }
+
+  componentDidMount() {
+    Promise.all([Icon.getImageSource('sign-out', 20, '#ffffff')]).then((sources) => {
+      this.props.navigator.setButtons({
+        rightButtons: [
+          {
+            icon: sources[0],
+            id: 'sign-out',
+          },
+        ],
+        animated: true,
       });
+    });
+  }
+
+  async onNavigatorEvent(event) {
+    if (event.type === 'NavBarButtonPress') {
+      // this is the event type for button presses
+      if (event.id === 'sign-out') {
+        await api.signout();
+        this.props.signOut();
+        startSingleScreenApp();
+        await AsyncStorage.removeItem('wevedo_access_token');
+      }
     }
+  }
+
+  onItemPress = (name, route) => {
+    this.props.navigator.push({
+      screen: `wevedo.${route}`,
+      title: I18n.t(name),
+      navigatorStyle: {
+        navBarBackgroundColor: '#d64635',
+        navBarTextColor: 'white',
+        navBarButtonColor: 'white',
+        navBarTextFontFamily: primaryFont,
+      },
+    });
   };
 
   render() {
