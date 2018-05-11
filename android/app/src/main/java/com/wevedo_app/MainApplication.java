@@ -16,6 +16,7 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
+import com.dylanvann.fastimage.FastImageViewPackage;
 
 import com.reactnativenavigation.NavigationApplication;
 
@@ -40,7 +41,8 @@ public class MainApplication extends NavigationApplication  {
     new RNI18nPackage(),            
     new AppCenterReactNativeCrashesPackage(MainApplication.this, getResources().getString(R.string.appCenterCrashes_whenToSendCrashes)),
     new AppCenterReactNativeAnalyticsPackage(MainApplication.this, getResources().getString(R.string.appCenterAnalytics_whenToEnableAnalytics)),
-    new AppCenterReactNativePackage(MainApplication.this)
+    new AppCenterReactNativePackage(MainApplication.this),
+    new FastImageViewPackage()
     );
   }
 
