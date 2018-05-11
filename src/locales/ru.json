@@ -64,7 +64,12 @@
     "inbox": "Входящие",
     "my_profile": "Мой профиль",
     "settings": "Настройки",
-    "sign_out": "Выйти"
+    "sign_out": "Выйти",
+    "homeTab": {
+      "buttonTextGrid": "Сетка",
+      "buttonTextList": "Список",
+      "buttonTextFilter": "Фильтр"
+    }
   },
   "editProfile": {
     "title": "Редактировать профиль",
@@ -94,7 +99,7 @@
     "done": "Подтвердить",
     "save": "Сохранить",
     "email": "Электронная почта",
-    "phone": "Номер телефона",    
+    "phone": "Номер телефона",
     "phoneNumber": "Номер телефона",
     "password": "Пароль",
     "loading": "Загружается...",
