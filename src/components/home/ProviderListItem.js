@@ -3,11 +3,14 @@ import { View, Text, StyleSheet, Image, TouchableWithoutFeedback } from 'react-n
 import { primaryFont } from '../../theme';
 
 class ProviderListItem extends Component {
+  onItemPress = () => {
+    this.props.onPress(this.props.provider);
+  };
   render() {
     const { firstName, lastName, profileImageURL } = this.props.provider;
     const { itemWidth } = this.props;
     return (
-      <TouchableWithoutFeedback onPress={() => this.props.onPress(this.props.provider)}>
+      <TouchableWithoutFeedback onPress={this.onItemPress}>
         <View style={styles.listItem}>
           <Image
             style={{

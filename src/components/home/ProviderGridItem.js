@@ -3,11 +3,15 @@ import { View, Text, StyleSheet, ImageBackground, TouchableWithoutFeedback } fro
 import { primaryFont } from '../../theme';
 
 class ProviderGridItem extends Component {
+  onItemPress = () => {
+    this.props.onPress(this.props.provider);
+  };
+
   render() {
     const { firstName, lastName, profileImageURL } = this.props.provider;
     const { itemWidth } = this.props;
     return (
-      <TouchableWithoutFeedback onPress={() => this.props.onPress(this.props.provider)}>
+      <TouchableWithoutFeedback onPress={this.onItemPress}>
         <View
           style={{
             borderBottomColor: '#efefef',
