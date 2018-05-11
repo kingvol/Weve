@@ -1,4 +1,4 @@
-import { GRID_CHANGED } from '../actions/actionTypes';
+import { DISPLAY_MODE_CHANGED } from '../actions/actionTypes';
 
 const initialState = {
   grid: false,
@@ -6,7 +6,7 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case GRID_CHANGED:
+    case DISPLAY_MODE_CHANGED:
       return {
         ...state,
         grid: !state.grid,

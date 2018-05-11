@@ -49,4 +49,4 @@ export const CHAT_ACTION_TYPES = {
   FETCH_CHAT_ROOMS_REJECTED: 'FETCH_CHAT_ROOMS_REJECTED',
 };
 
-export const GRID_CHANGED = 'grid_changed';
+export const DISPLAY_MODE_CHANGED = 'DISPLAY_MODE_CHANGED';

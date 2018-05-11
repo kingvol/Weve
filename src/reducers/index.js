@@ -4,14 +4,14 @@ import RootReducer from './root.reducer';
 import AuthReducer from './auth.reducer';
 import UserReducer from './user.reducer';
 import ChatReducer from './chat.reducer';
-import AppViewReducer from './appView.reducer';
+import UIReducer from './ui.reducer';
 
 const reducers = {
   root: RootReducer,
   auth: AuthReducer,
   user: UserReducer,
   chat: ChatReducer,
-  appView: AppViewReducer,
+  ui: UIReducer,
 };
 
 const rootReducer = combineReducers(reducers);

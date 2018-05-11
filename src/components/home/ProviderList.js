@@ -17,22 +17,18 @@ import { primaryFont, backgroundColor } from '../../theme';
 import APIs from '../../api';
 import I18n from '../../locales';
 
-import { appViewActions } from '../../actions';
+import { UIActions } from '../../actions';
 
-const { gridChanged } = appViewActions;
+const { displayModeChanged } = UIActions;
 
 const { ProviderApi } = APIs;
 const api = new ProviderApi();
 const ITEM_WIDTH = Dimensions.get('window').width;
 
 class ProviderList extends PureComponent {
-  constructor() {
-    super();
-    this.onGridChange = this.onGridChange.bind(this);
-    this.state = {
-      providers: null,
-    };
-  }
+  state = {
+    providers: null,
+  };
 
   componentDidMount() {
     this.fetchProvidersList(
@@ -56,9 +52,9 @@ class ProviderList extends PureComponent {
     });
   };
 
-  onGridChange() {
-    this.props.gridChanged();
-  }
+  onDisplayModeChange = () => {
+    this.props.displayModeChanged();
+  };
 
   fetchProvidersList = async (category, country, region) => {
     try {
@@ -99,7 +95,7 @@ class ProviderList extends PureComponent {
               style={{
                 flexDirection: 'row',
               }}
-              onPress={this.onGridChange}
+              onPress={this.onDisplayModeChange}
             >
               <Icon
                 style={{
@@ -126,7 +122,7 @@ class ProviderList extends PureComponent {
               style={{
                 flexDirection: 'row',
               }}
-              onPress={this.onGridChange}
+              onPress={this.onDisplayModeChange}
             >
               <Icon
                 style={{
@@ -199,10 +195,10 @@ class ProviderList extends PureComponent {
 
 const mapStateToProps = state => ({
   profile: state.user.profile,
-  grid: state.appView.grid,
+  grid: state.ui.grid,
 });
 
-export default connect(mapStateToProps, { gridChanged })(ProviderList);
+export default connect(mapStateToProps, { displayModeChanged })(ProviderList);
 
 const styles = {
   containerStyle: { flex: 1 },
