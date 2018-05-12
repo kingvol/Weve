@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { last, orderBy } from 'lodash';
-import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import { Icon, Container, Content, Body, Left, Right, Badge } from 'native-base';
 import { Center } from '../../components/common';
 import { primaryFont, black, lighterTextColor } from '../../theme';
@@ -94,7 +95,10 @@ class InboxTab extends Component {
         <TouchableOpacity style={listItem} onPress={() => this.onDialogPress(item)}>
           <Body style={body}>
             <Left style={avatar}>
-              <Image style={image} source={{ uri: dialogUser.profileImageURL || defaultProfile }} />
+              <FastImage
+                style={image}
+                source={{ uri: dialogUser.profileImageURL || defaultProfile }}
+              />
             </Left>
             <View style={contentWrapper}>
               <View style={content}>

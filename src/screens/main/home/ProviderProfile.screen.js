@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Content } from 'native-base';
-import { View, Alert, Image } from 'react-native';
+import { View, Alert } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import { connect } from 'react-redux';
 import { Calendar } from 'react-native-calendars';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -90,19 +91,19 @@ class ProviderProfileScreen extends Component {
         ]);
       }
     }
-  }
+  };
 
   handleBookDate = (timestamp) => {
     this.props.updateProfile({
       bookedDates: [...this.props.user.profile.bookedDates, timestamp],
     });
-  }
+  };
 
   render() {
     const { profile } = this.props.user; // authUser
     const { provider } = this.props;
 
-    const markedDates = (profile._id === provider._id) ? profile.bookedDates : provider.bookedDates;
+    const markedDates = profile._id === provider._id ? profile.bookedDates : provider.bookedDates;
 
     let transformedMarkedDates = {};
 
@@ -116,7 +117,11 @@ class ProviderProfileScreen extends Component {
     return (
       <Content contentContainerStyle={{ flexGrow: 1 }}>
         <View style={{ minHeight: 500, flex: 2 }}>
-          <Image style={styles.image} source={{ uri: this.props.provider.profileImageURL }} />
+          <FastImage
+            style={styles.image}
+            resizeMode={FastImage.resizeMode.contain}
+            source={{ uri: this.props.provider.profileImageURL }}
+          />
           <Calendar
             theme={calendarTheme}
             style={styles.calendar}
@@ -131,7 +136,6 @@ class ProviderProfileScreen extends Component {
 
 const styles = {
   image: {
-    resizeMode: 'contain',
     flex: 1,
   },
 };
