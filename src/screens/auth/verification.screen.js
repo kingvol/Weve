@@ -73,7 +73,7 @@ class VerificationScreen extends Component {
   onResendPress = () => {
     this.setState({ showResend: false });
     this.requestVerification();
-    Alert.alert(I18n.t('auth.code_send'));
+    Alert.alert(I18n.t('auth.code_sent'));
   };
 
   requestVerification = async (number) => {
