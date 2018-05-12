@@ -77,32 +77,52 @@ class ProviderProfileScreen extends Component {
     if (this.props.user.profile.isProvider) {
       const { _id } = this.props.user.profile;
       if (_id === this.props.provider._id) {
-        Alert.alert('Book the date?', `You are booking for ${dateString}.`, [
-          { text: 'Cancel' },
-          {
-            text: 'Book Now',
-            onPress: () => this.handleBookDate(timestamp),
-          },
-        ]);
+        if (this.props.user.profile.bookedDates.includes(`${dateString}T00:00:00.000Z`)) {
+          Alert.alert('Remove the previously booked date?', `You are removing for ${dateString}.`, [
+            { text: 'Cancel' },
+            {
+              text: 'Remove Now',
+              onPress: () => this.handleRemoveDate(dateString),
+            },
+          ]);
+        } else {
+          Alert.alert('Book the date?', `You are booking for ${dateString}.`, [
+            { text: 'Cancel' },
+            {
+              text: 'Book Now',
+              onPress: () => this.handleBookDate(timestamp),
+            },
+          ]);
+        }
       } else {
         Alert.alert('Cannot book!', 'You do not have the authority to book the dates.', [
           { text: 'Ok' },
         ]);
       }
     }
-  }
+  };
+
+  handleRemoveDate = (dateString) => {
+    const index = this.props.user.profile.bookedDates.indexOf(`${dateString}T00:00:00.000Z`);
+    if (index > -1) {
+      this.props.user.profile.bookedDates.splice(index, 1);
+      this.props.updateProfile({
+        bookedDates: [...this.props.user.profile.bookedDates],
+      });
+    }
+  };
 
   handleBookDate = (timestamp) => {
     this.props.updateProfile({
       bookedDates: [...this.props.user.profile.bookedDates, timestamp],
     });
-  }
+  };
 
   render() {
     const { profile } = this.props.user; // authUser
     const { provider } = this.props;
 
-    const markedDates = (profile._id === provider._id) ? profile.bookedDates : provider.bookedDates;
+    const markedDates = profile._id === provider._id ? profile.bookedDates : provider.bookedDates;
 
     let transformedMarkedDates = {};
 
