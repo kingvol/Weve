@@ -67,7 +67,16 @@
     "homeTab": {
       "buttonTextGrid": "Grid",
       "buttonTextList": "List",
-      "buttonTextFilter": "Filter"
+      "buttonTextFilter": "Filter",
+      "booking": {
+        "remove_booking": "Remove the previously booked date?",
+        "removing": "You are removing for",
+        "cancel": "Cancel",
+        "remove": "Remove Now",
+        "add_booking": "Book the date?",
+        "booking": "You are booking for",
+        "book": "Book Now"
+      }
     }
   },
   "editProfile": {

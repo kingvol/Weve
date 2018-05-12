@@ -105,9 +105,10 @@ class ProviderProfileScreen extends Component {
   handleRemoveDate = (dateString) => {
     const index = this.props.user.profile.bookedDates.indexOf(`${dateString}T00:00:00.000Z`);
     if (index > -1) {
-      this.props.user.profile.bookedDates.splice(index, 1);
+      const bookArray = this.props.user.profile.bookedDates;
+      bookArray.splice(index, 1);
       this.props.updateProfile({
-        bookedDates: [...this.props.user.profile.bookedDates],
+        bookedDates: bookArray,
       });
     }
   };
