@@ -69,13 +69,16 @@
       "buttonTextList": "List",
       "buttonTextFilter": "Filter",
       "booking": {
-        "remove_booking": "Remove the previously booked date?",
-        "removing": "You are removing for",
+        "remove_booking": "Remove booking",
         "cancel": "Cancel",
-        "remove": "Remove Now",
+        "remove": "Remove",
         "add_booking": "Book the date?",
         "booking": "You are booking for",
-        "book": "Book Now"
+        "book": "Book Now",
+        "cannot": "Cannot book!",
+        "authority": "You do not have the authority to book the dates.",
+        "error": "Error booking date!",
+        "later": "Please try again later."
       }
     }
   },

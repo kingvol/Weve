@@ -46,7 +46,7 @@ class ProviderProfileScreen extends Component {
   componentWillReceiveProps({ user }) {
     const { isLoading, error } = user;
     if (!isLoading && error) {
-      Alert.alert('Error booking date!', 'Please try again later.');
+      Alert.alert(I18n.t('menu.homeTab.booking.error'), I18n.t('menu.homeTab.booking.later'));
     }
   }
 
@@ -79,26 +79,32 @@ class ProviderProfileScreen extends Component {
       const { _id } = this.props.user.profile;
       if (_id === this.props.provider._id) {
         if (this.props.user.profile.bookedDates.includes(`${dateString}T00:00:00.000Z`)) {
-          Alert.alert('Remove the previously booked date?', `You are removing for ${dateString}.`, [
-            { text: 'Cancel' },
+          Alert.alert(`${I18n.t('menu.homeTab.booking.remove_booking')} ${dateString}?`, '', [
+            { text: I18n.t('menu.homeTab.booking.cancel') },
             {
-              text: 'Remove Now',
+              text: I18n.t('menu.homeTab.booking.remove'),
               onPress: () => this.handleRemoveDate(dateString),
             },
           ]);
         } else {
-          Alert.alert('Book the date?', `You are booking for ${dateString}.`, [
-            { text: 'Cancel' },
-            {
-              text: 'Book Now',
-              onPress: () => this.handleBookDate(timestamp),
-            },
-          ]);
+          Alert.alert(
+            I18n.t('menu.homeTab.booking.add_booking'),
+            `${I18n.t('menu.homeTab.booking.booking')} ${dateString}.`,
+            [
+              { text: I18n.t('menu.homeTab.booking.cancel') },
+              {
+                text: I18n.t('menu.homeTab.booking.book'),
+                onPress: () => this.handleBookDate(timestamp),
+              },
+            ],
+          );
         }
       } else {
-        Alert.alert('Cannot book!', 'You do not have the authority to book the dates.', [
-          { text: 'Ok' },
-        ]);
+        Alert.alert(
+          I18n.t('menu.homeTab.booking.cannot'),
+          I18n.t('menu.homeTab.booking.authority'),
+          [{ text: I18n.t('common.ok') }],
+        );
       }
     }
   };
