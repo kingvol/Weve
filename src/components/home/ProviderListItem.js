@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import { primaryFont } from '../../theme';
 
 class ProviderListItem extends Component {
@@ -12,7 +13,7 @@ class ProviderListItem extends Component {
     return (
       <TouchableWithoutFeedback onPress={this.onItemPress}>
         <View style={styles.listItem}>
-          <Image
+          <FastImage
             style={{
               height: itemWidth,
               width: itemWidth,

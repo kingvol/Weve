@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Image, ImageBackground, TouchableOpacity, View, ScrollView } from 'react-native';
+import { ImageBackground, TouchableOpacity, View, ScrollView } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import { CardItem, Container, Form, Icon, Item, Input, Label, Title } from 'native-base';
 import I18n from '../../locales';
 import { primaryColor, backgroundColor, contrastColor, primaryFont } from '../../theme';
@@ -115,7 +116,7 @@ class LoginForm extends Component {
             </CardItem>
             <CardItem style={pic} id="LoginPage.logoWrapper">
               <View style={logoOuterCircle} id="LoginPage.logoOuterCircle">
-                <Image id="LoginPage.logo" source={images.logo} style={logoInnerCircle} />
+                <FastImage id="LoginPage.logo" source={images.logo} style={logoInnerCircle} />
               </View>
             </CardItem>
             <Form id="LoginPage.form-container" style={form}>

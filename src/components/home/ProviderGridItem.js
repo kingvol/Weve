@@ -28,7 +28,7 @@ class ProviderGridItem extends Component {
               height: itemWidth,
               width: itemWidth,
               marginTop: 3,
-              marginBottom: 5,
+              marginBottom: 10,
               borderColor: 'white',
               borderWidth: 5,
             }}
@@ -36,7 +36,7 @@ class ProviderGridItem extends Component {
           >
             <View
               style={{
-                height: itemWidth,
+                height: itemWidth / 4.5,
                 width: itemWidth,
                 backgroundColor: 'rgba(52, 52, 52, 0.5)',
               }}
