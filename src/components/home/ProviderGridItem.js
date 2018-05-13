@@ -19,25 +19,22 @@ class ProviderGridItem extends Component {
             flex: 1,
             justifyContent: 'flex-start',
             alignItems: 'center',
-            width: itemWidth,
+            width: itemWidth - itemWidth / 25,
           }}
         >
           <ImageBackground
             style={{
-              paddingTop: itemWidth - itemWidth / 4.5,
-              height: itemWidth,
-              width: itemWidth,
-              marginTop: 3,
-              marginBottom: 10,
-              borderColor: 'white',
-              borderWidth: 5,
+              paddingTop: itemWidth - itemWidth / 25 - (itemWidth - itemWidth / 25) / 4.5,
+              height: itemWidth - itemWidth / 25,
+              width: itemWidth - itemWidth / 25,
+              margin: 3,
             }}
             source={{ uri: profileImageURL }}
           >
             <View
               style={{
-                height: itemWidth / 4.5,
-                width: itemWidth,
+                height: (itemWidth - itemWidth / 25) / 4.5,
+                width: itemWidth - itemWidth / 25,
                 backgroundColor: 'rgba(52, 52, 52, 0.5)',
               }}
             >
