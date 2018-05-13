@@ -148,6 +148,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-fast-image')
     compile project(':react-native-device-info')
     compile project(':react-native-fcm')
     compile project(':react-native-image-picker')
