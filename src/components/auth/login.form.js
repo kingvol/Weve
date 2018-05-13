@@ -367,7 +367,7 @@ const styles = {
     paddingHorizontal: 2,
     textAlignVertical: 'center',
     textAlign: 'center',
-    color: 'red',
+    color: 'yellow',
   },
 };
 
