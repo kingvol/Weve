@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ImageBackground, ScrollView, Alert, TouchableOpacity } from 'react-native';
+import { ImageBackground, ScrollView, Alert, TouchableOpacity, Switch } from 'react-native';
 import { Container, Icon, View, Form } from 'native-base';
 import PhoneInput from 'react-native-phone-input';
 import I18n from '../../locales';
@@ -22,12 +22,13 @@ class VerificationScreen extends Component {
     showResend: false,
     isLoading: false,
     step: 1,
+    switchValue: true,
   };
 
   onContinuePress = async () => {
     const mobileNumber = this.phoneInput.getValue();
     // check for test case
-    if (mobileNumber === testNumber) {
+    if (mobileNumber === testNumber || (vars.DB_ENV === 'test' && this.state.switchValue)) {
       try {
         await api.checkPhone(mobileNumber);
         this.props.navigator.push({
@@ -115,12 +116,12 @@ class VerificationScreen extends Component {
     }, 30000);
   };
 
+  toggleSwitch = (value) => {
+    this.setState({ switchValue: value });
+  };
+
   render() {
-    const disabled =
-      vars.DB_ENV === 'test'
-        ? this.state.step === 2
-        : this.state.step === 2 && this.state.enteredCode.length !== 4;
-    console.log(vars.DB_ENV);
+    const disabled = this.state.step === 2 && this.state.enteredCode.length !== 4;
 
     return (
       <Container id="Verification.container" style={{ backgroundColor: 'red' }}>
@@ -192,6 +193,29 @@ class VerificationScreen extends Component {
               >
                 <Text style={styles.buttonText}>{I18n.t('common.continue')}</Text>
               </Button>
+              {vars.DB_ENV === 'test' &&
+                this.state.step === 1 && (
+                  <View
+                    style={{
+                      flex: 1,
+                      alignItems: 'center',
+                      marginTop: 100,
+                    }}
+                  >
+                    <View>
+                      <Text style={styles.resendText}>
+                        {this.state.switchValue
+                          ? 'bypass sms verification code'
+                          : 'trigger sms verification code'}
+                      </Text>
+                    </View>
+                    <Switch
+                      onValueChange={this.toggleSwitch}
+                      value={this.state.switchValue}
+                      onTintColor="green"
+                    />
+                  </View>
+                )}
             </View>
           </ScrollView>
         </ImageBackground>
