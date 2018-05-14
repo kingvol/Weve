@@ -143,8 +143,19 @@
     "error_invalid_verification_code": "Неверный код подтверждения",
     "error_invalid_verification_id": "Неверный ID"
   },
+  "backend": {
+    "User not found": "Пользователь не найден",
+    "Wrong credentials": "Неверные учетные данные",
+    "Number not found": "Номер не найден",
+    "Wrong code provided": "Неверный код",
+    "Number is already in use": "Номер уже используется",
+    "Not found": "Не найдено",
+    "User has blocked you": "Пользователь заблокировал вас",
+    "Category not found": "Категория не найдена"
+  },
   "chat": {
-    "type_a_message": "Ввести сообщение..."
+    "type_a_message": "Ввести сообщение...",
+    "error": "Что-то пошло не так. Пожалуйста, повторите попытку позже"
   },
   "report": {
     "name": "Пожаловаться",

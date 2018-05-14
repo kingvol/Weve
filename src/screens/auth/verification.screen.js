@@ -39,7 +39,7 @@ class VerificationScreen extends Component {
         });
       } catch ({ message }) {
         this.setState({ isLoading: false });
-        Alert.alert(message);
+        Alert.alert(I18n.t(`backend.${message}`));
       }
 
       return;
@@ -58,7 +58,7 @@ class VerificationScreen extends Component {
       this.requestVerification(mobileNumber);
     } catch ({ message }) {
       this.setState({ isLoading: false });
-      Alert.alert(message);
+      Alert.alert(I18n.t(`backend.${message}`));
     }
   };
 
@@ -86,7 +86,7 @@ class VerificationScreen extends Component {
       this.startResendTimeout();
     } catch ({ message }) {
       this.setState({ isLoading: false });
-      Alert.alert(message);
+      Alert.alert(I18n.t(`backend.${message}`));
     }
   };
 

@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { ActivityIndicator, Alert, Platform, Keyboard, ActionSheetIOS, Linking } from 'react-native';
+import {
+  ActivityIndicator,
+  Alert,
+  Platform,
+  Keyboard,
+  ActionSheetIOS,
+  Linking,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import I18n from 'react-native-i18n';
 import APIs from '../../../api';
@@ -24,7 +31,7 @@ class Chat extends Component {
     room: null,
     messages: [],
     intervalId: '',
-  }
+  };
 
   componentWillMount() {
     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
@@ -57,9 +64,9 @@ class Chat extends Component {
     try {
       await api.addMessage(_id, body);
     } catch ({ message }) {
-      Alert.alert('Cannot send message: ', message);
+      Alert.alert(I18n.t('chat.error'), message);
     }
-  }
+  };
 
   onNavigatorEvent = ({ id }) => {
     if (id === 'bottomTabReselected') {
@@ -70,56 +77,58 @@ class Chat extends Component {
     } else if (id === 'options') {
       this.handleOptionsPress();
     }
-  }
+  };
 
   initChatOptions = () => {
     Promise.all([Icon.getImageSource('ellipsis-v', 20, '#000000')]).then((sources) => {
       this.props.navigator.setButtons({
-        rightButtons: [{
-          icon: sources[0],
-          id: 'options',
-        }],
+        rightButtons: [
+          {
+            icon: sources[0],
+            id: 'options',
+          },
+        ],
         animated: true,
       });
     });
-  }
+  };
 
   fetchRoom = async (roomId) => {
     try {
       const room = await api.fetchRoom(roomId);
       this.setState({ room, messages: room.messages });
     } catch (error) {
-      Alert.alert('Failed to fetch room: ', error);
+      Alert.alert(I18n.t('chat.error'), error);
     }
-  }
+  };
 
   createRoom = async (user, provider) => {
     try {
       const room = await api.createRoom({ user, provider });
       return room;
     } catch (error) {
-      Alert.alert('Cannot create a room: ', error);
+      Alert.alert(I18n.t('chat.error'), error);
     }
-  }
+  };
 
   fetchMessages = async () => {
     try {
       const messages = await api.fetchRoomMessages(this.state.room._id);
       this.setState({ messages });
     } catch (error) {
-      Alert.alert('Failed to fetch messages: ', error);
+      Alert.alert(I18n.t('chat.error'), error);
     }
-  }
+  };
 
   startMessagePolling = () => {
     const intervalId = setInterval(this.fetchMessages, 500);
     this.setState({ intervalId });
-  }
+  };
 
   stopMessagePolling = () => {
     const { intervalId } = this.state;
     clearInterval(intervalId);
-  }
+  };
 
   keyboardDidShow = () => {
     if (Platform.OS === 'android') {
@@ -147,35 +156,41 @@ class Chat extends Component {
     const isUserBlocked = authUser.blockedUsers.includes(targetUser);
 
     if (Platform.OS === 'ios') {
-      ActionSheetIOS.showActionSheetWithOptions({
-        options: ['Cancel', isUserBlocked ? 'Unblock user' : 'Block user', REPORT_ACTION],
-        cancelButtonIndex: 0,
-        blockingButtonIndex: 1,
-        reportingButtonIdex: 2,
-      }, (buttonIndex) => {
-        if (buttonIndex === 1) {
-          return isUserBlocked ? this.handleUnblockPress() : this.handleBlockUserPress();
-        } else if (buttonIndex === 2) { return this.handleReportPress(); }
-      });
+      ActionSheetIOS.showActionSheetWithOptions(
+        {
+          options: ['Cancel', isUserBlocked ? 'Unblock user' : 'Block user', REPORT_ACTION],
+          cancelButtonIndex: 0,
+          blockingButtonIndex: 1,
+          reportingButtonIdex: 2,
+        },
+        (buttonIndex) => {
+          if (buttonIndex === 1) {
+            return isUserBlocked ? this.handleUnblockPress() : this.handleBlockUserPress();
+          } else if (buttonIndex === 2) {
+            return this.handleReportPress();
+          }
+        },
+      );
     } else {
       this.props.navigator.showContextualMenu({
         rightButtons: [
           { title: isUserBlocked ? 'Unblock user' : 'Block user' },
           { title: REPORT_ACTION },
         ],
-        onButtonPressed: index => (
-          index === 0 ? (isUserBlocked ? this.handleUnblockPress() : this.handleBlockUserPress()) :
-            this.handleReportPress()),
+        onButtonPressed: index =>
+          (index === 0
+            ? isUserBlocked ? this.handleUnblockPress() : this.handleBlockUserPress()
+            : this.handleReportPress()),
       });
     }
-  }
+  };
 
   handleBlockUserPress = () => {
     const { room } = this.state;
     const authUser = this.props.user.profile;
     const userToBlock = authUser.isProvider ? room.user._id : room.provider._id;
     this.props.updateProfile({ blockedUsers: [...authUser.blockedUsers, userToBlock] });
-  }
+  };
 
   handleUnblockPress = () => {
     const { room } = this.state;
@@ -184,19 +199,19 @@ class Chat extends Component {
     this.props.updateProfile({
       blockedUsers: authUser.blockedUsers.filter(user => user._id === userToUnblock),
     });
-  }
+  };
 
   handleReportPress = () => {
     const { room } = this.state;
     const authUser = this.props.user.profile;
 
     const targetPhone = authUser.isProvider ? room.user.phoneNumber : room.provider.phoneNumber;
-    
+
     const subject = I18n.t('report.subject');
     const body = `${I18n.t('report.body')} ${targetPhone}`;
 
     Linking.openURL(`mailto:${config.adminEmail}?subject=${subject}&body=${body}`);
-  }
+  };
 
   render() {
     return this.state.room ? (

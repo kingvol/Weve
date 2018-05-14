@@ -171,7 +171,7 @@ class EditProfileScreen extends Component {
           imageUploading: false,
         });
       } catch ({ message }) {
-        Alert.alert(message);
+        Alert.alert(I18n.t(`backend.${message}`));
         this.setState({ imageUploading: false });
       }
     }

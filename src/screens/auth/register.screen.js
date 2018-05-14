@@ -55,14 +55,7 @@ class RegisterScreen extends Component {
     this.props.registerUser(body);
   };
 
-  onProviderFormSubmit = async (
-    password,
-    fullName,
-    image,
-    category,
-    countryCode,
-    regionName,
-  ) => {
+  onProviderFormSubmit = async (password, fullName, image, category, countryCode, regionName) => {
     /* divide fullName to first and last */
     const firstName = fullName.replace(/ .*/, '');
     const wordsLength = fullName.split(' ').length;
@@ -77,7 +70,7 @@ class RegisterScreen extends Component {
       const { secure_url } = await this.uploadProfileImage(image);
       image = secure_url;
     } catch ({ message }) {
-      alert(message);
+      alert(I18n.t(`backend.${message}`));
       this.setState({ loading: false });
     }
 
