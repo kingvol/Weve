@@ -144,18 +144,18 @@
     "error_invalid_verification_id": "Ýalňyş ID"
   },
   "backend": {
-    "User not found": "Ulanjyny tapylmady",
-    "Wrong credentials": "Wrong credentials",
-    "Number not found": "Number not found",
-    "Wrong code provided": "Wrong code provided",
-    "Number is already in use": "Number is already in use",
-    "Not found": "Not found",
-    "User has blocked you": "User has blocked you",
-    "Category not found": "Category not found"
+    "User not found": "Ulanyjy tapylmady",
+    "Wrong credentials": "Ýalňyş maglumatlar",
+    "Number not found": "Nomeriňiz ýalňyş",
+    "Wrong code provided": "Ýalňyş kod girizildi",
+    "Number is already in use": "Nomer eýýäm ulanylýar",
+    "Not found": "Tapylanok",
+    "User has blocked you": "Sizi blok etdi",
+    "Category not found": "Kategoriýa tapylmady"
   },
   "chat": {
     "type_a_message": "Mesaj yaz...",
-    "error": "Hata oluştu. Lütfen sonra tekrar deneyiniz"
+    "error": "Ýalňyşlyk bar. Soňurrak barlap görüň"
   },
   "report": {
     "name": "Arz etmek",

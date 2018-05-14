@@ -145,13 +145,13 @@
   },
   "backend": {
     "User not found": "Kullanıcı bulunamadı",
-    "Wrong credentials": "Wrong credentials",
-    "Number not found": "Number not found",
-    "Wrong code provided": "Wrong code provided",
-    "Number is already in use": "Number is already in use",
-    "Not found": "Not found",
-    "User has blocked you": "User has blocked you",
-    "Category not found": "Category not found"
+    "Wrong credentials": "Yanlış şifre",
+    "Number not found": "Numara bulunamadı",
+    "Wrong code provided": "Yanlış şifre",
+    "Number is already in use": "Numara kullanımda",
+    "Not found": "Bulunamadı",
+    "User has blocked you": "Kullanıcı sizi bloke etti",
+    "Category not found": "Kategori bulunamadı"
   },
   "chat": {
     "type_a_message": "Mesaj yaz...",
