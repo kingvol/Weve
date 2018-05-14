@@ -7,6 +7,7 @@ import { contrastColor, primaryFont } from '../../theme';
 import { Button, Text, FieldInput } from '../../components/common';
 
 import APIs from '../../api';
+import vars from '../../env/vars';
 
 const testNumber = '+447890000000';
 
@@ -115,7 +116,11 @@ class VerificationScreen extends Component {
   };
 
   render() {
-    const disabled = this.state.step === 2 && this.state.enteredCode.length !== 4;
+    const disabled =
+      vars.DB_ENV === 'test'
+        ? this.state.step === 2
+        : this.state.step === 2 && this.state.enteredCode.length !== 4;
+    console.log(vars.DB_ENV);
 
     return (
       <Container id="Verification.container" style={{ backgroundColor: 'red' }}>
