@@ -143,8 +143,19 @@
     "error_invalid_verification_code": "Geçersiz doğrulama kodu",
     "error_invalid_verification_id": "Geçersiz doğrulama kimliği"
   },
+  "backend": {
+    "User not found": "Kullanıcı bulunamadı",
+    "Wrong credentials": "Wrong credentials",
+    "Number not found": "Number not found",
+    "Wrong code provided": "Wrong code provided",
+    "Number is already in use": "Number is already in use",
+    "Not found": "Not found",
+    "User has blocked you": "User has blocked you",
+    "Category not found": "Category not found"
+  },
   "chat": {
-    "type_a_message": "Mesaj yaz..."
+    "type_a_message": "Mesaj yaz...",
+    "error": "Hata oluştu. Lütfen sonra tekrar deneyiniz"
   },
   "report": {
     "name": "Şikayet",

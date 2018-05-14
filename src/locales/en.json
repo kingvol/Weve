@@ -121,7 +121,7 @@
   "auth": {
     "enter_code": "Enter verification code",
     "4_dig_code": "      4 digit code       ",
-    "code_sent": "New code successfuly sent",
+    "code_sent": "New code successfully sent",
     "resend_code": "Resend code",
     "error_incorrect_password": "Incorrect password",
     "error_user_not_found": "User not found",
@@ -143,8 +143,19 @@
     "error_invalid_verification_code": "Invalid verification code",
     "error_invalid_verification_id": "Invalid verification id"
   },
+  "backend": {
+    "User not found": "User not found",
+    "Wrong credentials": "Wrong credentials",
+    "Number not found": "Number not found",
+    "Wrong code provided": "Wrong code provided",
+    "Number is already in use": "Number is already in use",
+    "Not found": "Not found",
+    "User has blocked you": "User has blocked you",
+    "Category not found": "Category not found"
+  },
   "chat": {
-    "type_a_message": "Type a message..."
+    "type_a_message": "Type a message...",
+    "error": "Something went wrong. Please try again later"
   },
   "report": {
     "name": "Report",

@@ -61,7 +61,7 @@ class ProviderList extends PureComponent {
       const providers = await api.fetchListByCategory(category, country, region);
       this.setState({ providers });
     } catch ({ message }) {
-      Alert.alert(message);
+      Alert.alert(I18n.t(`backend.${message}`));
     }
   };
 

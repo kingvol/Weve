@@ -63,7 +63,7 @@ class ForgotPassword extends Component {
         step: 2,
       });
     } catch ({ message }) {
-      alert(message);
+      alert(I18n.t(`backend.${message}`));
     }
   };
 
@@ -80,7 +80,7 @@ class ForgotPassword extends Component {
         { cancelable: false },
       );
     } catch (error) {
-      alert(error.message);
+      alert(I18n.t(`backend.${error.message}`));
       this.setState({ isLoading: false });
     }
   };

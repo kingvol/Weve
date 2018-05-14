@@ -69,16 +69,16 @@
       "buttonTextList": "List",
       "buttonTextFilter": "Filter",
       "booking": {
-        "remove_booking": "Rezervasyon iptal",
-        "cancel": "İptal",
-        "remove": "Onayla",
+        "remove_booking": "Brony üýtget",
+        "cancel": "Ýok",
+        "remove": "Hawa",
         "add_booking": "Şu wagta bron edelimi?",
         "booking": "Senesine bron edýäňiz",
         "book": "Häzir bron et",
-        "cannot": "Rezervasyon yapılamıyor!",
-        "authority": "Yetkiniz bulunamıyor.",
-        "error": "Rezervasyon hatası!",
-        "later": "Lütfen sonra tekrar deneyiniz."
+        "cannot": "Bron edip bolanok!",
+        "authority": "Size rugsat berilenok.",
+        "error": "Bron ýalñyş!",
+        "later": "Soñurrak barlap görüñ."
       }
     }
   },
@@ -143,8 +143,19 @@
     "error_invalid_verification_code": "Ýalňyş werifikasiýa kody",
     "error_invalid_verification_id": "Ýalňyş ID"
   },
+  "backend": {
+    "User not found": "Ulanjyny tapylmady",
+    "Wrong credentials": "Wrong credentials",
+    "Number not found": "Number not found",
+    "Wrong code provided": "Wrong code provided",
+    "Number is already in use": "Number is already in use",
+    "Not found": "Not found",
+    "User has blocked you": "User has blocked you",
+    "Category not found": "Category not found"
+  },
   "chat": {
-    "type_a_message": "Mesaj yaz..."
+    "type_a_message": "Mesaj yaz...",
+    "error": "Hata oluştu. Lütfen sonra tekrar deneyiniz"
   },
   "report": {
     "name": "Arz etmek",
