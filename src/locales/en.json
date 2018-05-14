@@ -67,7 +67,19 @@
     "homeTab": {
       "buttonTextGrid": "Grid",
       "buttonTextList": "List",
-      "buttonTextFilter": "Filter"
+      "buttonTextFilter": "Filter",
+      "booking": {
+        "remove_booking": "Remove booking",
+        "cancel": "Cancel",
+        "remove": "Remove",
+        "add_booking": "Book the date?",
+        "booking": "You are booking for",
+        "book": "Book Now",
+        "cannot": "Cannot book!",
+        "authority": "You do not have the authority to book the dates.",
+        "error": "Error booking date!",
+        "later": "Please try again later."
+      }
     }
   },
   "editProfile": {

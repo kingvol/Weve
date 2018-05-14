@@ -67,7 +67,19 @@
     "homeTab": {
       "buttonTextGrid": "Surat",
       "buttonTextList": "List",
-      "buttonTextFilter": "Filter"
+      "buttonTextFilter": "Filter",
+      "booking": {
+        "remove_booking": "Rezervasyon iptal",
+        "cancel": "İptal",
+        "remove": "Onayla",
+        "add_booking": "Şu wagta bron edelimi?",
+        "booking": "Senesine bron edýäňiz",
+        "book": "Häzir bron et",
+        "cannot": "Rezervasyon yapılamıyor!",
+        "authority": "Yetkiniz bulunamıyor.",
+        "error": "Rezervasyon hatası!",
+        "later": "Lütfen sonra tekrar deneyiniz."
+      }
     }
   },
   "editProfile": {

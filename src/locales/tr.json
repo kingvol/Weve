@@ -67,7 +67,19 @@
     "homeTab": {
       "buttonTextGrid": "Resim",
       "buttonTextList": "Liste",
-      "buttonTextFilter": "Filtre"
+      "buttonTextFilter": "Filtre",
+      "booking": {
+        "remove_booking": "Rezervasyon iptal",
+        "cancel": "İptal",
+        "remove": "Onayla",
+        "add_booking": "Bu tarihi rezervasyon yapalımmı?",
+        "booking": "Tarihini rezervasyon yapıyorsunuz",
+        "book": "Hemen rezeryasyon yap",
+        "cannot": "Rezervasyon yapılamıyor!",
+        "authority": "Yetkiniz bulunamıyor.",
+        "error": "Rezervasyon hatası!",
+        "later": "Lütfen sonra tekrar deneyiniz."
+      }
     }
   },
   "editProfile": {

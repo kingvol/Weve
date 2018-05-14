@@ -68,7 +68,19 @@
     "homeTab": {
       "buttonTextGrid": "Сетка",
       "buttonTextList": "Список",
-      "buttonTextFilter": "Фильтр"
+      "buttonTextFilter": "Фильтр",
+      "booking": {
+        "remove_booking": "Удалить бронирование",
+        "cancel": "Отмена",
+        "remove": "Удалить",
+        "add_booking": "Забронировать дату?",
+        "booking": "Вы бронируете",
+        "book": "Забронировать",
+        "cannot": "Не возможно бронировать!",
+        "authority": "У вас нет полномочий бронировать даты.",
+        "error": "Ошибка при бронировании!",
+        "later": "Пожалуйста, повторите попытку позже."
+      }
     }
   },
   "editProfile": {
