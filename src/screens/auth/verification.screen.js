@@ -295,15 +295,6 @@ const styles = {
     color: 'white',
     flex: 1,
   },
-  button: {
-    margin: 5,
-    marginLeft: 20,
-    marginRight: 20,
-    // backgroundColor:
-
-    //     ? '#f3c200'
-    //     : 'gray',
-  },
   buttonText: {
     color: 'red',
   },
