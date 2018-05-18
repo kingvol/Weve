@@ -205,21 +205,18 @@ class VerificationScreen extends Component {
                   <Text style={styles.resendText}>{I18n.t('auth.resend_code')}</Text>
                 </TouchableOpacity>
               )}
-              <Button
-                id="Verification.submitButton"
-                block
-                style={{
-                  margin: 5,
-                  marginLeft: 20,
-                  marginRight: 20,
-                  backgroundColor: !disabled ? '#f3c200' : '#878d96',
-                }}
-                onPress={this.state.step === 1 ? this.onContinuePress : this.handleSubmit}
-                spinner={this.state.isLoading}
-                disabled={disabled}
-              >
-                <Text style={styles.buttonText}>{I18n.t('common.continue')}</Text>
-              </Button>
+              {!disabled && (
+                <Button
+                  id="Verification.submitButton"
+                  block
+                  style={styles.button}
+                  onPress={this.state.step === 1 ? this.onContinuePress : this.handleSubmit}
+                  spinner={this.state.isLoading}
+                  disabled={disabled}
+                >
+                  <Text style={styles.buttonText}>{I18n.t('common.continue')}</Text>
+                </Button>
+              )}
               {vars.DB_ENV === 'test' &&
                 this.state.step === 1 && (
                   <View
@@ -294,6 +291,12 @@ const styles = {
     fontSize: 18,
     color: 'white',
     flex: 1,
+  },
+  button: {
+    margin: 5,
+    marginLeft: 20,
+    marginRight: 20,
+    backgroundColor: '#f3c200',
   },
   buttonText: {
     color: 'red',
