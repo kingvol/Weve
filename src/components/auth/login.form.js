@@ -39,7 +39,8 @@ class LoginForm extends Component {
           };
         case key === 'password'
           ? value.length < 8
-          : !/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im.test(value):
+          : !/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im.test(value) ||
+          value.charAt(0) !== '+':
           return {
             [`${key}Error`]: false,
             [`${key}Label`]: '',
@@ -68,6 +69,19 @@ class LoginForm extends Component {
   switchSecure() {
     this.setState({ secureVisible: !this.state.secureVisible });
   }
+
+  numberPhoneCheck = (phone) => {
+    if (phone.match(/[*+*][0-9]*[*+*]/) !== null) {
+      if (phone.match(/\+$/)) {
+        phone = phone.replace(/\+$/, '');
+      } else {
+        phone = phone.replace(/[+]/, '');
+      }
+    } else if (phone.match(/[0-9]*[*+*]/) !== null) {
+      phone = phone.replace(/[^\d+]/g, '');
+    }
+    this.onFieldChange('phoneNumber', phone.replace(/[^\d+]/g, ''));
+  };
 
   handleSubmit = () => {
     const { phoneNumber, password } = this.state;
@@ -127,14 +141,17 @@ class LoginForm extends Component {
                   floatingLabel
                   style={item}
                 >
-                  <Label style={label}>{I18n.t('common.phone')}</Label>
+                  <Label style={label}>
+                    <Text style={{ color: contrastColor }}>{I18n.t('common.phone')}</Text>
+                    <Text style={{ fontStyle: 'italic', color: contrastColor }}>{`, ${I18n.t('common.example')}: +44...`}</Text>
+                  </Label>
                   <Input
                     style={input}
                     autoCapitalize="none"
                     keyboardType="phone-pad"
                     autoCorrect={false}
                     value={this.state.phoneNumber}
-                    onChangeText={text => this.onFieldChange('phoneNumber', text)}
+                    onChangeText={text => this.numberPhoneCheck(text)}
                     onBlur={() => this.onBlur('phoneNumber', this.state.phoneNumber)}
                   />
                   {this.state.phoneNumberError && (
@@ -313,7 +330,6 @@ const styles = {
   },
   input: {
     flex: 1,
-    // textAlignVertical: 'center',
     color: contrastColor,
     ...primaryFont,
   },
@@ -336,7 +352,6 @@ const styles = {
     marginLeft: 20,
     marginRight: 20,
     flexDirection: 'row',
-    // alignItems: 'center',
   },
   or: {
     flex: 1,

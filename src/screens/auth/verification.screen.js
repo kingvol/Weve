@@ -24,6 +24,7 @@ class VerificationScreen extends Component {
     step: 1,
     switchValue: true,
     phone: false,
+    buttonPressed: 0,
   };
 
   onContinuePress = async () => {
@@ -90,6 +91,7 @@ class VerificationScreen extends Component {
       this.setState({
         isLoading: false,
         verificationCode: code,
+        buttonPressed: this.state.buttonPressed + 1,
       });
       this.startResendTimeout();
     } catch ({ message }) {
@@ -128,6 +130,7 @@ class VerificationScreen extends Component {
 
   render() {
     const disabled =
+      (this.state.step === 1 && this.state.buttonPressed !== 0) ||
       (this.state.step === 1 && this.state.phone === false) ||
       (this.state.step === 2 && this.state.enteredCode.length !== 4);
 
@@ -205,7 +208,12 @@ class VerificationScreen extends Component {
               <Button
                 id="Verification.submitButton"
                 block
-                style={styles.button}
+                style={{
+                  margin: 5,
+                  marginLeft: 20,
+                  marginRight: 20,
+                  backgroundColor: !disabled ? '#f3c200' : 'lightgray',
+                }}
                 onPress={this.state.step === 1 ? this.onContinuePress : this.handleSubmit}
                 spinner={this.state.isLoading}
                 disabled={disabled}
@@ -291,7 +299,10 @@ const styles = {
     margin: 5,
     marginLeft: 20,
     marginRight: 20,
-    backgroundColor: '#f3c200',
+    // backgroundColor:
+
+    //     ? '#f3c200'
+    //     : 'gray',
   },
   buttonText: {
     color: 'red',
