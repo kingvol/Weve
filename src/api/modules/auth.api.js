@@ -8,8 +8,16 @@ import Api from '../api.base';
  */
 export default class AuthApi extends Api {
   loginUserByEmail = async (creds) => {
+    let deviceToken = '';
     try {
-      const deviceToken = await FCM.requestPermissions().then(() => FCM.getFCMToken());
+      await FCM.requestPermissions();
+      const token = await FCM.getFCMToken();
+      deviceToken = token;
+    } catch (error) {
+      console.warn(error);
+    }
+
+    try {
       const response = await this.request('api/login', {
         method: 'POST',
         body: JSON.stringify(Object.assign(creds, { deviceToken, deviceOS: Platform.OS })),
@@ -25,9 +33,16 @@ export default class AuthApi extends Api {
   };
 
   signupUserByEmail = async (data) => {
+    let deviceToken = '';
     try {
-      console.warn(data);
-      const deviceToken = await FCM.requestPermissions().then(() => FCM.getFCMToken());
+      await FCM.requestPermissions();
+      const token = await FCM.getFCMToken();
+      deviceToken = token;
+    } catch (error) {
+      console.warn(error);
+    }
+
+    try {
       const response = await this.request('api/register', {
         method: 'POST',
         body: JSON.stringify(Object.assign(data, { deviceToken, deviceOS: Platform.OS })),
