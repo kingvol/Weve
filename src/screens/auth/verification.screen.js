@@ -23,6 +23,8 @@ class VerificationScreen extends Component {
     isLoading: false,
     step: 1,
     switchValue: true,
+    phone: false,
+    buttonPressed: 0,
   };
 
   onContinuePress = async () => {
@@ -78,12 +80,18 @@ class VerificationScreen extends Component {
     Alert.alert(I18n.t('auth.code_sent'));
   };
 
+  numberPhoneCheck = () => {
+    const isValid = this.phoneInput.isValidNumber();
+    this.setState({ phone: isValid });
+  };
+
   requestVerification = async (number) => {
     try {
       const { code } = await api.requestVerification(number);
       this.setState({
         isLoading: false,
         verificationCode: code,
+        buttonPressed: this.state.buttonPressed + 1,
       });
       this.startResendTimeout();
     } catch ({ message }) {
@@ -121,7 +129,10 @@ class VerificationScreen extends Component {
   };
 
   render() {
-    const disabled = this.state.step === 2 && this.state.enteredCode.length !== 4;
+    const disabled =
+      (this.state.step === 1 && this.state.buttonPressed !== 0) ||
+      (this.state.step === 1 && this.state.phone === false) ||
+      (this.state.step === 2 && this.state.enteredCode.length !== 4);
 
     return (
       <Container id="Verification.container" style={{ backgroundColor: 'red' }}>
@@ -160,9 +171,20 @@ class VerificationScreen extends Component {
                       ref={(ref) => {
                         this.phoneInput = ref;
                       }}
+                      onChangePhoneNumber={this.numberPhoneCheck}
                       style={styles.input}
                       textStyle={styles.inputTextStyle}
                     />
+                    {!this.state.phone && (
+                      <Text
+                        style={{
+                          fontSize: 12,
+                          color: 'yellow',
+                        }}
+                      >
+                        {I18n.t('auth.not_valid_number')}
+                      </Text>
+                    )}
                   </View>
                 ) : (
                   <View style={styles.inputConteiner}>
@@ -186,7 +208,12 @@ class VerificationScreen extends Component {
               <Button
                 id="Verification.submitButton"
                 block
-                style={styles.button}
+                style={{
+                  margin: 5,
+                  marginLeft: 20,
+                  marginRight: 20,
+                  backgroundColor: !disabled ? '#f3c200' : 'lightgray',
+                }}
                 onPress={this.state.step === 1 ? this.onContinuePress : this.handleSubmit}
                 spinner={this.state.isLoading}
                 disabled={disabled}
@@ -267,12 +294,6 @@ const styles = {
     fontSize: 18,
     color: 'white',
     flex: 1,
-  },
-  button: {
-    margin: 5,
-    marginLeft: 20,
-    marginRight: 20,
-    backgroundColor: '#f3c200',
   },
   buttonText: {
     color: 'red',
