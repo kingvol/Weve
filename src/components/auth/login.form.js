@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Image, ImageBackground, TouchableOpacity, View, ScrollView } from 'react-native';
+import { ImageBackground, TouchableOpacity, View, ScrollView } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import { CardItem, Container, Form, Icon, Item, Input, Label, Title } from 'native-base';
 import I18n from '../../locales';
 import { primaryColor, backgroundColor, contrastColor, primaryFont } from '../../theme';
@@ -14,9 +15,9 @@ class LoginForm extends Component {
       secureVisible: false,
       phoneNumber: '',
       password: '',
-      passwordLabel: I18n.t('common.password'),
+      passwordLabel: '',
       passwordError: false,
-      phoneNumberLabel: I18n.t('common.phone'),
+      phoneNumberLabel: '',
       phoneNumberError: false,
     };
   }
@@ -38,10 +39,11 @@ class LoginForm extends Component {
           };
         case key === 'password'
           ? value.length < 8
-          : !/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im.test(value):
+          : !/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im.test(value) ||
+          value.charAt(0) !== '+':
           return {
             [`${key}Error`]: false,
-            [`${key}Label`]: I18n.t(`common.${key}`),
+            [`${key}Label`]: '',
           };
         default:
           return {
@@ -67,6 +69,19 @@ class LoginForm extends Component {
   switchSecure() {
     this.setState({ secureVisible: !this.state.secureVisible });
   }
+
+  numberPhoneCheck = (phone) => {
+    if (phone.match(/[*+*][0-9]*[*+*]/) !== null) {
+      if (phone.match(/\+$/)) {
+        phone = phone.replace(/\+$/, '');
+      } else {
+        phone = phone.replace(/[+]/, '');
+      }
+    } else if (phone.match(/[0-9]*[*+*]/) !== null) {
+      phone = phone.replace(/[^\d+]/g, '');
+    }
+    this.onFieldChange('phoneNumber', phone.replace(/[^\d+]/g, ''));
+  };
 
   handleSubmit = () => {
     const { phoneNumber, password } = this.state;
@@ -96,6 +111,7 @@ class LoginForm extends Component {
       orText,
       register,
       textRegister,
+      errorText,
     } = styles;
     const { isLoading, error } = this.props;
 
@@ -114,7 +130,7 @@ class LoginForm extends Component {
             </CardItem>
             <CardItem style={pic} id="LoginPage.logoWrapper">
               <View style={logoOuterCircle} id="LoginPage.logoOuterCircle">
-                <Image id="LoginPage.logo" source={images.logo} style={logoInnerCircle} />
+                <FastImage id="LoginPage.logo" source={images.logo} style={logoInnerCircle} />
               </View>
             </CardItem>
             <Form id="LoginPage.form-container" style={form}>
@@ -125,20 +141,26 @@ class LoginForm extends Component {
                   floatingLabel
                   style={item}
                 >
-                  <Label style={label}>{this.state.phoneNumberLabel}</Label>
+                  <Label style={label}>
+                    <Text style={{ color: contrastColor }}>{I18n.t('common.phone')}</Text>
+                    <Text style={{ fontStyle: 'italic', color: contrastColor }}>{`, ${I18n.t('common.example')}: +44...`}</Text>
+                  </Label>
                   <Input
                     style={input}
                     autoCapitalize="none"
                     keyboardType="phone-pad"
                     autoCorrect={false}
                     value={this.state.phoneNumber}
-                    onChangeText={text => this.onFieldChange('phoneNumber', text)}
+                    onChangeText={text => this.numberPhoneCheck(text)}
                     onBlur={() => this.onBlur('phoneNumber', this.state.phoneNumber)}
                   />
-                  {this.state.phoneNumberError && <Icon name="close-circle" style={{ color: 'red' }} />}
+                  {this.state.phoneNumberError && (
+                    <Icon name="close-circle" style={{ color: 'red' }} />
+                  )}
                 </Item>
                 <View />
               </View>
+              <Text style={errorText}>{this.state.phoneNumberLabel}</Text>
               <View style={itemStyle}>
                 <Item
                   error={this.state.passwordError}
@@ -146,7 +168,7 @@ class LoginForm extends Component {
                   floatingLabel
                   style={itemPassword}
                 >
-                  <Label style={label}>{this.state.passwordLabel}</Label>
+                  <Label style={label}>{I18n.t('common.password')}</Label>
                   <Input
                     style={input}
                     value={this.state.password}
@@ -175,13 +197,14 @@ class LoginForm extends Component {
                   </TouchableOpacity>
                 </View>
               </View>
+              <Text style={errorText}>{this.state.passwordLabel}</Text>
               {error && (
                 <View style={styles.errorContainer}>
                   <Text
                     id="LoginPage.errorText"
                     style={{ color: contrastColor, textAlign: 'center' }}
                   >
-                    {error}
+                    {I18n.t(`backend.${error}`)}
                   </Text>
                 </View>
               )}
@@ -275,7 +298,7 @@ const styles = {
     margin: 3,
   },
   form: {
-    flex: 2.5,
+    flex: 3,
     backgroundColor: 'rgba(0,0,0,0.5)',
     marginLeft: 15,
     marginRight: 15,
@@ -284,30 +307,29 @@ const styles = {
 
   item: {
     flex: 1,
-    // marginTop: 15,
-    // marginLeft: 20,
+    marginTop: 4,
     marginRight: 34,
   },
   itemStyle: {
     flexDirection: 'row',
     flex: 2,
+    marginTop: 4,
     marginLeft: 10,
     marginRight: 10,
   },
   itemPassword: {
     flex: 1,
+    marginTop: 4,
     marginRight: 10,
   },
   label: {
     flex: 1,
     textAlign: 'left',
-    marginLeft: 10,
     color: contrastColor,
     ...primaryFont,
   },
   input: {
     flex: 1,
-    marginLeft: 10,
     color: contrastColor,
     ...primaryFont,
   },
@@ -330,7 +352,6 @@ const styles = {
     marginLeft: 20,
     marginRight: 20,
     flexDirection: 'row',
-    // alignItems: 'center',
   },
   or: {
     flex: 1,
@@ -355,6 +376,13 @@ const styles = {
   errorContainer: {
     flex: 1,
     marginTop: 30,
+  },
+  errorText: {
+    fontSize: 10,
+    paddingHorizontal: 2,
+    textAlignVertical: 'center',
+    textAlign: 'center',
+    color: 'yellow',
   },
 };
 

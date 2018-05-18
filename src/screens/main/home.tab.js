@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Image, FlatList, TouchableOpacity, Text, View } from 'react-native';
+import { FlatList, TouchableOpacity, Text, View } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import { connect } from 'react-redux';
 import { Content } from 'native-base';
 
@@ -106,7 +107,7 @@ class HomeTab extends Component {
           onPress={() => this.onCategoryPress(category)}
           key={category.title}
         >
-          <Image source={category.imageSource} style={{ width: 80, height: 80 }} />
+          <FastImage source={category.imageSource} style={{ width: 80, height: 80 }} />
           <Text style={{ textAlign: 'center', ...primaryFont, color: 'black' }}>
             {category.title}
           </Text>
@@ -119,7 +120,7 @@ class HomeTab extends Component {
     return (
       <Content style={{ flex: 1, backgroundColor }} contentContainerStyle={{ flexGrow: 1 }}>
         <View style={{ flex: 1, minHeight: 150 }}>
-          <Image
+          <FastImage
             source={images.category_hero}
             style={{
               flex: 1,

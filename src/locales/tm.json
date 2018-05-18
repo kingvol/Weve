@@ -63,7 +63,24 @@
     "inbox": "Gelen hatlar",
     "my_profile": "Meniň profilim",
     "settings": "Sazlamalar",
-    "sign_out": "Çykalga"
+    "sign_out": "Çykalga",
+    "homeTab": {
+      "buttonTextGrid": "Surat",
+      "buttonTextList": "List",
+      "buttonTextFilter": "Filter",
+      "booking": {
+        "remove_booking": "Brony üýtget",
+        "cancel": "Ýok",
+        "remove": "Hawa",
+        "add_booking": "Şu wagta bron edelimi?",
+        "booking": "Senesine bron edýäňiz",
+        "book": "Häzir bron et",
+        "cannot": "Bron edip bolanok!",
+        "authority": "Size rugsat berilenok.",
+        "error": "Bron ýalñyş!",
+        "later": "Soñurrak barlap görüñ."
+      }
+    }
   },
   "editProfile": {
     "title": "Profili düzetmek",
@@ -94,6 +111,7 @@
     "save": "Ýatda sakla",
     "email": "Elektron poçta",
     "phone": "Telefon belgi",
+    "example": "Mysal",
     "phoneNumber": "Telefon belgi",
     "password": "Açar söz",
     "loading": "Ýüklenýä...",
@@ -106,6 +124,7 @@
     "4_dig_code": "      4 sanly kod      ",
     "code_sent": "Yeni şifreniz başarıyla gönderildi",
     "resend_code": "Yeni şifre",
+    "not_valid_number": "Nomer ýalňyş",
     "error_incorrect_password": "Açar söz ýalňyş",
     "error_user_not_found": "Ulanjyny tapylmady",
     "error_app_deleted": "Esasy programma pozuldy",
@@ -126,8 +145,19 @@
     "error_invalid_verification_code": "Ýalňyş werifikasiýa kody",
     "error_invalid_verification_id": "Ýalňyş ID"
   },
+  "backend": {
+    "User not found": "Ulanyjy tapylmady",
+    "Wrong credentials": "Ýalňyş maglumatlar",
+    "Number not found": "Nomeriňiz ýalňyş",
+    "Wrong code provided": "Ýalňyş kod girizildi",
+    "Number is already in use": "Nomer eýýäm ulanylýar",
+    "Not found": "Tapylanok",
+    "User has blocked you": "Sizi blok etdi",
+    "Category not found": "Kategoriýa tapylmady"
+  },
   "chat": {
-    "type_a_message": "Mesaj yaz..."
+    "type_a_message": "Mesaj yaz...",
+    "error": "Ýalňyşlyk bar. Soňurrak barlap görüň"
   },
   "report": {
     "name": "Arz etmek",

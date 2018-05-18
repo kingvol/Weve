@@ -63,7 +63,24 @@
     "inbox": "Inbox",
     "my_profile": "My Profile",
     "settings": "Settings",
-    "sign_out": "Sign Out"
+    "sign_out": "Sign Out",
+    "homeTab": {
+      "buttonTextGrid": "Grid",
+      "buttonTextList": "List",
+      "buttonTextFilter": "Filter",
+      "booking": {
+        "remove_booking": "Remove booking",
+        "cancel": "Cancel",
+        "remove": "Remove",
+        "add_booking": "Book the date?",
+        "booking": "You are booking for",
+        "book": "Book Now",
+        "cannot": "Cannot book!",
+        "authority": "You do not have the authority to book the dates.",
+        "error": "Error booking date!",
+        "later": "Please try again later."
+      }
+    }
   },
   "editProfile": {
     "title": "Edit Profile",
@@ -94,6 +111,7 @@
     "save": "Save",
     "email": "Email",
     "phone": "Phone",
+    "example": "Example",
     "phoneNumber": "Phone number",
     "password": "Password",
     "loading": "Loading...",
@@ -104,8 +122,9 @@
   "auth": {
     "enter_code": "Enter verification code",
     "4_dig_code": "      4 digit code       ",
-    "code_sent": "New code successfuly sent",
+    "code_sent": "New code successfully sent",
     "resend_code": "Resend code",
+    "not_valid_number": "Number is not valid",
     "error_incorrect_password": "Incorrect password",
     "error_user_not_found": "User not found",
     "error_app_deleted": "Authentication application deleted",
@@ -126,8 +145,19 @@
     "error_invalid_verification_code": "Invalid verification code",
     "error_invalid_verification_id": "Invalid verification id"
   },
+  "backend": {
+    "User not found": "User not found",
+    "Wrong credentials": "Wrong credentials",
+    "Number not found": "Number not found",
+    "Wrong code provided": "Wrong code provided",
+    "Number is already in use": "Number is already in use",
+    "Not found": "Not found",
+    "User has blocked you": "User has blocked you",
+    "Category not found": "Category not found"
+  },
   "chat": {
-    "type_a_message": "Type a message..."
+    "type_a_message": "Type a message...",
+    "error": "Something went wrong. Please try again later"
   },
   "report": {
     "name": "Report",

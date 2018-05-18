@@ -64,7 +64,24 @@
     "inbox": "Входящие",
     "my_profile": "Мой профиль",
     "settings": "Настройки",
-    "sign_out": "Выйти"
+    "sign_out": "Выйти",
+    "homeTab": {
+      "buttonTextGrid": "Сетка",
+      "buttonTextList": "Список",
+      "buttonTextFilter": "Фильтр",
+      "booking": {
+        "remove_booking": "Удалить бронирование",
+        "cancel": "Отмена",
+        "remove": "Удалить",
+        "add_booking": "Забронировать дату?",
+        "booking": "Вы бронируете",
+        "book": "Забронировать",
+        "cannot": "Не возможно бронировать!",
+        "authority": "У вас нет полномочий бронировать даты.",
+        "error": "Ошибка при бронировании!",
+        "later": "Пожалуйста, повторите попытку позже."
+      }
+    }
   },
   "editProfile": {
     "title": "Редактировать профиль",
@@ -94,7 +111,8 @@
     "done": "Подтвердить",
     "save": "Сохранить",
     "email": "Электронная почта",
-    "phone": "Номер телефона",    
+    "phone": "Номер телефона",
+    "example": "Например",
     "phoneNumber": "Номер телефона",
     "password": "Пароль",
     "loading": "Загружается...",
@@ -106,6 +124,7 @@
     "enter_code": "   Введите код проверки   ",
     "code_sent": "Код успешно отправлен",
     "resend_code": "Не получили код?",
+    "not_valid_number": "Номер не действителен",
     "error_incorrect_password": "Неверный пароль",
     "error_user_not_found": "Пользователь не найден",
     "error_app_deleted": "Подлинное приложение удалено",
@@ -126,8 +145,19 @@
     "error_invalid_verification_code": "Неверный код подтверждения",
     "error_invalid_verification_id": "Неверный ID"
   },
+  "backend": {
+    "User not found": "Пользователь не найден",
+    "Wrong credentials": "Неверные учетные данные",
+    "Number not found": "Номер не найден",
+    "Wrong code provided": "Неверный код",
+    "Number is already in use": "Номер уже используется",
+    "Not found": "Не найдено",
+    "User has blocked you": "Пользователь заблокировал вас",
+    "Category not found": "Категория не найдена"
+  },
   "chat": {
-    "type_a_message": "Ввести сообщение..."
+    "type_a_message": "Ввести сообщение...",
+    "error": "Что-то пошло не так. Пожалуйста, повторите попытку позже"
   },
   "report": {
     "name": "Пожаловаться",

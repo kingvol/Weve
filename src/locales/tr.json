@@ -63,7 +63,24 @@
     "inbox": "Gelen kutusu",
     "my_profile": "Benim profilim",
     "settings": "Ayarlar",
-    "sign_out": "Oturumu kapat"
+    "sign_out": "Oturumu kapat",
+    "homeTab": {
+      "buttonTextGrid": "Resim",
+      "buttonTextList": "Liste",
+      "buttonTextFilter": "Filtre",
+      "booking": {
+        "remove_booking": "Rezervasyon iptal",
+        "cancel": "İptal",
+        "remove": "Onayla",
+        "add_booking": "Bu tarihi rezervasyon yapalımmı?",
+        "booking": "Tarihini rezervasyon yapıyorsunuz",
+        "book": "Hemen rezeryasyon yap",
+        "cannot": "Rezervasyon yapılamıyor!",
+        "authority": "Yetkiniz bulunamıyor.",
+        "error": "Rezervasyon hatası!",
+        "later": "Lütfen sonra tekrar deneyiniz."
+      }
+    }
   },
   "editProfile": {
     "title": "Profili düzenle",
@@ -94,6 +111,7 @@
     "save": "Kayıt et",
     "email": "E-posta",
     "phone": "Cep numara",
+    "example": "Örnek",
     "phoneNumber": "Cep numara",
     "password": "Şifre",
     "loading": "Yükleniyor...",
@@ -106,6 +124,7 @@
     "4_dig_code": "     4 haneli şifre     ",
     "code_sent": "Täze parolyňyz üstünlükli goýberildi",
     "resend_code": "Täze parol",
+    "not_valid_number": " Yalnış numara",
     "error_incorrect_password": "Yalnış şifre",
     "error_user_not_found": "Kullanıcı bulunamadı",
     "error_app_deleted": "Kimlik doğrulama uygulaması silindi",
@@ -126,8 +145,19 @@
     "error_invalid_verification_code": "Geçersiz doğrulama kodu",
     "error_invalid_verification_id": "Geçersiz doğrulama kimliği"
   },
+  "backend": {
+    "User not found": "Kullanıcı bulunamadı",
+    "Wrong credentials": "Yanlış şifre",
+    "Number not found": "Numara bulunamadı",
+    "Wrong code provided": "Yanlış şifre",
+    "Number is already in use": "Numara kullanımda",
+    "Not found": "Bulunamadı",
+    "User has blocked you": "Kullanıcı sizi bloke etti",
+    "Category not found": "Kategori bulunamadı"
+  },
   "chat": {
-    "type_a_message": "Mesaj yaz..."
+    "type_a_message": "Mesaj yaz...",
+    "error": "Hata oluştu. Lütfen sonra tekrar deneyiniz"
   },
   "report": {
     "name": "Şikayet",
