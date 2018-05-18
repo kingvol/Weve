@@ -123,6 +123,7 @@
     "4_dig_code": "      4 sanly kod      ",
     "code_sent": "Yeni şifreniz başarıyla gönderildi",
     "resend_code": "Yeni şifre",
+    "not_valid_number": "Nomer ýalňyş",
     "error_incorrect_password": "Açar söz ýalňyş",
     "error_user_not_found": "Ulanjyny tapylmady",
     "error_app_deleted": "Esasy programma pozuldy",

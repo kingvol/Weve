@@ -123,6 +123,7 @@
     "enter_code": "   Введите код проверки   ",
     "code_sent": "Код успешно отправлен",
     "resend_code": "Не получили код?",
+    "not_valid_number": "Номер не действителен",
     "error_incorrect_password": "Неверный пароль",
     "error_user_not_found": "Пользователь не найден",
     "error_app_deleted": "Подлинное приложение удалено",
