@@ -39,7 +39,7 @@ class EditProfileScreen extends Component {
         firstName: this.props.user.profile.firstName || '',
         lastName: this.props.user.profile.lastName || '',
         phoneNumber: this.props.user.profile.phoneNumber || '',
-        profileImageURL: this.props.user.profile.profileImageURL || '',
+        profileImageURL: this.props.user.profile.profileImageURL || undefined,
         countryCode,
         regionName,
       },
