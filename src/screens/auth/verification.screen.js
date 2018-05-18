@@ -212,7 +212,7 @@ class VerificationScreen extends Component {
                   margin: 5,
                   marginLeft: 20,
                   marginRight: 20,
-                  backgroundColor: !disabled ? '#f3c200' : 'lightgray',
+                  backgroundColor: !disabled ? '#f3c200' : '#878d96',
                 }}
                 onPress={this.state.step === 1 ? this.onContinuePress : this.handleSubmit}
                 spinner={this.state.isLoading}
