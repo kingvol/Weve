@@ -153,7 +153,8 @@
     "Number is already in use": "Number is already in use",
     "Not found": "Not found",
     "User has blocked you": "User has blocked you",
-    "Category not found": "Category not found"
+    "Category not found": "Category not found",
+    "Network request failed": "Please check your Internet connection"
   },
   "chat": {
     "type_a_message": "Type a message...",

@@ -153,7 +153,8 @@
     "Number is already in use": "Numara kullanımda",
     "Not found": "Bulunamadı",
     "User has blocked you": "Kullanıcı sizi bloke etti",
-    "Category not found": "Kategori bulunamadı"
+    "Category not found": "Kategori bulunamadı",
+    "Network request failed": "Internet bağlantınızı kontrol ediniz"
   },
   "chat": {
     "type_a_message": "Mesaj yaz...",
