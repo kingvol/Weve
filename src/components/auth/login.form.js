@@ -17,7 +17,7 @@ class LoginForm extends Component {
       password: '',
       passwordLabel: '',
       passwordError: false,
-      phoneNumberLabel: '',
+      phoneNumberLabel: `${I18n.t('common.example')}: +44...`,
       phoneNumberError: false,
     };
   }
@@ -40,10 +40,10 @@ class LoginForm extends Component {
         case key === 'password'
           ? value.length < 8
           : !/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im.test(value) ||
-          value.charAt(0) !== '+':
+              value.charAt(0) !== '+':
           return {
             [`${key}Error`]: false,
-            [`${key}Label`]: '',
+            [`${key}Label`]: key === 'phoneNumber' ? `${I18n.t('common.example')}: +44...` : '',
           };
         default:
           return {
@@ -141,10 +141,7 @@ class LoginForm extends Component {
                   floatingLabel
                   style={item}
                 >
-                  <Label style={label}>
-                    <Text style={{ color: contrastColor }}>{I18n.t('common.phone')}</Text>
-                    <Text style={{ fontStyle: 'italic', color: contrastColor }}>{`, ${I18n.t('common.example')}: +44...`}</Text>
-                  </Label>
+                  <Label style={label}>{I18n.t('common.phone')}</Label>
                   <Input
                     style={input}
                     autoCapitalize="none"
