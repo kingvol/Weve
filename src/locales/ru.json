@@ -122,6 +122,7 @@
   },
   "auth": {
     "enter_code": "   Введите код проверки   ",
+    "4_dig_code": "      4-значный код       ",
     "code_sent": "Код успешно отправлен",
     "resend_code": "Не получили код?",
     "not_valid_number": "Номер не действителен",
@@ -153,7 +154,8 @@
     "Number is already in use": "Номер уже используется",
     "Not found": "Не найдено",
     "User has blocked you": "Пользователь заблокировал вас",
-    "Category not found": "Категория не найдена"
+    "Category not found": "Категория не найдена",
+    "Network request failed": "Пожалуйста проверьте Ваше интернет соединение"
   },
   "chat": {
     "type_a_message": "Ввести сообщение...",

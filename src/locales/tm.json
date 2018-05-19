@@ -153,7 +153,8 @@
     "Number is already in use": "Nomer eýýäm ulanylýar",
     "Not found": "Tapylanok",
     "User has blocked you": "Sizi blok etdi",
-    "Category not found": "Kategoriýa tapylmady"
+    "Category not found": "Kategoriýa tapylmady",
+    "Network request failed": "Internediňiz ýok, täzeden barlaň"
   },
   "chat": {
     "type_a_message": "Mesaj yaz...",
