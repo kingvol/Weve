@@ -33,6 +33,7 @@ const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png
 const userLocaleCountryCode = DeviceInfo.getDeviceCountry();
 const countryCode = countries.includes(userLocaleCountryCode) ? userLocaleCountryCode : 'GB';
 const regionName = countryLib[`${countryCode}`].provinces[0];
+const ucFirst = s => (s.substr(0, 1).toLowerCase() + s.substr(1)).replace(' ', '');
 
 class EditProfileScreen extends Component {
   constructor(props) {
@@ -44,7 +45,7 @@ class EditProfileScreen extends Component {
         firstName: this.props.user.profile.firstName || '',
         lastName: this.props.user.profile.lastName || '',
         phoneNumber: this.props.user.profile.phoneNumber || '',
-        profileImageURL: this.props.user.profile.profileImageURL || defaultProfile,
+        profileImageURL: this.props.user.profile.profileImageURL || undefined,
         countryCode,
         regionName,
         isProvider: this.props.user.profile.isProvider,
@@ -54,7 +55,47 @@ class EditProfileScreen extends Component {
       loading: false,
       imageUploading: false,
       categories: [],
+      selectedItems: [],
     };
+    this.items = [
+      {
+        name: 'Venue',
+        _id: '5ae9ba16c2ccda00b752b718',
+      },
+      {
+        name: 'Artist',
+        _id: '5ae9ba16c2ccda00b752b719',
+      },
+      {
+        name: 'Photo',
+        _id: '5ae9ba16c2ccda00b752b71a',
+      },
+      {
+        name: 'Video',
+        _id: '5ae9ba16c2ccda00b752b71b',
+      },
+      {
+        name: 'Entertainment',
+        _id: '5ae9ba16c2ccda00b752b71c',
+      },
+      {
+        name: 'Make up',
+        _id: '5ae9ba16c2ccda00b752b71d',
+      },
+      {
+        name: 'Decoration',
+        _id: '5ae9ba16c2ccda00b752b71f',
+      },
+      {
+        name: 'Cake',
+        _id: '5ae9ba16c2ccda00b752b720',
+      },
+      {
+        name: 'Costume',
+        _id: '5ae9ba16c2ccda00b752b71e',
+      },
+    ];
+    // this.multiselect ? this.multiselect.getSelectedItemsExt() : null;
   }
 
   async componentWillMount() {
@@ -62,14 +103,20 @@ class EditProfileScreen extends Component {
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
     if (!this.props.user.profile.isProvider) {
       try {
-        const categories = await categoryApi.fetchCategoriesList();
+        const categoriesFromServer = await categoryApi.fetchCategoriesList();
+        const categories = categoriesFromServer.map((e) => {
+          delete e.__v;
+          e.name = this.localiseCategory(ucFirst(e.name));
+          return e;
+        });
         this.setState({
           categories,
           values: {
             ...this.state.values,
-            categories: categories[0], // Predefine 'Venue category'
+            categories: [categories[0]], // Predefine 'Venue category'
           },
         });
+        console.log([categories[0]]);
       } catch ({ message }) {
         alert(I18n.t(`backend.${message}`));
       }
@@ -197,7 +244,7 @@ class EditProfileScreen extends Component {
         this.setState({ imageUploading: false });
       }
     }
-    if (this.state.values.profileImageURL === defaultProfile && this.state.values.isProvider) {
+    if (!this.state.values.profileImageURL && this.state.values.isProvider) {
       Alert.alert(
         I18n.t('logIn.upload_photo'),
         '',
@@ -226,6 +273,11 @@ class EditProfileScreen extends Component {
         categories,
       },
     });
+    console.log(this.state.values.categories);
+  };
+
+  onSelectedItemsChange = (selectedItems) => {
+    this.setState({ selectedItems });
   };
 
   updateProfile = () => {
@@ -246,6 +298,7 @@ class EditProfileScreen extends Component {
       animated: false,
     });
   };
+
 
   localiseCategory = name => I18n.t(`categories.${name}`);
 
@@ -327,7 +380,7 @@ class EditProfileScreen extends Component {
                     defaultProfile,
                 }}
               />
-              {this.state.values.profileImageURL === defaultProfile ? (
+              {!this.state.values.profileImageURL ? (
                 <View
                   style={{
                     flex: 0,
@@ -465,31 +518,34 @@ class EditProfileScreen extends Component {
                     ))}
                    </Picker>
                  </View>
-                 <View style={{ flex: 1 }}>
-                   <MultiSelect
-                     hideTags
-                     // items={items}
-                     uniqueKey="id"
-                     ref={(component) => { this.multiSelect = component; }}
-                     onSelectedItemsChange={this.onSelectedItemsChange}
-                     // selectedItems={selectedItems}
-                     selectText="Pick Items"
-                     searchInputPlaceholderText="Search Items..."
-                     onChangeInput={text => console.log(text)}
-                     altFontFamily="ProximaNova-Light"
-                     tagRemoveIconColor="#CCC"
-                     tagBorderColor="#CCC"
-                     tagTextColor="#CCC"
-                     selectedItemTextColor="#CCC"
-                     selectedItemIconColor="#CCC"
-                     itemTextColor="#000"
-                     displayKey="name"
-                     searchInputStyle={{ color: '#CCC' }}
-                     submitButtonColor="#CCC"
-                     submitButtonText="Submit"
-                   />
-                   <View>
-                     {this.multiSelect.getSelectedItemsExt(selectedItems)}
+                 <View style={{ flexDirection: 'row' }}>
+                   {/* <Text style={categoryText}>{I18n.t('common.category')}</Text> */}
+                   <View style={{ flex: 1 }}>
+                     <MultiSelect
+                       // hideTags
+                       items={this.state.categories}
+                       uniqueKey="_id"
+                       ref={(component) => { this.multiSelect = component; }}
+                       onSelectedItemsChange={this.onCategorySelect}
+                       selectedItems={this.state.values.categories}
+                       selectText={I18n.t('common.category')}
+                       searchInputPlaceholderText={`${I18n.t('common.category')}...`}
+                       fontSize={16}
+                       tagRemoveIconColor="#d64635"
+                       tagBorderColor="#f3c200"
+                       tagTextColor={lightTextColor}
+                       selectedItemTextColor={lightTextColor}
+                       selectedItemIconColor={lightTextColor}
+                       itemTextColor="#000"
+                       displayKey="name"
+                       searchInputStyle={{ color: lightTextColor }}
+                       autoFocusInput={false}
+                       submitButtonColor="#f3c200"
+                       submitButtonText={I18n.t('common.ok')}
+                     />
+                     {/* <View>
+                        {this.multiSelect.getSelectedItemsExt(this.state.values.categories)}
+                      </View> */}
                    </View>
                  </View>
                </View>
