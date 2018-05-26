@@ -44,7 +44,7 @@ class EditProfileScreen extends Component {
         firstName: this.props.user.profile.firstName || '',
         lastName: this.props.user.profile.lastName || '',
         phoneNumber: this.props.user.profile.phoneNumber || '',
-        profileImageURL: this.props.user.profile.profileImageURL || undefined,
+        profileImageURL: this.props.user.profile.profileImageURL || defaultProfile,
         countryCode,
         regionName,
         isProvider: this.props.user.profile.isProvider,
@@ -197,7 +197,7 @@ class EditProfileScreen extends Component {
         this.setState({ imageUploading: false });
       }
     }
-    if (!this.state.values.profileImageURL && this.state.values.isProvider) {
+    if (this.state.values.profileImageURL === defaultProfile && this.state.values.isProvider) {
       Alert.alert(
         I18n.t('logIn.upload_photo'),
         '',
@@ -327,7 +327,7 @@ class EditProfileScreen extends Component {
                     defaultProfile,
                 }}
               />
-              {!this.state.values.profileImageURL && !this.props.user.profile.profileImageURL ? (
+              {this.state.values.profileImageURL === defaultProfile ? (
                 <View
                   style={{
                     flex: 0,
