@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import SpinnerOverlay from 'react-native-loading-spinner-overlay';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DeviceInfo from 'react-native-device-info';
+import MultiSelect from 'react-native-multiple-select';
 import I18n from '../../../locales';
 import config from '../../../../config';
 import countries from '../../../countryLib/countries';
@@ -442,26 +443,55 @@ class EditProfileScreen extends Component {
           </View>)}
           {!isProvider && this.state.values.isProvider &&
                (
-               <View style={{ flexDirection: 'row' }}>
-                 <Text style={categoryText}>{I18n.t('common.category')}</Text>
-                 <Picker
-                   mode="dropdown"
-                   style={{ color: lightTextColor, flex: 1 }}
-                   placeholder={I18n.t('logIn.select_category')}
-                   selectedValue={this.state.values.categories}
-                   onValueChange={this.onCategorySelect}
-                   placeholderTextColor={lightTextColor}
-                   placeholderStyle={{ color: lightTextColor }}
-                   textStyle={{ color: lightTextColor }}
-                 >
-                   {this.state.categories.map(item => (
-                     <Picker.Item
-                       key={item._id}
-                       label={this.localiseCategory(ucFirst(item.name))}
-                       value={item}
-                     />
+               <View>
+                 <View style={{ flexDirection: 'row' }}>
+                   <Text style={categoryText}>{I18n.t('common.category')}</Text>
+                   <Picker
+                     mode="dropdown"
+                     style={{ color: lightTextColor, flex: 1 }}
+                     placeholder={I18n.t('logIn.select_category')}
+                     selectedValue={this.state.values.categories}
+                     onValueChange={this.onCategorySelect}
+                     placeholderTextColor={lightTextColor}
+                     placeholderStyle={{ color: lightTextColor }}
+                     textStyle={{ color: lightTextColor }}
+                   >
+                     {this.state.categories.map(item => (
+                       <Picker.Item
+                         key={item._id}
+                         label={this.localiseCategory(ucFirst(item.name))}
+                         value={item}
+                       />
                     ))}
-                 </Picker>
+                   </Picker>
+                 </View>
+                 <View style={{ flex: 1 }}>
+                   <MultiSelect
+                     hideTags
+                     // items={items}
+                     uniqueKey="id"
+                     ref={(component) => { this.multiSelect = component; }}
+                     onSelectedItemsChange={this.onSelectedItemsChange}
+                     // selectedItems={selectedItems}
+                     selectText="Pick Items"
+                     searchInputPlaceholderText="Search Items..."
+                     onChangeInput={text => console.log(text)}
+                     altFontFamily="ProximaNova-Light"
+                     tagRemoveIconColor="#CCC"
+                     tagBorderColor="#CCC"
+                     tagTextColor="#CCC"
+                     selectedItemTextColor="#CCC"
+                     selectedItemIconColor="#CCC"
+                     itemTextColor="#000"
+                     displayKey="name"
+                     searchInputStyle={{ color: '#CCC' }}
+                     submitButtonColor="#CCC"
+                     submitButtonText="Submit"
+                   />
+                   <View>
+                     {this.multiSelect.getSelectedItemsExt(selectedItems)}
+                   </View>
+                 </View>
                </View>
               )}
           <Button
