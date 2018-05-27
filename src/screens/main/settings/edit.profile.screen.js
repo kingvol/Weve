@@ -217,12 +217,23 @@ class EditProfileScreen extends Component {
   };
 
   onCheckboxPress = () => {
-    this.setState({
-      values: {
-        ...this.state.values,
-        isProvider: !this.state.values.isProvider,
-      },
-    });
+    if (!this.state.values.isProvider) {
+      this.setState({
+        values: {
+          ...this.state.values,
+          isProvider: !this.state.values.isProvider,
+          categories: [this.state.categories[0]._id],
+        },
+      });
+    } else {
+      this.setState({
+        values: {
+          ...this.state.values,
+          isProvider: !this.state.values.isProvider,
+          categories: [],
+        },
+      });
+    }
   };
 
   onCategorySelect = (categories) => {

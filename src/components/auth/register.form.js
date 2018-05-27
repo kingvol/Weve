@@ -56,7 +56,7 @@ class SignupForm extends Component {
       loading: false,
       isProvider: false,
       isModalVisible: false,
-      modalVisible: false,
+      modalForCategoryVisible: false,
     };
   }
 
@@ -107,9 +107,23 @@ class SignupForm extends Component {
   }
 
   onCheckboxPress = () => {
-    this.setState({
-      isProvider: !this.state.isProvider,
-    });
+    if (!this.state.values.isProvider) {
+      this.setState({
+        isProvider: !this.state.isProvider,
+        values: {
+          ...this.state.values,
+          category: [this.state.categories[0]._id],
+        },
+      });
+    } else {
+      this.setState({
+        isProvider: !this.state.isProvider,
+        values: {
+          ...this.state.values,
+          category: [],
+        },
+      });
+    }
   };
 
   onContinuePress = () => {
@@ -195,8 +209,8 @@ class SignupForm extends Component {
     }
   }
 
-  setModalVisible(visible) {
-    this.setState({ modalVisible: visible });
+  setModalForCategoryVisible = (visible) => {
+    this.setState({ modalForCategoryVisible: visible });
   }
 
   handleSubmit = async () => {
@@ -363,10 +377,8 @@ class SignupForm extends Component {
                         <Modal
                           animationType="slide"
                           transparent={false}
-                          visible={this.state.modalVisible}
-                          onRequestClose={() => {
-                            this.setModalVisible(!this.state.modalVisible);
-                          }}
+                          visible={this.state.modalForCategoryVisible}
+                          onRequestClose={() => this.setModalForCategoryVisible(!this.state.modalForCategoryVisible)}
                         >
                           <View style={{ margin: 22 }}>
                             <View>
@@ -400,9 +412,7 @@ class SignupForm extends Component {
                                 id="CategoryForProfile.subbmitButton"
                                 block
                                 success
-                                onPress={() => {
-                                  this.setModalVisible(!this.state.modalVisible);
-                                }}
+                                onPress={() => this.setModalForCategoryVisible(!this.state.modalForCategoryVisible)}
                               >
                                 {I18n.t('common.done')}
                               </Button>
@@ -411,9 +421,7 @@ class SignupForm extends Component {
                         </Modal>
                         <TouchableOpacity
                           style={{ flexDirection: 'row' }}
-                          onPress={() => {
-                          this.setModalVisible(true);
-                        }}
+                          onPress={() => this.setModalForCategoryVisible(true)}
                         >
                           <Text style={{ color: 'white' }}>
                             {`${I18n.t('common.category')}...`}
