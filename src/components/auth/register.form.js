@@ -1,10 +1,11 @@
 /* eslint-disable global-require, max-len */
 import React, { Component } from 'react';
 import I18n from 'react-native-i18n';
-import { CheckBox, Left, Icon, Picker } from 'native-base';
-import { Alert, ImageBackground, ScrollView, StyleSheet, View } from 'react-native';
+import { CheckBox, Icon, Picker } from 'native-base';
+import { Alert, ImageBackground, ScrollView, StyleSheet, View, Modal, TouchableOpacity } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import CountryPicker from 'react-native-country-picker-modal';
+import MultiSelect from 'react-native-multiple-select';
 import { contrastColor, primaryFont } from '../../theme';
 import { Button, Container, FieldInput, Text } from '../../components/common';
 import SignupImageForm from './signupImage.form';
@@ -14,11 +15,10 @@ import countryLib from '../../countryLib';
 
 import APIs from '../../api';
 
-const { Item } = Picker;
-
 const { AuthApi, CategoryApi } = APIs;
 const categoryApi = new CategoryApi();
 const api = new AuthApi();
+const ucFirst = s => (s.substr(0, 1).toLowerCase() + s.substr(1)).replace(' ', '');
 
 class SignupForm extends Component {
   constructor(props) {
@@ -56,17 +56,23 @@ class SignupForm extends Component {
       loading: false,
       isProvider: false,
       isModalVisible: false,
+      modalVisible: false,
     };
   }
 
   async componentWillMount() {
     try {
-      const categories = await categoryApi.fetchCategoriesList();
+      const categoriesFromServer = await categoryApi.fetchCategoriesList();
+      const categories = categoriesFromServer.map((e) => {
+        delete e.__v;
+        e.name = this.localiseCategory(ucFirst(e.name));
+        return e;
+      });
       this.setState({
         categories,
         values: {
           ...this.state.values,
-          category: categories[0], // Predefine 'Venue category'
+          category: [categories[0]._id], // Predefine 'Venue category'
         },
       });
     } catch ({ message }) {
@@ -189,6 +195,10 @@ class SignupForm extends Component {
     }
   }
 
+  setModalVisible(visible) {
+    this.setState({ modalVisible: visible });
+  }
+
   handleSubmit = async () => {
     this.setState({
       loading: false,
@@ -231,8 +241,6 @@ class SignupForm extends Component {
       !password ||
       !confirmPassword ||
       (this.state.step === 2 && !this.state.values.image);
-
-    const ucFirst = s => (s.substr(0, 1).toLowerCase() + s.substr(1)).replace(' ', '');
 
     return (
       <ScrollView id="SignUp.content" contentContainerStyle={{ justifyContent: 'space-between' }}>
@@ -340,43 +348,93 @@ class SignupForm extends Component {
                   </Picker>
                 </View>
 
-                <View style={{ flexDirection: 'row' }}>
-                  <CheckBox
-                    checked={this.state.isProvider}
-                    onPress={this.onCheckboxPress}
-                    color="#f3c200"
-                  />
-                  <Left>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <View style={{ flexDirection: 'row' }}>
+                    <CheckBox
+                      checked={this.state.isProvider}
+                      onPress={this.onCheckboxPress}
+                      color="#f3c200"
+                    />
                     <Text style={styles.checkBoxText}>{I18n.t('logIn.advertiser')}</Text>
-                  </Left>
+                  </View>
+                  {this.state.isProvider &&
+                    this.state.step === 1 && (
+                      <View>
+                        <Modal
+                          animationType="slide"
+                          transparent={false}
+                          visible={this.state.modalVisible}
+                          onRequestClose={() => {
+                            this.setModalVisible(!this.state.modalVisible);
+                          }}
+                        >
+                          <View style={{ margin: 22 }}>
+                            <View>
+                              <View style={{ flexDirection: 'row' }}>
+                                <View style={{ flex: 1 }}>
+                                  <MultiSelect
+                                    // hideTags
+                                    items={this.state.categories}
+                                    uniqueKey="_id"
+                                    ref={(component) => { this.multiSelect = component; }}
+                                    onSelectedItemsChange={this.onCategorySelect}
+                                    selectedItems={this.state.values.category}
+                                    selectText={I18n.t('common.category')}
+                                    searchInputPlaceholderText={`${I18n.t('common.category')}...`}
+                                    fontSize={16}
+                                    tagRemoveIconColor="#d64635"
+                                    tagBorderColor="#f3c200"
+                                    tagTextColor="grey"
+                                    // selectedItemTextColor="white"
+                                    // selectedItemIconColor="white"
+                                    itemTextColor="#000"
+                                    displayKey="name"
+                                    // searchInputStyle={{ color: 'white' }}
+                                    autoFocusInput={false}
+                                    submitButtonColor="#f3c200"
+                                    submitButtonText={I18n.t('common.ok')}
+                                  />
+                                </View>
+                              </View>
+                              <Button
+                                id="CategoryForProfile.subbmitButton"
+                                block
+                                success
+                                onPress={() => {
+                                  this.setModalVisible(!this.state.modalVisible);
+                                }}
+                              >
+                                {I18n.t('common.done')}
+                              </Button>
+                            </View>
+                          </View>
+                        </Modal>
+                        <TouchableOpacity
+                          style={{ flexDirection: 'row' }}
+                          onPress={() => {
+                          this.setModalVisible(true);
+                        }}
+                        >
+                          <Text style={{ color: 'white' }}>
+                            {`${I18n.t('common.category')}...`}
+                          </Text>
+                          <Icon
+                            style={{
+                              marginLeft: 4,
+                              color: '#5c251c',
+                              alignSelf: 'center',
+                              marginTop: -3,
+                              marginRight: 4,
+                            }}
+                            size={1}
+                            name="md-arrow-dropdown"
+                          />
+                        </TouchableOpacity>
+                      </View>
+                    )}
                 </View>
               </View>
             )}
-
-            {this.state.isProvider &&
-              this.state.step === 1 && (
-                <View style={{ flexDirection: 'row' }}>
-                  <Text style={styles.categoryText}>{I18n.t('common.category')}</Text>
-                  <Picker
-                    mode="dropdown"
-                    style={{ color: 'white', flex: 1 }}
-                    placeholder={I18n.t('logIn.select_category')}
-                    selectedValue={this.state.values.category}
-                    onValueChange={this.onCategorySelect}
-                    placeholderTextColor="white"
-                    placeholderStyle={{ color: 'white' }}
-                    textStyle={{ color: 'white' }}
-                  >
-                    {this.state.categories.map(item => (
-                      <Item
-                        key={item._id}
-                        label={this.localiseCategory(ucFirst(item.name))}
-                        value={item}
-                      />
-                    ))}
-                  </Picker>
-                </View>
-              )}
 
             {this.state.isProvider &&
               this.state.step === 1 && (
@@ -388,8 +446,8 @@ class SignupForm extends Component {
               )}
 
             {this.state.isProvider &&
-              this.state.step === 2 && <SignupImageForm key="imf" onImageSelect={this.onImageSelect} />}
-            
+              this.state.step === 2 && <SignupImageForm key="imfs" onImageSelect={this.onImageSelect} />}
+
             <Button
               id="Signup.submitButton"
               block
