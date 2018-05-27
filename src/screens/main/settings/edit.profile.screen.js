@@ -55,47 +55,7 @@ class EditProfileScreen extends Component {
       loading: false,
       imageUploading: false,
       categories: [],
-      selectedItems: [],
     };
-    this.items = [
-      {
-        name: 'Venue',
-        _id: '5ae9ba16c2ccda00b752b718',
-      },
-      {
-        name: 'Artist',
-        _id: '5ae9ba16c2ccda00b752b719',
-      },
-      {
-        name: 'Photo',
-        _id: '5ae9ba16c2ccda00b752b71a',
-      },
-      {
-        name: 'Video',
-        _id: '5ae9ba16c2ccda00b752b71b',
-      },
-      {
-        name: 'Entertainment',
-        _id: '5ae9ba16c2ccda00b752b71c',
-      },
-      {
-        name: 'Make up',
-        _id: '5ae9ba16c2ccda00b752b71d',
-      },
-      {
-        name: 'Decoration',
-        _id: '5ae9ba16c2ccda00b752b71f',
-      },
-      {
-        name: 'Cake',
-        _id: '5ae9ba16c2ccda00b752b720',
-      },
-      {
-        name: 'Costume',
-        _id: '5ae9ba16c2ccda00b752b71e',
-      },
-    ];
-    // this.multiselect ? this.multiselect.getSelectedItemsExt() : null;
   }
 
   async componentWillMount() {
@@ -113,10 +73,9 @@ class EditProfileScreen extends Component {
           categories,
           values: {
             ...this.state.values,
-            categories: [categories[0]], // Predefine 'Venue category'
+            categories: [categories[0]._id], // Predefine 'Venue category'
           },
         });
-        console.log([categories[0]]);
       } catch ({ message }) {
         alert(I18n.t(`backend.${message}`));
       }
@@ -273,11 +232,6 @@ class EditProfileScreen extends Component {
         categories,
       },
     });
-    console.log(this.state.values.categories);
-  };
-
-  onSelectedItemsChange = (selectedItems) => {
-    this.setState({ selectedItems });
   };
 
   updateProfile = () => {
@@ -496,30 +450,8 @@ class EditProfileScreen extends Component {
           </View>)}
           {!isProvider && this.state.values.isProvider &&
                (
-               <View>
+               <View style={{ flex: 1 }}>
                  <View style={{ flexDirection: 'row' }}>
-                   <Text style={categoryText}>{I18n.t('common.category')}</Text>
-                   <Picker
-                     mode="dropdown"
-                     style={{ color: lightTextColor, flex: 1 }}
-                     placeholder={I18n.t('logIn.select_category')}
-                     selectedValue={this.state.values.categories}
-                     onValueChange={this.onCategorySelect}
-                     placeholderTextColor={lightTextColor}
-                     placeholderStyle={{ color: lightTextColor }}
-                     textStyle={{ color: lightTextColor }}
-                   >
-                     {this.state.categories.map(item => (
-                       <Picker.Item
-                         key={item._id}
-                         label={this.localiseCategory(ucFirst(item.name))}
-                         value={item}
-                       />
-                    ))}
-                   </Picker>
-                 </View>
-                 <View style={{ flexDirection: 'row' }}>
-                   {/* <Text style={categoryText}>{I18n.t('common.category')}</Text> */}
                    <View style={{ flex: 1 }}>
                      <MultiSelect
                        // hideTags
@@ -543,11 +475,11 @@ class EditProfileScreen extends Component {
                        submitButtonColor="#f3c200"
                        submitButtonText={I18n.t('common.ok')}
                      />
-                     {/* <View>
-                        {this.multiSelect.getSelectedItemsExt(this.state.values.categories)}
-                      </View> */}
                    </View>
                  </View>
+                 <Text style={categoryText}>
+                   {I18n.t('logIn.account_activation')}
+                 </Text>
                </View>
               )}
           <Button
@@ -576,9 +508,5 @@ const styles = {
     color: lightTextColor,
     marginLeft: 20,
   },
-  categoryText: {
-    color: lightTextColor,
-    marginTop: 15,
-    marginRight: 100,
-  },
+  categoryText: { textAlign: 'center', color: lightTextColor, margin: 5, fontSize: 12 },
 };
