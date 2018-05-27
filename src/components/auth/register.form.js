@@ -316,6 +316,7 @@ class SignupForm extends Component {
                           values: {
                             ...this.state.values,
                           countryCode: value.cca2,
+                          regionName: countryLib[`${value.cca2}`].provinces[0],
                           },
                         });
                       }}
