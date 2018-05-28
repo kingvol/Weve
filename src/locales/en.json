@@ -3,6 +3,9 @@
     "log_in": "LOGIN",
     "sign_up": "Sign Up",
     "account_login": "Account Login",
+    "account_type": "Account type",
+    "user": "User",
+    "supplier": "Supplier",
     "or": "or",
     "confirm_password": "Confirm Password",
     "forgot_your_password": "Forgot password?",
@@ -54,7 +57,7 @@
     "entertainment": "Entertainment",
     "decoration": "Decoration",
     "costume": "Costume",
-    "video": "Video",
+    "video": "Catering",
     "cake": "Cake"
   },
   "menu": {
