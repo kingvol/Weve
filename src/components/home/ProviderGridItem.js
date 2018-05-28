@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, ImageBackground, TouchableWithoutFeedback } from 'react-native';
 import { primaryFont } from '../../theme';
 
+// const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png';
+
 class ProviderGridItem extends Component {
   onItemPress = () => {
     this.props.onPress(this.props.provider);

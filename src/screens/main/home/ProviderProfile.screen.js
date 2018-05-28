@@ -21,6 +21,8 @@ const calendarTheme = {
   textDayHeaderFontFamily: primaryFont.fontFamily,
 };
 
+// const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png';
+
 class ProviderProfileScreen extends Component {
   constructor(props) {
     super(props);

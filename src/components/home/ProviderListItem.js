@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { primaryFont } from '../../theme';
 
+// const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png';
+
 class ProviderListItem extends Component {
   onItemPress = () => {
     this.props.onPress(this.props.provider);
