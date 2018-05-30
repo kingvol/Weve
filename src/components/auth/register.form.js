@@ -1,19 +1,17 @@
 /* eslint-disable global-require, max-len */
 import React, { Component } from 'react';
 import I18n from 'react-native-i18n';
-import { Icon, Picker, CardItem, Title } from 'native-base';
+import { CheckBox, Icon, Picker } from 'native-base';
 import { Alert, ImageBackground, ScrollView, StyleSheet, View, Modal, TouchableOpacity } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import CountryPicker from 'react-native-country-picker-modal';
 import MultiSelect from 'react-native-multiple-select';
-import FastImage from 'react-native-fast-image';
-import { contrastColor, primaryFont, backgroundColor } from '../../theme';
+import { contrastColor, primaryFont } from '../../theme';
 import { Button, Container, FieldInput, Text } from '../../components/common';
 import SignupImageForm from './signupImage.form';
 import Eula from './EULA';
 import countries from '../../countryLib/countries';
 import countryLib from '../../countryLib';
-import images from '../../images';
 
 import APIs from '../../api';
 
@@ -59,7 +57,6 @@ class SignupForm extends Component {
       isProvider: false,
       isModalVisible: false,
       modalForCategoryVisible: false,
-      modalForUserProfileVisible: true,
     };
   }
 
@@ -109,12 +106,25 @@ class SignupForm extends Component {
     });
   }
 
-  onSupplierPress = (bool) => {
-    this.setState({
-      isProvider: bool,
-      modalForUserProfileVisible: false,
-    });
-  }
+  onCheckboxPress = () => {
+    if (!this.state.values.isProvider) {
+      this.setState({
+        isProvider: !this.state.isProvider,
+        values: {
+          ...this.state.values,
+          category: [this.state.categories[0]._id],
+        },
+      });
+    } else {
+      this.setState({
+        isProvider: !this.state.isProvider,
+        values: {
+          ...this.state.values,
+          category: [],
+        },
+      });
+    }
+  };
 
   onContinuePress = () => {
     this.setState({
@@ -246,62 +256,8 @@ class SignupForm extends Component {
       !confirmPassword ||
       (this.state.step === 2 && !this.state.values.image);
 
-    const {
-      background,
-      headerModal,
-      headerModalText,
-      pic,
-      logoOuterCircle,
-      logoInnerCircle,
-      registerButton,
-      registerButtonText,
-    } = styles;
-
     return (
       <ScrollView id="SignUp.content" contentContainerStyle={{ justifyContent: 'space-between' }}>
-        <Modal
-          animationType="slide"
-          transparent={false}
-          visible={this.state.modalForUserProfileVisible}
-          onRequestClose={() => this.onSupplierPress(false)}
-        >
-          <ImageBackground resizeMode="cover" style={background} source={images.backGround}>
-            <CardItem style={pic} id="RegisterPage.logoWrapper">
-              <View style={logoOuterCircle} id="RegisterPage.logoOuterCircle">
-                <FastImage id="RegisterPage.logo" source={images.logo} style={logoInnerCircle} />
-              </View>
-            </CardItem>
-            <CardItem style={headerModal} id="RegisterPage.logo-container">
-              <Title style={headerModalText} id="RegisterPage.accountLoginText">
-                {I18n.t('logIn.account_type')}
-              </Title>
-            </CardItem>
-            <View style={{ flex: 2, marginLeft: 50, marginRight: 50 }}>
-              <Button
-                id="User.submitButton"
-                block
-                style={registerButton}
-                onPress={() => this.onSupplierPress(false)}
-              >
-                <Text style={registerButtonText}>
-                  {I18n.t('logIn.user')}
-                </Text>
-              </Button>
-              <View style={{ marginTop: 25 }}>
-                <Button
-                  id="User.submitButton"
-                  block
-                  style={registerButton}
-                  onPress={() => this.onSupplierPress(true)}
-                >
-                  <Text style={registerButtonText}>
-                    {I18n.t('logIn.supplier')}
-                  </Text>
-                </Button>
-              </View>
-            </View>
-          </ImageBackground>
-        </Modal>
         <View id="Signup.backButtonAndTitleWrapper" style={styles.header}>
           <Button
             id="Signup.backButton"
@@ -407,10 +363,17 @@ class SignupForm extends Component {
                   </Picker>
                 </View>
 
-
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <View style={{ flexDirection: 'row' }}>
+                    <CheckBox
+                      checked={this.state.isProvider}
+                      onPress={this.onCheckboxPress}
+                      color="#f3c200"
+                    />
+                    <Text style={styles.checkBoxText}>{I18n.t('logIn.advertiser')}</Text>
+                  </View>
                   {this.state.isProvider &&
                     this.state.step === 1 && (
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignSelf: 'center' }}>
                       <View>
                         <Modal
                           animationType="slide"
@@ -477,8 +440,8 @@ class SignupForm extends Component {
                           />
                         </TouchableOpacity>
                       </View>
-                    </View>
                     )}
+                </View>
               </View>
             )}
 
@@ -532,7 +495,7 @@ class SignupForm extends Component {
           id="SignUp.bg-image"
           resizeMode="cover"
           style={styles.background}
-          source={images.backGround}
+          source={require('../../images/loginBackground.png')}
         >
           {this.renderSignUp()}
         </ImageBackground>
@@ -558,37 +521,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     top: 20,
     flexDirection: 'row',
-  },
-  headerModal: {
-    alignSelf: 'center',
-    flex: 0.7,
-    backgroundColor: 'transparent',
-  },
-  headerModalText: {
-    textAlignVertical: 'center',
-    textAlign: 'center',
-    color: 'white',
-    fontSize: 25,
-    ...primaryFont,
-  },
-  pic: {
-    flex: 1,
-    alignSelf: 'center',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
-    backgroundColor: 'transparent',
-  },
-  logoOuterCircle: {
-    borderRadius: 50,
-    width: 90,
-    height: 90,
-    backgroundColor,
-  },
-  logoInnerCircle: {
-    borderRadius: 47,
-    width: 84,
-    height: 84,
-    margin: 3,
   },
   registerButton: {
     marginTop: 10,
