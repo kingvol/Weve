@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import SpinnerOverlay from 'react-native-loading-spinner-overlay';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DeviceInfo from 'react-native-device-info';
-import MultiSelect from 'react-native-multiple-select';
 import I18n from '../../../locales';
 import config from '../../../../config';
 import countries from '../../../countryLib/countries';
@@ -33,7 +32,6 @@ const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png
 const userLocaleCountryCode = DeviceInfo.getDeviceCountry();
 const countryCode = countries.includes(userLocaleCountryCode) ? userLocaleCountryCode : 'GB';
 const regionName = countryLib[`${countryCode}`].provinces[0];
-const ucFirst = s => (s.substr(0, 1).toLowerCase() + s.substr(1)).replace(' ', '');
 
 class EditProfileScreen extends Component {
   constructor(props) {
@@ -45,7 +43,7 @@ class EditProfileScreen extends Component {
         firstName: this.props.user.profile.firstName || '',
         lastName: this.props.user.profile.lastName || '',
         phoneNumber: this.props.user.profile.phoneNumber || '',
-        profileImageURL: this.props.user.profile.profileImageURL || undefined,
+        profileImageURL: this.props.user.profile.profileImageURL || defaultProfile,
         countryCode,
         regionName,
         isProvider: this.props.user.profile.isProvider,
@@ -63,17 +61,12 @@ class EditProfileScreen extends Component {
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
     if (!this.props.user.profile.isProvider) {
       try {
-        const categoriesFromServer = await categoryApi.fetchCategoriesList();
-        const categories = categoriesFromServer.map((e) => {
-          delete e.__v;
-          e.name = this.localiseCategory(ucFirst(e.name));
-          return e;
-        });
+        const categories = await categoryApi.fetchCategoriesList();
         this.setState({
           categories,
           values: {
             ...this.state.values,
-            categories: [categories[0]._id], // Predefine 'Venue category'
+            categories: categories[0], // Predefine 'Venue category'
           },
         });
       } catch ({ message }) {
@@ -203,7 +196,7 @@ class EditProfileScreen extends Component {
         this.setState({ imageUploading: false });
       }
     }
-    if (!this.state.values.profileImageURL && this.state.values.isProvider) {
+    if (this.state.values.profileImageURL === defaultProfile && this.state.values.isProvider) {
       Alert.alert(
         I18n.t('logIn.upload_photo'),
         '',
@@ -217,23 +210,12 @@ class EditProfileScreen extends Component {
   };
 
   onCheckboxPress = () => {
-    if (!this.state.values.isProvider) {
-      this.setState({
-        values: {
-          ...this.state.values,
-          isProvider: !this.state.values.isProvider,
-          categories: [this.state.categories[0]._id],
-        },
-      });
-    } else {
-      this.setState({
-        values: {
-          ...this.state.values,
-          isProvider: !this.state.values.isProvider,
-          categories: [],
-        },
-      });
-    }
+    this.setState({
+      values: {
+        ...this.state.values,
+        isProvider: !this.state.values.isProvider,
+      },
+    });
   };
 
   onCategorySelect = (categories) => {
@@ -263,7 +245,6 @@ class EditProfileScreen extends Component {
       animated: false,
     });
   };
-
 
   localiseCategory = name => I18n.t(`categories.${name}`);
 
@@ -345,7 +326,7 @@ class EditProfileScreen extends Component {
                     defaultProfile,
                 }}
               />
-              {!this.state.values.profileImageURL ? (
+              {this.state.values.profileImageURL === defaultProfile ? (
                 <View
                   style={{
                     flex: 0,
@@ -462,36 +443,26 @@ class EditProfileScreen extends Component {
           </View>)}
           {!isProvider && this.state.values.isProvider &&
                (
-               <View style={{ flex: 1 }}>
-                 <View style={{ flexDirection: 'row' }}>
-                   <View style={{ flex: 1 }}>
-                     <MultiSelect
-                       // hideTags
-                       items={this.state.categories}
-                       uniqueKey="_id"
-                       ref={(component) => { this.multiSelect = component; }}
-                       onSelectedItemsChange={this.onCategorySelect}
-                       selectedItems={this.state.values.categories}
-                       selectText={I18n.t('common.category')}
-                       searchInputPlaceholderText={`${I18n.t('common.category')}...`}
-                       fontSize={16}
-                       tagRemoveIconColor="#d64635"
-                       tagBorderColor="#f3c200"
-                       tagTextColor={lightTextColor}
-                       selectedItemTextColor={lightTextColor}
-                       selectedItemIconColor={lightTextColor}
-                       itemTextColor="#000"
-                       displayKey="name"
-                       searchInputStyle={{ color: lightTextColor }}
-                       autoFocusInput={false}
-                       submitButtonColor="#f3c200"
-                       submitButtonText={I18n.t('common.ok')}
+               <View style={{ flexDirection: 'row' }}>
+                 <Text style={categoryText}>{I18n.t('common.category')}</Text>
+                 <Picker
+                   mode="dropdown"
+                   style={{ color: lightTextColor, flex: 1 }}
+                   placeholder={I18n.t('logIn.select_category')}
+                   selectedValue={this.state.values.categories}
+                   onValueChange={this.onCategorySelect}
+                   placeholderTextColor={lightTextColor}
+                   placeholderStyle={{ color: lightTextColor }}
+                   textStyle={{ color: lightTextColor }}
+                 >
+                   {this.state.categories.map(item => (
+                     <Picker.Item
+                       key={item._id}
+                       label={this.localiseCategory(ucFirst(item.name))}
+                       value={item}
                      />
-                   </View>
-                 </View>
-                 <Text style={categoryText}>
-                   {I18n.t('logIn.account_activation')}
-                 </Text>
+                    ))}
+                 </Picker>
                </View>
               )}
           <Button
@@ -520,5 +491,9 @@ const styles = {
     color: lightTextColor,
     marginLeft: 20,
   },
-  categoryText: { textAlign: 'center', color: lightTextColor, margin: 5, fontSize: 12 },
+  categoryText: {
+    color: lightTextColor,
+    marginTop: 15,
+    marginRight: 100,
+  },
 };

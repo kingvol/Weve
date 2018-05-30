@@ -84,7 +84,7 @@ class RegisterScreen extends Component {
       eulaAccepted: true,
       isProvider: true,
       deviceToken: 'somerandomtoken',
-      categories: category,
+      categories: [category._id],
       profileImageURL: image,
     };
 
