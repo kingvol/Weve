@@ -32,10 +32,16 @@ subprojects {
                 compileSdkVersion 27
                 buildToolsVersion '27.0.3'
             }
-            dependencies {
-                //noinspection GradleCompatible
-                compile 'com.android.support:appcompat-v7:25.3.1' // we need 27.1.1 in this line. for now I can't to build with success
-            }
+//            dependencies {
+//                //noinspection GradleCompatible
+//                compile 'com.android.support:appcompat-v7:25.3.1' // we need 27.1.1 in this line. for now I can't to build with success
+//            }
+//            resolutionStrategy.eachDependency { details ->
+//                if (details.requested.group == 'com.android.support'
+//                    && !details.requested.name.contains('multidex') ) {
+//                    details.useVersion "27.0.3"
+//                }
+//            }
         }
      }
  }
