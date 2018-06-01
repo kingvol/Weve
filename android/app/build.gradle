@@ -94,19 +94,18 @@ def enableSeparateBuildPerCPUArchitecture = false
 def enableProguardInReleaseBuilds = false
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    compileSdkVersion 25
+    buildToolsVersion "25.0.1"
 
     defaultConfig {
         applicationId "com.wevedo"
         minSdkVersion 16
-        targetSdkVersion 27
+        targetSdkVersion 22
         versionCode 97
         versionName "2.4.6"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
-        multiDexEnabled true
     }
     signingConfigs {
         release {
@@ -149,23 +148,22 @@ android {
 }
 
 dependencies {
-    implementation project(':react-native-fast-image')
-    implementation project(':react-native-device-info')
-    implementation project(':react-native-fcm')
-    implementation project(':react-native-image-picker')
-    implementation project(':react-native-vector-icons')
-    implementation project(':react-native-i18n')
-    implementation project(':appcenter-crashes')
-    implementation project(':appcenter-analytics')
-    implementation project(':appcenter')
-    implementation project(':react-native-fcm')
-    implementation 'com.google.firebase:firebase-core:16.0.0' //this decides your firebase SDK version
-    implementation 'com.google.firebase:firebase-messaging:17.0.0'
-    implementation fileTree(dir: "libs", include: ["*.jar"])
-    //noinspection GradleCompatible
-    implementation "com.android.support:appcompat-v7:25.3.1" // we need 27.1.1 in this line. for now I can't to build with success
-    implementation "com.facebook.react:react-native:+"  // From node_modules
-    implementation project(':react-native-navigation')
+    compile project(':react-native-fast-image')
+    compile project(':react-native-device-info')
+    compile project(':react-native-fcm')
+    compile project(':react-native-image-picker')
+    compile project(':react-native-vector-icons')
+    compile project(':react-native-i18n')
+    compile project(':appcenter-crashes')
+    compile project(':appcenter-analytics')
+    compile project(':appcenter')    
+    compile project(':react-native-fcm')
+    compile 'com.google.firebase:firebase-core:10.0.1' //this decides your firebase SDK version
+    compile 'com.google.firebase:firebase-messaging:10.0.1'
+    compile fileTree(dir: "libs", include: ["*.jar"])
+    compile "com.android.support:appcompat-v7:23.0.1"
+    compile "com.facebook.react:react-native:+"  // From node_modules
+    compile project(':react-native-navigation')     
 }
 
 // Run this once to be able to run the application with BUCK
