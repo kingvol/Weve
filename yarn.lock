@@ -4625,6 +4625,10 @@ react-native-modal@^5.3.0:
     prop-types "^15.6.1"
     react-native-animatable "^1.2.4"
 
+react-native-multiple-select@^0.4.4:
+  version "0.4.4"
+  resolved "https://registry.yarnpkg.com/react-native-multiple-select/-/react-native-multiple-select-0.4.4.tgz#6deb41afa3fb4a73e34ffd6851e64f4c36f4a6df"
+
 react-native-navigation@^1.1.388:
   version "1.1.409"
   resolved "https://registry.yarnpkg.com/react-native-navigation/-/react-native-navigation-1.1.409.tgz#fbb37e0810845e751ad1543f1399897086d8afd5"
