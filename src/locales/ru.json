@@ -3,6 +3,9 @@
     "log_in": "Войти",
     "sign_up": "Регистрация",
     "account_login": "Логин аккаунта",
+    "account_type": "Тип аккаунта",
+    "user": "Пользователь",
+    "supplier": "Предоставляю услуги",
     "or": "или",
     "confirm_password": "Подтвердить пароль",
     "forgot_your_password": "Забыли пароль?",
@@ -55,7 +58,7 @@
     "entertainment": "Развлечение",
     "decoration": "Декорация",
     "costume": "Платье",
-    "video": "Видеооператор",
+    "video": "Кейтеринг",
     "cake": "Торт"
   },
   "menu": {

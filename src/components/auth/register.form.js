@@ -1,17 +1,27 @@
 /* eslint-disable global-require, max-len */
 import React, { Component } from 'react';
 import I18n from 'react-native-i18n';
-import { CheckBox, Icon, Picker } from 'native-base';
-import { Alert, ImageBackground, ScrollView, StyleSheet, View, Modal, TouchableOpacity } from 'react-native';
+import { Icon, Picker, CardItem, Title } from 'native-base';
+import {
+  Alert,
+  ImageBackground,
+  ScrollView,
+  StyleSheet,
+  View,
+  Modal,
+  TouchableOpacity,
+} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import CountryPicker from 'react-native-country-picker-modal';
 import MultiSelect from 'react-native-multiple-select';
-import { contrastColor, primaryFont } from '../../theme';
+import FastImage from 'react-native-fast-image';
+import { contrastColor, primaryFont, backgroundColor } from '../../theme';
 import { Button, Container, FieldInput, Text } from '../../components/common';
 import SignupImageForm from './signupImage.form';
 import Eula from './EULA';
 import countries from '../../countryLib/countries';
 import countryLib from '../../countryLib';
+import images from '../../images';
 
 import APIs from '../../api';
 
@@ -57,6 +67,7 @@ class SignupForm extends Component {
       isProvider: false,
       isModalVisible: false,
       modalForCategoryVisible: false,
+      modalForUserProfileVisible: true,
     };
   }
 
@@ -98,32 +109,16 @@ class SignupForm extends Component {
     this.setState({
       values: {
         ...this.state.values,
-        regionName: countryLib[`${this.state.values.countryCode}`].provinces.find(item =>
-          (item.substr(0, 2) === this.state.values.regionName.substr(0, 2)
-            ? item
-            : null)),
+        regionName: countryLib[`${this.state.values.countryCode}`].provinces.find(item => (item.substr(0, 2) === this.state.values.regionName.substr(0, 2) ? item : null)),
       },
     });
   }
 
-  onCheckboxPress = () => {
-    if (!this.state.values.isProvider) {
-      this.setState({
-        isProvider: !this.state.isProvider,
-        values: {
-          ...this.state.values,
-          category: [this.state.categories[0]._id],
-        },
-      });
-    } else {
-      this.setState({
-        isProvider: !this.state.isProvider,
-        values: {
-          ...this.state.values,
-          category: [],
-        },
-      });
-    }
+  onSupplierPress = (bool) => {
+    this.setState({
+      isProvider: bool,
+      modalForUserProfileVisible: false,
+    });
   };
 
   onContinuePress = () => {
@@ -211,7 +206,7 @@ class SignupForm extends Component {
 
   setModalForCategoryVisible = (visible) => {
     this.setState({ modalForCategoryVisible: visible });
-  }
+  };
 
   handleSubmit = async () => {
     this.setState({
@@ -241,7 +236,14 @@ class SignupForm extends Component {
 
     if (this.state.isProvider) {
       const { image, category } = this.state.values;
-      this.props.onProviderFormSubmit(password, capitalFullName, image, category, countryCode, regionName);
+      this.props.onProviderFormSubmit(
+        password,
+        capitalFullName,
+        image,
+        category,
+        countryCode,
+        regionName,
+      );
     } else {
       this.props.onFormSubmit(password, capitalFullName, countryCode, regionName);
     }
@@ -256,8 +258,58 @@ class SignupForm extends Component {
       !confirmPassword ||
       (this.state.step === 2 && !this.state.values.image);
 
+    const {
+      background,
+      headerModal,
+      headerModalText,
+      pic,
+      logoOuterCircle,
+      logoInnerCircle,
+      registerButton,
+      registerButtonText,
+    } = styles;
+
     return (
       <ScrollView id="SignUp.content" contentContainerStyle={{ justifyContent: 'space-between' }}>
+        <Modal
+          animationType="slide"
+          transparent={false}
+          visible={this.state.modalForUserProfileVisible}
+          onRequestClose={() => this.onSupplierPress(false)}
+        >
+          <ImageBackground resizeMode="cover" style={background} source={images.backGround}>
+            <CardItem style={pic} id="RegisterPage.logoWrapper">
+              <View style={logoOuterCircle} id="RegisterPage.logoOuterCircle">
+                <FastImage id="RegisterPage.logo" source={images.logo} style={logoInnerCircle} />
+              </View>
+            </CardItem>
+            <CardItem style={headerModal} id="RegisterPage.logo-container">
+              <Title style={headerModalText} id="RegisterPage.accountLoginText">
+                {I18n.t('logIn.account_type')}
+              </Title>
+            </CardItem>
+            <View style={{ flex: 2, marginLeft: 50, marginRight: 50 }}>
+              <Button
+                id="User.submitButton"
+                block
+                style={registerButton}
+                onPress={() => this.onSupplierPress(false)}
+              >
+                <Text style={registerButtonText}>{I18n.t('logIn.user')}</Text>
+              </Button>
+              <View style={{ marginTop: 25 }}>
+                <Button
+                  id="User.submitButton"
+                  block
+                  style={registerButton}
+                  onPress={() => this.onSupplierPress(true)}
+                >
+                  <Text style={registerButtonText}>{I18n.t('logIn.supplier')}</Text>
+                </Button>
+              </View>
+            </View>
+          </ImageBackground>
+        </Modal>
         <View id="Signup.backButtonAndTitleWrapper" style={styles.header}>
           <Button
             id="Signup.backButton"
@@ -330,20 +382,40 @@ class SignupForm extends Component {
                     borderBottomWidth: 1,
                   }}
                 >
-                  <Text style={{ flex: 3, color: 'white' }}>{`${I18n.t('editProfile.country')} / ${I18n.t('editProfile.region')}`}</Text>
+                  <Text style={{ flex: 3, color: 'white' }}>
+                    {`${I18n.t('editProfile.country')} / ${I18n.t('editProfile.region')}`}
+                  </Text>
                   <View style={{ flex: 1, alignItems: 'flex-start' }}>
                     <CountryPicker
                       onChange={(value) => {
                         this.setState({
                           values: {
                             ...this.state.values,
-                          countryCode: value.cca2,
-                          regionName: countryLib[`${value.cca2}`].provinces[0],
+                            countryCode: value.cca2,
+                            regionName: countryLib[`${value.cca2}`].provinces[0],
                           },
                         });
                       }}
                       cca2={this.state.values.countryCode}
-                      excludeCountries={['AD', 'AQ', 'BV', 'VG', 'CW', 'XK', 'ME', 'PS', 'BL', 'MF', 'RS', 'SX', 'TC', 'UM', 'VI', 'VA', 'AX']}
+                      excludeCountries={[
+                        'AD',
+                        'AQ',
+                        'BV',
+                        'VG',
+                        'CW',
+                        'XK',
+                        'ME',
+                        'PS',
+                        'BL',
+                        'MF',
+                        'RS',
+                        'SX',
+                        'TC',
+                        'UM',
+                        'VI',
+                        'VA',
+                        'AX',
+                      ]}
                       translation={I18n.t('editProfile.countryLang')}
                       closeable
                     />
@@ -358,28 +430,29 @@ class SignupForm extends Component {
                     placeholderStyle={{ color: 'white' }}
                     textStyle={{ color: 'white' }}
                   >
-                    {countryLib[`${this.state.values.countryCode}`].provinces.map(item =>
-                      <Picker.Item label={item} value={item} key={item} />)}
+                    {countryLib[`${this.state.values.countryCode}`].provinces.map(item => (
+                      <Picker.Item label={item} value={item} key={item} />
+                    ))}
                   </Picker>
                 </View>
 
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                  <View style={{ flexDirection: 'row' }}>
-                    <CheckBox
-                      checked={this.state.isProvider}
-                      onPress={this.onCheckboxPress}
-                      color="#f3c200"
-                    />
-                    <Text style={styles.checkBoxText}>{I18n.t('logIn.advertiser')}</Text>
-                  </View>
-                  {this.state.isProvider &&
-                    this.state.step === 1 && (
+                {this.state.isProvider &&
+                  this.state.step === 1 && (
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignSelf: 'center',
+                      }}
+                    >
                       <View>
                         <Modal
                           animationType="slide"
                           transparent={false}
                           visible={this.state.modalForCategoryVisible}
-                          onRequestClose={() => this.setModalForCategoryVisible(!this.state.modalForCategoryVisible)}
+                          onRequestClose={() =>
+                            this.setModalForCategoryVisible(!this.state.modalForCategoryVisible)
+                          }
                         >
                           <View style={{ margin: 22 }}>
                             <View>
@@ -389,7 +462,9 @@ class SignupForm extends Component {
                                     // hideTags
                                     items={this.state.categories}
                                     uniqueKey="_id"
-                                    ref={(component) => { this.multiSelect = component; }}
+                                    ref={(component) => {
+                                      this.multiSelect = component;
+                                    }}
                                     onSelectedItemsChange={this.onCategorySelect}
                                     selectedItems={this.state.values.category}
                                     selectText={I18n.t('common.category')}
@@ -413,7 +488,9 @@ class SignupForm extends Component {
                                 id="CategoryForProfile.subbmitButton"
                                 block
                                 success
-                                onPress={() => this.setModalForCategoryVisible(!this.state.modalForCategoryVisible)}
+                                onPress={() =>
+                                  this.setModalForCategoryVisible(!this.state.modalForCategoryVisible)
+                                }
                               >
                                 {I18n.t('common.done')}
                               </Button>
@@ -440,8 +517,8 @@ class SignupForm extends Component {
                           />
                         </TouchableOpacity>
                       </View>
-                    )}
-                </View>
+                    </View>
+                  )}
               </View>
             )}
 
@@ -455,7 +532,9 @@ class SignupForm extends Component {
               )}
 
             {this.state.isProvider &&
-              this.state.step === 2 && <SignupImageForm key="imfs" onImageSelect={this.onImageSelect} />}
+              this.state.step === 2 && (
+                <SignupImageForm key="imfs" onImageSelect={this.onImageSelect} />
+              )}
 
             <Button
               id="Signup.submitButton"
@@ -495,7 +574,7 @@ class SignupForm extends Component {
           id="SignUp.bg-image"
           resizeMode="cover"
           style={styles.background}
-          source={require('../../images/loginBackground.png')}
+          source={images.backGround}
         >
           {this.renderSignUp()}
         </ImageBackground>
@@ -521,6 +600,37 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     top: 20,
     flexDirection: 'row',
+  },
+  headerModal: {
+    alignSelf: 'center',
+    flex: 0.7,
+    backgroundColor: 'transparent',
+  },
+  headerModalText: {
+    textAlignVertical: 'center',
+    textAlign: 'center',
+    color: 'white',
+    fontSize: 25,
+    ...primaryFont,
+  },
+  pic: {
+    flex: 1,
+    alignSelf: 'center',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    backgroundColor: 'transparent',
+  },
+  logoOuterCircle: {
+    borderRadius: 50,
+    width: 90,
+    height: 90,
+    backgroundColor,
+  },
+  logoInnerCircle: {
+    borderRadius: 47,
+    width: 84,
+    height: 84,
+    margin: 3,
   },
   registerButton: {
     marginTop: 10,
