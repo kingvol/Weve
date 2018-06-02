@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage, View, TouchableOpacity, Share } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import FastImage from 'react-native-fast-image';
 
 import I18n from '../../locales';
+import images from '../../images';
 import { backgroundColor, primaryFont } from '../../theme';
 import { Body, Container, Content, List, ListItem, Right, Text } from '../../components/common';
 import { AuthActions } from '../../actions';
@@ -72,7 +74,16 @@ class SettingsTab extends Component {
     });
   };
 
+  ShareMessage = () => {
+    Share.share({
+      message: 'http://onelink.to/wevedo',
+    })
+      .then(result => console.log(result))
+      .catch(errorMsg => console.log(errorMsg));
+  };
+
   render() {
+    const { logoOuterCircle, logoInnerCircle } = styles;
     return (
       <Container id="Settings.container" style={{ backgroundColor }}>
         <Content id="Settings.content">
@@ -104,6 +115,16 @@ class SettingsTab extends Component {
           </List>
           {vars.DB_ENV === 'test' && <Text style={{ alignSelf: 'center' }}>DEV</Text>}
         </Content>
+        <View style={{ alignSelf: 'center', marginBottom: 10 }}>
+          <TouchableOpacity onPress={this.ShareMessage}>
+            <View>
+              <Text style={{ textAlign: 'center' }}>{I18n.t('common.share')}</Text>
+            </View>
+            <View style={logoOuterCircle}>
+              <FastImage id="LoginPage.logo" source={images.logo} style={logoInnerCircle} />
+            </View>
+          </TouchableOpacity>
+        </View>
       </Container>
     );
   }
@@ -114,3 +135,14 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, { signOut })(SettingsTab);
+
+const styles = {
+  logoOuterCircle: {
+    alignItems: 'center',
+  },
+  logoInnerCircle: {
+    width: 57,
+    height: 57,
+    margin: 3,
+  },
+};
