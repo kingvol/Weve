@@ -30,7 +30,8 @@ class ProviderProfileScreen extends Component {
   }
 
   componentDidMount() {
-    if (!this.props.user.profile.isProvider) {
+    const { _id } = this.props.user.profile;
+    if (_id !== this.props.provider._id) {
       Promise.all([Icon.getImageSource('comments-o', 20, '#ffffff')]).then((sources) => {
         this.props.navigator.setButtons({
           rightButtons: [
