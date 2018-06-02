@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage, View } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import FastImage from 'react-native-fast-image';
 
 import I18n from '../../locales';
+import images from '../../images';
 import { backgroundColor, primaryFont } from '../../theme';
 import { Body, Container, Content, List, ListItem, Right, Text } from '../../components/common';
 import { AuthActions } from '../../actions';
@@ -103,6 +105,11 @@ class SettingsTab extends Component {
             ))}
           </List>
           {vars.DB_ENV === 'test' && <Text style={{ alignSelf: 'center' }}>DEV</Text>}
+          <View style={{ alignSelf: 'flex-end' }}>
+            <View style={logoOuterCircle} id="LoginPage.logoOuterCircle">
+                <FastImage id="LoginPage.logo" source={images.logo} style={logoInnerCircle} />
+            </View>
+          </View>
         </Content>
       </Container>
     );
