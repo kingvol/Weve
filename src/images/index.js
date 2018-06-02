@@ -10,7 +10,7 @@ const images = {
   make_up: require('./Categories/make_up.png'), // eslint-disable-line global-require
   photo: require('./Categories/photo.png'), // eslint-disable-line global-require
   venue: require('./Categories/venue.png'), // eslint-disable-line global-require
-  video: require('./Categories/video.png'), // eslint-disable-line global-require
+  catering: require('./Categories/catering.png'), // eslint-disable-line global-require
 };
 
 export default images;

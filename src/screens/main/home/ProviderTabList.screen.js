@@ -21,7 +21,7 @@ class ProviderTabList extends Component {
           { key: 'venue', title: I18n.t('categories.venue') },
           { key: 'artist', title: I18n.t('categories.artist') },
           { key: 'photo', title: I18n.t('categories.photo') },
-          { key: 'video', title: I18n.t('categories.video') },
+          { key: 'video', title: I18n.t('categories.catering') },
           { key: 'entertainment', title: I18n.t('categories.entertainment') },
           { key: 'makeup', title: I18n.t('categories.makeup') },
           { key: 'costume', title: I18n.t('categories.costume') },
