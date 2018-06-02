@@ -120,7 +120,8 @@
     "loading": "Loading...",
     "fullName": "Full name",
     "continue": "Continue",
-    "category": "Category"
+    "category": "Category",
+    "share": "Share"
   },
   "auth": {
     "enter_code": "Enter verification code",

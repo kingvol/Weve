@@ -120,7 +120,8 @@
     "loading": "Yükleniyor...",
     "fullName": "Ad Soyad",
     "continue": "Devam",
-    "category": "Kategori"
+    "category": "Kategori",
+    "share": "Paylaş"
   },
   "auth": {
     "enter_code": "Onay şifrenizi giriniz",
