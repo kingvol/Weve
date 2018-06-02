@@ -21,7 +21,7 @@ const calendarTheme = {
   textDayHeaderFontFamily: primaryFont.fontFamily,
 };
 
-// const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png';
+const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png';
 
 class ProviderProfileScreen extends Component {
   constructor(props) {
@@ -150,7 +150,7 @@ class ProviderProfileScreen extends Component {
           <FastImage
             style={styles.image}
             resizeMode={FastImage.resizeMode.contain}
-            source={{ uri: this.props.provider.profileImageURL }}
+            source={{ uri: this.props.provider.profileImageURL || defaultProfile }}
           />
           <Calendar
             theme={calendarTheme}
