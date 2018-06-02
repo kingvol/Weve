@@ -3,6 +3,9 @@
     "log_in": "Içeri gir",
     "sign_up": "Registrasiýa",
     "account_login": "Hasaba girimek",
+    "account_type": "Üyelik Seçenekleri",
+    "user": "Üye",
+    "supplier": "Supplier",
     "or": "ýa-da",
     "confirm_password": "Açar sözi tassykla",
     "forgot_your_password": "Açar sözi ýatdan çykardyňyzmy?",
@@ -54,7 +57,7 @@
     "entertainment": "Hezillik",
     "decoration": "Bezeg",
     "costume": "Egin-eşik",
-    "video": "Wideoçy",
+    "catering": "Catering",
     "cake": "Tort"
   },
   "menu": {

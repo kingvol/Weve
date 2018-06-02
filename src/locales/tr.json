@@ -3,6 +3,9 @@
     "log_in": "Oturumu aç",
     "sign_up": "Kayıt ol",
     "account_login": "Hesap girişi",
+    "account_type": "Üyelik Seçenekleri",
+    "user": "Üye",
+    "supplier": "Supplier",
     "or": "veya",
     "confirm_password": "Şifreyi onayla",
     "forgot_your_password": "Şifreyi unuttunuzmu?",
@@ -54,7 +57,7 @@
     "entertainment": "Eğlence",
     "decoration": "Dekorasyon",
     "costume": "Kıyafet",
-    "video": "Kameraman",
+    "catering": "Catering",
     "cake": "Pasta"
   },
   "menu": {

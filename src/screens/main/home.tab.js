@@ -32,8 +32,8 @@ const categories = [
   {
     route: 'Video',
     screenIndex: 3,
-    title: I18n.t('categories.video'),
-    imageSource: images.video,
+    title: I18n.t('categories.catering'),
+    imageSource: images.catering,
   },
   {
     route: 'Entertainment',
