@@ -493,6 +493,7 @@ class EditProfileScreen extends Component {
                        autoFocusInput={false}
                        submitButtonColor="#d64635"
                        submitButtonText={I18n.t('common.ok')}
+                       hideSubmitButton
                      />
                    </View>
                  </View>
