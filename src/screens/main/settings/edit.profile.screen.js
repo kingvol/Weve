@@ -61,14 +61,14 @@ class EditProfileScreen extends Component {
   async componentWillMount() {
     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
-    if (!this.props.user.profile.isProvider) {
-      try {
-        const categoriesFromServer = await categoryApi.fetchCategoriesList();
-        const categories = categoriesFromServer.map((e) => {
-          delete e.__v;
-          e.name = this.localiseCategory(ucFirst(e.name));
-          return e;
-        });
+    try {
+      const categoriesFromServer = await categoryApi.fetchCategoriesList();
+      const categories = categoriesFromServer.map((e) => {
+        delete e.__v;
+        e.name = this.localiseCategory(ucFirst(e.name));
+        return e;
+      });
+      if (!this.props.user.profile.isProvider) {
         this.setState({
           categories,
           values: {
@@ -76,10 +76,15 @@ class EditProfileScreen extends Component {
             categories: [categories[0]._id], // Predefine 'Venue category'
           },
         });
-      } catch ({ message }) {
-        alert(I18n.t(`backend.${message}`));
+      } else {
+        this.setState({
+          categories,
+        });
       }
+    } catch ({ message }) {
+      alert(I18n.t(`backend.${message}`));
     }
+
     if (this.props.user.profile.countryCode && this.props.user.profile.regionName) {
       this.setState({
         values: {
@@ -166,7 +171,7 @@ class EditProfileScreen extends Component {
         lastName: lastName || '',
       },
     });
-  }
+  };
 
   onFieldChange = (key, value) => {
     this.setState({
@@ -204,12 +209,9 @@ class EditProfileScreen extends Component {
       }
     }
     if (!this.state.values.profileImageURL && this.state.values.isProvider) {
-      Alert.alert(
-        I18n.t('logIn.upload_photo'),
-        '',
-        [{ text: `${I18n.t('common.ok')}` }],
-        { cancelable: false },
-      );
+      Alert.alert(I18n.t('logIn.upload_photo'), '', [{ text: `${I18n.t('common.ok')}` }], {
+        cancelable: false,
+      });
     } else {
       this.props.updateProfile(this.state.values);
       this.setState({ loading: true });
@@ -245,6 +247,10 @@ class EditProfileScreen extends Component {
     });
   };
 
+  setMultiSelectRef = (ref) => {
+    this.multiSelect = ref;
+  }
+
   updateProfile = () => {
     this.props.fetchProfile('me');
     this.setState({ loading: false });
@@ -263,7 +269,6 @@ class EditProfileScreen extends Component {
       animated: false,
     });
   };
-
 
   localiseCategory = name => I18n.t(`categories.${name}`);
 
@@ -318,8 +323,7 @@ class EditProfileScreen extends Component {
     const { phoneNumber } = this.state.values;
     const { checkBoxText, categoryText } = styles;
     const { isProvider } = this.props.user.profile;
-    const ucFirst = s => (s.substr(0, 1).toLowerCase() + s.substr(1)).replace(' ', '');
-
+    
     return (
       <Container id="EditProfile.container" style={{ backgroundColor }}>
         <SpinnerOverlay
@@ -327,7 +331,11 @@ class EditProfileScreen extends Component {
           textContent={I18n.t('common.loading')}
           textStyle={{ color: '#FFF' }}
         />
-        <Content id="EditProfile.content" padder keyboardShouldPersistTaps="always">
+        <Content
+          id="EditProfile.content"
+          padder
+          keyboardShouldPersistTaps="always"
+        >
           <View style={{ justifyContent: 'center' }}>
             <Button
               id="EditProfile.imageButtonWrapper"
@@ -387,7 +395,6 @@ class EditProfileScreen extends Component {
           <View
             style={{
               flexDirection: 'row',
-              flex: 1,
               marginTop: 10,
               marginBottom: 30,
               alignItems: 'center',
@@ -449,57 +456,58 @@ class EditProfileScreen extends Component {
               ))}
             </Picker>
           </View>
-          { !isProvider && (
-          <View style={{ marginLeft: -10, marginBottom: 10, flexDirection: 'row' }}>
-            <CheckBox
-              checked={this.state.values.isProvider}
-              onPress={this.onCheckboxPress}
-              color="#f3c200"
-            />
-            <Left>
-              <Text style={checkBoxText}>{I18n.t('logIn.advertiser')}</Text>
-            </Left>
-          </View>)}
-          {!isProvider && this.state.values.isProvider &&
-               (
-               <View style={{ flex: 1 }}>
-                 <View style={{ flexDirection: 'row' }}>
-                   <View style={{ flex: 1 }}>
-                     <MultiSelect
-                       // hideTags
-                       items={this.state.categories}
-                       uniqueKey="_id"
-                       ref={(component) => { this.multiSelect = component; }}
-                       onSelectedItemsChange={this.onCategorySelect}
-                       selectedItems={this.state.values.categories}
-                       selectText={I18n.t('common.category')}
-                       searchInputPlaceholderText={`${I18n.t('common.category')}...`}
-                       fontSize={16}
-                       tagRemoveIconColor="#d64635"
-                       tagBorderColor="#f3c200"
-                       tagTextColor={lightTextColor}
-                       selectedItemTextColor={lightTextColor}
-                       selectedItemIconColor={lightTextColor}
-                       itemTextColor="#000"
-                       displayKey="name"
-                       searchInputStyle={{ color: lightTextColor }}
-                       autoFocusInput={false}
-                       submitButtonColor="#f3c200"
-                       submitButtonText={I18n.t('common.ok')}
-                     />
-                   </View>
-                 </View>
-                 <Text style={categoryText}>
-                   {I18n.t('logIn.account_activation')}
-                 </Text>
-               </View>
+          {!isProvider && (
+            <View style={{ marginLeft: -10, marginBottom: 10, flexDirection: 'row' }}>
+              <CheckBox
+                checked={this.state.values.isProvider}
+                onPress={this.onCheckboxPress}
+                color="#f3c200"
+              />
+              <Left>
+                <Text style={checkBoxText}>{I18n.t('logIn.advertiser')}</Text>
+              </Left>
+            </View>
+          )}
+          {this.state.values.isProvider && (
+            <View style={{ }}>
+              <View style={{ flexDirection: 'row' }}>
+                <View style={{ flex: 1 }}>
+                  <MultiSelect
+                    // hideTags
+                    items={this.state.categories}
+                    uniqueKey="_id"
+                    ref={this.setMultiselectRef}
+                    onSelectedItemsChange={this.onCategorySelect}
+                    selectedItems={this.state.values.categories}
+                    selectText={I18n.t('common.category')}
+                    searchInputPlaceholderText={`${I18n.t('common.category')}...`}
+                    fontSize={16}
+                    tagRemoveIconColor="#d64635"
+                    tagBorderColor="#f3c200"
+                    tagTextColor={lightTextColor}
+                    selectedItemTextColor={lightTextColor}
+                    selectedItemIconColor={lightTextColor}
+                    itemTextColor="#000"
+                    displayKey="name"
+                    searchInputStyle={{ color: lightTextColor }}
+                    autoFocusInput={false}
+                    submitButtonColor="#f3c200"
+                    submitButtonText={I18n.t('common.ok')}
+                  />
+                </View>
+              </View>
+              {!isProvider && (
+                <Text style={categoryText}>{I18n.t('logIn.account_activation')}</Text>
               )}
+            </View>
+          )}
           <Button
             id="EditProfile.subbmitButton"
             block
             success
             disabled={this.state.loading}
             onPress={this.onSubmitForm}
+            style={{ marginBottom: this.state.values.isProvider ? 15 : 0 }}
           >
             {I18n.t('common.done')}
           </Button>
@@ -520,5 +528,10 @@ const styles = {
     color: lightTextColor,
     marginLeft: 20,
   },
-  categoryText: { textAlign: 'center', color: lightTextColor, margin: 5, fontSize: 12 },
+  categoryText: {
+    textAlign: 'center',
+    color: lightTextColor,
+    margin: 5,
+    fontSize: 12,
+  },
 };
