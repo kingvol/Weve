@@ -55,6 +55,7 @@ class EditProfileScreen extends Component {
       loading: false,
       imageUploading: false,
       categories: [],
+      profileIconColor: 'grey',
     };
   }
 
@@ -209,9 +210,15 @@ class EditProfileScreen extends Component {
       }
     }
     if (!this.state.values.profileImageURL && this.state.values.isProvider) {
-      Alert.alert(I18n.t('logIn.upload_photo'), '', [{ text: `${I18n.t('common.ok')}` }], {
-        cancelable: false,
-      });
+      Alert.alert(
+        I18n.t('logIn.upload_photo'), '',
+        [{
+          text: `${I18n.t('common.ok')}`,
+          onPress: this.newScrollMethod,
+        }], {
+          cancelable: false,
+        },
+      );
     } else {
       this.props.updateProfile(this.state.values);
       this.setState({ loading: true });
@@ -249,6 +256,15 @@ class EditProfileScreen extends Component {
 
   setMultiSelectRef = (ref) => {
     this.multiSelect = ref;
+  }
+
+  setScrollRef = (ref) => {
+    this.scroll = ref;
+  }
+
+  newScrollMethod = () => {
+    this.scroll._root.scrollToPosition(0, 0);
+    this.setState({ profileIconColor: '#d64635' });
   }
 
   updateProfile = () => {
@@ -319,6 +335,7 @@ class EditProfileScreen extends Component {
     });
   };
 
+
   render() {
     const { phoneNumber } = this.state.values;
     const { checkBoxText, categoryText } = styles;
@@ -335,6 +352,7 @@ class EditProfileScreen extends Component {
           id="EditProfile.content"
           padder
           keyboardShouldPersistTaps="always"
+          ref={this.setScrollRef}
         >
           <View style={{ justifyContent: 'center' }}>
             <Button
@@ -364,7 +382,7 @@ class EditProfileScreen extends Component {
                 >
                   <Icon
                     style={{
-                      color: 'grey',
+                      color: this.state.profileIconColor,
                     }}
                     size={20}
                     name="plus"
