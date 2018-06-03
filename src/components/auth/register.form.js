@@ -272,7 +272,7 @@ class SignupForm extends Component {
     return (
       <ScrollView id="SignUp.content" contentContainerStyle={{ justifyContent: 'space-between' }}>
         <Modal
-          animationType="slide"
+          animationType="fade"
           transparent={false}
           visible={this.state.modalForUserProfileVisible}
           onRequestClose={() => this.onSupplierPress(false)}
@@ -441,13 +441,13 @@ class SignupForm extends Component {
                     <View
                       style={{
                         flexDirection: 'row',
+                        flex: 1,
                         justifyContent: 'space-between',
-                        alignSelf: 'center',
                       }}
                     >
                       <View>
                         <Modal
-                          animationType="slide"
+                          animationType="fade"
                           transparent={false}
                           visible={this.state.modalForCategoryVisible}
                           onRequestClose={() =>
@@ -473,14 +473,12 @@ class SignupForm extends Component {
                                     tagRemoveIconColor="#d64635"
                                     tagBorderColor="#f3c200"
                                     tagTextColor="grey"
-                                    // selectedItemTextColor="white"
-                                    // selectedItemIconColor="white"
                                     itemTextColor="#000"
                                     displayKey="name"
-                                    // searchInputStyle={{ color: 'white' }}
                                     autoFocusInput={false}
                                     submitButtonColor="#f3c200"
                                     submitButtonText={I18n.t('common.ok')}
+                                    hideSubmitButton
                                   />
                                 </View>
                               </View>
@@ -492,13 +490,13 @@ class SignupForm extends Component {
                                   this.setModalForCategoryVisible(!this.state.modalForCategoryVisible)
                                 }
                               >
-                                {I18n.t('common.done')}
+                                {I18n.t('common.ok')}
                               </Button>
                             </View>
                           </View>
                         </Modal>
                         <TouchableOpacity
-                          style={{ flexDirection: 'row' }}
+                          style={{ flexDirection: 'row', flex: 1, marginBottom: 10, marginTop: 8 }}
                           onPress={() => this.setModalForCategoryVisible(true)}
                         >
                           <Text style={{ color: 'white' }}>

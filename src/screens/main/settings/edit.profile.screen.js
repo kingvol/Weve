@@ -323,7 +323,7 @@ class EditProfileScreen extends Component {
     const { phoneNumber } = this.state.values;
     const { checkBoxText, categoryText } = styles;
     const { isProvider } = this.props.user.profile;
-    
+
     return (
       <Container id="EditProfile.container" style={{ backgroundColor }}>
         <SpinnerOverlay
@@ -456,50 +456,51 @@ class EditProfileScreen extends Component {
               ))}
             </Picker>
           </View>
-          {!isProvider && (
-            <View style={{ marginLeft: -10, marginBottom: 10, flexDirection: 'row' }}>
-              <CheckBox
-                checked={this.state.values.isProvider}
-                onPress={this.onCheckboxPress}
-                color="#f3c200"
-              />
-              <Left>
-                <Text style={checkBoxText}>{I18n.t('logIn.advertiser')}</Text>
-              </Left>
-            </View>
-          )}
-          {this.state.values.isProvider && (
-            <View style={{ }}>
-              <View style={{ flexDirection: 'row' }}>
-                <View style={{ flex: 1 }}>
-                  <MultiSelect
-                    // hideTags
-                    items={this.state.categories}
-                    uniqueKey="_id"
-                    ref={this.setMultiselectRef}
-                    onSelectedItemsChange={this.onCategorySelect}
-                    selectedItems={this.state.values.categories}
-                    selectText={I18n.t('common.category')}
-                    searchInputPlaceholderText={`${I18n.t('common.category')}...`}
-                    fontSize={16}
-                    tagRemoveIconColor="#d64635"
-                    tagBorderColor="#f3c200"
-                    tagTextColor={lightTextColor}
-                    selectedItemTextColor={lightTextColor}
-                    selectedItemIconColor={lightTextColor}
-                    itemTextColor="#000"
-                    displayKey="name"
-                    searchInputStyle={{ color: lightTextColor }}
-                    autoFocusInput={false}
-                    submitButtonColor="#f3c200"
-                    submitButtonText={I18n.t('common.ok')}
-                  />
-                </View>
-              </View>
-              {!isProvider && (
-                <Text style={categoryText}>{I18n.t('logIn.account_activation')}</Text>
-              )}
-            </View>
+          { !isProvider && (
+          <View style={{ marginLeft: -10, marginBottom: 10, flexDirection: 'row' }}>
+            <CheckBox
+              checked={this.state.values.isProvider}
+              onPress={this.onCheckboxPress}
+              color="#d64635"
+            />
+            <Left>
+              <Text style={checkBoxText}>{I18n.t('logIn.advertiser')}</Text>
+            </Left>
+          </View>)}
+          {this.state.values.isProvider &&
+               (
+               <View style={{ flex: 1 }}>
+                 <View style={{ flexDirection: 'row' }}>
+                   <View style={{ flex: 1 }}>
+                     <MultiSelect
+                       // hideTags
+                       items={this.state.categories}
+                       uniqueKey="_id"
+                       ref={this.setMultiselectRef}
+                       onSelectedItemsChange={this.onCategorySelect}
+                       selectedItems={this.state.values.categories}
+                       selectText={I18n.t('common.category')}
+                       searchInputPlaceholderText={`${I18n.t('common.category')}...`}
+                       fontSize={16}
+                       tagRemoveIconColor="#d64635"
+                       tagBorderColor="#f3c200"
+                       tagTextColor={lightTextColor}
+                       selectedItemTextColor={lightTextColor}
+                       selectedItemIconColor={lightTextColor}
+                       itemTextColor="#000"
+                       displayKey="name"
+                       searchInputStyle={{ color: lightTextColor }}
+                       autoFocusInput={false}
+                       submitButtonColor="#d64635"
+                       submitButtonText={I18n.t('common.ok')}
+                       hideSubmitButton
+                     />
+                   </View>
+                 </View>
+                 <Text style={categoryText}>
+                   {I18n.t('logIn.account_activation')}
+                 </Text>
+               </View>
           )}
           <Button
             id="EditProfile.subbmitButton"
