@@ -454,7 +454,7 @@ class EditProfileScreen extends Component {
             <CheckBox
               checked={this.state.values.isProvider}
               onPress={this.onCheckboxPress}
-              color="#f3c200"
+              color="#d64635"
             />
             <Left>
               <Text style={checkBoxText}>{I18n.t('logIn.advertiser')}</Text>
@@ -484,7 +484,7 @@ class EditProfileScreen extends Component {
                        displayKey="name"
                        searchInputStyle={{ color: lightTextColor }}
                        autoFocusInput={false}
-                       submitButtonColor="#f3c200"
+                       submitButtonColor="#d64635"
                        submitButtonText={I18n.t('common.ok')}
                      />
                    </View>
