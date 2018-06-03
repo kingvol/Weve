@@ -247,6 +247,10 @@ class EditProfileScreen extends Component {
     });
   };
 
+  setMultiSelectRef = (ref) => {
+    this.multiSelect = ref;
+  }
+
   updateProfile = () => {
     this.props.fetchProfile('me');
     this.setState({ loading: false });
@@ -319,8 +323,7 @@ class EditProfileScreen extends Component {
     const { phoneNumber } = this.state.values;
     const { checkBoxText, categoryText } = styles;
     const { isProvider } = this.props.user.profile;
-    const ucFirst = s => (s.substr(0, 1).toLowerCase() + s.substr(1)).replace(' ', '');
-
+    
     return (
       <Container id="EditProfile.container" style={{ backgroundColor }}>
         <SpinnerOverlay
@@ -473,9 +476,7 @@ class EditProfileScreen extends Component {
                     // hideTags
                     items={this.state.categories}
                     uniqueKey="_id"
-                    ref={(component) => {
-                      this.multiSelect = component;
-                    }}
+                    ref={this.setMultiselectRef}
                     onSelectedItemsChange={this.onCategorySelect}
                     selectedItems={this.state.values.categories}
                     selectText={I18n.t('common.category')}
