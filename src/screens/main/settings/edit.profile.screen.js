@@ -528,7 +528,7 @@ class EditProfileScreen extends Component {
             onPress={this.onSubmitForm}
             style={{ marginBottom: this.state.values.isProvider ? 15 : 0 }}
           >
-            {I18n.t('common.done')}
+            {I18n.t('common.save')}
           </Button>
         </Content>
       </Container>
