@@ -30,7 +30,7 @@ const categories = [
     imageSource: images.photo,
   },
   {
-    route: 'Video',
+    route: 'Catering',
     screenIndex: 3,
     title: I18n.t('categories.catering'),
     imageSource: images.catering,

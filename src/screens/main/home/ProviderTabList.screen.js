@@ -21,7 +21,7 @@ class ProviderTabList extends Component {
           { key: 'venue', title: I18n.t('categories.venue') },
           { key: 'artist', title: I18n.t('categories.artist') },
           { key: 'photo', title: I18n.t('categories.photo') },
-          { key: 'video', title: I18n.t('categories.catering') },
+          { key: 'catering', title: I18n.t('categories.catering') },
           { key: 'entertainment', title: I18n.t('categories.entertainment') },
           { key: 'makeup', title: I18n.t('categories.makeup') },
           { key: 'costume', title: I18n.t('categories.costume') },
@@ -50,7 +50,7 @@ class ProviderTabList extends Component {
   VenueRoute = () => <ProviderList category="Venue" navigator={this.props.navigator} />;
   ArtistRoute = () => <ProviderList category="Artist" navigator={this.props.navigator} />;
   PhotoRoute = () => <ProviderList category="Photo" navigator={this.props.navigator} />;
-  VideoRoute = () => <ProviderList category="Video" navigator={this.props.navigator} />;
+  CateringRoute = () => <ProviderList category="Catering" navigator={this.props.navigator} />;
   EntertainmentRoute = () => (
     <ProviderList category="Entertainment" navigator={this.props.navigator} />
   );
@@ -83,7 +83,7 @@ class ProviderTabList extends Component {
     venue: this.VenueRoute,
     artist: this.ArtistRoute,
     photo: this.PhotoRoute,
-    video: this.VideoRoute,
+    catering: this.CateringRoute,
     entertainment: this.EntertainmentRoute,
     makeup: this.MakeupRoute,
     costume: this.ConstumeRoute,
