@@ -129,7 +129,10 @@ class ChangePasswordScreen extends Component {
 
   onFormSubmit = () => {
     this.setState({ processing: true });
-    this.props.changePassword({ password: this.state.values.newPassword });
+    this.props.changePassword({
+      password: this.state.values.newPassword,
+      currentPassword: this.state.values.currentPassword,
+    });
   };
 
   keyboardDidShow = () => {
