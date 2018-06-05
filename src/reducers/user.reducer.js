@@ -13,6 +13,7 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         isLoading: true,
+        error: null,
       };
 
     case types.CHANGE_PASSWORD_FULFILLED:
