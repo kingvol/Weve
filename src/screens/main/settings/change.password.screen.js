@@ -43,7 +43,7 @@ class ChangePasswordScreen extends Component {
 
   componentWillReceiveProps({ user }) {
     if (!user.isLoading && user.error && this.state.processing) {
-      alert(user.error);
+      alert(I18n.t('backend.Wrong credentials'));
       this.switchProcessing();
       return;
     }
