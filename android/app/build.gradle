@@ -95,11 +95,13 @@ def enableProguardInReleaseBuilds = false
 
 def _ext = rootProject.ext
 
-def _reactNativeVersion = _ext.has('reactNative') ? _ext.reactNative : '0.53.3'
+def _reactNativeVersion = _ext.has('reactNative') ? _ext.reactNative : '0.53.3' // current react-native version in package.json
 def _compileSdkVersion = _ext.has('compileSdkVersion') ? _ext.compileSdkVersion : 27
 def _buildToolsVersion = _ext.has('buildToolsVersion') ? _ext.buildToolsVersion : '27.0.3'
 def _minSdkVersion = _ext.has('minSdkVersion') ? _ext.minSdkVersion : 16
 def _targetSdkVersion = _ext.has('targetSdkVersion') ? _ext.targetSdkVersion : 27
+def _supportLibrariesVersion = _ext.has('supportLibrariesVersion') ? _ext.supportLibrariesVersion : '27.1.1'
+def _googlePlayServicesVersion = _ext.has('googlePlayServicesVersion') ? _ext.googlePlayServicesVersion : '+'
 
 android {
     compileSdkVersion _compileSdkVersion
@@ -158,6 +160,9 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation "com.android.support:appcompat-v7:${_supportLibrariesVersion}"
+    implementation "com.android.support:design:${_supportLibrariesVersion}" // support fix
+    implementation "com.facebook.react:react-native:${_reactNativeVersion}"  
     implementation project(':react-native-fast-image')
     implementation project(':react-native-device-info')
     implementation project(':react-native-fcm')
@@ -167,14 +172,8 @@ dependencies {
     implementation project(':appcenter-crashes')
     implementation project(':appcenter-analytics')
     implementation project(':appcenter')
-    implementation project(':react-native-fcm')
     implementation 'com.google.firebase:firebase-core:16.0.0' //this decides your firebase SDK version
-    implementation 'com.google.firebase:firebase-messaging:17.0.0'
-    implementation fileTree(dir: "libs", include: ["*.jar"])
-    //noinspection GradleCompatible
-    implementation "com.android.support:appcompat-v7:25.3.1" // we need 27.1.1 in this line. for now I can't to build with success
-    implementation 'com.android.support:design:27.1.1' // support fix
-    implementation "com.facebook.react:react-native:${_reactNativeVersion}"  // current react-native version in package.json
+    implementation 'com.google.firebase:firebase-messaging:17.0.0'    
     implementation project(':react-native-navigation')
 }
 
