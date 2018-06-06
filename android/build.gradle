@@ -3,10 +3,11 @@
 buildscript {
     repositories {
         jcenter()
+        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.3'
-        classpath 'com.google.gms:google-services:3.0.0'
+        classpath 'com.android.tools.build:gradle:3.1.2'
+        classpath 'com.google.gms:google-services:3.0.0' // the latest is 3.2.0. For now I can't to build with success that version
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -17,9 +18,48 @@ allprojects {
     repositories {
         mavenLocal()
         jcenter()
+        google()
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url "$rootDir/../node_modules/react-native/android"
+        }
+    }
+}
+
+ext {
+    // dependency versions
+    googlePlayServicesVersion = "+" // default: "+"
+    compileSdkVersion = 27 // default: 23
+    buildToolsVersion = "27.0.3" // default: "25.0.2"
+    targetSdkVersion = 27 // default: 22
+    minSdkVersion = 16
+    reactNative = "0.53.3"
+  }
+
+subprojects {
+    afterEvaluate {project ->
+        if (project.hasProperty("android")) {
+            android {
+                compileSdkVersion rootProject.compileSdkVersion
+                buildToolsVersion rootProject.buildToolsVersion
+
+                defaultConfig {
+                    minSdkVersion rootProject.minSdkVersion
+                    targetSdkVersion rootProject.targetSdkVersion
+                }
+            }
+
+            // dependencies {
+            //     def googlePlayServicesVersion = project.hasProperty('googlePlayServicesVersion') ? project.googlePlayServicesVersion : rootProject.googlePlayServicesVersion
+            //     implementation fileTree(dir: "libs", include: ["*.jar"])
+            //     implementation 'com.android.support:appcompat-v7:25.3.1' // we need 27.1.1 in this line. for now I can't to build with success
+            //     implementation 'com.facebook.react:react-native:0.53.3'
+            //     implementation 'com.microsoft.appcenter:appcenter:1.4.0'
+            //     implementation 'com.microsoft.appcenter:appcenter-analytics:1.4.0'
+            //     implementation 'com.microsoft.appcenter:appcenter-crashes:1.4.0'
+            //     implementation 'com.microsoft.appcenter.reactnative:appcenter-react-native:1.4.0'
+            //     implementation "com.google.android.gms:play-services-gcm:$googlePlayServicesVersion"
+            // }
         }
     }
 }
