@@ -1,9 +1,9 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    repositories {        
-        jcenter()
-        google()
+    repositories {
+        google()        
+        jcenter()        
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.2'
@@ -16,9 +16,9 @@ buildscript {
 
 allprojects {
     repositories {
-        mavenLocal()        
-        jcenter()
-        google()
+        mavenLocal() 
+        google()       
+        jcenter()        
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url "$rootDir/../node_modules/react-native/android"
