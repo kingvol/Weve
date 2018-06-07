@@ -8,6 +8,7 @@
     "fixcode": "node_modules/eslint/bin/eslint.js --ext .js,.jsx ./src --fix",
     "fix_fcm": "chmod +x ./fix_fcm.sh && ./fix_fcm.sh",
     "postinstall": "npm run fix_fcm",
+    "release": "node ./scripts/inc_code_version.js && node ./scripts/version_name.js",
     "test": "jest"
   },
   "dependencies": {
