@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Platform, Alert } from 'react-native';
-import { GiftedChat } from 'react-native-gifted-chat';
+import { Platform, View } from 'react-native';
+import { GiftedChat, Send } from 'react-native-gifted-chat';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import I18n from '../../locales';
 
 class ChatView extends Component {
@@ -21,15 +22,13 @@ class ChatView extends Component {
     const { authUser, room } = this.props;
     const recipient = authUser.isProvider ? room.user._id : room.provider._id;
 
-    let options = {};
-
     if (authUser.blockedUsers.includes(recipient)) {
       return {
         editable: false,
-        placeholder: 'To send message unblock user'
+        placeholder: 'To send message unblock user',
       };
     }
-  }
+  };
 
   transformMessages = (messages) => {
     const { room, authUser } = this.props;
@@ -55,7 +54,15 @@ class ChatView extends Component {
     });
 
     return transformedMessages.reverse();
-  }
+  };
+
+  renderSend = props => (
+    <Send {...props}>
+      <View style={{ marginRight: 20, marginBottom: 10 }}>
+        <Icon style={{ color: '#0084ff' }} size={20} name="send" />
+      </View>
+    </Send>
+  );
 
   render() {
     const { _id, firstName, profileImageURL } = this.props.authUser;
@@ -68,6 +75,7 @@ class ChatView extends Component {
         placeholder={I18n.t('chat.type_a_message')}
         onSend={messages => this.onSend(messages)}
         user={{ _id, name: firstName, avatar: profileImageURL }}
+        renderSend={this.renderSend}
       />
     );
   }

@@ -3,6 +3,9 @@
     "log_in": "LOGIN",
     "sign_up": "Sign Up",
     "account_login": "Account Login",
+    "account_type": "Account type",
+    "user": "User",
+    "supplier": "Supplier",
     "or": "or",
     "confirm_password": "Confirm Password",
     "forgot_your_password": "Forgot password?",
@@ -15,7 +18,7 @@
     "email_used": "Email is already in use.",
     "no_category": "Category is not selected",
     "no_image": "Image is not uploaded",
-    "advertiser": "I'm the advertiser",
+    "advertiser": "I'm the supplier",
     "select_category": "Choose category",
     "account_activation": "Your account will be live within 24 hours",
     "upload_photo": "It's time to upload your photo",
@@ -50,11 +53,11 @@
     "artist": "Artist",
     "photo": "Photo",
     "venue": "Venue",
-    "makeup": "Make Up",
+    "makeup": "Beauty",
     "entertainment": "Entertainment",
     "decoration": "Decoration",
     "costume": "Costume",
-    "video": "Video",
+    "catering": "Catering",
     "cake": "Cake"
   },
   "menu": {
@@ -117,7 +120,8 @@
     "loading": "Loading...",
     "fullName": "Full name",
     "continue": "Continue",
-    "category": "Category"
+    "category": "Category",
+    "share": "Share"
   },
   "auth": {
     "enter_code": "Enter verification code",

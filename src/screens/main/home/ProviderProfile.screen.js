@@ -21,6 +21,8 @@ const calendarTheme = {
   textDayHeaderFontFamily: primaryFont.fontFamily,
 };
 
+const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png';
+
 class ProviderProfileScreen extends Component {
   constructor(props) {
     super(props);
@@ -28,7 +30,8 @@ class ProviderProfileScreen extends Component {
   }
 
   componentDidMount() {
-    if (!this.props.user.profile.isProvider) {
+    const { _id } = this.props.user.profile;
+    if (_id !== this.props.provider._id) {
       Promise.all([Icon.getImageSource('comments-o', 20, '#ffffff')]).then((sources) => {
         this.props.navigator.setButtons({
           rightButtons: [
@@ -148,7 +151,7 @@ class ProviderProfileScreen extends Component {
           <FastImage
             style={styles.image}
             resizeMode={FastImage.resizeMode.contain}
-            source={{ uri: this.props.provider.profileImageURL }}
+            source={{ uri: this.props.provider.profileImageURL || defaultProfile }}
           />
           <Calendar
             theme={calendarTheme}

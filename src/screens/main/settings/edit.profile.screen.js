@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { Alert, Keyboard, View } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
-import { Picker } from 'native-base';
+import { Picker, CheckBox, Left } from 'native-base';
 import CountryPicker from 'react-native-country-picker-modal';
 import { connect } from 'react-redux';
 import SpinnerOverlay from 'react-native-loading-spinner-overlay';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DeviceInfo from 'react-native-device-info';
+import MultiSelect from 'react-native-multiple-select';
 import I18n from '../../../locales';
 import config from '../../../../config';
 import countries from '../../../countryLib/countries';
@@ -22,12 +23,17 @@ import {
 } from '../../../components/common';
 import { backgroundColor, lightTextColor } from '../../../theme';
 import { UserActions } from '../../../actions';
+import APIs from '../../../api';
+
+const { CategoryApi } = APIs;
+const categoryApi = new CategoryApi();
 
 const { fetchProfile, updateProfile } = UserActions;
 const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png';
 const userLocaleCountryCode = DeviceInfo.getDeviceCountry();
 const countryCode = countries.includes(userLocaleCountryCode) ? userLocaleCountryCode : 'GB';
 const regionName = countryLib[`${countryCode}`].provinces[0];
+const ucFirst = s => (s.substr(0, 1).toLowerCase() + s.substr(1)).replace(' ', '');
 
 class EditProfileScreen extends Component {
   constructor(props) {
@@ -42,16 +48,44 @@ class EditProfileScreen extends Component {
         profileImageURL: this.props.user.profile.profileImageURL || undefined,
         countryCode,
         regionName,
+        isProvider: this.props.user.profile.isProvider,
+        categories: this.props.user.profile.categories,
       },
       fullName: `${this.props.user.profile.firstName} ${this.props.user.profile.lastName}` || '',
       loading: false,
       imageUploading: false,
+      categories: [],
+      profileIconColor: 'grey',
     };
   }
 
   async componentWillMount() {
     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
+    try {
+      const categoriesFromServer = await categoryApi.fetchCategoriesList();
+      const categories = categoriesFromServer.map((e) => {
+        delete e.__v;
+        e.name = this.localiseCategory(ucFirst(e.name));
+        return e;
+      });
+      if (!this.props.user.profile.isProvider) {
+        this.setState({
+          categories,
+          values: {
+            ...this.state.values,
+            categories: [categories[0]._id], // Predefine 'Venue category'
+          },
+        });
+      } else {
+        this.setState({
+          categories,
+        });
+      }
+    } catch ({ message }) {
+      alert(I18n.t(`backend.${message}`));
+    }
+
     if (this.props.user.profile.countryCode && this.props.user.profile.regionName) {
       this.setState({
         values: {
@@ -138,7 +172,7 @@ class EditProfileScreen extends Component {
         lastName: lastName || '',
       },
     });
-  }
+  };
 
   onFieldChange = (key, value) => {
     this.setState({
@@ -175,25 +209,67 @@ class EditProfileScreen extends Component {
         this.setState({ imageUploading: false });
       }
     }
-    this.props.updateProfile(this.state.values);
-    this.setState({ loading: true });
+    if (!this.state.values.profileImageURL && this.state.values.isProvider) {
+      Alert.alert(
+        I18n.t('logIn.upload_photo'), '',
+        [{
+          text: `${I18n.t('common.ok')}`,
+          onPress: this.newScrollMethod,
+        }], {
+          cancelable: false,
+        },
+      );
+    } else {
+      this.props.updateProfile(this.state.values);
+      this.setState({ loading: true });
+    }
   };
 
-  uploadProfileImage = (uri) => {
-    const { cloudinary: { apiKey, cloud } } = config;
-    const timestamp = Date.now().toString();
-    const uploadUrl = `https://api.cloudinary.com/v1_1/${cloud}/image/upload?upload_preset=profileImg&secure=true`;
+  onCheckboxPress = () => {
+    if (!this.state.values.isProvider) {
+      this.setState({
+        values: {
+          ...this.state.values,
+          isProvider: !this.state.values.isProvider,
+          categories: [this.state.categories[0]._id],
+        },
+      });
+    } else {
+      this.setState({
+        values: {
+          ...this.state.values,
+          isProvider: !this.state.values.isProvider,
+          categories: [],
+        },
+      });
+    }
+  };
 
-    const formdata = new FormData();
-    formdata.append('file', { uri, type: 'image/png', name: 'image.png' });
-    formdata.append('timestamp', timestamp);
-    formdata.append('api_key', apiKey);
+  onCategorySelect = (categories) => {
+    this.setState({
+      values: {
+        ...this.state.values,
+        categories,
+      },
+    });
+  };
 
-    return fetch(uploadUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'multipart/form-data' },
-      body: formdata,
-    }).then(raw => raw.json());
+  setMultiSelectRef = (ref) => {
+    this.multiSelect = ref;
+  }
+
+  setScrollRef = (ref) => {
+    this.scroll = ref;
+  }
+
+  newScrollMethod = () => {
+    this.scroll._root.scrollToPosition(0, 0);
+    this.setState({ profileIconColor: '#d64635' });
+  }
+
+  updateProfile = () => {
+    this.props.fetchProfile('me');
+    this.setState({ loading: false });
   };
 
   keyboardDidShow = () => {
@@ -210,9 +286,23 @@ class EditProfileScreen extends Component {
     });
   };
 
-  updateProfile = () => {
-    this.props.fetchProfile('me');
-    this.setState({ loading: false });
+  localiseCategory = name => I18n.t(`categories.${name}`);
+
+  uploadProfileImage = (uri) => {
+    const { cloudinary: { apiKey, cloud } } = config;
+    const timestamp = Date.now().toString();
+    const uploadUrl = `https://api.cloudinary.com/v1_1/${cloud}/image/upload?upload_preset=profileImg&secure=true`;
+
+    const formdata = new FormData();
+    formdata.append('file', { uri, type: 'image/png', name: 'image.png' });
+    formdata.append('timestamp', timestamp);
+    formdata.append('api_key', apiKey);
+
+    return fetch(uploadUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'multipart/form-data' },
+      body: formdata,
+    }).then(raw => raw.json());
   };
 
   captureImage = () => {
@@ -245,8 +335,11 @@ class EditProfileScreen extends Component {
     });
   };
 
+
   render() {
     const { phoneNumber } = this.state.values;
+    const { checkBoxText, categoryText } = styles;
+    const { isProvider } = this.props.user.profile;
 
     return (
       <Container id="EditProfile.container" style={{ backgroundColor }}>
@@ -255,7 +348,12 @@ class EditProfileScreen extends Component {
           textContent={I18n.t('common.loading')}
           textStyle={{ color: '#FFF' }}
         />
-        <Content id="EditProfile.content" padder keyboardShouldPersistTaps="always">
+        <Content
+          id="EditProfile.content"
+          padder
+          keyboardShouldPersistTaps="always"
+          ref={this.setScrollRef}
+        >
           <View style={{ justifyContent: 'center' }}>
             <Button
               id="EditProfile.imageButtonWrapper"
@@ -273,7 +371,7 @@ class EditProfileScreen extends Component {
                     defaultProfile,
                 }}
               />
-              {!this.state.values.profileImageURL && !this.props.user.profile.profileImageURL ? (
+              {!this.state.values.profileImageURL ? (
                 <View
                   style={{
                     flex: 0,
@@ -284,7 +382,7 @@ class EditProfileScreen extends Component {
                 >
                   <Icon
                     style={{
-                      color: 'grey',
+                      color: this.state.profileIconColor,
                     }}
                     size={20}
                     name="plus"
@@ -302,7 +400,7 @@ class EditProfileScreen extends Component {
             component={EditProfileField}
             id="EditProfile.fullNameInput"
             autoCapitalize="words"
-          />          
+          />
           <FieldInput
             name="phone"
             input={{ value: phoneNumber.toString() }}
@@ -315,7 +413,6 @@ class EditProfileScreen extends Component {
           <View
             style={{
               flexDirection: 'row',
-              flex: 1,
               marginTop: 10,
               marginBottom: 30,
               alignItems: 'center',
@@ -333,6 +430,7 @@ class EditProfileScreen extends Component {
                     values: {
                       ...this.state.values,
                       countryCode: value.cca2,
+                      regionName: countryLib[`${value.cca2}`].provinces[0],
                     },
                   });
                 }}
@@ -376,14 +474,61 @@ class EditProfileScreen extends Component {
               ))}
             </Picker>
           </View>
+          { !isProvider && (
+          <View style={{ marginLeft: -10, marginBottom: 10, flexDirection: 'row' }}>
+            <CheckBox
+              checked={this.state.values.isProvider}
+              onPress={this.onCheckboxPress}
+              color="#d64635"
+            />
+            <Left>
+              <Text style={checkBoxText}>{I18n.t('logIn.advertiser')}</Text>
+            </Left>
+          </View>)}
+          {this.state.values.isProvider &&
+               (
+               <View style={{ flex: 1 }}>
+                 <View style={{ flexDirection: 'row' }}>
+                   <View style={{ flex: 1 }}>
+                     <MultiSelect
+                       // hideTags
+                       items={this.state.categories}
+                       uniqueKey="_id"
+                       ref={this.setMultiselectRef}
+                       onSelectedItemsChange={this.onCategorySelect}
+                       selectedItems={this.state.values.categories}
+                       selectText={I18n.t('common.category')}
+                       searchInputPlaceholderText={`${I18n.t('common.category')}...`}
+                       fontSize={16}
+                       tagRemoveIconColor="#d64635"
+                       tagBorderColor="#f3c200"
+                       tagTextColor={lightTextColor}
+                       selectedItemTextColor={lightTextColor}
+                       selectedItemIconColor={lightTextColor}
+                       itemTextColor="#000"
+                       displayKey="name"
+                       searchInputStyle={{ color: lightTextColor }}
+                       autoFocusInput={false}
+                       submitButtonColor="#d64635"
+                       submitButtonText={I18n.t('common.ok')}
+                       hideSubmitButton
+                     />
+                   </View>
+                 </View>
+                 <Text style={categoryText}>
+                   {I18n.t('logIn.account_activation')}
+                 </Text>
+               </View>
+          )}
           <Button
             id="EditProfile.subbmitButton"
             block
             success
             disabled={this.state.loading}
             onPress={this.onSubmitForm}
+            style={{ marginBottom: this.state.values.isProvider ? 15 : 0 }}
           >
-            {I18n.t('common.done')}
+            {I18n.t('common.save')}
           </Button>
         </Content>
       </Container>
@@ -396,3 +541,16 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, { fetchProfile, updateProfile })(EditProfileScreen);
+
+const styles = {
+  checkBoxText: {
+    color: lightTextColor,
+    marginLeft: 20,
+  },
+  categoryText: {
+    textAlign: 'center',
+    color: lightTextColor,
+    margin: 5,
+    fontSize: 12,
+  },
+};

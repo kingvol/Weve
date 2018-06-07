@@ -43,7 +43,7 @@ class ChangePasswordScreen extends Component {
 
   componentWillReceiveProps({ user }) {
     if (!user.isLoading && user.error && this.state.processing) {
-      alert(user.error);
+      alert(I18n.t('backend.Wrong credentials'));
       this.switchProcessing();
       return;
     }
@@ -129,7 +129,10 @@ class ChangePasswordScreen extends Component {
 
   onFormSubmit = () => {
     this.setState({ processing: true });
-    this.props.changePassword({ password: this.state.values.newPassword });
+    this.props.changePassword({
+      password: this.state.values.newPassword,
+      currentPassword: this.state.values.currentPassword,
+    });
   };
 
   keyboardDidShow = () => {

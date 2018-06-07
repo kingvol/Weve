@@ -3,6 +3,9 @@
     "log_in": "Войти",
     "sign_up": "Регистрация",
     "account_login": "Логин аккаунта",
+    "account_type": "Тип аккаунта",
+    "user": "Пользователь",
+    "supplier": "Предоставляю услуги",
     "or": "или",
     "confirm_password": "Подтвердить пароль",
     "forgot_your_password": "Забыли пароль?",
@@ -51,11 +54,11 @@
     "artist": "Артист",
     "photo": "Фотограф",
     "venue": "Зал",
-    "makeup": "Салон красоты",
+    "makeup": "Красота",
     "entertainment": "Развлечение",
     "decoration": "Декорация",
     "costume": "Платье",
-    "video": "Видеооператор",
+    "catering": "Кейтеринг",
     "cake": "Торт"
   },
   "menu": {
@@ -118,7 +121,8 @@
     "loading": "Загружается...",
     "fullName": "Имя и фамилия",
     "continue": "Продолжить",
-    "category": "Категория"
+    "category": "Категория",
+    "share": "Поделиться"
   },
   "auth": {
     "enter_code": "   Введите код проверки   ",

@@ -3,6 +3,9 @@
     "log_in": "Oturumu aç",
     "sign_up": "Kayıt ol",
     "account_login": "Hesap girişi",
+    "account_type": "Üyelik Seçenekleri",
+    "user": "Üye",
+    "supplier": "Supplier",
     "or": "veya",
     "confirm_password": "Şifreyi onayla",
     "forgot_your_password": "Şifreyi unuttunuzmu?",
@@ -50,11 +53,11 @@
     "artist": "Sanatçı",
     "photo": "Fotoğrafçı",
     "venue": "Mekan",
-    "makeup": "Makyaj",
+    "makeup": "Güzellik",
     "entertainment": "Eğlence",
     "decoration": "Dekorasyon",
     "costume": "Kıyafet",
-    "video": "Kameraman",
+    "catering": "Catering",
     "cake": "Pasta"
   },
   "menu": {
@@ -117,7 +120,8 @@
     "loading": "Yükleniyor...",
     "fullName": "Ad Soyad",
     "continue": "Devam",
-    "category": "Kategori"
+    "category": "Kategori",
+    "share": "Paylaş"
   },
   "auth": {
     "enter_code": "Onay şifrenizi giriniz",

@@ -3,6 +3,9 @@
     "log_in": "Içeri gir",
     "sign_up": "Registrasiýa",
     "account_login": "Hasaba girimek",
+    "account_type": "Üyelik Seçenekleri",
+    "user": "Üye",
+    "supplier": "Supplier",
     "or": "ýa-da",
     "confirm_password": "Açar sözi tassykla",
     "forgot_your_password": "Açar sözi ýatdan çykardyňyzmy?",
@@ -50,11 +53,11 @@
     "artist": "Artist",
     "photo": "Suratçy",
     "venue": "Restoran",
-    "makeup": "Gözellik salony",
+    "makeup": "Owadanlyk",
     "entertainment": "Hezillik",
     "decoration": "Bezeg",
     "costume": "Egin-eşik",
-    "video": "Wideoçy",
+    "catering": "Catering",
     "cake": "Tort"
   },
   "menu": {
@@ -117,7 +120,8 @@
     "loading": "Ýüklenýä...",
     "fullName": "Ady Familiýasy",
     "continue": "Dowam",
-    "category": "Kategoriýa"
+    "category": "Kategoriýa",
+    "share": "Paýlaş"
   },
   "auth": {
     "enter_code": "Tassyklama kodyny ýazyň",
