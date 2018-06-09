@@ -4,6 +4,8 @@
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import promise from 'redux-promise-middleware';
+import { persistReducer } from 'redux-persist';
+import storage from 'redux-persist/es/storage';
 import rootReducer from '../reducers';
 
 let middleware = [promise(), thunk];
@@ -16,10 +18,20 @@ if (__DEV__) {
   middleware = [...middleware];
 }
 
+const persistConfig = {
+  key: 'root',
+  storage,
+  // blacklist: ['user', 'auth', 'chat'],
+  whitelist: ['ui'],
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
 const createStoreWithMiddleware = applyMiddleware(...middleware)(createStore);
 
 const store = createStoreWithMiddleware(
-  rootReducer,
+  persistedReducer,
+  // rootReducer,
   __DEV__ && window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
 );
 

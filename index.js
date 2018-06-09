@@ -1,5 +1,6 @@
 import { Navigation, NativeEventsReceiver } from 'react-native-navigation';
 import { Provider } from 'react-redux';
+import { persistStore } from 'redux-persist';
 import { AppRegistry, AsyncStorage, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -9,7 +10,9 @@ import store from './src/store/configureStore';
 import AppBootstrap from './src/AppBootstrap';
 import { primaryFont } from './src/theme';
 
-registerScreens(store, Provider);
+persistStore(store, null, () => {
+  registerScreens(store, Provider);
+});
 
 AppRegistry.registerComponent('wevedo_app', () => AppBootstrap);
 
