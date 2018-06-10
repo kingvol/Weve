@@ -10,11 +10,11 @@ import store from './src/store/configureStore';
 import AppBootstrap from './src/AppBootstrap';
 import { primaryFont } from './src/theme';
 
+AppRegistry.registerComponent('wevedo_app', () => AppBootstrap);
+
 persistStore(store, null, () => {
   registerScreens(store, Provider);
 });
-
-AppRegistry.registerComponent('wevedo_app', () => AppBootstrap);
 
 export const startSingleScreenApp = () => {
   Navigation.startSingleScreenApp({
