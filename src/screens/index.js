@@ -19,7 +19,12 @@ import ChatScreen from './main/chat/chat.screen';
 const registerScreens = (store = {}, Provider = {}) => {
   Navigation.registerComponent('wevedo.loginScreen', () => LoginScreen, store, Provider);
   Navigation.registerComponent('wevedo.registerScreen', () => RegisterScreen, store, Provider);
-  Navigation.registerComponent('wevedo.verificationScreen', () => VerificationScreen, store, Provider);
+  Navigation.registerComponent(
+    'wevedo.verificationScreen',
+    () => VerificationScreen,
+    store,
+    Provider,
+  );
   Navigation.registerComponent('wevedo.forgotScreen', () => ForgotScreen, store, Provider);
   Navigation.registerComponent('wevedo.HomeTab', () => HomeTab, store, Provider);
   Navigation.registerComponent('wevedo.InboxTab', () => InboxTab, store, Provider);
@@ -38,7 +43,12 @@ const registerScreens = (store = {}, Provider = {}) => {
     Provider,
   );
   Navigation.registerComponent('wevedo.ProviderTabList', () => ProviderTabList, store, Provider);
-  Navigation.registerComponent('wevedo.ProviderProfile', () => ProviderProfileScreen, store, Provider);
+  Navigation.registerComponent(
+    'wevedo.ProviderProfile',
+    () => ProviderProfileScreen,
+    store,
+    Provider,
+  );
   Navigation.registerComponent('wevedo.ChatScreen', () => ChatScreen, store, Provider);
 };
 
