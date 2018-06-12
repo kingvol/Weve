@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, Keyboard, View } from 'react-native';
+import { Alert, Keyboard, View, Dimensions, ImageBackground, TouchableWithoutFeedback } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import { Picker, CheckBox, Left } from 'native-base';
 import CountryPicker from 'react-native-country-picker-modal';
@@ -22,6 +22,7 @@ import {
   Text,
 } from '../../../components/common';
 import { backgroundColor, lightTextColor } from '../../../theme';
+import ProfileImage from '../../../components/home/ProfileImage';
 import { UserActions } from '../../../actions';
 import APIs from '../../../api';
 
@@ -34,6 +35,8 @@ const userLocaleCountryCode = DeviceInfo.getDeviceCountry();
 const countryCode = countries.includes(userLocaleCountryCode) ? userLocaleCountryCode : 'GB';
 const regionName = countryLib[`${countryCode}`].provinces[0];
 const ucFirst = s => (s.substr(0, 1).toLowerCase() + s.substr(1)).replace(' ', '');
+
+const ITEM_WIDTH = Dimensions.get('window').width;
 
 class EditProfileScreen extends Component {
   constructor(props) {
@@ -354,7 +357,155 @@ class EditProfileScreen extends Component {
           keyboardShouldPersistTaps="always"
           ref={this.setScrollRef}
         >
-          <View style={{ justifyContent: 'center' }}>
+
+          <View style={{ justifyContent: 'space-between' }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
+              <ProfileImage
+                id="EditProfile.imageWrapper1"
+                onPress={this.captureImage}
+                source={{
+                  uri:
+                    this.state.values.profileImageURL ||
+                    this.props.user.profile.profileImageURL ||
+                    defaultProfile,
+                }}
+                emptyImage={this.state.values.profileImageURL}
+                styleContainer={{
+                  // height: 100,
+                  width: ITEM_WIDTH * 2 / 3 - ITEM_WIDTH / 25,
+                }}
+                styleImage={{
+                  // paddingTop: itemWidth - itemWidth / 25 - (itemWidth - itemWidth / 25) / 4.5,
+                  height: ITEM_WIDTH * 2 / 3 - ITEM_WIDTH / 25,
+                  width: ITEM_WIDTH * 2 / 3 - ITEM_WIDTH / 25,
+                  // margin: 3,
+                }}
+              />
+
+              <View style={{ justifyContent: 'flex-start', marginLeft: ITEM_WIDTH / 25 - 5 }}>
+
+                <ProfileImage
+                  id="EditProfile.imageWrapper2"
+                  onPress={this.captureImage}
+                  source={{
+                    uri:
+                      this.state.values.profileImageURL ||
+                      this.props.user.profile.profileImageURL,
+                  }}
+                  emptyImage={this.state.values.profileImageURL}
+                  styleContainer={{
+                    // height: 100,
+                    width: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 25,
+                    marginBottom: ITEM_WIDTH / 25,
+                  }}
+                  styleImage={{
+                    // paddingTop: itemWidth - itemWidth / 25 - (itemWidth - itemWidth / 25) / 4.5,
+                    height: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 25,
+                    width: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 25,
+                    // margin: 3,
+                  }}
+                />
+
+                <ProfileImage
+                  id="EditProfile.imageWrapper3"
+                  onPress={this.captureImage}
+                  source={{
+                    uri:
+                      this.state.values.profileImageURL ||
+                      this.props.user.profile.profileImageURL,
+                  }}
+                  emptyImage={this.state.values.profileImageURL}
+                  styleContainer={{
+                    // height: 100,
+                    width: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 25,
+                  }}
+                  styleImage={{
+                    // paddingTop: itemWidth - itemWidth / 25 - (itemWidth - itemWidth / 25) / 4.5,
+                    height: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 25,
+                    width: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 25,
+                    // margin: 3,
+                  }}
+                />
+              </View>
+            </View>
+            <View style={{
+              flexDirection: 'row',
+              justifyContent: 'flex-start',
+              marginTop: ITEM_WIDTH / 25,
+              marginBottom: ITEM_WIDTH / 25,
+            }}
+            >
+
+              <ProfileImage
+                id="EditProfile.imageWrapper4"
+                onPress={this.captureImage}
+                source={{
+                  uri:
+                    this.state.values.profileImageURL ||
+                    this.props.user.profile.profileImageURL,
+                }}
+                emptyImage={this.state.values.profileImageURL}
+                styleContainer={{
+                  // height: 100,
+                  width: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 25,
+                  marginRight: ITEM_WIDTH / 25,
+                }}
+                styleImage={{
+                  // paddingTop: itemWidth - itemWidth / 25 - (itemWidth - itemWidth / 25) / 4.5,
+                  height: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 25,
+                  width: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 25,
+                  // margin: 3,
+                }}
+              />
+
+              <ProfileImage
+                id="EditProfile.imageWrapper5"
+                onPress={this.captureImage}
+                source={{
+                  uri:
+                    this.state.values.profileImageURL ||
+                    this.props.user.profile.profileImageURL,
+                }}
+                emptyImage={this.state.values.profileImageURL}
+                styleContainer={{
+                  // height: 100,
+                  width: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 25,
+                  marginRight: ITEM_WIDTH / 25,
+                }}
+                styleImage={{
+                  // paddingTop: itemWidth - itemWidth / 25 - (itemWidth - itemWidth / 25) / 4.5,
+                  height: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 25,
+                  width: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 25,
+                  // margin: 3,
+                }}
+              />
+
+              <ProfileImage
+                id="EditProfile.imageWrapper6"
+                onPress={this.captureImage}
+                source={{
+                  uri:
+                    this.state.values.profileImageURL ||
+                    this.props.user.profile.profileImageURL,
+                }}
+                emptyImage={this.state.values.profileImageURL}
+                styleContainer={{
+                  // height: 100,
+                  width: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 25,
+                }}
+                styleImage={{
+                  // paddingTop: itemWidth - itemWidth / 25 - (itemWidth - itemWidth / 25) / 4.5,
+                  height: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 25,
+                  width: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 25,
+                  // margin: 3,
+                }}
+              />
+
+            </View>
+          </View>
+
+
+          {/* <View style={{ justifyContent: 'center' }}>
             <Button
               id="EditProfile.imageButtonWrapper"
               style={{ height: 100 }}
@@ -390,7 +541,7 @@ class EditProfileScreen extends Component {
                 </View>
               ) : null}
             </Button>
-          </View>
+          </View> */}
           <FieldInput
             name="fullName"
             input={{ value: this.state.fullName }}
@@ -526,7 +677,7 @@ class EditProfileScreen extends Component {
             success
             disabled={this.state.loading}
             onPress={this.onSubmitForm}
-            style={{ marginBottom: this.state.values.isProvider ? 15 : 0 }}
+            style={{ marginBottom: this.state.values.isProvider ? 15 : 15 }}
           >
             {I18n.t('common.save')}
           </Button>
