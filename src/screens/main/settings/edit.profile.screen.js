@@ -49,6 +49,7 @@ class EditProfileScreen extends Component {
         lastName: this.props.user.profile.lastName || '',
         phoneNumber: this.props.user.profile.phoneNumber || '',
         profileImageURL: this.props.user.profile.profileImageURL || undefined,
+        providerImages: this.props.user.profile.providerImages || [],
         countryCode,
         regionName,
         isProvider: this.props.user.profile.isProvider,
@@ -338,6 +339,38 @@ class EditProfileScreen extends Component {
     });
   };
 
+  captureProviderImage = (item) => {
+    const options = {
+      title: I18n.t('editProfile.select_avatar'),
+      storageOptions: {
+        skipBackup: true,
+      },
+    };
+    ImagePicker.showImagePicker(options, (response) => {
+      const { error, uri } = response;
+      if (error) {
+        Alert.alert(
+          I18n.t('editProfile.avatar_error'),
+          `${error}`,
+          [{ text: `${I18n.t('common.ok')}` }],
+          { cancelable: false },
+        );
+        return;
+      }
+
+      if (uri) {
+        const images = [...this.state.values.providerImages];
+        images[item] = uri;
+        this.setState({
+          values: {
+            ...this.state.values,
+            providerImages: [...images],
+          },
+        });
+      }
+    });
+  };
+
 
   render() {
     const { phoneNumber } = this.state.values;
@@ -366,43 +399,49 @@ class EditProfileScreen extends Component {
                 source={{
                   uri:
                     this.state.values.profileImageURL ||
-                    this.props.user.profile.profileImageURL ||
-                    defaultProfile,
+                    this.props.user.profile.profileImageURL,
                 }}
-                emptyImage={this.state.values.profileImageURL}
+                hasImage={this.state.values.profileImageURL}
                 styleContainer={{
-                  // height: 100,
-                  width: ITEM_WIDTH * 2 / 3 - ITEM_WIDTH / 25,
+                  width: ITEM_WIDTH * 2 / 3 - ITEM_WIDTH / 20,
+                  marginRight: ITEM_WIDTH / 20 - 1,
                 }}
                 styleImage={{
-                  // paddingTop: itemWidth - itemWidth / 25 - (itemWidth - itemWidth / 25) / 4.5,
-                  height: ITEM_WIDTH * 2 / 3 - ITEM_WIDTH / 25,
-                  width: ITEM_WIDTH * 2 / 3 - ITEM_WIDTH / 25,
-                  // margin: 3,
+                  height: ITEM_WIDTH * 2 / 3 - ITEM_WIDTH / 20,
+                  width: ITEM_WIDTH * 2 / 3 - ITEM_WIDTH / 20,
+                }}
+                styleIconImage={{
+                  flex: 0,
+                  bottom: (ITEM_WIDTH * 2 / 3 - ITEM_WIDTH / 20) / 2 - 10,
+                  paddingLeft: (ITEM_WIDTH * 2 / 3 - ITEM_WIDTH / 20) / 2 - 10,
+                  position: 'absolute',
                 }}
               />
 
-              <View style={{ justifyContent: 'flex-start', marginLeft: ITEM_WIDTH / 25 - 5 }}>
+              <View style={{ justifyContent: 'flex-start' }}>
 
                 <ProfileImage
                   id="EditProfile.imageWrapper2"
-                  onPress={this.captureImage}
+                  onPress={() => this.captureProviderImage(0)}
                   source={{
                     uri:
-                      this.state.values.profileImageURL ||
-                      this.props.user.profile.profileImageURL,
+                    this.state.values.providerImages[0] ||
+                    this.props.user.profile.providerImages[0],
                   }}
-                  emptyImage={this.state.values.profileImageURL}
+                  hasImage={this.state.values.providerImages[0]}
                   styleContainer={{
-                    // height: 100,
-                    width: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 25,
-                    marginBottom: ITEM_WIDTH / 25,
+                    width: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20,
+                    marginBottom: ITEM_WIDTH / 20,
                   }}
                   styleImage={{
-                    // paddingTop: itemWidth - itemWidth / 25 - (itemWidth - itemWidth / 25) / 4.5,
-                    height: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 25,
-                    width: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 25,
-                    // margin: 3,
+                    height: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20,
+                    width: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20,
+                  }}
+                  styleIconImage={{
+                    flex: 0,
+                    bottom: (ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20) / 2 - 10,
+                    paddingLeft: (ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20) / 2 - 10,
+                    position: 'absolute',
                   }}
                 />
 
@@ -411,19 +450,22 @@ class EditProfileScreen extends Component {
                   onPress={this.captureImage}
                   source={{
                     uri:
-                      this.state.values.profileImageURL ||
-                      this.props.user.profile.profileImageURL,
+                    this.state.values.providerImages[1] ||
+                    this.props.user.profile.providerImages[1],
                   }}
-                  emptyImage={this.state.values.profileImageURL}
+                  hasImage={this.state.values.providerImages[1]}
                   styleContainer={{
-                    // height: 100,
-                    width: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 25,
+                    width: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20,
                   }}
                   styleImage={{
-                    // paddingTop: itemWidth - itemWidth / 25 - (itemWidth - itemWidth / 25) / 4.5,
-                    height: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 25,
-                    width: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 25,
-                    // margin: 3,
+                    height: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20,
+                    width: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20,
+                  }}
+                  styleIconImage={{
+                    flex: 0,
+                    bottom: (ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20) / 2 - 10,
+                    paddingLeft: (ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20) / 2 - 10,
+                    position: 'absolute',
                   }}
                 />
               </View>
@@ -431,8 +473,8 @@ class EditProfileScreen extends Component {
             <View style={{
               flexDirection: 'row',
               justifyContent: 'flex-start',
-              marginTop: ITEM_WIDTH / 25,
-              marginBottom: ITEM_WIDTH / 25,
+              marginTop: ITEM_WIDTH / 20,
+              marginBottom: ITEM_WIDTH / 20,
             }}
             >
 
@@ -441,20 +483,23 @@ class EditProfileScreen extends Component {
                 onPress={this.captureImage}
                 source={{
                   uri:
-                    this.state.values.profileImageURL ||
-                    this.props.user.profile.profileImageURL,
+                  this.state.values.providerImages[2] ||
+                  this.props.user.profile.providerImages[2],
                 }}
-                emptyImage={this.state.values.profileImageURL}
+                hasImage={this.state.values.providerImages[2]}
                 styleContainer={{
-                  // height: 100,
-                  width: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 25,
-                  marginRight: ITEM_WIDTH / 25,
+                  width: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20,
+                  marginRight: ITEM_WIDTH / 20,
                 }}
                 styleImage={{
-                  // paddingTop: itemWidth - itemWidth / 25 - (itemWidth - itemWidth / 25) / 4.5,
-                  height: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 25,
-                  width: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 25,
-                  // margin: 3,
+                  height: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20,
+                  width: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20,
+                }}
+                styleIconImage={{
+                  flex: 0,
+                  bottom: (ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20) / 2 - 10,
+                  paddingLeft: (ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20) / 2 - 10,
+                  position: 'absolute',
                 }}
               />
 
@@ -463,20 +508,23 @@ class EditProfileScreen extends Component {
                 onPress={this.captureImage}
                 source={{
                   uri:
-                    this.state.values.profileImageURL ||
-                    this.props.user.profile.profileImageURL,
+                  this.state.values.providerImages[3] ||
+                  this.props.user.profile.providerImages[3],
                 }}
-                emptyImage={this.state.values.profileImageURL}
+                hasImage={this.state.values.providerImages[3]}
                 styleContainer={{
-                  // height: 100,
-                  width: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 25,
-                  marginRight: ITEM_WIDTH / 25,
+                  width: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20,
+                  marginRight: ITEM_WIDTH / 20 - 1,
                 }}
                 styleImage={{
-                  // paddingTop: itemWidth - itemWidth / 25 - (itemWidth - itemWidth / 25) / 4.5,
-                  height: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 25,
-                  width: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 25,
-                  // margin: 3,
+                  height: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20,
+                  width: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20,
+                }}
+                styleIconImage={{
+                  flex: 0,
+                  bottom: (ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20) / 2 - 10,
+                  paddingLeft: (ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20) / 2 - 10,
+                  position: 'absolute',
                 }}
               />
 
@@ -485,19 +533,22 @@ class EditProfileScreen extends Component {
                 onPress={this.captureImage}
                 source={{
                   uri:
-                    this.state.values.profileImageURL ||
-                    this.props.user.profile.profileImageURL,
+                  this.state.values.providerImages[4] ||
+                  this.props.user.profile.providerImages[4],
                 }}
-                emptyImage={this.state.values.profileImageURL}
+                hasImage={this.state.values.providerImages[4]}
                 styleContainer={{
-                  // height: 100,
-                  width: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 25,
+                  width: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20,
                 }}
                 styleImage={{
-                  // paddingTop: itemWidth - itemWidth / 25 - (itemWidth - itemWidth / 25) / 4.5,
-                  height: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 25,
-                  width: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 25,
-                  // margin: 3,
+                  height: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20,
+                  width: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20,
+                }}
+                styleIconImage={{
+                  flex: 0,
+                  bottom: (ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20) / 2 - 10,
+                  paddingLeft: (ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20) / 2 - 10,
+                  position: 'absolute',
                 }}
               />
 
