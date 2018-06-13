@@ -26,7 +26,7 @@ const { ProviderApi } = APIs;
 const api = new ProviderApi();
 const ITEM_WIDTH = Dimensions.get('window').width;
 const deviceWidth = Dimensions.get('window').width;
-const PROVIDERS_PER_PAGE = 2;
+const PROVIDERS_PER_PAGE = 20;
 
 class ProviderList extends PureComponent {
   state = {
