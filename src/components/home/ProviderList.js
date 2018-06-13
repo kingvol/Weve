@@ -26,7 +26,7 @@ const { ProviderApi } = APIs;
 const api = new ProviderApi();
 const ITEM_WIDTH = Dimensions.get('window').width;
 const deviceWidth = Dimensions.get('window').width;
-const PROVIDERS_PER_PAGE = 20;
+const PROVIDERS_PER_PAGE = 2;
 
 class ProviderList extends PureComponent {
   state = {
@@ -95,7 +95,7 @@ class ProviderList extends PureComponent {
       spinner={this.state.isLoading}
       onPress={this.onMorePress}
     >
-      <Text style={styles.moreButtonText}>SHOW MORE</Text>
+      <Text style={styles.moreButtonText}>{I18n.t('common.show_more')}</Text>
     </Button>
   )
 
