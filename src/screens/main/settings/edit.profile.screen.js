@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, Keyboard, View, Dimensions, ImageBackground, TouchableWithoutFeedback } from 'react-native';
+import { Alert, Keyboard, View, Dimensions } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import { Picker, CheckBox, Left } from 'native-base';
 import CountryPicker from 'react-native-country-picker-modal';

@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import { View, Text, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
+import Swiper from 'react-native-swiper';
+import FastImage from 'react-native-fast-image';
 import I18n from '../../../locales';
 import {
   Button,
@@ -19,6 +22,7 @@ import { UserActions } from '../../../actions';
 
 const { fetchProfile } = UserActions;
 const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png';
+const ITEM_WIDTH = Dimensions.get('window').width;
 
 class ProfileScreen extends Component {
   constructor(props) {
@@ -52,22 +56,43 @@ class ProfileScreen extends Component {
     });
   };
 
-  renderProfileImageName = (firstName, lastName) => (
-    <Row style={{ height: 150 }}>
-      <Col style={{ alignItems: 'center' }}>
-        <Row size={65}>
-          <Thumbnail
-            id="Profile.profileImage"
-            large
-            source={{ uri: this.props.user.profile.profileImageURL || defaultProfile }}
-          />
-        </Row>
-        <Row size={35} style={{ height: 20 }}>
-          <Label id="Profile.first_lastName">{`${firstName || ''} ${lastName || ''}`}</Label>
-        </Row>
-      </Col>
-    </Row>
-  );
+  renderProfileImageName = (firstName, lastName) => {
+    const { isProvider } = this.props.user.profile;
+    const { styleImage } = styles;
+    return (
+      <Row style={{ height: isProvider ? ITEM_WIDTH / 2.5 + 20 : 150 }}>
+        <Col style={{ alignItems: 'center' }}>
+          <Row size={65} style={{ height: isProvider ? ITEM_WIDTH / 2.5 : 65 }}>
+            {isProvider ? (
+              <Swiper style={styles.wrapper} showsButtons>
+                <View style={styles.slide1}>
+                  <FastImage
+                    source={{ uri: this.props.user.profile.profileImageURL || defaultProfile }}
+                    style={styleImage}
+                  />
+                </View>
+                <View style={styles.slide2}>
+                  <Text style={styles.text}>Beautiful</Text>
+                </View>
+                <View style={styles.slide3}>
+                  <Text style={styles.text}>And simple</Text>
+                </View>
+              </Swiper>
+            ) : (
+              <Thumbnail
+                id="Profile.profileImage"
+                large
+                source={{ uri: this.props.user.profile.profileImageURL || defaultProfile }}
+              />
+            )}
+          </Row>
+          <Row size={35} style={{ height: 20 }}>
+            <Label id="Profile.first_lastName">{`${firstName || ''} ${lastName || ''}`}</Label>
+          </Row>
+        </Col>
+      </Row>
+    );
+  };
 
   render() {
     const {
@@ -118,3 +143,34 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, { fetchProfile })(ProfileScreen);
+
+const styles = {
+  wrapper: {},
+  slide1: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    // backgroundColor: '#9DD6EB',
+  },
+  slide2: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#97CAE5',
+  },
+  slide3: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#92BBD9',
+  },
+  text: {
+    color: '#fff',
+    fontSize: 30,
+    fontWeight: 'bold',
+  },
+  styleImage: {
+    height: ITEM_WIDTH / 2.5,
+    width: ITEM_WIDTH,
+  },
+};
