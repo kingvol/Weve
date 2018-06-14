@@ -346,29 +346,39 @@ class EditProfileScreen extends Component {
         skipBackup: true,
       },
     };
-    ImagePicker.showImagePicker(options, (response) => {
-      const { error, uri } = response;
-      if (error) {
-        Alert.alert(
-          I18n.t('editProfile.avatar_error'),
-          `${error}`,
-          [{ text: `${I18n.t('common.ok')}` }],
-          { cancelable: false },
-        );
-        return;
-      }
+    const images = [...this.state.values.providerImages];
+    if (!images[item]) {
+      ImagePicker.showImagePicker(options, (response) => {
+        const { error, uri } = response;
+        if (error) {
+          Alert.alert(
+            I18n.t('editProfile.avatar_error'),
+            `${error}`,
+            [{ text: `${I18n.t('common.ok')}` }],
+            { cancelable: false },
+          );
+          return;
+        }
 
-      if (uri) {
-        const images = [...this.state.values.providerImages];
-        images[item] = uri;
-        this.setState({
-          values: {
-            ...this.state.values,
-            providerImages: [...images],
-          },
-        });
-      }
-    });
+        if (uri) {
+          images[item] = uri;
+          this.setState({
+            values: {
+              ...this.state.values,
+              providerImages: [...images],
+            },
+          });
+        }
+      });
+    } else {
+      images[item] = undefined;
+      this.setState({
+        values: {
+          ...this.state.values,
+          providerImages: [...images],
+        },
+      });
+    }
   };
 
 
@@ -390,209 +400,118 @@ class EditProfileScreen extends Component {
           keyboardShouldPersistTaps="always"
           ref={this.setScrollRef}
         >
-
-          <View style={{ justifyContent: 'space-between' }}>
-            <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
-              <ProfileImage
-                id="EditProfile.imageWrapper1"
-                onPress={this.captureImage}
-                source={{
+          { isProvider ? (
+            <View style={{ justifyContent: 'space-between' }}>
+              <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
+                <ProfileImage
+                  id="EditProfile.imageWrapper1"
+                  onPress={this.captureImage}
+                  source={{
                   uri:
                     this.state.values.profileImageURL ||
                     this.props.user.profile.profileImageURL,
                 }}
-                hasImage={this.state.values.profileImageURL}
-                styleContainer={{
-                  width: ITEM_WIDTH * 2 / 3 - ITEM_WIDTH / 20,
-                  marginRight: ITEM_WIDTH / 20 - 1,
-                }}
-                styleImage={{
-                  height: ITEM_WIDTH * 2 / 3 - ITEM_WIDTH / 20,
-                  width: ITEM_WIDTH * 2 / 3 - ITEM_WIDTH / 20,
-                }}
-                styleIconImage={{
-                  flex: 0,
-                  bottom: (ITEM_WIDTH * 2 / 3 - ITEM_WIDTH / 20) / 2 - 10,
-                  paddingLeft: (ITEM_WIDTH * 2 / 3 - ITEM_WIDTH / 20) / 2 - 10,
-                  position: 'absolute',
-                }}
-              />
-
-              <View style={{ justifyContent: 'flex-start' }}>
-
-                <ProfileImage
-                  id="EditProfile.imageWrapper2"
-                  onPress={() => this.captureProviderImage(0)}
-                  source={{
-                    uri:
-                    this.state.values.providerImages[0] ||
-                    this.props.user.profile.providerImages[0],
-                  }}
-                  hasImage={this.state.values.providerImages[0]}
-                  styleContainer={{
-                    width: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20,
-                    marginBottom: ITEM_WIDTH / 20,
-                  }}
-                  styleImage={{
-                    height: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20,
-                    width: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20,
-                  }}
-                  styleIconImage={{
-                    flex: 0,
-                    bottom: (ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20) / 2 - 10,
-                    paddingLeft: (ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20) / 2 - 10,
-                    position: 'absolute',
-                  }}
+                  hasImage={this.state.values.profileImageURL}
+                  size={2 / 3}
+                  styleContainer={{ marginRight: ITEM_WIDTH / 20 - 1 }}
                 />
 
-                <ProfileImage
-                  id="EditProfile.imageWrapper3"
-                  onPress={this.captureImage}
-                  source={{
-                    uri:
-                    this.state.values.providerImages[1] ||
-                    this.props.user.profile.providerImages[1],
-                  }}
-                  hasImage={this.state.values.providerImages[1]}
-                  styleContainer={{
-                    width: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20,
-                  }}
-                  styleImage={{
-                    height: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20,
-                    width: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20,
-                  }}
-                  styleIconImage={{
-                    flex: 0,
-                    bottom: (ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20) / 2 - 10,
-                    paddingLeft: (ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20) / 2 - 10,
-                    position: 'absolute',
-                  }}
-                />
+                <View style={{ justifyContent: 'flex-start' }}>
+
+                  <ProfileImage
+                    id="EditProfile.imageWrapper2"
+                    onPress={() => this.captureProviderImage(0)}
+                    source={{ uri: this.state.values.providerImages[0] }}
+                    hasImage={this.state.values.providerImages[0]}
+                    size={1 / 3}
+                    styleContainer={{ marginBottom: ITEM_WIDTH / 20 }}
+                  />
+
+                  <ProfileImage
+                    id="EditProfile.imageWrapper3"
+                    onPress={() => this.captureProviderImage(1)}
+                    source={{ uri: this.state.values.providerImages[1] }}
+                    hasImage={this.state.values.providerImages[1]}
+                    size={1 / 3}
+                  />
+                </View>
               </View>
-            </View>
-            <View style={{
+              <View style={{
               flexDirection: 'row',
               justifyContent: 'flex-start',
               marginTop: ITEM_WIDTH / 20,
               marginBottom: ITEM_WIDTH / 20,
             }}
-            >
+              >
 
-              <ProfileImage
-                id="EditProfile.imageWrapper4"
-                onPress={this.captureImage}
-                source={{
-                  uri:
-                  this.state.values.providerImages[2] ||
-                  this.props.user.profile.providerImages[2],
-                }}
-                hasImage={this.state.values.providerImages[2]}
-                styleContainer={{
-                  width: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20,
-                  marginRight: ITEM_WIDTH / 20,
-                }}
-                styleImage={{
-                  height: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20,
-                  width: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20,
-                }}
-                styleIconImage={{
-                  flex: 0,
-                  bottom: (ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20) / 2 - 10,
-                  paddingLeft: (ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20) / 2 - 10,
-                  position: 'absolute',
-                }}
-              />
+                <ProfileImage
+                  id="EditProfile.imageWrapper6"
+                  onPress={() => this.captureProviderImage(4)}
+                  source={{ uri: this.state.values.providerImages[4] }}
+                  hasImage={this.state.values.providerImages[4]}
+                  size={1 / 3}
+                  styleContainer={{ marginRight: ITEM_WIDTH / 20 }}
+                />
 
-              <ProfileImage
-                id="EditProfile.imageWrapper5"
-                onPress={this.captureImage}
-                source={{
-                  uri:
-                  this.state.values.providerImages[3] ||
-                  this.props.user.profile.providerImages[3],
-                }}
-                hasImage={this.state.values.providerImages[3]}
-                styleContainer={{
-                  width: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20,
-                  marginRight: ITEM_WIDTH / 20 - 1,
-                }}
-                styleImage={{
-                  height: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20,
-                  width: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20,
-                }}
-                styleIconImage={{
-                  flex: 0,
-                  bottom: (ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20) / 2 - 10,
-                  paddingLeft: (ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20) / 2 - 10,
-                  position: 'absolute',
-                }}
-              />
+                <ProfileImage
+                  id="EditProfile.imageWrapper5"
+                  onPress={() => this.captureProviderImage(3)}
+                  source={{ uri: this.state.values.providerImages[3] }}
+                  hasImage={this.state.values.providerImages[3]}
+                  size={1 / 3}
+                  styleContainer={{ marginRight: ITEM_WIDTH / 20 - 1 }}
+                />
 
-              <ProfileImage
-                id="EditProfile.imageWrapper6"
-                onPress={this.captureImage}
-                source={{
-                  uri:
-                  this.state.values.providerImages[4] ||
-                  this.props.user.profile.providerImages[4],
-                }}
-                hasImage={this.state.values.providerImages[4]}
-                styleContainer={{
-                  width: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20,
-                }}
-                styleImage={{
-                  height: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20,
-                  width: ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20,
-                }}
-                styleIconImage={{
-                  flex: 0,
-                  bottom: (ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20) / 2 - 10,
-                  paddingLeft: (ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20) / 2 - 10,
-                  position: 'absolute',
-                }}
-              />
+                <ProfileImage
+                  id="EditProfile.imageWrapper4"
+                  onPress={() => this.captureProviderImage(2)}
+                  source={{ uri: this.state.values.providerImages[2] }}
+                  hasImage={this.state.values.providerImages[2]}
+                  size={1 / 3}
+                />
 
+              </View>
             </View>
-          </View>
 
-
-          {/* <View style={{ justifyContent: 'center' }}>
-            <Button
-              id="EditProfile.imageButtonWrapper"
-              style={{ height: 100 }}
-              transparent
-              onPress={this.captureImage}
-            >
-              <Thumbnail
-                id="EditProfile.profileImage"
-                large
-                source={{
+          ) : (
+            <View style={{ justifyContent: 'center' }}>
+              <Button
+                id="EditProfile.imageButtonWrapper"
+                style={{ height: 100 }}
+                transparent
+                onPress={this.captureImage}
+              >
+                <Thumbnail
+                  id="EditProfile.profileImage"
+                  large
+                  source={{
                   uri:
                     this.state.values.profileImageURL ||
                     this.props.user.profile.profileImageURL ||
                     defaultProfile,
                 }}
-              />
-              {!this.state.values.profileImageURL ? (
-                <View
-                  style={{
+                />
+                {!this.state.values.profileImageURL ? (
+                  <View
+                    style={{
                     flex: 0,
                     bottom: 13,
                     paddingLeft: 40,
                     position: 'absolute',
                   }}
-                >
-                  <Icon
-                    style={{
+                  >
+                    <Icon
+                      style={{
                       color: this.state.profileIconColor,
                     }}
-                    size={20}
-                    name="plus"
-                  />
-                </View>
+                      size={20}
+                      name="plus"
+                    />
+                  </View>
               ) : null}
-            </Button>
-          </View> */}
+              </Button>
+            </View>
+          )}
           <FieldInput
             name="fullName"
             input={{ value: this.state.fullName }}

@@ -1,72 +1,85 @@
 import React from 'react';
-import { View, ImageBackground, TouchableWithoutFeedback } from 'react-native';
+import { View, ImageBackground, TouchableOpacity, Text, Dimensions } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { primaryFont } from '../../theme';
 
-const ProfileImage = ({
-  id,
-  onPress,
-  source,
-  hasImage,
-  styleContainer,
-  styleImage,
-  styleIconImage,
-}) => (
-  <TouchableWithoutFeedback onPress={onPress}>
-    <View
-      id={id}
-      style={[styleContainer, { borderWidth: hasImage ? 0 : 0.25, borderColor: 'grey' }]}
-    >
-      {hasImage ? (
-        <FastImage source={source} style={styleImage} />
-      ) : (
-        <ImageBackground source={source} style={styleImage} />
-      )}
-      {!hasImage && (
-        <View style={styleIconImage}>
-          <Icon
-            style={{
-              color: 'lightgrey',
-            }}
-            size={20}
-            name="photo"
-            // film
-          />
-        </View>
-      )}
-      <View
-        style={{
-          flex: 0,
-          // bottom: (ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20) / 2 - 10,
-          // paddingLeft: (ITEM_WIDTH * 1 / 3 - ITEM_WIDTH / 20) / 2 - 10,
-          justifyContent: 'flex-end',
-          // marginLeft: 1,
-          // transform: [{ translate: [1, 1, 1] }],
-          // zIndex: -10,
-          position: 'absolute',
-        }}
-      >
-        <Icon
+const ITEM_WIDTH = Dimensions.get('window').width;
+
+const ProfileImage = ({ id, onPress, source, size, hasImage, styleContainer }) => {
+  const styles = {
+    container: {
+      borderWidth: hasImage ? 0 : 0.25,
+      borderColor: 'grey',
+      width: ITEM_WIDTH * size - ITEM_WIDTH / 20,
+    },
+    styleImage: {
+      height: ITEM_WIDTH * size - ITEM_WIDTH / 20,
+      width: ITEM_WIDTH * size - ITEM_WIDTH / 20,
+    },
+    styleIconImage: {
+      flex: 0,
+      bottom: (ITEM_WIDTH * size - ITEM_WIDTH / 20) / 2 - 20,
+      paddingLeft: (ITEM_WIDTH * size - ITEM_WIDTH / 20) / 2 - 20,
+      position: 'absolute',
+    },
+    styleIconButton: {
+      color: hasImage ? '#d64635' : 'green',
+      backgroundColor: 'white',
+      borderRadius: 12,
+      paddingTop: 0.8,
+      paddingBottom: 0.8,
+      paddingLeft: 3.3,
+      paddingRight: 3.3,
+    },
+    styleNumber: {
+      flex: 0,
+      position: 'absolute',
+      backgroundColor: 'white',
+      borderRadius: 10,
+      paddingLeft: 5.5,
+      paddingRight: 5.5,
+      marginTop: ITEM_WIDTH * size - ITEM_WIDTH / 20 - 20,
+      marginLeft: ITEM_WIDTH * size - ITEM_WIDTH / 20 - 20,
+    },
+  };
+  const { container, styleImage, styleIconImage, styleIconButton, styleNumber } = styles;
+  return (
+    <View>
+      <View id={id} style={[styleContainer, container]}>
+        {hasImage ? (
+          <FastImage source={source} style={styleImage} />
+        ) : (
+          <ImageBackground source={source} style={styleImage} />
+        )}
+        {!hasImage && (
+          <View style={styleIconImage}>
+            <Icon
+              style={{ color: 'lightgrey' }}
+              size={40}
+              name="film" // photo
+            />
+          </View>
+        )}
+        <View
           style={{
-            color: '#d64635',
-            backgroundColor: 'white',
-            borderRadius: 1,
+            flex: 0,
+            position: 'absolute',
           }}
-          size={15}
-          name={hasImage ? 'remove' : 'plus-square'}
-        />
+        >
+          <TouchableOpacity onPress={onPress}>
+            <Icon
+              style={styleIconButton}
+              size={hasImage ? 17 : 20}
+              name={hasImage ? 'remove' : 'plus-circle'}
+            />
+          </TouchableOpacity>
+        </View>
+        <View style={styleNumber}>
+          <Text style={{ color: 'grey', fontWeight: 'bold' }}>{id.substr(id.length - 1)}</Text>
+        </View>
       </View>
     </View>
-  </TouchableWithoutFeedback>
-);
-const styles = {
-  artistTitle: {
-    ...primaryFont,
-    color: 'white',
-    margin: 10,
-    textAlign: 'left',
-  },
+  );
 };
 
 export default ProfileImage;
