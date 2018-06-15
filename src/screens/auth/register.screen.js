@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { AuthActions } from '../../actions';
 import RegisterForm from '../../components/auth/register.form';
 import config from '../../../config';
+import Analytics from '../../services/AnalyticsService';
 
 const { registerUser, loginUser } = AuthActions;
 
@@ -22,6 +23,8 @@ class RegisterScreen extends Component {
     if (!auth.isLoading && this.state.nextStepSignIn) {
       const { phoneNumber, password } = this.state;
       this.switchNextStep();
+      /* Appcenter Analytics */
+      Analytics.trackEvent('Registration', { phoneNumber });
       this.props.loginUser({ phoneNumber, password });
     }
   }
