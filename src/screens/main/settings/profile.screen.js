@@ -59,24 +59,50 @@ class ProfileScreen extends Component {
   renderProfileImageName = (firstName, lastName) => {
     const { isProvider } = this.props.user.profile;
     const { styleImage } = styles;
+    let images;
+    if (this.props.user.profile.providerImages) {
+      images = this.props.user.profile.providerImages.filter(e => e);
+      if (this.props.user.profile.bio) {
+        images.unshift(this.props.user.profile.bio);
+      }
+      images.unshift(this.props.user.profile.profileImageURL);
+    }
     return (
-      <Row style={{ height: isProvider ? ITEM_WIDTH / 2.5 + 20 : 150 }}>
+      <Row
+        style={{
+          height: isProvider && this.props.user.profile.profileImageURL ? ITEM_WIDTH / 3 + 20 : 150,
+        }}
+      >
         <Col style={{ alignItems: 'center' }}>
-          <Row size={65} style={{ height: isProvider ? ITEM_WIDTH / 2.5 : 65 }}>
-            {isProvider ? (
-              <Swiper style={styles.wrapper} showsButtons>
-                <View style={styles.slide1}>
-                  <FastImage
-                    source={{ uri: this.props.user.profile.profileImageURL || defaultProfile }}
-                    style={styleImage}
-                  />
-                </View>
-                <View style={styles.slide2}>
-                  <Text style={styles.text}>Beautiful</Text>
-                </View>
-                <View style={styles.slide3}>
-                  <Text style={styles.text}>And simple</Text>
-                </View>
+          <Row
+            size={isProvider && this.props.user.profile.profileImageURL ? ITEM_WIDTH / 3 : 65}
+            style={{
+              height: isProvider && this.props.user.profile.profileImageURL ? ITEM_WIDTH / 3 : 65,
+            }}
+          >
+            {isProvider && this.props.user.profile.profileImageURL ? (
+              <Swiper
+                style={styles.wrapper}
+                showsButtons
+                autoplay
+                dotColor="#c4c4c4"
+                activeDotColor="#d64635"
+                paginationStyle={{
+                  bottom: 7,
+                }}
+                buttonWrapperStyle={{ paddingHorizontal: 20 }}
+                nextButton={<Text style={{ color: '#d64635', fontSize: 35 }}>›</Text>}
+                prevButton={<Text style={{ color: '#d64635', fontSize: 35 }}>‹</Text>}
+              >
+                {images.map((item, key) => (
+                  <View id={key} key={item} style={styles.slide1}>
+                    {this.props.user.profile.bio && key === 1 ? (
+                      <Text style={styles.text}>{item}</Text>
+                    ) : (
+                      <FastImage source={{ uri: item }} style={styleImage} />
+                    )}
+                  </View>
+                ))}
               </Swiper>
             ) : (
               <Thumbnail
@@ -86,7 +112,13 @@ class ProfileScreen extends Component {
               />
             )}
           </Row>
-          <Row size={35} style={{ height: 20 }}>
+          <Row
+            size={35}
+            style={{
+              marginTop: isProvider && this.props.user.profile.profileImageURL ? 5 : 0,
+              height: 20,
+            }}
+          >
             <Label id="Profile.first_lastName">{`${firstName || ''} ${lastName || ''}`}</Label>
           </Row>
         </Col>
@@ -126,9 +158,9 @@ class ProfileScreen extends Component {
             />
             <ProfileFieldForCountry
               id="Profile.countryField"
-              icon={countryCode || 'GB'}
+              icon={countryCode || ''}
               title={I18n.t('editProfile.region')}
-              subTitle={regionName || 'Barnsley'}
+              subTitle={regionName || ''}
             />
           </Grid>
         </Content>
@@ -145,24 +177,16 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, { fetchProfile })(ProfileScreen);
 
 const styles = {
-  wrapper: {},
+  wrapper: {
+    height: ITEM_WIDTH / 3,
+    width: ITEM_WIDTH / 1.5,
+    alignSelf: 'center',
+  },
   slide1: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor: '#9DD6EB',
-  },
-  slide2: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#97CAE5',
-  },
-  slide3: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#92BBD9',
+    backgroundColor: 'rgba(52, 52, 52, 0.5)',
   },
   text: {
     color: '#fff',
@@ -170,7 +194,7 @@ const styles = {
     fontWeight: 'bold',
   },
   styleImage: {
-    height: ITEM_WIDTH / 2.5,
-    width: ITEM_WIDTH,
+    height: ITEM_WIDTH / 3,
+    width: ITEM_WIDTH / 1.5,
   },
 };

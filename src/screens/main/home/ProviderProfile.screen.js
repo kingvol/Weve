@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Content } from 'native-base';
-import { View, Alert } from 'react-native';
+import { View, Alert, Dimensions, Text } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { connect } from 'react-redux';
+import Swiper from 'react-native-swiper';
 import { Calendar } from 'react-native-calendars';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
@@ -22,6 +23,7 @@ const calendarTheme = {
 };
 
 const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png';
+const ITEM_WIDTH = Dimensions.get('window').width;
 
 class ProviderProfileScreen extends Component {
   constructor(props) {
@@ -133,10 +135,19 @@ class ProviderProfileScreen extends Component {
   render() {
     const { profile } = this.props.user; // authUser
     const { provider } = this.props;
+    const { styleImage } = styles;
 
     const markedDates = profile._id === provider._id ? profile.bookedDates : provider.bookedDates;
 
     let transformedMarkedDates = {};
+    let images;
+    if (provider.providerImages) {
+      images = provider.providerImages.filter(e => e);
+      if (provider.bio) {
+        images.unshift(provider.bio);
+      }
+      images.unshift(provider.profileImageURL);
+    }
 
     markedDates.forEach((date) => {
       transformedMarkedDates = {
@@ -148,11 +159,37 @@ class ProviderProfileScreen extends Component {
     return (
       <Content contentContainerStyle={{ flexGrow: 1 }}>
         <View style={{ minHeight: 500, flex: 2 }}>
-          <FastImage
-            style={styles.image}
-            resizeMode={FastImage.resizeMode.contain}
-            source={{ uri: this.props.provider.profileImageURL || defaultProfile }}
-          />
+          {provider.profileImageURL && provider.providerImages ? (
+            <Swiper
+              style={styles.wrapper}
+              showsButtons
+              autoplay
+              dotColor="#c4c4c4"
+              activeDotColor="#d64635"
+              paginationStyle={{
+                bottom: 7,
+              }}
+              buttonWrapperStyle={{ paddingHorizontal: 20 }}
+              nextButton={<Text style={{ color: '#d64635', fontSize: 35 }}>›</Text>}
+              prevButton={<Text style={{ color: '#d64635', fontSize: 35 }}>‹</Text>}
+            >
+              {images.map((item, key) => (
+                <View id={key} key={item} style={styles.slide1}>
+                  {provider.bio && key === 1 ? (
+                    <Text style={styles.text}>{item}</Text>
+                  ) : (
+                    <FastImage source={{ uri: item }} style={styleImage} />
+                  )}
+                </View>
+              ))}
+            </Swiper>
+          ) : (
+            <FastImage
+              style={styles.image}
+              resizeMode={FastImage.resizeMode.contain}
+              source={{ uri: this.props.provider.profileImageURL || defaultProfile }}
+            />
+          )}
           <Calendar
             theme={calendarTheme}
             style={styles.calendar}
@@ -168,6 +205,26 @@ class ProviderProfileScreen extends Component {
 const styles = {
   image: {
     flex: 1,
+  },
+  wrapper: {
+    height: ITEM_WIDTH / 1.9,
+    width: ITEM_WIDTH / 1.4,
+    alignSelf: 'center',
+  },
+  slide1: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(52, 52, 52, 0.5)',
+  },
+  text: {
+    color: '#fff',
+    fontSize: 30,
+    fontWeight: 'bold',
+  },
+  styleImage: {
+    height: ITEM_WIDTH / 1.9,
+    width: ITEM_WIDTH / 1.4,
   },
 };
 

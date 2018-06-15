@@ -9,7 +9,7 @@ const ProfileFieldForCountry = ({ icon, title, subTitle, id }) => {
   const noData = 'No data';
   return (
     <View id={id} style={{ marginHorizontal: 20 }}>
-      <Row style={{ height: 110 }}>
+      <Row style={{ height: 100 }}>
         <Col style={{ justifyContent: 'center', alignItems: 'flex-start' }} size={15}>
           <CountryPicker onChange={() => {}} cca2={icon} disabled />
         </Col>

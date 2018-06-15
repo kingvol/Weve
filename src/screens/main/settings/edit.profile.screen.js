@@ -54,6 +54,7 @@ class EditProfileScreen extends Component {
         regionName,
         isProvider: this.props.user.profile.isProvider,
         categories: this.props.user.profile.categories,
+        bio: '',
       },
       fullName: `${this.props.user.profile.firstName} ${this.props.user.profile.lastName}` || '',
       loading: false,
