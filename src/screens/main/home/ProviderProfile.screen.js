@@ -9,6 +9,7 @@ import moment from 'moment';
 import { lightTextColor, primaryFont } from '../../../theme';
 import { secondaryColor } from '../../../theme/colors';
 import { updateProfile, fetchProfile } from '../../../actions/user.actions';
+import Analytics from '../../../services/AnalyticsService';
 
 import I18n from '../../../locales';
 
@@ -31,6 +32,9 @@ class ProviderProfileScreen extends Component {
 
   componentDidMount() {
     const { _id } = this.props.user.profile;
+
+    Analytics.trackEvent('Provider profile view', { _id });
+
     if (_id !== this.props.provider._id) {
       Promise.all([Icon.getImageSource('comments-o', 20, '#ffffff')]).then((sources) => {
         this.props.navigator.setButtons({
@@ -128,6 +132,7 @@ class ProviderProfileScreen extends Component {
     this.props.updateProfile({
       bookedDates: [...this.props.user.profile.bookedDates, timestamp],
     });
+    Analytics.trackEvent('Booked date', { provider: this.props.user._id, date: timestamp });
   };
 
   render() {
