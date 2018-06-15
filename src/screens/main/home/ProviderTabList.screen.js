@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle, react/no-unused-state */
 import React, { Component } from 'react';
-import { Dimensions, View } from 'react-native';
+import { Dimensions, View, Text } from 'react-native';
 import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
 
 import I18n from '../../../locales';
@@ -75,9 +75,20 @@ class ProviderTabList extends Component {
       useNativeDriver
       style={{ backgroundColor: 'white' }}
       labelStyle={{ color: 'red' }}
+      renderLabel={this._renderLabel}
       indicatorStyle={{ backgroundColor: 'red' }}
     />
   );
+
+  _renderLabel = ({ route }) => (
+    <Text
+      style={styles.labelText}
+      adjustsFontSizeToFit
+      minimumFontScale={0.8}
+    >
+      {route.title.toUpperCase()}
+    </Text>
+  )
 
   _renderScene = SceneMap({
     venue: this.VenueRoute,
@@ -106,5 +117,13 @@ class ProviderTabList extends Component {
     );
   }
 }
+
+const styles = {
+  labelText: {
+    padding: 7,
+    color: 'red',
+
+  },
+};
 
 export default ProviderTabList;
