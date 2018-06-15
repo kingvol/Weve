@@ -121,7 +121,8 @@
     "fullName": "Full name",
     "continue": "Continue",
     "category": "Category",
-    "share": "Share"
+    "share": "Share",
+    "show_more": "Show more"
   },
   "auth": {
     "enter_code": "Enter verification code",

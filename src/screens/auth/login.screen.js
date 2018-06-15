@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { AuthActions } from '../../actions';
 import { startTabBasedApp } from '../../../index';
 import LoginForm from '../../components/auth/login.form';
+import Analytics from '../../services/AnalyticsService';
 
 const { loginUser } = AuthActions;
 
@@ -18,6 +19,8 @@ class LoginScreen extends Component {
 
   onSubmitPress = (phoneNumber, password) => {
     this.props.loginUser({ phoneNumber, password });
+    /* Appcenter Analytics */
+    Analytics.trackEvent('Login', { phoneNumber });
   };
 
   onRegisterPress = () => {
