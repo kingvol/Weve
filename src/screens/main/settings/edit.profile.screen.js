@@ -37,6 +37,7 @@ const regionName = countryLib[`${countryCode}`].provinces[0];
 const ucFirst = s => (s.substr(0, 1).toLowerCase() + s.substr(1)).replace(' ', '');
 
 const ITEM_WIDTH = Dimensions.get('window').width;
+const maxLength = 100;
 
 class EditProfileScreen extends Component {
   constructor(props) {
@@ -55,7 +56,7 @@ class EditProfileScreen extends Component {
         isProvider: this.props.user.profile.isProvider,
         categories: this.props.user.profile.categories,
         bio: this.props.user.profile.bio,
-        descriptionLength: 100,
+        descriptionLength: maxLength - this.props.user.profile.bio.length,
       },
       fullName: `${this.props.user.profile.firstName} ${this.props.user.profile.lastName}` || '',
       loading: false,
@@ -215,6 +216,30 @@ class EditProfileScreen extends Component {
         this.setState({ imageUploading: false });
       }
     }
+    if (this.state.values.providerImages.length === this.props.user.profile.providerImages.length &&
+      this.state.values.providerImages.every((v, i) =>
+        v === this.props.user.profile.providerImages[i])) {
+      console.log('equal');
+    } else {
+      const imagesArray = [];
+      try {
+        this.setState({ imageUploading: true });
+        this.state.values.providerImages.forEach((a1) => {
+          imagesArray.push(this.uploadProfileImage(a1));
+        });
+        this.setState({
+          values: {
+            ...this.state.values,
+            providerImages: imagesArray,
+          },
+          imageUploading: false,
+        });
+      } catch ({ message }) {
+        Alert.alert(I18n.t(`backend.${message}`));
+        this.setState({ imageUploading: false });
+      }
+    }
+
     if (!this.state.values.profileImageURL && this.state.values.isProvider) {
       Alert.alert(
         I18n.t('logIn.upload_photo'), '',
@@ -384,7 +409,6 @@ class EditProfileScreen extends Component {
   };
 
   profileDescriptionMethod = (value) => {
-    const maxLength = 100;
     this.setState({
       values: {
         ...this.state.values,
