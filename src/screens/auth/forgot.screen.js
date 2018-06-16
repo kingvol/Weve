@@ -63,7 +63,7 @@ class ForgotPassword extends Component {
         step: 2,
       });
     } catch ({ message }) {
-      alert(I18n.t(`backend.${message}`));
+      alert(I18n.t(`backend.${message}`, { defaults: [{ scope: 'chat.error' }] }));
     }
   };
 
@@ -80,7 +80,7 @@ class ForgotPassword extends Component {
         { cancelable: false },
       );
     } catch (error) {
-      alert(I18n.t(`backend.${error.message}`));
+      alert(I18n.t(`backend.${error.message}`, { defaults: [{ scope: 'chat.error' }] }));
       this.setState({ isLoading: false });
     }
   };

@@ -83,7 +83,7 @@ class EditProfileScreen extends Component {
         });
       }
     } catch ({ message }) {
-      alert(I18n.t(`backend.${message}`));
+      alert(I18n.t(`backend.${message}`, { defaults: [{ scope: 'chat.error' }] }));
     }
 
     if (this.props.user.profile.countryCode && this.props.user.profile.regionName) {
@@ -205,7 +205,7 @@ class EditProfileScreen extends Component {
           imageUploading: false,
         });
       } catch ({ message }) {
-        Alert.alert(I18n.t(`backend.${message}`));
+        Alert.alert(I18n.t(`backend.${message}`, { defaults: [{ scope: 'chat.error' }] }));
         this.setState({ imageUploading: false });
       }
     }

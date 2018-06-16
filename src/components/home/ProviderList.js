@@ -84,7 +84,7 @@ class ProviderList extends PureComponent {
         disableMore: providers.length < PROVIDERS_PER_PAGE,
       });
     } catch ({ message }) {
-      Alert.alert(I18n.t(`backend.${message}`));
+      Alert.alert(I18n.t(`backend.${message}`, { defaults: [{ scope: 'chat.error' }] }));
     }
   };
 
