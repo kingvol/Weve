@@ -94,7 +94,9 @@
     "avatar_error": "Surat alynmady",
     "country": "Döwlet",
     "countryLang": "rus",
-    "region": "Welaýat"
+    "region": "Welaýat",
+    "description": "Profil mazmuny",
+    "symbols": "harp"
   },
   "inbox": {
     "no_active_dialog": "Häzirki wagtda hiç hili hatyňyz ýok"

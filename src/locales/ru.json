@@ -95,7 +95,9 @@
     "avatar_error": "Не удалось получить фото",
     "country": "Страна",
     "countryLang": "rus",
-    "region": "Область"
+    "region": "Область",
+    "description": "Описание профиля",
+    "symbols": "символов"
   },
   "inbox": {
     "no_active_dialog": "Нет активных диалогов"

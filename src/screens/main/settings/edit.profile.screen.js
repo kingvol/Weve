@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, Keyboard, View, Dimensions } from 'react-native';
+import { Alert, Keyboard, View, Dimensions, TextInput } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import { Picker, CheckBox, Left } from 'native-base';
 import CountryPicker from 'react-native-country-picker-modal';
@@ -54,7 +54,8 @@ class EditProfileScreen extends Component {
         regionName,
         isProvider: this.props.user.profile.isProvider,
         categories: this.props.user.profile.categories,
-        bio: '',
+        bio: this.props.user.profile.bio,
+        descriptionLength: 100,
       },
       fullName: `${this.props.user.profile.firstName} ${this.props.user.profile.lastName}` || '',
       loading: false,
@@ -382,10 +383,21 @@ class EditProfileScreen extends Component {
     }
   };
 
+  profileDescriptionMethod = (value) => {
+    const maxLength = 100;
+    this.setState({
+      values: {
+        ...this.state.values,
+        descriptionLength: maxLength - value.length,
+        bio: value,
+      },
+    });
+  }
+
 
   render() {
     const { phoneNumber } = this.state.values;
-    const { checkBoxText, categoryText } = styles;
+    const { checkBoxText, categoryText, styleDescription } = styles;
     const { isProvider } = this.props.user.profile;
 
     return (
@@ -607,40 +619,58 @@ class EditProfileScreen extends Component {
               <Text style={checkBoxText}>{I18n.t('logIn.advertiser')}</Text>
             </Left>
           </View>)}
-          {this.state.values.isProvider &&
-               (
-               <View style={{ flex: 1 }}>
-                 <View style={{ flexDirection: 'row' }}>
-                   <View style={{ flex: 1 }}>
-                     <MultiSelect
+          {this.state.values.isProvider && (
+          <View style={{ flex: 1 }}>
+            <View style={{ flex: 1 }}>
+              <Text style={{ color: lightTextColor, marginBottom: 7 }}>
+                { I18n.t('editProfile.description') }
+              </Text>
+              <View style={{ height: 140, flex: 1 }}>
+                <TextInput
+                  onChangeText={value => this.profileDescriptionMethod(value)}
+                  value={this.state.values.bio}
+                  style={styleDescription}
+                  maxLength={100}
+                  underlineColorAndroid="transparent"
+                  placeholder={`100 ${I18n.t('editProfile.symbols')}`}
+                  multiline
+                />
+                <Text style={{ fontSize: 10, color: 'lightgrey', textAlign: 'right' }}>
+                  {this.state.values.descriptionLength}
+                </Text>
+              </View>
+            </View>
+            <View style={{ flexDirection: 'row' }}>
+              <View style={{ flex: 1 }}>
+                <MultiSelect
                        // hideTags
-                       items={this.state.categories}
-                       uniqueKey="_id"
-                       ref={this.setMultiselectRef}
-                       onSelectedItemsChange={this.onCategorySelect}
-                       selectedItems={this.state.values.categories}
-                       selectText={I18n.t('common.category')}
-                       searchInputPlaceholderText={`${I18n.t('common.category')}...`}
-                       fontSize={16}
-                       tagRemoveIconColor="#d64635"
-                       tagBorderColor="#f3c200"
-                       tagTextColor={lightTextColor}
-                       selectedItemTextColor={lightTextColor}
-                       selectedItemIconColor={lightTextColor}
-                       itemTextColor="#000"
-                       displayKey="name"
-                       searchInputStyle={{ color: lightTextColor }}
-                       autoFocusInput={false}
-                       submitButtonColor="#d64635"
-                       submitButtonText={I18n.t('common.ok')}
-                       hideSubmitButton
-                     />
-                   </View>
-                 </View>
-                 <Text style={categoryText}>
-                   {I18n.t('logIn.account_activation')}
-                 </Text>
-               </View>
+                  items={this.state.categories}
+                  uniqueKey="_id"
+                  ref={this.setMultiselectRef}
+                  onSelectedItemsChange={this.onCategorySelect}
+                  selectedItems={this.state.values.categories}
+                  selectText={I18n.t('common.category')}
+                  searchInputPlaceholderText={`${I18n.t('common.category')}...`}
+                  fontSize={16}
+                  tagRemoveIconColor="#d64635"
+                  tagBorderColor="#f3c200"
+                  tagTextColor={lightTextColor}
+                  selectedItemTextColor={lightTextColor}
+                  selectedItemIconColor={lightTextColor}
+                  itemTextColor="#000"
+                  displayKey="name"
+                  searchInputStyle={{ color: lightTextColor }}
+                  autoFocusInput={false}
+                  submitButtonColor="#d64635"
+                  submitButtonText={I18n.t('common.ok')}
+                  hideSubmitButton
+                />
+              </View>
+            </View>
+            <Text style={categoryText}>
+              {I18n.t('logIn.account_activation')}
+            </Text>
+          </View>
           )}
           <Button
             id="EditProfile.subbmitButton"
@@ -674,5 +704,14 @@ const styles = {
     color: lightTextColor,
     margin: 5,
     fontSize: 12,
+  },
+  styleDescription: {
+    height: 120,
+    borderColor: 'gray',
+    borderWidth: 1,
+    padding: 7,
+    borderRadius: 3,
+    textAlignVertical: 'top',
+    color: '#4d5460',
   },
 };

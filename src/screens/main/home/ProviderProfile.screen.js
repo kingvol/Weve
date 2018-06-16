@@ -224,8 +224,9 @@ const styles = {
   },
   text: {
     color: '#fff',
-    fontSize: 30,
+    fontSize: 20,
     fontWeight: 'bold',
+    margin: 7,
   },
   styleImage: {
     height: ITEM_WIDTH / 1.9,
