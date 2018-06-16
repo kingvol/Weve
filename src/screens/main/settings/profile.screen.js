@@ -61,7 +61,7 @@ class ProfileScreen extends Component {
     const { styleImage } = styles;
     let images;
     if (this.props.user.profile.providerImages) {
-      images = this.props.user.profile.providerImages.filter(e => e);
+      images = this.props.user.profile.providerImages.filter(e => !!e);
       if (this.props.user.profile.bio) {
         images.unshift(this.props.user.profile.bio);
       }

@@ -78,7 +78,7 @@ class SettingsTab extends Component {
 
   ShareMessage = () => {
     Share.share({
-      message: 'http://onelink.to/wevedo',
+      message: 'https://wevedo.page.link/get',
     })
       .then(result => console.log(result))
       .catch(errorMsg => console.log(errorMsg));

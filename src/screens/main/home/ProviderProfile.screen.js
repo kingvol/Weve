@@ -147,7 +147,7 @@ class ProviderProfileScreen extends Component {
     let transformedMarkedDates = {};
     let images;
     if (provider.providerImages) {
-      images = provider.providerImages.filter(e => e);
+      images = provider.providerImages.filter(e => !!e);
       if (provider.bio) {
         images.unshift(provider.bio);
       }
