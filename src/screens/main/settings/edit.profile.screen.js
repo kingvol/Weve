@@ -21,7 +21,7 @@ import {
   Thumbnail,
   Text,
 } from '../../../components/common';
-import { backgroundColor, lightTextColor, primaryFont } from '../../../theme';
+import { backgroundColor, lightTextColor } from '../../../theme';
 import ProfileImage from '../../../components/home/ProfileImage';
 import { UserActions } from '../../../actions';
 import APIs from '../../../api';
@@ -130,18 +130,6 @@ class EditProfileScreen extends Component {
     if (!this.props.user.profile._id) {
       this.props.fetchProfile('me');
     }
-    Promise.all([Icon.getImageSource('comments-o', 20, '#ffffff')]).then((sources) => {
-      this.props.navigator.setButtons({
-        leftButtons: [
-          {
-            icon: sources[0],
-            title: I18n.t('editProfile.title'),
-            id: 'back',
-          },
-        ],
-        animated: true,
-      });
-    });
   }
 
   componentWillReceiveProps({ user }) {
@@ -150,36 +138,13 @@ class EditProfileScreen extends Component {
     }
     if (!user.isLoading && this.state.loading) {
       this.updateProfile();
-      // this.props.navigator.pop();
-      // this.props.navigator.pop({ overrideBackPress: true });
-      this.props.navigator.push({
-        screen: 'wevedo.ProfileScreen',
-        overrideBackPress: true,
-        title: I18n.t('menu.my_profile'),
-        navigatorStyle: {
-          navBarBackgroundColor: '#d64635',
-          navBarTextColor: 'white',
-          navBarButtonColor: 'white',
-          navBarTextFontFamily: primaryFont,
-        },
-      });
+      this.props.navigator.pop();
     }
   }
 
   componentWillUnmount() {
     this.keyboardDidShowListener.remove();
     this.keyboardDidHideListener.remove();
-    this.props.navigator.push({
-      screen: 'wevedo.ProfileScreen',
-      overrideBackPress: true,
-      title: I18n.t('menu.my_profile'),
-      navigatorStyle: {
-        navBarBackgroundColor: '#d64635',
-        navBarTextColor: 'white',
-        navBarButtonColor: 'white',
-        navBarTextFontFamily: primaryFont,
-      },
-    });
   }
 
   onNavigatorEvent(event) {
@@ -301,7 +266,7 @@ class EditProfileScreen extends Component {
   setScrollRef = (ref) => {
     this.scroll = ref;
   }
- 
+
   newScrollMethod = () => {
     this.scroll._root.scrollToPosition(0, 0);
     this.setState({ profileIconColor: '#d64635' });
