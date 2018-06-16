@@ -67,6 +67,7 @@ class SettingsTab extends Component {
     this.props.navigator.push({
       screen: `wevedo.${route}`,
       title: I18n.t(name),
+      // overrideBackPress: true,
       navigatorStyle: {
         navBarBackgroundColor: '#d64635',
         navBarTextColor: 'white',
