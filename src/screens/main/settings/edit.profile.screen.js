@@ -224,18 +224,16 @@ class EditProfileScreen extends Component {
           try {
             this.setState({ imageUploading: true });
             const { cloudImgUrl } = await this.uploadProfileImage(a1);
-            setTimeout(() => {
-              if (cloudImgUrl) {
-                imagesArray[i1] = cloudImgUrl;
-                this.setState({
-                  values: {
-                    ...this.state.values,
-                    providerImages: [...imagesArray],
-                  },
-                  imageUploading: false,
-                });
-              }
-            });
+            do {
+              imagesArray[i1] = cloudImgUrl;
+              this.setState({
+                values: {
+                  ...this.state.values,
+                  providerImages: [...imagesArray],
+                },
+                imageUploading: false,
+              });
+            } while (a1 !== cloudImgUrl);
           } catch ({ message }) {
             Alert.alert(I18n.t(`backend.${message}`, { defaults: [{ scope: 'chat.error' }] }));
             this.setState({ imageUploading: false });
