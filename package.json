@@ -72,5 +72,8 @@
   },
   "jest": {
     "preset": "react-native"
+  },
+  "engines": {
+    "node": ">=8.0.0"
   }
 }
