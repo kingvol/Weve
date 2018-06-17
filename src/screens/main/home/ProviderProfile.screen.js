@@ -166,7 +166,7 @@ class ProviderProfileScreen extends Component {
 
     return (
       <Content contentContainerStyle={{ flexGrow: 1 }}>
-        <View style={{ minHeight: 500, flex: 2 }}>
+        <View style={{ minHeight: 500 }}>
           {provider.profileImageURL && provider.providerImages ? (
             <Swiper
               style={styles.wrapper}
@@ -174,10 +174,8 @@ class ProviderProfileScreen extends Component {
               autoplay
               dotColor="#c4c4c4"
               activeDotColor="#d64635"
-              paginationStyle={{
-                bottom: 7,
-              }}
-              buttonWrapperStyle={{ paddingHorizontal: 20 }}
+              // paginationStyle={{ bottom: 7 }}
+              // buttonWrapperStyle={{ paddingHorizontal: 20 }}
               nextButton={<Text style={{ color: '#d64635', fontSize: 35 }}>›</Text>}
               prevButton={<Text style={{ color: '#d64635', fontSize: 35 }}>‹</Text>}
             >
@@ -212,16 +210,15 @@ class ProviderProfileScreen extends Component {
 
 const styles = {
   image: {
-    flex: 1,
+    height: ITEM_WIDTH / 1.5,
   },
   wrapper: {
-    height: ITEM_WIDTH / 1.9,
-    width: ITEM_WIDTH / 1.4,
-    alignSelf: 'center',
+    height: ITEM_WIDTH / 1.5,
   },
   slide1: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
+    height: ITEM_WIDTH / 1.5,
     alignItems: 'center',
     backgroundColor: 'rgba(52, 52, 52, 0.5)',
   },
@@ -229,11 +226,13 @@ const styles = {
     color: '#fff',
     fontSize: 20,
     fontWeight: 'bold',
-    margin: 7,
+    margin: 19,
   },
   styleImage: {
-    height: ITEM_WIDTH / 1.9,
-    width: ITEM_WIDTH / 1.4,
+    height: ITEM_WIDTH / 1.5,
+    width: ITEM_WIDTH,
+  },
+  calendar: {
   },
 };
 
