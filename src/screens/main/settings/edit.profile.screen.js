@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle, camelcase */
 import React, { Component } from 'react';
 import { Alert, Keyboard, View, Dimensions, TextInput } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
@@ -50,7 +51,14 @@ class EditProfileScreen extends Component {
         lastName: this.props.user.profile.lastName || '',
         phoneNumber: this.props.user.profile.phoneNumber || '',
         profileImageURL: this.props.user.profile.profileImageURL || undefined,
-        providerImages: this.props.user.profile.providerImages || [],
+        //providerImages: this.props.user.profile.providerImages || [],
+        providerImages: {
+          0: '',
+          1: '',
+          2: '',
+          3: '',
+          4: '',
+        },
         countryCode,
         regionName,
         isProvider: this.props.user.profile.isProvider,
@@ -159,9 +167,7 @@ class EditProfileScreen extends Component {
   }
 
   onFullNameChange = (value) => {
-    this.setState({
-      fullName: value,
-    });
+    this.setState({ fullName: value });
     let firstName;
     let lastName;
     if (value.includes(' ')) {
@@ -200,6 +206,7 @@ class EditProfileScreen extends Component {
   }
 
   onSubmitForm = async () => {
+    /* Update profile image */
     if (this.state.values.profileImageURL !== this.props.user.profile.profileImageURL) {
       try {
         this.setState({ imageUploading: true });
@@ -369,15 +376,17 @@ class EditProfileScreen extends Component {
     });
   };
 
-  captureProviderImage = (item) => {
+  captureProviderImage = (index) => {
     const options = {
       title: I18n.t('editProfile.select_avatar'),
       storageOptions: {
         skipBackup: true,
       },
     };
-    const images = [...this.state.values.providerImages];
-    if (!images[item]) {
+
+    const imgObj = Object.assign({}, this.state.values.providerImages);
+
+    if (!imgObj[0]) {
       ImagePicker.showImagePicker(options, (response) => {
         const { error, uri } = response;
         if (error) {
@@ -391,21 +400,21 @@ class EditProfileScreen extends Component {
         }
 
         if (uri) {
-          images[item] = uri;
+          imgObj[index] = uri;
           this.setState({
             values: {
               ...this.state.values,
-              providerImages: [...images],
+              providerImages: imgObj,
             },
           });
         }
       });
     } else {
-      images[item] = undefined;
+      imgObj[index] = '';
       this.setState({
         values: {
           ...this.state.values,
-          providerImages: [...images],
+          providerImages: imgObj,
         },
       });
     }
@@ -462,7 +471,7 @@ class EditProfileScreen extends Component {
                     id="EditProfile.imageWrapper2"
                     onPress={() => this.captureProviderImage(0)}
                     source={{ uri: this.state.values.providerImages[0] }}
-                    hasImage={this.state.values.providerImages[0]}
+                    hasImage={!!this.state.values.providerImages[0]}
                     size={1 / 3}
                     styleContainer={{ marginBottom: ITEM_WIDTH / 20 }}
                   />
@@ -471,7 +480,7 @@ class EditProfileScreen extends Component {
                     id="EditProfile.imageWrapper3"
                     onPress={() => this.captureProviderImage(1)}
                     source={{ uri: this.state.values.providerImages[1] }}
-                    hasImage={this.state.values.providerImages[1]}
+                    hasImage={!!this.state.values.providerImages[1]}
                     size={1 / 3}
                   />
                 </View>
@@ -488,7 +497,7 @@ class EditProfileScreen extends Component {
                   id="EditProfile.imageWrapper6"
                   onPress={() => this.captureProviderImage(4)}
                   source={{ uri: this.state.values.providerImages[4] }}
-                  hasImage={this.state.values.providerImages[4]}
+                  hasImage={!!this.state.values.providerImages[4]}
                   size={1 / 3}
                   styleContainer={{ marginRight: ITEM_WIDTH / 20 }}
                 />
@@ -497,7 +506,7 @@ class EditProfileScreen extends Component {
                   id="EditProfile.imageWrapper5"
                   onPress={() => this.captureProviderImage(3)}
                   source={{ uri: this.state.values.providerImages[3] }}
-                  hasImage={this.state.values.providerImages[3]}
+                  hasImage={!!this.state.values.providerImages[3]}
                   size={1 / 3}
                   styleContainer={{ marginRight: (ITEM_WIDTH / 20) - 1 }}
                 />
@@ -506,7 +515,7 @@ class EditProfileScreen extends Component {
                   id="EditProfile.imageWrapper4"
                   onPress={() => this.captureProviderImage(2)}
                   source={{ uri: this.state.values.providerImages[2] }}
-                  hasImage={this.state.values.providerImages[2]}
+                  hasImage={!!this.state.values.providerImages[2]}
                   size={1 / 3}
                 />
 
