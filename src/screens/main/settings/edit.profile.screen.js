@@ -56,11 +56,11 @@ class EditProfileScreen extends Component {
         phoneNumber: this.props.user.profile.phoneNumber || '',
         profileImageURL: this.props.user.profile.profileImageURL || undefined,
         providerImages: {
-          0: user.profile.providerImages[0] || '',
-          1: user.profile.providerImages[1] || '',
-          2: user.profile.providerImages[2] || '',
-          3: user.profile.providerImages[3] || '',
-          4: user.profile.providerImages[4] || '',
+          0: user.profile.providerImages[0] || undefined,
+          1: user.profile.providerImages[1] || undefined,
+          2: user.profile.providerImages[2] || undefined,
+          3: user.profile.providerImages[3] || undefined,
+          4: user.profile.providerImages[4] || undefined,
         },
         countryCode,
         regionName,
@@ -232,40 +232,21 @@ class EditProfileScreen extends Component {
 
     if (!_.isEqual(user.profile.providerImages, values.providerImages)) {
       await forEach(Object.keys(values.providerImages), async (index) => {
-        if (user.profile.providerImages[index] !== values.providerImages[index] && values.providerImages[index] !== '') {
-          this.setState({ imageUploading: true });
-          const { secure_url } = await this.uploadProfileImage(values.providerImages[index]);
-          values.providerImages[index] = secure_url;
-          this.setState({ values });
-        }
-      });
-      this.setState({ imageUploading: false });
-    }
-
-
-    /* const imagesArray = [...this.state.values.providerImages];
-    this.state.values.providerImages.forEach((a1, i1) =>
-      this.state.values.providerImages.forEach(async (a2) => {
-        if (a1 !== a2 && a1 !== null) {
+        if (user.profile.providerImages[index] !== values.providerImages[index] && values.providerImages[index]) {
           try {
             this.setState({ imageUploading: true });
-            const { cloudImgUrl } = await this.uploadProfileImage(a1);
-            do {
-              imagesArray[i1] = cloudImgUrl;
-              this.setState({
-                values: {
-                  ...this.state.values,
-                  providerImages: [...imagesArray],
-                },
-                imageUploading: false,
-              });
-            } while (a1 !== cloudImgUrl);
+            const { secure_url } = await this.uploadProfileImage(values.providerImages[index]);
+            values.providerImages[index] = secure_url;
+            this.setState({ values });
+            this.setState({ imageUploading: false });
           } catch ({ message }) {
             Alert.alert(I18n.t(`backend.${message}`, { defaults: [{ scope: 'chat.error' }] }));
             this.setState({ imageUploading: false });
           }
         }
-      })); */
+      });
+      this.setState({ imageUploading: false });
+    }
 
     if (!this.state.values.profileImageURL && this.state.values.isProvider) {
       Alert.alert(
@@ -403,7 +384,7 @@ class EditProfileScreen extends Component {
 
     const imgObj = Object.assign({}, this.state.values.providerImages);
 
-    if (!imgObj[0]) {
+    if (!imgObj[index]) {
       ImagePicker.showImagePicker(options, (response) => {
         const { error, uri } = response;
         if (error) {
@@ -427,7 +408,7 @@ class EditProfileScreen extends Component {
         }
       });
     } else {
-      imgObj[index] = '';
+      imgObj[index] = undefined;
       this.setState({
         values: {
           ...this.state.values,

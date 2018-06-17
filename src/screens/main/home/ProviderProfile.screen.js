@@ -147,11 +147,14 @@ class ProviderProfileScreen extends Component {
     let transformedMarkedDates = {};
     let images;
     if (provider.providerImages) {
-      images = provider.providerImages.filter(e => !!e);
+      const arrayImages = Object.values(provider.providerImages);
+      images = arrayImages.filter(e => !!e);
       if (provider.bio) {
         images.unshift(provider.bio);
       }
       images.unshift(provider.profileImageURL);
+    } else if (provider.bio) {
+      images.unshift(provider.bio);
     }
 
     markedDates.forEach((date) => {

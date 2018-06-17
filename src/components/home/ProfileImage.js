@@ -56,7 +56,7 @@ const ProfileImage = ({ id, onPress, source, size, hasImage, styleContainer }) =
             <Icon
               style={{ color: 'lightgrey' }}
               size={40}
-              name="film" // photo
+              name="photo" // film
             />
           </View>
         )}
