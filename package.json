@@ -26,6 +26,7 @@
     "lodash": "^4.17.5",
     "moment": "^2.22.0",
     "native-base": "^2.3.9",
+    "p-iteration": "^1.1.7",
     "prop-types": "^15.6.0",
     "react": "16.2.0",
     "react-native": "0.53.3",

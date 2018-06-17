@@ -1,6 +1,8 @@
 /* eslint-disable no-underscore-dangle, camelcase */
 import React, { Component } from 'react';
 import { Alert, Keyboard, View, Dimensions, TextInput } from 'react-native';
+import _ from 'lodash';
+import { forEach } from 'p-iteration';
 import ImagePicker from 'react-native-image-picker';
 import { Picker, CheckBox, Left } from 'native-base';
 import CountryPicker from 'react-native-country-picker-modal';
@@ -45,19 +47,19 @@ class EditProfileScreen extends Component {
     super(props);
     this.onRegionSelect = this.onRegionSelect.bind(this);
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+    const { user } = this.props;
     this.state = {
       values: {
         firstName: this.props.user.profile.firstName || '',
         lastName: this.props.user.profile.lastName || '',
         phoneNumber: this.props.user.profile.phoneNumber || '',
         profileImageURL: this.props.user.profile.profileImageURL || undefined,
-        //providerImages: this.props.user.profile.providerImages || [],
         providerImages: {
-          0: '',
-          1: '',
-          2: '',
-          3: '',
-          4: '',
+          0: user.profile.providerImages[0] || '',
+          1: user.profile.providerImages[1] || '',
+          2: user.profile.providerImages[2] || '',
+          3: user.profile.providerImages[3] || '',
+          4: user.profile.providerImages[4] || '',
         },
         countryCode,
         regionName,
@@ -224,7 +226,23 @@ class EditProfileScreen extends Component {
       }
     }
 
-    const imagesArray = [...this.state.values.providerImages];
+    const { user } = this.props;
+    const values = Object.assign({}, this.state.values);
+
+    if (!_.isEqual(user.profile.providerImages, values.providerImages)) {
+      await forEach(Object.keys(values.providerImages), async (index) => {
+        if (user.profile.providerImages[index] !== values.providerImages[index] && values.providerImages[index] !== undefined) {
+          this.setState({ imageUploading: true });
+          const { secure_url } = await this.uploadProfileImage(values.providerImages[index]);
+          values.providerImages[index] = secure_url;
+          this.setState({ values });
+        }
+      });
+      this.setState({ imageUploading: false });
+    }
+
+
+    /* const imagesArray = [...this.state.values.providerImages];
     this.state.values.providerImages.forEach((a1, i1) =>
       this.state.values.providerImages.forEach(async (a2) => {
         if (a1 !== a2 && a1 !== null) {
@@ -248,7 +266,7 @@ class EditProfileScreen extends Component {
             this.setState({ imageUploading: false });
           }
         }
-      }));
+      })); */
 
     if (!this.state.values.profileImageURL && this.state.values.isProvider) {
       Alert.alert(
