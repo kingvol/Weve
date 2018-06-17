@@ -1,5 +1,8 @@
+/* eslint-disable no-underscore-dangle, camelcase */
 import React, { Component } from 'react';
-import { Alert, Keyboard, View } from 'react-native';
+import { Alert, Keyboard, View, Dimensions, TextInput } from 'react-native';
+import _ from 'lodash';
+import { forEach } from 'p-iteration';
 import ImagePicker from 'react-native-image-picker';
 import { Picker, CheckBox, Left } from 'native-base';
 import CountryPicker from 'react-native-country-picker-modal';
@@ -22,6 +25,7 @@ import {
   Text,
 } from '../../../components/common';
 import { backgroundColor, lightTextColor } from '../../../theme';
+import ProfileImage from '../../../components/home/ProfileImage';
 import { UserActions } from '../../../actions';
 import APIs from '../../../api';
 
@@ -35,21 +39,35 @@ const countryCode = countries.includes(userLocaleCountryCode) ? userLocaleCountr
 const regionName = countryLib[`${countryCode}`].provinces[0];
 const ucFirst = s => (s.substr(0, 1).toLowerCase() + s.substr(1)).replace(' ', '');
 
+const ITEM_WIDTH = Dimensions.get('window').width;
+const maxLength = 100;
+
 class EditProfileScreen extends Component {
   constructor(props) {
     super(props);
     this.onRegionSelect = this.onRegionSelect.bind(this);
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+    const user = Object.assign({}, this.props.user);
+    if (!user.profile.providerImages) { user.profile.providerImages = {}; }
     this.state = {
       values: {
         firstName: this.props.user.profile.firstName || '',
         lastName: this.props.user.profile.lastName || '',
         phoneNumber: this.props.user.profile.phoneNumber || '',
         profileImageURL: this.props.user.profile.profileImageURL || undefined,
+        providerImages: {
+          0: user.profile.providerImages[0] || undefined,
+          1: user.profile.providerImages[1] || undefined,
+          2: user.profile.providerImages[2] || undefined,
+          3: user.profile.providerImages[3] || undefined,
+          4: user.profile.providerImages[4] || undefined,
+        },
         countryCode,
         regionName,
         isProvider: this.props.user.profile.isProvider,
         categories: this.props.user.profile.categories,
+        bio: this.props.user.profile.bio,
+        descriptionLength: maxLength - this.props.user.profile.bio.length,
       },
       fullName: `${this.props.user.profile.firstName} ${this.props.user.profile.lastName}` || '',
       loading: false,
@@ -152,9 +170,7 @@ class EditProfileScreen extends Component {
   }
 
   onFullNameChange = (value) => {
-    this.setState({
-      fullName: value,
-    });
+    this.setState({ fullName: value });
     let firstName;
     let lastName;
     if (value.includes(' ')) {
@@ -193,6 +209,7 @@ class EditProfileScreen extends Component {
   }
 
   onSubmitForm = async () => {
+    /* Update profile image */
     if (this.state.values.profileImageURL !== this.props.user.profile.profileImageURL) {
       try {
         this.setState({ imageUploading: true });
@@ -209,6 +226,28 @@ class EditProfileScreen extends Component {
         this.setState({ imageUploading: false });
       }
     }
+
+    const { user } = this.props;
+    const values = Object.assign({}, this.state.values);
+
+    if (!_.isEqual(user.profile.providerImages, values.providerImages)) {
+      await forEach(Object.keys(values.providerImages), async (index) => {
+        if (user.profile.providerImages[index] !== values.providerImages[index] && values.providerImages[index]) {
+          try {
+            this.setState({ imageUploading: true });
+            const { secure_url } = await this.uploadProfileImage(values.providerImages[index]);
+            values.providerImages[index] = secure_url;
+            this.setState({ values });
+            this.setState({ imageUploading: false });
+          } catch ({ message }) {
+            Alert.alert(I18n.t(`backend.${message}`, { defaults: [{ scope: 'chat.error' }] }));
+            this.setState({ imageUploading: false });
+          }
+        }
+      });
+      this.setState({ imageUploading: false });
+    }
+
     if (!this.state.values.profileImageURL && this.state.values.isProvider) {
       Alert.alert(
         I18n.t('logIn.upload_photo'), '',
@@ -335,10 +374,64 @@ class EditProfileScreen extends Component {
     });
   };
 
+  captureProviderImage = (index) => {
+    const options = {
+      title: I18n.t('editProfile.select_avatar'),
+      storageOptions: {
+        skipBackup: true,
+      },
+    };
+
+    const imgObj = Object.assign({}, this.state.values.providerImages);
+
+    if (!imgObj[index]) {
+      ImagePicker.showImagePicker(options, (response) => {
+        const { error, uri } = response;
+        if (error) {
+          Alert.alert(
+            I18n.t('editProfile.avatar_error'),
+            `${error}`,
+            [{ text: `${I18n.t('common.ok')}` }],
+            { cancelable: false },
+          );
+          return;
+        }
+
+        if (uri) {
+          imgObj[index] = uri;
+          this.setState({
+            values: {
+              ...this.state.values,
+              providerImages: imgObj,
+            },
+          });
+        }
+      });
+    } else {
+      imgObj[index] = undefined;
+      this.setState({
+        values: {
+          ...this.state.values,
+          providerImages: imgObj,
+        },
+      });
+    }
+  };
+
+  profileDescriptionMethod = (value) => {
+    this.setState({
+      values: {
+        ...this.state.values,
+        descriptionLength: maxLength - value.length,
+        bio: value,
+      },
+    });
+  }
+
 
   render() {
     const { phoneNumber } = this.state.values;
-    const { checkBoxText, categoryText } = styles;
+    const { checkBoxText, categoryText, styleDescription } = styles;
     const { isProvider } = this.props.user.profile;
 
     return (
@@ -354,43 +447,118 @@ class EditProfileScreen extends Component {
           keyboardShouldPersistTaps="always"
           ref={this.setScrollRef}
         >
-          <View style={{ justifyContent: 'center' }}>
-            <Button
-              id="EditProfile.imageButtonWrapper"
-              style={{ height: 100 }}
-              transparent
-              onPress={this.captureImage}
-            >
-              <Thumbnail
-                id="EditProfile.profileImage"
-                large
-                source={{
+          { isProvider ? (
+            <View style={{ justifyContent: 'space-between' }}>
+              <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
+                <ProfileImage
+                  id="EditProfile.imageWrapper1"
+                  onPress={this.captureImage}
+                  source={{
+                  uri:
+                    this.state.values.profileImageURL ||
+                    this.props.user.profile.profileImageURL,
+                }}
+                  hasImage={this.state.values.profileImageURL}
+                  size={2 / 3}
+                  styleContainer={{ marginRight: (ITEM_WIDTH / 20) - 1 }}
+                />
+
+                <View style={{ justifyContent: 'flex-start' }}>
+
+                  <ProfileImage
+                    id="EditProfile.imageWrapper2"
+                    onPress={() => this.captureProviderImage(0)}
+                    source={{ uri: this.state.values.providerImages[0] }}
+                    hasImage={!!this.state.values.providerImages[0]}
+                    size={1 / 3}
+                    styleContainer={{ marginBottom: ITEM_WIDTH / 20 }}
+                  />
+
+                  <ProfileImage
+                    id="EditProfile.imageWrapper3"
+                    onPress={() => this.captureProviderImage(1)}
+                    source={{ uri: this.state.values.providerImages[1] }}
+                    hasImage={!!this.state.values.providerImages[1]}
+                    size={1 / 3}
+                  />
+                </View>
+              </View>
+              <View style={{
+              flexDirection: 'row',
+              justifyContent: 'flex-start',
+              marginTop: ITEM_WIDTH / 20,
+              marginBottom: ITEM_WIDTH / 20,
+            }}
+              >
+
+                <ProfileImage
+                  id="EditProfile.imageWrapper6"
+                  onPress={() => this.captureProviderImage(4)}
+                  source={{ uri: this.state.values.providerImages[4] }}
+                  hasImage={!!this.state.values.providerImages[4]}
+                  size={1 / 3}
+                  styleContainer={{ marginRight: ITEM_WIDTH / 20 }}
+                />
+
+                <ProfileImage
+                  id="EditProfile.imageWrapper5"
+                  onPress={() => this.captureProviderImage(3)}
+                  source={{ uri: this.state.values.providerImages[3] }}
+                  hasImage={!!this.state.values.providerImages[3]}
+                  size={1 / 3}
+                  styleContainer={{ marginRight: (ITEM_WIDTH / 20) - 1 }}
+                />
+
+                <ProfileImage
+                  id="EditProfile.imageWrapper4"
+                  onPress={() => this.captureProviderImage(2)}
+                  source={{ uri: this.state.values.providerImages[2] }}
+                  hasImage={!!this.state.values.providerImages[2]}
+                  size={1 / 3}
+                />
+
+              </View>
+            </View>
+
+          ) : (
+            <View style={{ justifyContent: 'center' }}>
+              <Button
+                id="EditProfile.imageButtonWrapper"
+                style={{ height: 100 }}
+                transparent
+                onPress={this.captureImage}
+              >
+                <Thumbnail
+                  id="EditProfile.profileImage"
+                  large
+                  source={{
                   uri:
                     this.state.values.profileImageURL ||
                     this.props.user.profile.profileImageURL ||
                     defaultProfile,
                 }}
-              />
-              {!this.state.values.profileImageURL ? (
-                <View
-                  style={{
+                />
+                {!this.state.values.profileImageURL ? (
+                  <View
+                    style={{
                     flex: 0,
                     bottom: 13,
                     paddingLeft: 40,
                     position: 'absolute',
                   }}
-                >
-                  <Icon
-                    style={{
+                  >
+                    <Icon
+                      style={{
                       color: this.state.profileIconColor,
                     }}
-                    size={20}
-                    name="plus"
-                  />
-                </View>
+                      size={20}
+                      name="plus"
+                    />
+                  </View>
               ) : null}
-            </Button>
-          </View>
+              </Button>
+            </View>
+          )}
           <FieldInput
             name="fullName"
             input={{ value: this.state.fullName }}
@@ -485,40 +653,58 @@ class EditProfileScreen extends Component {
               <Text style={checkBoxText}>{I18n.t('logIn.advertiser')}</Text>
             </Left>
           </View>)}
-          {this.state.values.isProvider &&
-               (
-               <View style={{ flex: 1 }}>
-                 <View style={{ flexDirection: 'row' }}>
-                   <View style={{ flex: 1 }}>
-                     <MultiSelect
+          {this.state.values.isProvider && (
+          <View style={{ flex: 1 }}>
+            <View style={{ flex: 1 }}>
+              <Text style={{ color: lightTextColor, marginBottom: 7 }}>
+                { I18n.t('editProfile.description') }
+              </Text>
+              <View style={{ height: 140, flex: 1 }}>
+                <TextInput
+                  onChangeText={value => this.profileDescriptionMethod(value)}
+                  value={this.state.values.bio}
+                  style={styleDescription}
+                  maxLength={100}
+                  underlineColorAndroid="transparent"
+                  placeholder={`100 ${I18n.t('editProfile.symbols')}`}
+                  multiline
+                />
+                <Text style={{ fontSize: 10, color: 'lightgrey', textAlign: 'right' }}>
+                  {this.state.values.descriptionLength}
+                </Text>
+              </View>
+            </View>
+            <View style={{ flexDirection: 'row' }}>
+              <View style={{ flex: 1 }}>
+                <MultiSelect
                        // hideTags
-                       items={this.state.categories}
-                       uniqueKey="_id"
-                       ref={this.setMultiselectRef}
-                       onSelectedItemsChange={this.onCategorySelect}
-                       selectedItems={this.state.values.categories}
-                       selectText={I18n.t('common.category')}
-                       searchInputPlaceholderText={`${I18n.t('common.category')}...`}
-                       fontSize={16}
-                       tagRemoveIconColor="#d64635"
-                       tagBorderColor="#f3c200"
-                       tagTextColor={lightTextColor}
-                       selectedItemTextColor={lightTextColor}
-                       selectedItemIconColor={lightTextColor}
-                       itemTextColor="#000"
-                       displayKey="name"
-                       searchInputStyle={{ color: lightTextColor }}
-                       autoFocusInput={false}
-                       submitButtonColor="#d64635"
-                       submitButtonText={I18n.t('common.ok')}
-                       hideSubmitButton
-                     />
-                   </View>
-                 </View>
-                 <Text style={categoryText}>
-                   {I18n.t('logIn.account_activation')}
-                 </Text>
-               </View>
+                  items={this.state.categories}
+                  uniqueKey="_id"
+                  ref={this.setMultiselectRef}
+                  onSelectedItemsChange={this.onCategorySelect}
+                  selectedItems={this.state.values.categories}
+                  selectText={I18n.t('common.category')}
+                  searchInputPlaceholderText={`${I18n.t('common.category')}...`}
+                  fontSize={16}
+                  tagRemoveIconColor="#d64635"
+                  tagBorderColor="#f3c200"
+                  tagTextColor={lightTextColor}
+                  selectedItemTextColor={lightTextColor}
+                  selectedItemIconColor={lightTextColor}
+                  itemTextColor="#000"
+                  displayKey="name"
+                  searchInputStyle={{ color: lightTextColor }}
+                  autoFocusInput={false}
+                  submitButtonColor="#d64635"
+                  submitButtonText={I18n.t('common.ok')}
+                  hideSubmitButton
+                />
+              </View>
+            </View>
+            <Text style={categoryText}>
+              {I18n.t('logIn.account_activation')}
+            </Text>
+          </View>
           )}
           <Button
             id="EditProfile.subbmitButton"
@@ -526,7 +712,7 @@ class EditProfileScreen extends Component {
             success
             disabled={this.state.loading}
             onPress={this.onSubmitForm}
-            style={{ marginBottom: this.state.values.isProvider ? 15 : 0 }}
+            style={{ marginBottom: this.state.values.isProvider ? 15 : 15 }}
           >
             {I18n.t('common.save')}
           </Button>
@@ -552,5 +738,14 @@ const styles = {
     color: lightTextColor,
     margin: 5,
     fontSize: 12,
+  },
+  styleDescription: {
+    height: 120,
+    borderColor: 'gray',
+    borderWidth: 1,
+    padding: 7,
+    borderRadius: 3,
+    textAlignVertical: 'top',
+    color: '#4d5460',
   },
 };

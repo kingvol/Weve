@@ -53,9 +53,13 @@ class ProfileScreen extends Component {
   };
 
   renderProfileImageName = (firstName, lastName) => (
-    <Row style={{ height: 150 }}>
+    <Row
+      style={{
+        height: 150,
+      }}
+    >
       <Col style={{ alignItems: 'center' }}>
-        <Row size={65}>
+        <Row size={65} style={{ height: 65 }}>
           <Thumbnail
             id="Profile.profileImage"
             large
@@ -101,9 +105,9 @@ class ProfileScreen extends Component {
             />
             <ProfileFieldForCountry
               id="Profile.countryField"
-              icon={countryCode || 'GB'}
+              icon={countryCode || ''}
               title={I18n.t('editProfile.region')}
-              subTitle={regionName || 'Barnsley'}
+              subTitle={regionName || ''}
             />
           </Grid>
         </Content>

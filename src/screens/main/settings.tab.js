@@ -67,6 +67,7 @@ class SettingsTab extends Component {
     this.props.navigator.push({
       screen: `wevedo.${route}`,
       title: I18n.t(name),
+      overrideBackPress: true,
       navigatorStyle: {
         navBarBackgroundColor: '#d64635',
         navBarTextColor: 'white',
@@ -78,7 +79,7 @@ class SettingsTab extends Component {
 
   ShareMessage = () => {
     Share.share({
-      message: 'http://onelink.to/wevedo',
+      message: 'https://wevedo.page.link/get',
     })
       .then(result => console.log(result))
       .catch(errorMsg => console.log(errorMsg));

@@ -94,7 +94,9 @@
     "avatar_error": "Fotoğraf alınamadı",
     "country": "Ülke",
     "countryLang": "eng",
-    "region": "Bölge"
+    "region": "Bölge",
+    "description": "Profil açıklaması",
+    "symbols": "harf"
   },
   "inbox": {
     "no_active_dialog": "Etkin iletişim kutusu yok"
