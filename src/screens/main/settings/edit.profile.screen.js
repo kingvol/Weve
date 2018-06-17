@@ -47,7 +47,8 @@ class EditProfileScreen extends Component {
     super(props);
     this.onRegionSelect = this.onRegionSelect.bind(this);
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
-    const { user } = this.props;
+    const user = Object.assign({}, this.props.user);
+    if (!user.profile.providerImages) { user.profile.providerImages = {}; }
     this.state = {
       values: {
         firstName: this.props.user.profile.firstName || '',
