@@ -231,7 +231,7 @@ class EditProfileScreen extends Component {
 
     if (!_.isEqual(user.profile.providerImages, values.providerImages)) {
       await forEach(Object.keys(values.providerImages), async (index) => {
-        if (user.profile.providerImages[index] !== values.providerImages[index] && values.providerImages[index] !== undefined) {
+        if (user.profile.providerImages[index] !== values.providerImages[index] && values.providerImages[index] !== '') {
           this.setState({ imageUploading: true });
           const { secure_url } = await this.uploadProfileImage(values.providerImages[index]);
           values.providerImages[index] = secure_url;
