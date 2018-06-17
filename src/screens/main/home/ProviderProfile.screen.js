@@ -226,14 +226,13 @@ const styles = {
     color: '#fff',
     fontSize: 20,
     fontWeight: 'bold',
-    margin: 19,
+    margin: 30,
   },
   styleImage: {
     height: ITEM_WIDTH / 1.5,
     width: ITEM_WIDTH,
   },
-  calendar: {
-  },
+  calendar: {},
 };
 
 const mapStateToProps = state => ({
