@@ -216,29 +216,32 @@ class EditProfileScreen extends Component {
         this.setState({ imageUploading: false });
       }
     }
-    if (this.state.values.providerImages.length === this.props.user.profile.providerImages.length &&
-      this.state.values.providerImages.every((v, i) =>
-        v === this.props.user.profile.providerImages[i])) {
-      console.log('equal');
-    } else {
-      const imagesArray = [];
-      try {
-        this.setState({ imageUploading: true });
-        this.state.values.providerImages.forEach((a1) => {
-          imagesArray.push(this.uploadProfileImage(a1));
-        });
-        this.setState({
-          values: {
-            ...this.state.values,
-            providerImages: imagesArray,
-          },
-          imageUploading: false,
-        });
-      } catch ({ message }) {
-        Alert.alert(I18n.t(`backend.${message}`));
-        this.setState({ imageUploading: false });
-      }
-    }
+
+    const imagesArray = [...this.state.values.providerImages];
+    this.state.values.providerImages.forEach((a1, i1) =>
+      this.state.values.providerImages.forEach(async (a2) => {
+        if (a1 !== a2 && a1 !== null) {
+          try {
+            this.setState({ imageUploading: true });
+            const { cloudImgUrl } = await this.uploadProfileImage(a1);
+            setTimeout(() => {
+              if (cloudImgUrl) {
+                imagesArray[i1] = cloudImgUrl;
+                this.setState({
+                  values: {
+                    ...this.state.values,
+                    providerImages: [...imagesArray],
+                  },
+                  imageUploading: false,
+                });
+              }
+            });
+          } catch ({ message }) {
+            Alert.alert(I18n.t(`backend.${message}`, { defaults: [{ scope: 'chat.error' }] }));
+            this.setState({ imageUploading: false });
+          }
+        }
+      }));
 
     if (!this.state.values.profileImageURL && this.state.values.isProvider) {
       Alert.alert(
