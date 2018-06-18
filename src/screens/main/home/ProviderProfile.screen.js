@@ -145,6 +145,16 @@ class ProviderProfileScreen extends Component {
     const markedDates = profile._id === provider._id ? profile.bookedDates : provider.bookedDates;
 
     let transformedMarkedDates = {};
+
+    if (markedDates) {
+      markedDates.forEach((date) => {
+        transformedMarkedDates = {
+          ...transformedMarkedDates,
+          [moment(date).format('YYYY-MM-DD')]: { disabled: true, selected: true },
+        };
+      });
+    }
+
     let images;
     if (provider.providerImages) {
       const arrayImages = Object.values(provider.providerImages);
@@ -156,13 +166,6 @@ class ProviderProfileScreen extends Component {
     } else if (provider.bio) {
       images.unshift(provider.bio);
     }
-
-    markedDates.forEach((date) => {
-      transformedMarkedDates = {
-        ...transformedMarkedDates,
-        [moment(date).format('YYYY-MM-DD')]: { disabled: true, selected: true },
-      };
-    });
 
     return (
       <Content contentContainerStyle={{ flexGrow: 1 }}>
@@ -200,7 +203,7 @@ class ProviderProfileScreen extends Component {
           <Calendar
             theme={calendarTheme}
             style={styles.calendar}
-            markedDates={transformedMarkedDates}
+            markedDates={markedDates ? transformedMarkedDates : null}
             onDayPress={this.handleDayPress}
           />
         </View>
