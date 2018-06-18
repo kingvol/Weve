@@ -96,7 +96,7 @@
     "countryLang": "eng",
     "region": "Bölge",
     "description": "Profil açıklaması",
-    "symbols": "harf"
+    "symbols": "karakter"
   },
   "inbox": {
     "no_active_dialog": "Etkin iletişim kutusu yok"
