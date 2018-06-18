@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { Alert, Keyboard, View, Dimensions, TextInput } from 'react-native';
 import _ from 'lodash';
-import { forEach } from 'p-iteration';
 import ImagePicker from 'react-native-image-picker';
 import { Picker, CheckBox, Left } from 'native-base';
 import CountryPicker from 'react-native-country-picker-modal';
@@ -28,6 +27,7 @@ import { backgroundColor, lightTextColor } from '../../../theme';
 import ProfileImage from '../../../components/home/ProfileImage';
 import { UserActions } from '../../../actions';
 import APIs from '../../../api';
+import { promises } from 'fs';
 
 const { CategoryApi } = APIs;
 const categoryApi = new CategoryApi();
@@ -231,7 +231,7 @@ class EditProfileScreen extends Component {
     const values = Object.assign({}, this.state.values);
 
     if (!_.isEqual(user.profile.providerImages, values.providerImages)) {
-      await forEach(Object.keys(values.providerImages), async (index) => {
+      await Promise.all(Object.keys(values.providerImages).map(async (index) => {
         if (user.profile.providerImages[index] !== values.providerImages[index] && values.providerImages[index]) {
           try {
             this.setState({ imageUploading: true });
@@ -244,7 +244,7 @@ class EditProfileScreen extends Component {
             this.setState({ imageUploading: false });
           }
         }
-      });
+      }));
       this.setState({ imageUploading: false });
     }
 
