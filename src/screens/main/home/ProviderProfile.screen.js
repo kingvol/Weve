@@ -172,6 +172,7 @@ class ProviderProfileScreen extends Component {
               style={styles.wrapper}
               showsButtons
               autoplay
+              autoplayTimeout={5}
               dotColor="#c4c4c4"
               activeDotColor="#d64635"
               // paginationStyle={{ bottom: 7 }}
