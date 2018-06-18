@@ -96,7 +96,7 @@
     "countryLang": "eng",
     "region": "Region",
     "description": "Profile description",
-    "symbols": "symbols"
+    "symbols": "characters"
   },
   "inbox": {
     "no_active_dialog": "There are no active dialogs"
