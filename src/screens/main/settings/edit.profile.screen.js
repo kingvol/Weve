@@ -27,7 +27,6 @@ import { backgroundColor, lightTextColor } from '../../../theme';
 import ProfileImage from '../../../components/home/ProfileImage';
 import { UserActions } from '../../../actions';
 import APIs from '../../../api';
-import { promises } from 'fs';
 
 const { CategoryApi } = APIs;
 const categoryApi = new CategoryApi();
