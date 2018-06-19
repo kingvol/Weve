@@ -184,11 +184,15 @@ class ProviderProfileScreen extends Component {
               prevButton={<Text style={{ color: '#d64635', fontSize: 35 }}>‹</Text>}
             >
               {images.map((item, key) => (
-                <View id={key} key={item} style={styles.slide1}>
+                <View id={key} key={item} style={styles.slide}>
                   {provider.bio && key === 1 ? (
                     <Text style={styles.text}>{item}</Text>
                   ) : (
-                    <FastImage source={{ uri: item }} style={styleImage} />
+                    <FastImage
+                      resizeMode={FastImage.resizeMode.contain}
+                      source={{ uri: item }}
+                      style={styleImage}
+                    />
                   )}
                 </View>
               ))}
@@ -214,26 +218,23 @@ class ProviderProfileScreen extends Component {
 
 const styles = {
   image: {
-    height: ITEM_WIDTH / 1.5,
+    height: ITEM_WIDTH / 1.7777,
   },
   wrapper: {
-    height: ITEM_WIDTH / 1.5,
+    height: ITEM_WIDTH / 1.7777,
   },
-  slide1: {
+  slide: {
     flex: 1,
     justifyContent: 'flex-start',
-    height: ITEM_WIDTH / 1.5,
+    height: ITEM_WIDTH / 1.7777,
     alignItems: 'center',
-    backgroundColor: 'rgba(52, 52, 52, 0.5)',
   },
   text: {
-    color: '#fff',
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 18,
     margin: 30,
   },
   styleImage: {
-    height: ITEM_WIDTH / 1.5,
+    height: ITEM_WIDTH / 1.7777,
     width: ITEM_WIDTH,
   },
   calendar: {},
