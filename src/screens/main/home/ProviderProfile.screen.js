@@ -170,7 +170,7 @@ class ProviderProfileScreen extends Component {
     return (
       <Content contentContainerStyle={{ flexGrow: 1 }}>
         <View style={{ minHeight: 500 }}>
-          {provider.profileImageURL && provider.providerImages ? (
+          {provider.profileImageURL && provider.providerImages && images.length > 1 ? (
             <Swiper
               style={styles.wrapper}
               showsButtons
