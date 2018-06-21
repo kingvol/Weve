@@ -30,9 +30,6 @@ class ProviderProfileScreen extends Component {
   constructor(props) {
     super(props);
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
-    this.state = {
-      swiperImageResizeMode: FastImage.resizeMode.contain,
-    };
   }
 
   componentDidMount() {
