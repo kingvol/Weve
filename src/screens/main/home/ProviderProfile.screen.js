@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Content } from 'native-base';
-import { View, Alert, Dimensions, Text } from 'react-native';
+import { View, Alert, Dimensions, Text, Image } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { connect } from 'react-redux';
 import Swiper from 'react-native-swiper';
@@ -30,6 +30,9 @@ class ProviderProfileScreen extends Component {
   constructor(props) {
     super(props);
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+    this.state = {
+      swiperImageResizeMode: FastImage.resizeMode.contain,
+    };
   }
 
   componentDidMount() {
@@ -188,11 +191,7 @@ class ProviderProfileScreen extends Component {
                   {provider.bio && key === 1 ? (
                     <Text style={styles.text}>{item}</Text>
                   ) : (
-                    <FastImage
-                      resizeMode={FastImage.resizeMode.contain}
-                      source={{ uri: item }}
-                      style={styleImage}
-                    />
+                    <FastImage source={{ uri: item }} style={styleImage} />
                   )}
                 </View>
               ))}
@@ -218,15 +217,15 @@ class ProviderProfileScreen extends Component {
 
 const styles = {
   image: {
-    height: ITEM_WIDTH / 1.7777,
+    height: ITEM_WIDTH / 1.5,
   },
   wrapper: {
-    height: ITEM_WIDTH / 1.7777,
+    height: ITEM_WIDTH / 1.5,
   },
   slide: {
     flex: 1,
     justifyContent: 'flex-start',
-    height: ITEM_WIDTH / 1.7777,
+    height: ITEM_WIDTH / 1.5,
     alignItems: 'center',
   },
   text: {
@@ -234,7 +233,7 @@ const styles = {
     margin: 30,
   },
   styleImage: {
-    height: ITEM_WIDTH / 1.7777,
+    height: ITEM_WIDTH / 1.5,
     width: ITEM_WIDTH,
   },
   calendar: {},
