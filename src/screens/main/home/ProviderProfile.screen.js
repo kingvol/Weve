@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Content } from 'native-base';
-import { View, Alert, Dimensions, Text, Image } from 'react-native';
+import { View, Alert, Dimensions, Text } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { connect } from 'react-redux';
 import Swiper from 'react-native-swiper';
