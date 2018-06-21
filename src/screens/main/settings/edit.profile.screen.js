@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle, camelcase */
 import React, { Component } from 'react';
-import { Alert, Keyboard, View, Dimensions, TextInput } from 'react-native';
+import { Alert, Keyboard, View, Dimensions, TextInput, PermissionsAndroid, Platform } from 'react-native';
 import _ from 'lodash';
 import ImagePicker from 'react-native-image-picker';
 import { Picker, CheckBox, Left } from 'native-base';
@@ -343,7 +343,30 @@ class EditProfileScreen extends Component {
     }).then(raw => raw.json());
   };
 
-  captureImage = () => {
+  requestCameraPermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE, {
+          title: 'Wevedo Storage Permission',
+          message: 'Wevedo needs access to your camera',
+        });
+      if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+        console.log('Permission denied');
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  }
+
+  captureImage = async () => {
+    if (Platform.OS === 'android') {
+      try {
+        await this.requestCameraPermission();
+      } catch (error) {
+        return;
+      }
+    }
+
     const options = {
       title: I18n.t('editProfile.select_avatar'),
       storageOptions: {
@@ -373,7 +396,15 @@ class EditProfileScreen extends Component {
     });
   };
 
-  captureProviderImage = (index) => {
+  captureProviderImage = async (index) => {
+    if (Platform.OS === 'android') {
+      try {
+        await this.requestCameraPermission();
+      } catch (error) {
+        return;
+      }
+    }
+
     const options = {
       title: I18n.t('editProfile.select_avatar'),
       storageOptions: {
