@@ -188,11 +188,7 @@ class ProviderProfileScreen extends Component {
                   {provider.bio && key === 1 ? (
                     <Text style={styles.text}>{item}</Text>
                   ) : (
-                    <FastImage
-                      resizeMode={FastImage.resizeMode.contain}
-                      source={{ uri: item }}
-                      style={styleImage}
-                    />
+                    <FastImage source={{ uri: item }} style={styleImage} />
                   )}
                 </View>
               ))}
@@ -218,15 +214,15 @@ class ProviderProfileScreen extends Component {
 
 const styles = {
   image: {
-    height: ITEM_WIDTH / 1.7777,
+    height: ITEM_WIDTH / 1.5,
   },
   wrapper: {
-    height: ITEM_WIDTH / 1.7777,
+    height: ITEM_WIDTH / 1.5,
   },
   slide: {
     flex: 1,
     justifyContent: 'flex-start',
-    height: ITEM_WIDTH / 1.7777,
+    height: ITEM_WIDTH / 1.5,
     alignItems: 'center',
   },
   text: {
@@ -234,7 +230,7 @@ const styles = {
     margin: 30,
   },
   styleImage: {
-    height: ITEM_WIDTH / 1.7777,
+    height: ITEM_WIDTH / 1.5,
     width: ITEM_WIDTH,
   },
   calendar: {},
