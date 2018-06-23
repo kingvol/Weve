@@ -12,9 +12,14 @@ import { primaryFont } from './src/theme';
 
 AppRegistry.registerComponent('wevedo_app', () => AppBootstrap);
 
-persistStore(store, null, () => {
+
+if (Platform.OS === 'ios') {
+  persistStore(store, null, () => {
+    registerScreens(store, Provider);
+  });
+} else {
   registerScreens(store, Provider);
-});
+}
 
 export const startSingleScreenApp = () => {
   Navigation.startSingleScreenApp({
