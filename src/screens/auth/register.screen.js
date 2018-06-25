@@ -46,6 +46,7 @@ class RegisterScreen extends Component {
     const body = {
       phoneNumber,
       password,
+      fullName,
       firstName,
       lastName,
       countryCode,
@@ -80,6 +81,7 @@ class RegisterScreen extends Component {
     const body = {
       phoneNumber,
       password,
+      fullName,
       firstName,
       lastName,
       countryCode,

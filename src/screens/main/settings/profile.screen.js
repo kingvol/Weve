@@ -52,7 +52,7 @@ class ProfileScreen extends Component {
     });
   };
 
-  renderProfileImageName = (firstName, lastName) => (
+  renderProfileImageName = (fullName, firstName, lastName) => (
     <Row
       style={{
         height: 150,
@@ -67,7 +67,7 @@ class ProfileScreen extends Component {
           />
         </Row>
         <Row size={35} style={{ height: 20 }}>
-          <Label id="Profile.first_lastName">{`${firstName || ''} ${lastName || ''}`}</Label>
+          <Label id="Profile.first_lastName">{fullName ? fullName : `${firstName || ''} ${lastName || ''}`}</Label>
         </Row>
       </Col>
     </Row>
@@ -77,6 +77,7 @@ class ProfileScreen extends Component {
     const {
       firstName,
       lastName,
+      fullName,
       phoneNumber,
       profileImageURL,
       countryCode,
@@ -96,7 +97,7 @@ class ProfileScreen extends Component {
                 <Icon size={24} name="pencil" />
               </Button>
             </Row>
-            {this.renderProfileImageName(firstName, lastName, profileImageURL)}
+            {this.renderProfileImageName(fullName, firstName, lastName, profileImageURL)}
             <ProfileField
               id="Profile.phoneField"
               icon="phone"
