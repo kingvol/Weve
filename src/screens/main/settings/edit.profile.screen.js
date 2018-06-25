@@ -52,6 +52,7 @@ class EditProfileScreen extends Component {
       values: {
         firstName: this.props.user.profile.firstName || '',
         lastName: this.props.user.profile.lastName || '',
+        fullName: this.props.user.profile.fullName || '',
         phoneNumber: this.props.user.profile.phoneNumber || '',
         profileImageURL: this.props.user.profile.profileImageURL || undefined,
         providerImages: {
@@ -68,7 +69,7 @@ class EditProfileScreen extends Component {
         bio: this.props.user.profile.bio || '',
         descriptionLength: this.props.user.profile.bio ? maxLength - this.props.user.profile.bio.length : 100,
       },
-      fullName: `${this.props.user.profile.firstName} ${this.props.user.profile.lastName}` || '',
+      fullName: this.props.user.profile.fullName || `${this.props.user.profile.firstName} ${this.props.user.profile.lastName}`,
       loading: false,
       imageUploading: false,
       categories: [],
@@ -183,6 +184,7 @@ class EditProfileScreen extends Component {
     this.setState({
       values: {
         ...this.state.values,
+        fullName: value,
         firstName: firstName || '',
         lastName: lastName || '',
       },
