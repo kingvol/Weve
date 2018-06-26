@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Content } from 'native-base';
-import { View, Alert, Dimensions, Text } from 'react-native';
+import { View, Alert, Dimensions, Text, Linking } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { connect } from 'react-redux';
 import Swiper from 'react-native-swiper';
@@ -38,12 +38,22 @@ class ProviderProfileScreen extends Component {
     Analytics.trackEvent('Provider profile view', { _id });
 
     if (_id !== this.props.provider._id) {
-      Promise.all([Icon.getImageSource('comments-o', 20, '#ffffff')]).then((sources) => {
+      Promise.all([
+        Icon.getImageSource('comments-o', 20, '#ffffff'),
+        Icon.getImageSource('phone', 20, '#ffffff'),
+      ]).then((sources) => {
         this.props.navigator.setButtons({
           rightButtons: [
             {
               icon: sources[0],
               id: 'chat',
+            },
+            {
+              icon: sources[1],
+              id: 'phone',
+              disabled:
+                !this.props.provider.allowPhoneCalls &&
+                this.props.provider.allowPhoneCalls !== undefined,
             },
           ],
           animated: true,
@@ -80,6 +90,16 @@ class ProviderProfileScreen extends Component {
           navBarTextFontFamily: primaryFont,
         },
       });
+    } else if (event.id === 'phone') {
+      Linking.canOpenURL(`tel:${this.props.provider.phoneNumber}`)
+        .then((supported) => {
+          if (!supported) {
+            Alert.alert("Can't handle phone:", this.props.provider.phoneNumber);
+          } else {
+            return Linking.openURL(`tel:${this.props.provider.phoneNumber}`);
+          }
+        })
+        .catch(error => alert(I18n.t('chat.error')));
     }
   }
 
