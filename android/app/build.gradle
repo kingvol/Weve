@@ -107,6 +107,12 @@ android {
     compileSdkVersion _compileSdkVersion
     buildToolsVersion _buildToolsVersion
 
+    packagingOptions {
+        doNotStrip "*/armeabi/*.so"
+        doNotStrip "*/armeabi-v7a/*.so"
+        doNotStrip "*/x86/*.so"
+    }
+
     defaultConfig {
         applicationId "com.wevedo"
         minSdkVersion _minSdkVersion
