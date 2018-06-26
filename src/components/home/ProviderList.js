@@ -1,4 +1,4 @@
-/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-underscore-dangle,no-confusing-arrow */
 import React, { PureComponent } from 'react';
 import {
   View,
@@ -88,7 +88,7 @@ class ProviderList extends PureComponent {
     }
   };
 
-  _renderMoreButton = () => (
+  _renderMoreButton = () => !this.state.disableMore ? (
     <Button
       style={styles.moreButton}
       key="more_button"
@@ -97,11 +97,11 @@ class ProviderList extends PureComponent {
     >
       <Text style={styles.moreButtonText}>{I18n.t('common.show_more')}</Text>
     </Button>
-  )
+  ) : null;
 
   _keyExtractor = item => item._id;
 
-  _renderGridItem = ({ item }) => (item.key === 'button' && !this.state.disableMore ? this._renderMoreButton() : (
+  _renderGridItem = ({ item }) => (item.key === 'button' ? this._renderMoreButton() : (
     <ProviderGridItem
       provider={item}
       id={item._id}
@@ -110,7 +110,7 @@ class ProviderList extends PureComponent {
     />
   ));
 
-  _renderItem = ({ item }) => (item.key === 'button' && !this.state.disableMore ? this._renderMoreButton() : (
+  _renderItem = ({ item }) => (item.key === 'button' ? this._renderMoreButton() : (
     <ProviderListItem
       provider={item}
       id={item._id}
@@ -124,7 +124,7 @@ class ProviderList extends PureComponent {
 
     const data = this.state.providers ? [...this.state.providers, { key: 'button' }] : null;
 
-    return this.state.providers ? (
+    return this.state.providers.length ? (
       <View style={containerStyle}>
         <View style={buttonsRow}>
           <View style={buttonView}>
