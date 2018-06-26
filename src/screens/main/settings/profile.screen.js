@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import FastImage from 'react-native-fast-image';
 import { connect } from 'react-redux';
 import I18n from '../../../locales';
 import {
@@ -60,7 +61,8 @@ class ProfileScreen extends Component {
     >
       <Col style={{ alignItems: 'center' }}>
         <Row size={65} style={{ height: 65 }}>
-          <Thumbnail
+          <FastImage
+            style={styles.profileImage}
             id="Profile.profileImage"
             large
             source={{ uri: this.props.user.profile.profileImageURL || defaultProfile }}
@@ -121,5 +123,14 @@ const mapStateToProps = state => ({
   user: state.user,
   profile: state.user.profile,
 });
+
+const styles = {
+  profileImage: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+  },
+};
+
 
 export default connect(mapStateToProps, { fetchProfile })(ProfileScreen);
