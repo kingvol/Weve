@@ -94,7 +94,7 @@ class ProviderProfileScreen extends Component {
       Linking.canOpenURL(`tel:${this.props.provider.phoneNumber}`)
         .then((supported) => {
           if (!supported) {
-            Alert.alert("Can't handle phone:", this.props.provider.phoneNumber);
+            alert(I18n.t('menu.homeTab.calls'));
           } else {
             return Linking.openURL(`tel:${this.props.provider.phoneNumber}`);
           }

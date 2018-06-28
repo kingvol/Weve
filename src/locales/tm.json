@@ -82,7 +82,8 @@
         "authority": "Size rugsat berilenok.",
         "error": "Bron ýalñyş!",
         "later": "Soñurrak barlap görüñ."
-      }
+      },
+      "calls": "Aramalar cihazınız tarafından desteklenmiyor."
     }
   },
   "editProfile": {

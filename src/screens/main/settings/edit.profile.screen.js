@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle, camelcase */
 import React, { Component } from 'react';
-import { Alert, Keyboard, View, Dimensions, TextInput, PermissionsAndroid, Platform } from 'react-native';
+import { Alert, Keyboard, View, Dimensions, TextInput, PermissionsAndroid, Platform, Switch } from 'react-native';
 import _ from 'lodash';
 import ImagePicker from 'react-native-image-picker';
 import { Picker, CheckBox, Left } from 'native-base';
@@ -68,6 +68,8 @@ class EditProfileScreen extends Component {
         categories: this.props.user.profile.categories,
         bio: this.props.user.profile.bio || '',
         descriptionLength: this.props.user.profile.bio ? maxLength - this.props.user.profile.bio.length : 100,
+        allowPhoneCalls: this.props.user.profile.allowPhoneCalls === undefined ? true :
+          this.props.user.profile.allowPhoneCalls,
       },
       fullName: this.props.user.profile.fullName || `${this.props.user.profile.firstName} ${this.props.user.profile.lastName}`,
       loading: false,
@@ -312,6 +314,15 @@ class EditProfileScreen extends Component {
     this.setState({ loading: false });
   };
 
+  toggleSwitch = (value) => {
+    this.setState({
+      values: {
+        ...this.state.values,
+        allowPhoneCalls: value,
+      },
+    });
+  };
+
   keyboardDidShow = () => {
     this.props.navigator.toggleTabs({
       to: 'hidden',
@@ -347,11 +358,10 @@ class EditProfileScreen extends Component {
 
   requestCameraPermission = async () => {
     try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE, {
-          title: 'Wevedo Storage Permission',
-          message: 'Wevedo needs access to your camera',
-        });
+      const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE, {
+        title: 'Wevedo Storage Permission',
+        message: 'Wevedo needs access to your camera',
+      });
       if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
         console.log('Permission denied');
       }
@@ -601,15 +611,29 @@ class EditProfileScreen extends Component {
             id="EditProfile.fullNameInput"
             autoCapitalize="words"
           />
-          <FieldInput
-            name="phone"
-            input={{ value: phoneNumber.toString() }}
-            placeholder={I18n.t('editProfile.phone_number')}
-            onChangeText={value => this.onFieldChange('phoneNumber', value)}
-            color={lightTextColor}
-            component={EditProfileField}
-            id="EditProfile.phoneNumberInput"
-          />
+          {isProvider && (
+          <View>
+            <FieldInput
+              name="phone"
+              input={{ value: phoneNumber.toString() }}
+              placeholder={I18n.t('editProfile.phone_number')}
+              onChangeText={value => this.onFieldChange('phoneNumber', value)}
+              color={lightTextColor}
+              component={EditProfileField}
+              id="EditProfile.phoneNumberInput"
+            />
+            <Switch
+              onValueChange={this.toggleSwitch}
+              value={this.state.values.allowPhoneCalls}
+              onTintColor="#49d260"
+              thumbTintColor="#e7e7e7"
+              style={{
+                  position: 'absolute',
+                  alignSelf: 'flex-end',
+                }}
+            />
+          </View>
+          )}
           <View
             style={{
               flexDirection: 'row',
@@ -733,9 +757,11 @@ class EditProfileScreen extends Component {
                 />
               </View>
             </View>
+            {this.state.values.isProvider && !this.props.user.profile.isProvider && (
             <Text style={categoryText}>
               {I18n.t('logIn.account_activation')}
             </Text>
+            )}
           </View>
           )}
           <Button
@@ -744,7 +770,7 @@ class EditProfileScreen extends Component {
             success
             disabled={this.state.loading}
             onPress={this.onSubmitForm}
-            style={{ marginBottom: this.state.values.isProvider ? 15 : 15 }}
+            style={{ marginBottom: 15 }}
           >
             {I18n.t('common.save')}
           </Button>
