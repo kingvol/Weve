@@ -633,12 +633,11 @@ class EditProfileScreen extends Component {
             id="EditProfile.phoneNumberInput"
           />
           {isProvider && (
-          <View>
+          <View style={{ marginTop: 10 }}>
             <View
               style={{
                 borderColor: lightTextColor,
                 borderBottomWidth: 1,
-                marginTop: 10,
               }}
             >
               <Text style={{ flex: 3, color: lightTextColor, paddingBottom: 10 }}>
@@ -660,12 +659,11 @@ class EditProfileScreen extends Component {
             )}
 
           {isProvider && (
-          <View>
+          <View style={{ marginTop: 20 }}>
             <View
               style={{
                 borderColor: lightTextColor,
                 borderBottomWidth: 1,
-                marginTop: 10,
               }}
             >
               <Text style={{ flex: 3, color: lightTextColor, paddingBottom: 10 }}>
