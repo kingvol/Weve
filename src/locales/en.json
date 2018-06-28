@@ -97,7 +97,11 @@
     "countryLang": "eng",
     "region": "Region",
     "description": "Profile description",
-    "symbols": "characters"
+    "symbols": "characters",
+    "CallOn": "Call On",
+    "CallOff": "Call Off",
+    "ChatOn": "Chat On",
+    "ChatOff": "Chat Off"
   },
   "inbox": {
     "no_active_dialog": "There are no active dialogs"

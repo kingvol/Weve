@@ -70,6 +70,8 @@ class EditProfileScreen extends Component {
         descriptionLength: this.props.user.profile.bio ? maxLength - this.props.user.profile.bio.length : 100,
         allowPhoneCalls: this.props.user.profile.allowPhoneCalls === undefined ? true :
           this.props.user.profile.allowPhoneCalls,
+        chatEnabled: this.props.user.profile.chatEnabled === undefined ? true :
+          this.props.user.profile.chatEnabled,
       },
       fullName: this.props.user.profile.fullName || `${this.props.user.profile.firstName} ${this.props.user.profile.lastName}`,
       loading: false,
@@ -314,11 +316,20 @@ class EditProfileScreen extends Component {
     this.setState({ loading: false });
   };
 
-  toggleSwitch = (value) => {
+  toggleSwitchPhone = (value) => {
     this.setState({
       values: {
         ...this.state.values,
         allowPhoneCalls: value,
+      },
+    });
+  };
+
+  toggleSwitchChat = (value) => {
+    this.setState({
+      values: {
+        ...this.state.values,
+        chatEnabled: value,
       },
     });
   };
@@ -611,29 +622,68 @@ class EditProfileScreen extends Component {
             id="EditProfile.fullNameInput"
             autoCapitalize="words"
           />
+
+          <FieldInput
+            name="phone"
+            input={{ value: phoneNumber.toString() }}
+            placeholder={I18n.t('editProfile.phone_number')}
+            onChangeText={value => this.onFieldChange('phoneNumber', value)}
+            color={lightTextColor}
+            component={EditProfileField}
+            id="EditProfile.phoneNumberInput"
+          />
           {isProvider && (
-          <View>
-            <FieldInput
-              name="phone"
-              input={{ value: phoneNumber.toString() }}
-              placeholder={I18n.t('editProfile.phone_number')}
-              onChangeText={value => this.onFieldChange('phoneNumber', value)}
-              color={lightTextColor}
-              component={EditProfileField}
-              id="EditProfile.phoneNumberInput"
-            />
+          <View style={{ marginTop: 10 }}>
+            <View
+              style={{
+                borderColor: lightTextColor,
+                borderBottomWidth: 1,
+              }}
+            >
+              <Text style={{ flex: 3, color: lightTextColor, paddingBottom: 10 }}>
+                {this.state.values.allowPhoneCalls ?
+                  I18n.t('editProfile.CallOn') : I18n.t('editProfile.CallOff') }
+              </Text>
+            </View>
             <Switch
-              onValueChange={this.toggleSwitch}
+              onValueChange={this.toggleSwitchPhone}
               value={this.state.values.allowPhoneCalls}
               onTintColor="#49d260"
               thumbTintColor="#e7e7e7"
               style={{
-                  position: 'absolute',
-                  alignSelf: 'flex-end',
-                }}
+                position: 'absolute',
+                alignSelf: 'flex-end',
+              }}
+            />
+          </View>
+            )}
+
+          {isProvider && (
+          <View style={{ marginTop: 20 }}>
+            <View
+              style={{
+                borderColor: lightTextColor,
+                borderBottomWidth: 1,
+              }}
+            >
+              <Text style={{ flex: 3, color: lightTextColor, paddingBottom: 10 }}>
+                {this.state.values.chatEnabled ?
+                  I18n.t('editProfile.ChatOn') : I18n.t('editProfile.ChatOff') }
+              </Text>
+            </View>
+            <Switch
+              onValueChange={this.toggleSwitchChat}
+              value={this.state.values.chatEnabled}
+              onTintColor="#49d260"
+              thumbTintColor="#e7e7e7"
+              style={{
+                 position: 'absolute',
+                 alignSelf: 'flex-end',
+               }}
             />
           </View>
           )}
+
           <View
             style={{
               flexDirection: 'row',

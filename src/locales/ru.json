@@ -98,7 +98,11 @@
     "countryLang": "rus",
     "region": "Область",
     "description": "Описание профиля",
-    "symbols": "символов"
+    "symbols": "символов",
+    "CallOn": "Звонки включены",
+    "CallOff": "Звонки выключены",
+    "ChatOn": "Чат включен",
+    "ChatOff": "Чат выключен"
   },
   "inbox": {
     "no_active_dialog": "Нет активных диалогов"
