@@ -68,7 +68,8 @@ class EditProfileScreen extends Component {
         categories: this.props.user.profile.categories,
         bio: this.props.user.profile.bio || '',
         descriptionLength: this.props.user.profile.bio ? maxLength - this.props.user.profile.bio.length : 100,
-        allowPhoneCalls: this.props.user.profile.allowPhoneCalls || true,
+        allowPhoneCalls: this.props.user.profile.allowPhoneCalls === undefined ? true :
+          this.props.user.profile.allowPhoneCalls,
       },
       fullName: this.props.user.profile.fullName || `${this.props.user.profile.firstName} ${this.props.user.profile.lastName}`,
       loading: false,
