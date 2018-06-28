@@ -82,7 +82,8 @@
         "authority": "Yetkiniz bulunamıyor.",
         "error": "Rezervasyon hatası!",
         "later": "Lütfen sonra tekrar deneyiniz."
-      }
+      },
+      "calls": "Aramalar cihazınız tarafından desteklenmiyor."
     }
   },
   "editProfile": {

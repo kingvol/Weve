@@ -82,7 +82,8 @@
         "authority": "You do not have the authority to book the dates.",
         "error": "Error booking date!",
         "later": "Please try again later."
-      }
+      },
+      "calls": "Calls are not supported on your device"
     }
   },
   "editProfile": {

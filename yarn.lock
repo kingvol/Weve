@@ -4521,9 +4521,9 @@ react-native-communications@2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/react-native-communications/-/react-native-communications-2.2.1.tgz#7883b56b20a002eeb790c113f8616ea8692ca795"
 
-"react-native-country-picker-modal@https://github.com/Preeternal/react-native-country-picker-modal":
+"react-native-country-picker-modal@https://github.com/Preeternal/react-native-country-picker-modal.git":
   version "0.6.0"
-  resolved "https://github.com/Preeternal/react-native-country-picker-modal#0ea9a7e32590e9d765b6e03ba51eff1c9d05478d"
+  resolved "https://github.com/Preeternal/react-native-country-picker-modal.git#814a0decb50db8d3765f305a226fe18cdb73c3fb"
   dependencies:
     fuse.js "2.6.2"
     lodash "4.12.0"
