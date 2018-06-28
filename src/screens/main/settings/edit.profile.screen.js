@@ -70,6 +70,8 @@ class EditProfileScreen extends Component {
         descriptionLength: this.props.user.profile.bio ? maxLength - this.props.user.profile.bio.length : 100,
         allowPhoneCalls: this.props.user.profile.allowPhoneCalls === undefined ? true :
           this.props.user.profile.allowPhoneCalls,
+        chatEnabled: this.props.user.profile.chatEnabled === undefined ? true :
+          this.props.user.profile.chatEnabled,
       },
       fullName: this.props.user.profile.fullName || `${this.props.user.profile.firstName} ${this.props.user.profile.lastName}`,
       loading: false,
@@ -314,11 +316,20 @@ class EditProfileScreen extends Component {
     this.setState({ loading: false });
   };
 
-  toggleSwitch = (value) => {
+  toggleSwitchPhone = (value) => {
     this.setState({
       values: {
         ...this.state.values,
         allowPhoneCalls: value,
+      },
+    });
+  };
+
+  toggleSwitchChat = (value) => {
+    this.setState({
+      values: {
+        ...this.state.values,
+        chatEnabled: value,
       },
     });
   };
@@ -611,7 +622,7 @@ class EditProfileScreen extends Component {
             id="EditProfile.fullNameInput"
             autoCapitalize="words"
           />
-          {isProvider && (
+
           <View>
             <FieldInput
               name="phone"
@@ -622,8 +633,9 @@ class EditProfileScreen extends Component {
               component={EditProfileField}
               id="EditProfile.phoneNumberInput"
             />
+            {isProvider && (
             <Switch
-              onValueChange={this.toggleSwitch}
+              onValueChange={this.toggleSwitchPhone}
               value={this.state.values.allowPhoneCalls}
               onTintColor="#49d260"
               thumbTintColor="#e7e7e7"
@@ -632,8 +644,32 @@ class EditProfileScreen extends Component {
                   alignSelf: 'flex-end',
                 }}
             />
+            )}
+          </View>
+          {isProvider && (
+          <View>
+            <View
+              style={{
+                borderColor: lightTextColor,
+                borderBottomWidth: 1,
+                marginTop: 10,
+              }}
+            >
+              <Text style={{ flex: 3, color: lightTextColor, paddingBottom: 10 }}> Chat </Text>
+            </View>
+            <Switch
+              onValueChange={this.toggleSwitchChat}
+              value={this.state.values.chatEnabled}
+              onTintColor="#49d260"
+              thumbTintColor="#e7e7e7"
+              style={{
+                 position: 'absolute',
+                 alignSelf: 'flex-end',
+               }}
+            />
           </View>
           )}
+
           <View
             style={{
               flexDirection: 'row',

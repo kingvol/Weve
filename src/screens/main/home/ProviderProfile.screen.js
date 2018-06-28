@@ -47,6 +47,9 @@ class ProviderProfileScreen extends Component {
             {
               icon: sources[0],
               id: 'chat',
+              disabled:
+                !this.props.provider.chatEnabled &&
+                this.props.provider.chatEnabled !== undefined,
             },
             {
               icon: sources[1],
