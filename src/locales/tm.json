@@ -97,7 +97,11 @@
     "countryLang": "rus",
     "region": "Welaýat",
     "description": "Profil mazmuny",
-    "symbols": "karakter"
+    "symbols": "karakter",
+    "CallOn": "Telefon araması çevrimiçi",
+    "CallOff": "Telefon araması çevrimdışı",
+    "ChatOn": "Sohbet çevrimiçi",
+    "ChatOff": "Sohbet çevrimdışı"
   },
   "inbox": {
     "no_active_dialog": "Häzirki wagtda hiç hili hatyňyz ýok"

@@ -623,29 +623,15 @@ class EditProfileScreen extends Component {
             autoCapitalize="words"
           />
 
-          <View>
-            <FieldInput
-              name="phone"
-              input={{ value: phoneNumber.toString() }}
-              placeholder={I18n.t('editProfile.phone_number')}
-              onChangeText={value => this.onFieldChange('phoneNumber', value)}
-              color={lightTextColor}
-              component={EditProfileField}
-              id="EditProfile.phoneNumberInput"
-            />
-            {isProvider && (
-            <Switch
-              onValueChange={this.toggleSwitchPhone}
-              value={this.state.values.allowPhoneCalls}
-              onTintColor="#49d260"
-              thumbTintColor="#e7e7e7"
-              style={{
-                  position: 'absolute',
-                  alignSelf: 'flex-end',
-                }}
-            />
-            )}
-          </View>
+          <FieldInput
+            name="phone"
+            input={{ value: phoneNumber.toString() }}
+            placeholder={I18n.t('editProfile.phone_number')}
+            onChangeText={value => this.onFieldChange('phoneNumber', value)}
+            color={lightTextColor}
+            component={EditProfileField}
+            id="EditProfile.phoneNumberInput"
+          />
           {isProvider && (
           <View>
             <View
@@ -655,7 +641,37 @@ class EditProfileScreen extends Component {
                 marginTop: 10,
               }}
             >
-              <Text style={{ flex: 3, color: lightTextColor, paddingBottom: 10 }}> Chat </Text>
+              <Text style={{ flex: 3, color: lightTextColor, paddingBottom: 10 }}>
+                {this.state.values.allowPhoneCalls ?
+                  I18n.t('editProfile.CallOn') : I18n.t('editProfile.CallOff') }
+              </Text>
+            </View>
+            <Switch
+              onValueChange={this.toggleSwitchPhone}
+              value={this.state.values.allowPhoneCalls}
+              onTintColor="#49d260"
+              thumbTintColor="#e7e7e7"
+              style={{
+                position: 'absolute',
+                alignSelf: 'flex-end',
+              }}
+            />
+          </View>
+            )}
+
+          {isProvider && (
+          <View>
+            <View
+              style={{
+                borderColor: lightTextColor,
+                borderBottomWidth: 1,
+                marginTop: 10,
+              }}
+            >
+              <Text style={{ flex: 3, color: lightTextColor, paddingBottom: 10 }}>
+                {this.state.values.chatEnabled ?
+                  I18n.t('editProfile.ChatOn') : I18n.t('editProfile.ChatOff') }
+              </Text>
             </View>
             <Switch
               onValueChange={this.toggleSwitchChat}

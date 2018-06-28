@@ -97,7 +97,11 @@
     "countryLang": "eng",
     "region": "Bölge",
     "description": "Profil açıklaması",
-    "symbols": "karakter"
+    "symbols": "karakter",
+    "CallOn": "Telefon araması çevrimiçi",
+    "CallOff": "Telefon araması çevrimdışı",
+    "ChatOn": "Sohbet çevrimiçi",
+    "ChatOff": "Sohbet çevrimdışı"
   },
   "inbox": {
     "no_active_dialog": "Etkin iletişim kutusu yok"
