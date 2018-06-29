@@ -634,7 +634,6 @@ class EditProfileScreen extends Component {
           />
           {isProvider && (
           <View style={{
-            // marginTop: 10,
             borderColor: lightTextColor,
             borderBottomWidth: 1,
             flexDirection: 'row',
@@ -658,7 +657,7 @@ class EditProfileScreen extends Component {
 
           {isProvider && (
           <View style={{
-            marginTop: 20,
+            marginTop: 15,
             borderColor: lightTextColor,
             borderBottomWidth: 1,
             flexDirection: 'row',
