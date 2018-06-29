@@ -633,53 +633,48 @@ class EditProfileScreen extends Component {
             id="EditProfile.phoneNumberInput"
           />
           {isProvider && (
-          <View style={{ marginTop: 10 }}>
-            <View
-              style={{
-                borderColor: lightTextColor,
-                borderBottomWidth: 1,
-              }}
-            >
-              <Text style={{ flex: 3, color: lightTextColor, paddingBottom: 10 }}>
-                {this.state.values.allowPhoneCalls ?
+          <View style={{
+            // marginTop: 10,
+            borderColor: lightTextColor,
+            borderBottomWidth: 1,
+            flexDirection: 'row',
+            paddingBottom: 10,
+            justifyContent: 'space-between',
+            }}
+          >
+            <Text style={{ flex: 3, color: lightTextColor }}>
+              {this.state.values.allowPhoneCalls ?
                   I18n.t('editProfile.CallOn') : I18n.t('editProfile.CallOff') }
-              </Text>
-            </View>
+            </Text>
+
             <Switch
               onValueChange={this.toggleSwitchPhone}
               value={this.state.values.allowPhoneCalls}
               onTintColor="#49d260"
               thumbTintColor="#e7e7e7"
-              style={{
-                position: 'absolute',
-                alignSelf: 'flex-end',
-              }}
             />
           </View>
             )}
 
           {isProvider && (
-          <View style={{ marginTop: 20 }}>
-            <View
-              style={{
-                borderColor: lightTextColor,
-                borderBottomWidth: 1,
-              }}
-            >
-              <Text style={{ flex: 3, color: lightTextColor, paddingBottom: 10 }}>
-                {this.state.values.chatEnabled ?
+          <View style={{
+            marginTop: 20,
+            borderColor: lightTextColor,
+            borderBottomWidth: 1,
+            flexDirection: 'row',
+            paddingBottom: 10,
+            justifyContent: 'space-between',
+             }}
+          >
+            <Text style={{ flex: 3, color: lightTextColor }}>
+              {this.state.values.chatEnabled ?
                   I18n.t('editProfile.ChatOn') : I18n.t('editProfile.ChatOff') }
-              </Text>
-            </View>
+            </Text>
             <Switch
               onValueChange={this.toggleSwitchChat}
               value={this.state.values.chatEnabled}
               onTintColor="#49d260"
               thumbTintColor="#e7e7e7"
-              style={{
-                 position: 'absolute',
-                 alignSelf: 'flex-end',
-               }}
             />
           </View>
           )}
