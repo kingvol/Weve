@@ -430,6 +430,7 @@ class EditProfileScreen extends Component {
 
     const options = {
       title: I18n.t('editProfile.select_avatar'),
+      quality: 0.5,
       storageOptions: {
         skipBackup: true,
       },
