@@ -825,16 +825,18 @@ class EditProfileScreen extends Component {
             )}
           </View>
           )}
-          <Button
-            id="EditProfile.subbmitButton"
-            block
-            success
-            disabled={this.state.loading || !isDataModified}
-            onPress={this.onSubmitForm}
-            style={{ marginBottom: 15 }}
-          >
-            {I18n.t('common.save')}
-          </Button>
+          {isDataModified && (
+            <Button
+              id="EditProfile.subbmitButton"
+              block
+              success
+              disabled={this.state.loading}
+              onPress={this.onSubmitForm}
+              style={{ marginBottom: 15 }}
+            >
+              {I18n.t('common.save')}
+            </Button>
+          )}
         </Content>
       </Container>
     );
