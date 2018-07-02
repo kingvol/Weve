@@ -78,6 +78,7 @@ class EditProfileScreen extends Component {
       imageUploading: false,
       categories: [],
       profileIconColor: 'grey',
+      isDataModified: false,
     };
   }
 
@@ -174,6 +175,7 @@ class EditProfileScreen extends Component {
   }
 
   onFullNameChange = (value) => {
+    this.dataModified();
     this.setState({ fullName: value });
     let firstName;
     let lastName;
@@ -196,6 +198,7 @@ class EditProfileScreen extends Component {
   };
 
   onFieldChange = (key, value) => {
+    this.dataModified();
     this.setState({
       values: {
         ...this.state.values,
@@ -205,6 +208,7 @@ class EditProfileScreen extends Component {
   };
 
   onRegionSelect(region) {
+    this.dataModified();
     this.setState({
       values: {
         ...this.state.values,
@@ -270,6 +274,7 @@ class EditProfileScreen extends Component {
   };
 
   onCheckboxPress = () => {
+    this.dataModified();
     if (!this.state.values.isProvider) {
       this.setState({
         values: {
@@ -290,6 +295,7 @@ class EditProfileScreen extends Component {
   };
 
   onCategorySelect = (categories) => {
+    this.dataModified();
     this.setState({
       values: {
         ...this.state.values,
@@ -317,6 +323,7 @@ class EditProfileScreen extends Component {
   };
 
   toggleSwitchPhone = (value) => {
+    this.dataModified();
     this.setState({
       values: {
         ...this.state.values,
@@ -326,6 +333,7 @@ class EditProfileScreen extends Component {
   };
 
   toggleSwitchChat = (value) => {
+    this.dataModified();
     this.setState({
       values: {
         ...this.state.values,
@@ -382,6 +390,7 @@ class EditProfileScreen extends Component {
   }
 
   captureImage = async () => {
+    this.dataModified();
     if (Platform.OS === 'android') {
       try {
         await this.requestCameraPermission();
@@ -420,6 +429,7 @@ class EditProfileScreen extends Component {
   };
 
   captureProviderImage = async (index) => {
+    this.dataModified();
     if (Platform.OS === 'android') {
       try {
         await this.requestCameraPermission();
@@ -479,11 +489,17 @@ class EditProfileScreen extends Component {
         descriptionLength: maxLength - value.length,
         bio: value,
       },
+      isDataModified: true,
     });
+  }
+
+  dataModified = () => {
+    this.setState({ isDataModified: true });
   }
 
 
   render() {
+    const { isDataModified } = this.state;
     const { phoneNumber } = this.state.values;
     const { checkBoxText, categoryText, styleDescription } = styles;
     const { isProvider } = this.props.user.profile;
@@ -813,7 +829,7 @@ class EditProfileScreen extends Component {
             id="EditProfile.subbmitButton"
             block
             success
-            disabled={this.state.loading}
+            disabled={this.state.loading || !isDataModified}
             onPress={this.onSubmitForm}
             style={{ marginBottom: 15 }}
           >
