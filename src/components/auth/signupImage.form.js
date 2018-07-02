@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert } from 'react-native';
+import { Alert, PermissionsAndroid } from 'react-native';
 import { View, Text, Thumbnail, Button } from 'native-base';
 import ImagePicker from 'react-native-image-picker';
 import I18n from 'react-native-i18n';
@@ -12,7 +12,49 @@ export default class SignupImageForm extends Component {
     image: null,
   };
 
+  // async function requestCameraPermission() {
+  //   try {
+  //     const granted = await PermissionsAndroid.request(
+  //       PermissionsAndroid.PERMISSIONS.CAMERA,
+  //       {
+  //         'title': 'Cool Photo App Camera Permission',
+  //         'message': 'Cool Photo App needs access to your camera ' +
+  //                    'so you can take awesome pictures.'
+  //       }
+  //     )
+  //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+  //       console.log("You can use the camera")
+  //     } else {
+  //       console.log("Camera permission denied")
+  //     }
+  //   } catch (err) {
+  //     console.warn(err)
+  //   }
+  // }
+
+  // requestCameraPermission = async () => {
+  //   try {
+  //     const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE, {
+  //       title: 'Wevedo Storage Permission',
+  //       message: 'Wevedo needs access to your camera',
+  //     });
+  //     if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+  //       console.log('Permission denied');
+  //     }
+  //   } catch (err) {
+  //     console.warn(err);
+  //   }
+  // }
+
   captureImage = () => {
+    // if (Platform.OS === 'android') {
+    //   try {
+    //     await this.requestCameraPermission();
+    //   } catch (error) {
+    //     return;
+    //   }
+    // }
+
     const options = {
       quality: 1.0,
       maxWidth: 500,
