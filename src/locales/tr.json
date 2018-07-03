@@ -101,7 +101,13 @@
     "CallOn": "Telefon araması çevrimiçi",
     "CallOff": "Telefon araması çevrimdışı",
     "ChatOn": "Sohbet çevrimiçi",
-    "ChatOff": "Sohbet çevrimdışı"
+    "ChatOff": "Sohbet çevrimdışı",
+    "permissions": {
+      "allowPhoto": "Fotoğraflara erişmek için Wevedo'ya izin ver?",
+      "descriptionPhoto": "Profil resmi için fotoğraflara erişimine izin ver",
+      "allowCamera": "Wevedo kameraya erişmesine izin ver?",
+      "descriptionCamera": " Profil resmi için kameraya erişimine izin ver"
+    }
   },
   "inbox": {
     "no_active_dialog": "Etkin iletişim kutusu yok"
@@ -129,7 +135,10 @@
     "continue": "Devam",
     "category": "Kategori",
     "share": "Paylaş",
-    "show_more": "Daha fazla göster"
+    "show_more": "Daha fazla göster",
+    "deny": "Red et",
+    "allow": "Izin ver",
+    "OpenSettings": "Ayarları aç"
   },
   "auth": {
     "enter_code": "Onay şifrenizi giriniz",

@@ -101,7 +101,13 @@
     "CallOn": "Call On",
     "CallOff": "Call Off",
     "ChatOn": "Chat On",
-    "ChatOff": "Chat Off"
+    "ChatOff": "Chat Off",
+    "permissions": {
+      "allowPhoto": "Allow Wevedo to access photos?",
+      "descriptionPhoto": "Wevedo need access to photos for profile picture",
+      "allowCamera": "Allow Wevedo to access camera?",
+      "descriptionCamera": "Wevedo need access to camera for profile picture"
+    }
   },
   "inbox": {
     "no_active_dialog": "There are no active dialogs"
@@ -129,7 +135,10 @@
     "continue": "Continue",
     "category": "Category",
     "share": "Share",
-    "show_more": "Show more"
+    "show_more": "Show more",
+    "deny": "Deny",
+    "allow": "Allow",
+    "OpenSettings": "Open Settings"
   },
   "auth": {
     "enter_code": "Enter verification code",

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert } from 'react-native';
+import { Alert, Platform } from 'react-native';
 import { View, Text, Thumbnail, Button } from 'native-base';
 import ImagePicker from 'react-native-image-picker';
 import I18n from 'react-native-i18n';
@@ -25,22 +25,23 @@ export default class SignupImageForm extends Component {
     });
   }
 
-  checkCameraAndPhotos = () => {
-    Permissions.checkMultiple(['camera', 'photo']).then((response) => {
-      // response is an object mapping type to permission
-      this.setState({
-        cameraPermission: response.camera,
-        photoPermission: response.photo,
-      });
+  setDefaultImage = () => {
+    this.setState({
+      imageAttached: true,
+      image: defaultProfile,
     });
+    this.props.onImageSelect(defaultProfile);
   };
 
-  requestPermission = () => {
+  requestPermissionCamera = () => {
     Permissions.request('camera').then((response) => {
       // Returns once the user has chosen to 'allow' or to 'not allow' access
       // Response is one of: 'authorized', 'denied', 'restricted', or 'undetermined'
       this.setState({ cameraPermission: response });
     });
+  };
+
+  requestPermissionPhoto = () => {
     Permissions.request('photo').then((response) => {
       // Returns once the user has chosen to 'allow' or to 'not allow' access
       // Response is one of: 'authorized', 'denied', 'restricted', or 'undetermined'
@@ -76,32 +77,50 @@ export default class SignupImageForm extends Component {
         this.props.onImageSelect(uri);
       }
     });
-  }
+  };
 
   captureImage = () => {
     if (
       this.state.photoPermission !== 'authorized' ||
       this.state.cameraPermission !== 'authorized'
     ) {
-      Alert.alert('Can we access your photos?', 'We need access so you can set your profile pic', [
-        {
-          text: 'No way',
-          onPress: () => console.log('Permission denied'),
-          style: 'cancel',
-        },
-        this.state.photoPermission !== 'authorized' ||
-        this.state.cameraPermission !== 'authorized'
-          ? { text: 'OK', onPress: this.requestPermission }
-          : { text: 'Open Settings', onPress: Permissions.openSettings },
-      ]);
+      if (this.state.photoPermission !== 'authorized') {
+        Alert.alert(
+          I18n.t('editProfile.permissions.allowPhoto'),
+          I18n.t('editProfile.permissions.descriptionPhoto'),
+          [
+            {
+              text: I18n.t('common.deny'),
+              onPress: this.setDefaultImage,
+              style: 'cancel',
+            },
+            Platform.OS === 'android' || this.state.photoPermission === 'undetermined'
+              ? { text: I18n.t('common.allow'), onPress: this.requestPermissionPhoto }
+              : { text: I18n.t('common.OpenSettings'), onPress: Permissions.openSettings },
+          ],
+        );
+      } else if (this.state.cameraPermission !== 'authorized') {
+        Alert.alert(
+          I18n.t('editProfile.permissions.allowCamera'),
+          I18n.t('editProfile.permissions.descriptionCamera'),
+          [
+            {
+              text: 'Deny',
+              onPress: this.setDefaultImage,
+              style: 'cancel',
+            },
+            Platform.OS === 'android' || this.state.cameraPermission === 'undetermined'
+              ? { text: I18n.t('common.allow'), onPress: this.requestPermissionCamera }
+              : { text: I18n.t('common.OpenSettings'), onPress: Permissions.openSettings },
+          ],
+        );
+      }
     } else {
       this.showImagePickerMethod();
     }
   };
 
   render() {
-    console.log(this.state.cameraPermission);
-    console.log(this.state.photoPermission);
     return [
       <View style={{ justifyContent: 'center', flexDirection: 'row' }}>
         <Button
