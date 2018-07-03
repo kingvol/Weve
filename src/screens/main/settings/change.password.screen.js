@@ -195,19 +195,19 @@ class ChangePasswordScreen extends Component {
           {values.newPassword && values.confirmPassword && values.currentPassword &&
             !errors.newPassword.isError &&
             !errors.confirmPassword.isError &&
-            !errors.currentPassword.isError && (
-            <Button
-              id="ChangePassword.submitButton"
-              style={{ marginTop: 10 }}
-              block
-              success
-              disabled={disabled}
-              onPress={this.onFormSubmit}
-              loading={this.props.user.loading}
-            >
-              {I18n.t('common.save')}
-            </Button>
-          )}
+            !errors.currentPassword.isError ? (
+              <Button
+                id="ChangePassword.submitButton"
+                style={{ marginTop: 10 }}
+                block
+                success
+                disabled={disabled}
+                onPress={this.onFormSubmit}
+                loading={this.props.user.loading}
+              >
+                {I18n.t('common.save')}
+              </Button>
+            ) : null}
         </Content>
       </Container>
     );
