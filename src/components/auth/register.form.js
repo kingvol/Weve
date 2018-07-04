@@ -534,24 +534,26 @@ class SignupForm extends Component {
                 <SignupImageForm key="imfs" onImageSelect={this.onImageSelect} />
               )}
 
-            <Button
-              id="Signup.submitButton"
-              block
-              style={styles.registerButton}
-              onPress={
-                this.state.isProvider && this.state.step === 1
+            {!disabled && (!this.props.isLoading || !this.state.loading) ? (
+              <Button
+                id="Signup.submitButton"
+                block
+                style={styles.registerButton}
+                onPress={
+                  this.state.isProvider && this.state.step === 1
                   ? this.onContinuePress
-                  : this.handleSubmit
-              }
-              spinner={this.props.isLoading || this.state.loading}
-              disabled={disabled}
-            >
-              <Text style={styles.registerButtonText}>
-                {this.state.isProvider && this.state.step === 1
-                  ? I18n.t('common.continue')
-                  : I18n.t('logIn.sign_up')}
-              </Text>
-            </Button>
+                    : this.handleSubmit
+                }
+                spinner={this.props.isLoading || this.state.loading}
+                disabled={disabled}
+              >
+                <Text style={styles.registerButtonText}>
+                  {this.state.isProvider && this.state.step === 1
+                    ? I18n.t('common.continue')
+                    : I18n.t('logIn.sign_up')}
+                </Text>
+              </Button>
+            ) : null}
 
             <Eula
               isModalVisible={this.state.isModalVisible}
