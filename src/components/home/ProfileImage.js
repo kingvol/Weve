@@ -8,13 +8,14 @@ const ITEM_WIDTH = Dimensions.get('window').width;
 const ProfileImage = ({ id, onPress, source, size, hasImage, styleContainer }) => {
   const styles = {
     container: {
-      borderWidth: hasImage ? 0 : 0.25,
+      borderWidth: hasImage ? 0 : 0.15,
       borderColor: 'grey',
-      width: ITEM_WIDTH * size - ITEM_WIDTH / 20,
+      width: ITEM_WIDTH * size - ITEM_WIDTH / 20 - 1,
+      height: ITEM_WIDTH * size - ITEM_WIDTH / 20 - 1,
     },
     styleImage: {
-      height: ITEM_WIDTH * size - ITEM_WIDTH / 20,
-      width: ITEM_WIDTH * size - ITEM_WIDTH / 20,
+      height: ITEM_WIDTH * size - ITEM_WIDTH / 20 - 1,
+      width: ITEM_WIDTH * size - ITEM_WIDTH / 20 - 1,
     },
     styleIconImage: {
       flex: 0,
