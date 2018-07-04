@@ -10,6 +10,7 @@ import SpinnerOverlay from 'react-native-loading-spinner-overlay';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DeviceInfo from 'react-native-device-info';
 import MultiSelect from 'react-native-multiple-select';
+import Permissions from 'react-native-permissions';
 import I18n from '../../../locales';
 import config from '../../../../config';
 import countries from '../../../countryLib/countries';
@@ -79,6 +80,8 @@ class EditProfileScreen extends Component {
       categories: [],
       profileIconColor: 'grey',
       isDataModified: false,
+      cameraPermission: 'undetermined',
+      photoPermission: 'undetermined',
     };
   }
 
@@ -148,6 +151,13 @@ class EditProfileScreen extends Component {
     if (!this.props.user.profile._id) {
       this.props.fetchProfile('me');
     }
+    Permissions.checkMultiple(['camera', 'photo']).then((response) => {
+      // response is an object mapping type to permission
+      this.setState({
+        cameraPermission: response.camera,
+        photoPermission: response.photo,
+      });
+    });
   }
 
   componentWillReceiveProps({ user }) {
@@ -312,6 +322,15 @@ class EditProfileScreen extends Component {
     this.scroll = ref;
   }
 
+  setDefaultImage = () => {
+    this.setState({
+      values: {
+        ...this.state.values,
+        profileImageURL: defaultProfile,
+      },
+    });
+  };
+
   newScrollMethod = () => {
     this.scroll._root.scrollToPosition(0, 0);
     this.setState({ profileIconColor: '#d64635' });
@@ -375,32 +394,27 @@ class EditProfileScreen extends Component {
     }).then(raw => raw.json());
   };
 
-  requestCameraPermission = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE, {
-        title: 'Wevedo Storage Permission',
-        message: 'Wevedo needs access to your camera',
-      });
-      if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
-        console.log('Permission denied');
-      }
-    } catch (err) {
-      console.warn(err);
-    }
-  }
+  requestPermissionCamera = () => {
+    Permissions.request('camera').then((response) => {
+      // Returns once the user has chosen to 'allow' or to 'not allow' access
+      // Response is one of: 'authorized', 'denied', 'restricted', or 'undetermined'
+      this.setState({ cameraPermission: response });
+    });
+  };
 
-  captureImage = async () => {
+  requestPermissionPhoto = () => {
+    Permissions.request('photo').then((response) => {
+      // Returns once the user has chosen to 'allow' or to 'not allow' access
+      // Response is one of: 'authorized', 'denied', 'restricted', or 'undetermined'
+      this.setState({ photoPermission: response });
+    });
+  };
+
+  showImagePickerMethod = () => {
     this.dataModified();
-    if (Platform.OS === 'android') {
-      try {
-        await this.requestCameraPermission();
-      } catch (error) {
-        return;
-      }
-    }
-
     const options = {
       title: I18n.t('editProfile.select_avatar'),
+      quality: 0.5,
       storageOptions: {
         skipBackup: true,
       },
@@ -428,16 +442,49 @@ class EditProfileScreen extends Component {
     });
   };
 
+  captureImage = async () => {
+    if (
+      this.state.photoPermission !== 'authorized' ||
+      this.state.cameraPermission !== 'authorized'
+    ) {
+      if (this.state.photoPermission !== 'authorized') {
+        Alert.alert(
+          I18n.t('editProfile.permissions.allowPhoto'),
+          I18n.t('editProfile.permissions.descriptionPhoto'),
+          [
+            {
+              text: I18n.t('common.deny'),
+              onPress: this.setDefaultImage,
+              style: 'cancel',
+            },
+            Platform.OS === 'android' || this.state.photoPermission === 'undetermined'
+              ? { text: I18n.t('common.allow'), onPress: this.requestPermissionPhoto }
+              : { text: I18n.t('common.OpenSettings'), onPress: Permissions.openSettings },
+          ],
+        );
+      } else if (this.state.cameraPermission !== 'authorized') {
+        Alert.alert(
+          I18n.t('editProfile.permissions.allowCamera'),
+          I18n.t('editProfile.permissions.descriptionCamera'),
+          [
+            {
+              text: 'Deny',
+              onPress: this.setDefaultImage,
+              style: 'cancel',
+            },
+            Platform.OS === 'android' || this.state.cameraPermission === 'undetermined'
+              ? { text: I18n.t('common.allow'), onPress: this.requestPermissionCamera }
+              : { text: I18n.t('common.OpenSettings'), onPress: Permissions.openSettings },
+          ],
+        );
+      }
+    } else {
+      this.showImagePickerMethod();
+    }
+  };
+
   captureProviderImage = async (index) => {
     this.dataModified();
-    if (Platform.OS === 'android') {
-      try {
-        await this.requestCameraPermission();
-      } catch (error) {
-        return;
-      }
-    }
-
     const options = {
       title: I18n.t('editProfile.select_avatar'),
       quality: 0.5,
@@ -499,7 +546,7 @@ class EditProfileScreen extends Component {
 
 
   render() {
-    const { isDataModified } = this.state;
+    const { isDataModified, photoPermission, cameraPermission } = this.state;
     const { phoneNumber } = this.state.values;
     const { checkBoxText, categoryText, styleDescription } = styles;
     const { isProvider } = this.props.user.profile;
@@ -517,78 +564,79 @@ class EditProfileScreen extends Component {
           keyboardShouldPersistTaps="always"
           ref={this.setScrollRef}
         >
-          { isProvider ? (
-            <View style={{ justifyContent: 'space-between' }}>
-              <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
-                <ProfileImage
-                  id="EditProfile.imageWrapper1"
-                  onPress={this.captureImage}
-                  source={{
+          { isProvider && photoPermission === 'authorized'
+           && cameraPermission === 'authorized' ? (
+             <View style={{ justifyContent: 'space-between' }}>
+               <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
+                 <ProfileImage
+                   id="EditProfile.imageWrapper1"
+                   onPress={this.captureImage}
+                   source={{
                   uri:
                     this.state.values.profileImageURL ||
                     this.props.user.profile.profileImageURL,
                 }}
-                  hasImage={this.state.values.profileImageURL}
-                  size={2 / 3}
-                  styleContainer={{ marginRight: (ITEM_WIDTH / 20) - 1 }}
-                />
+                   hasImage={this.state.values.profileImageURL}
+                   size={2 / 3}
+                   styleContainer={{ marginRight: (ITEM_WIDTH / 20) - 1 }}
+                 />
 
-                <View style={{ justifyContent: 'flex-start' }}>
+                 <View style={{ justifyContent: 'flex-start' }}>
 
-                  <ProfileImage
-                    id="EditProfile.imageWrapper2"
-                    onPress={() => this.captureProviderImage(0)}
-                    source={{ uri: this.state.values.providerImages[0] }}
-                    hasImage={!!this.state.values.providerImages[0]}
-                    size={1 / 3}
-                    styleContainer={{ marginBottom: ITEM_WIDTH / 20 }}
-                  />
+                   <ProfileImage
+                     id="EditProfile.imageWrapper2"
+                     onPress={() => this.captureProviderImage(0)}
+                     source={{ uri: this.state.values.providerImages[0] }}
+                     hasImage={!!this.state.values.providerImages[0]}
+                     size={1 / 3}
+                     styleContainer={{ marginBottom: ITEM_WIDTH / 20 }}
+                   />
 
-                  <ProfileImage
-                    id="EditProfile.imageWrapper3"
-                    onPress={() => this.captureProviderImage(1)}
-                    source={{ uri: this.state.values.providerImages[1] }}
-                    hasImage={!!this.state.values.providerImages[1]}
-                    size={1 / 3}
-                  />
-                </View>
-              </View>
-              <View style={{
+                   <ProfileImage
+                     id="EditProfile.imageWrapper3"
+                     onPress={() => this.captureProviderImage(1)}
+                     source={{ uri: this.state.values.providerImages[1] }}
+                     hasImage={!!this.state.values.providerImages[1]}
+                     size={1 / 3}
+                   />
+                 </View>
+               </View>
+               <View style={{
               flexDirection: 'row',
               justifyContent: 'flex-start',
               marginTop: ITEM_WIDTH / 20,
               marginBottom: ITEM_WIDTH / 20,
             }}
-              >
+               >
 
-                <ProfileImage
-                  id="EditProfile.imageWrapper6"
-                  onPress={() => this.captureProviderImage(4)}
-                  source={{ uri: this.state.values.providerImages[4] }}
-                  hasImage={!!this.state.values.providerImages[4]}
-                  size={1 / 3}
-                  styleContainer={{ marginRight: ITEM_WIDTH / 20 }}
-                />
+                 <ProfileImage
+                   id="EditProfile.imageWrapper6"
+                   onPress={() => this.captureProviderImage(4)}
+                   source={{ uri: this.state.values.providerImages[4] }}
+                   hasImage={!!this.state.values.providerImages[4]}
+                   size={1 / 3}
+                   styleContainer={{ marginRight: ITEM_WIDTH / 20 }}
+                 />
 
-                <ProfileImage
-                  id="EditProfile.imageWrapper5"
-                  onPress={() => this.captureProviderImage(3)}
-                  source={{ uri: this.state.values.providerImages[3] }}
-                  hasImage={!!this.state.values.providerImages[3]}
-                  size={1 / 3}
-                  styleContainer={{ marginRight: (ITEM_WIDTH / 20) - 1 }}
-                />
+                 <ProfileImage
+                   id="EditProfile.imageWrapper5"
+                   onPress={() => this.captureProviderImage(3)}
+                   source={{ uri: this.state.values.providerImages[3] }}
+                   hasImage={!!this.state.values.providerImages[3]}
+                   size={1 / 3}
+                   styleContainer={{ marginRight: (ITEM_WIDTH / 20) - 1 }}
+                 />
 
-                <ProfileImage
-                  id="EditProfile.imageWrapper4"
-                  onPress={() => this.captureProviderImage(2)}
-                  source={{ uri: this.state.values.providerImages[2] }}
-                  hasImage={!!this.state.values.providerImages[2]}
-                  size={1 / 3}
-                />
+                 <ProfileImage
+                   id="EditProfile.imageWrapper4"
+                   onPress={() => this.captureProviderImage(2)}
+                   source={{ uri: this.state.values.providerImages[2] }}
+                   hasImage={!!this.state.values.providerImages[2]}
+                   size={1 / 3}
+                 />
 
-              </View>
-            </View>
+               </View>
+             </View>
 
           ) : (
             <View style={{ justifyContent: 'center' }}>
@@ -608,23 +656,24 @@ class EditProfileScreen extends Component {
                     defaultProfile,
                 }}
                 />
-                {!this.state.values.profileImageURL ? (
-                  <View
-                    style={{
-                    flex: 0,
-                    bottom: 13,
-                    paddingLeft: 40,
-                    position: 'absolute',
-                  }}
-                  >
-                    <Icon
-                      style={{
+                {!this.state.values.profileImageURL || photoPermission !== 'authorized'
+           || cameraPermission !== 'authorized' ? (
+             <View
+               style={{
+                flex: 0,
+                bottom: 13,
+                paddingLeft: 40,
+                position: 'absolute',
+              }}
+             >
+               <Icon
+                 style={{
                       color: this.state.profileIconColor,
                     }}
-                      size={20}
-                      name="plus"
-                    />
-                  </View>
+                 size={20}
+                 name="plus"
+               />
+             </View>
               ) : null}
               </Button>
             </View>

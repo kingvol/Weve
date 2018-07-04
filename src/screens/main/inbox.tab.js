@@ -66,10 +66,10 @@ class InboxTab extends Component {
   formatDate = date => moment(date).format('DD.MM.YY');
 
   startRoomPolling = () => {
-    // const intervalId = setInterval(() => {
-    //   this.props.fetchRooms();
-    // }, 3000);
-    // this.setState({ intervalId s});
+    const intervalId = setInterval(() => {
+      this.props.fetchRooms();
+    }, 3000);
+    this.setState({ intervalId });
   };
 
   renderInboxItem = ({ item }) => {
