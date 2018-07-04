@@ -101,7 +101,13 @@
     "CallOn": "Telefon araması çevrimiçi",
     "CallOff": "Telefon araması çevrimdışı",
     "ChatOn": "Sohbet çevrimiçi",
-    "ChatOff": "Sohbet çevrimdışı"
+    "ChatOff": "Sohbet çevrimdışı",
+    "permissions": {
+      "allowPhoto": "Fotoğraflara erişmek için Wevedo'ya izin ver?",
+      "descriptionPhoto": "Profil resmi için fotoğraflara erişimine izin ver",
+      "allowCamera": "Wevedo kameraya erişmesine izin ver?",
+      "descriptionCamera": " Profil resmi için kameraya erişimine izin ver"
+    }
   },
   "inbox": {
     "no_active_dialog": "Häzirki wagtda hiç hili hatyňyz ýok"
@@ -129,7 +135,10 @@
     "continue": "Dowam",
     "category": "Kategoriýa",
     "share": "Paýlaş",
-    "show_more": "Beylekiler"
+    "show_more": "Beylekiler",
+    "deny": "Red et",
+    "allow": "Izin ver",
+    "OpenSettings": "Ayarları aç"
   },
   "auth": {
     "enter_code": "Tassyklama kodyny ýazyň",
