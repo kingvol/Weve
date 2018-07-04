@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle, camelcase */
 import React, { Component } from 'react';
-import { Alert, Keyboard, View, Dimensions, TextInput, PermissionsAndroid, Platform, Switch } from 'react-native';
+import { Alert, Keyboard, View, Dimensions, TextInput, Platform, Switch } from 'react-native';
 import _ from 'lodash';
 import ImagePicker from 'react-native-image-picker';
 import { Picker, CheckBox, Left } from 'native-base';
@@ -414,7 +414,6 @@ class EditProfileScreen extends Component {
     this.dataModified();
     const options = {
       title: I18n.t('editProfile.select_avatar'),
-      quality: 0.5,
       storageOptions: {
         skipBackup: true,
       },
@@ -442,12 +441,13 @@ class EditProfileScreen extends Component {
     });
   };
 
-  captureImage = async () => {
+  captureImage = () => {
+    const { photoPermission, cameraPermission } = this.state;
     if (
-      this.state.photoPermission !== 'authorized' ||
-      this.state.cameraPermission !== 'authorized'
+      photoPermission !== 'authorized' ||
+      cameraPermission !== 'authorized'
     ) {
-      if (this.state.photoPermission !== 'authorized') {
+      if (photoPermission !== 'authorized') {
         Alert.alert(
           I18n.t('editProfile.permissions.allowPhoto'),
           I18n.t('editProfile.permissions.descriptionPhoto'),
@@ -457,12 +457,12 @@ class EditProfileScreen extends Component {
               onPress: this.setDefaultImage,
               style: 'cancel',
             },
-            Platform.OS === 'android' || this.state.photoPermission === 'undetermined'
+            Platform.OS === 'android' || photoPermission === 'undetermined'
               ? { text: I18n.t('common.allow'), onPress: this.requestPermissionPhoto }
               : { text: I18n.t('common.OpenSettings'), onPress: Permissions.openSettings },
           ],
         );
-      } else if (this.state.cameraPermission !== 'authorized') {
+      } else if (cameraPermission !== 'authorized') {
         Alert.alert(
           I18n.t('editProfile.permissions.allowCamera'),
           I18n.t('editProfile.permissions.descriptionCamera'),
@@ -472,7 +472,7 @@ class EditProfileScreen extends Component {
               onPress: this.setDefaultImage,
               style: 'cancel',
             },
-            Platform.OS === 'android' || this.state.cameraPermission === 'undetermined'
+            Platform.OS === 'android' || cameraPermission === 'undetermined'
               ? { text: I18n.t('common.allow'), onPress: this.requestPermissionCamera }
               : { text: I18n.t('common.OpenSettings'), onPress: Permissions.openSettings },
           ],
@@ -602,11 +602,11 @@ class EditProfileScreen extends Component {
                  </View>
                </View>
                <View style={{
-              flexDirection: 'row',
-              justifyContent: 'flex-start',
-              marginTop: ITEM_WIDTH / 20,
-              marginBottom: ITEM_WIDTH / 20,
-            }}
+                  flexDirection: 'row',
+                  justifyContent: 'flex-start',
+                  marginTop: ITEM_WIDTH / 20,
+                  marginBottom: ITEM_WIDTH / 20,
+                }}
                >
 
                  <ProfileImage

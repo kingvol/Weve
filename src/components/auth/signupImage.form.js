@@ -80,11 +80,9 @@ export default class SignupImageForm extends Component {
   };
 
   captureImage = () => {
-    if (
-      this.state.photoPermission !== 'authorized' ||
-      this.state.cameraPermission !== 'authorized'
-    ) {
-      if (this.state.photoPermission !== 'authorized') {
+    const { photoPermission, cameraPermission } = this.state;
+    if (photoPermission !== 'authorized' || cameraPermission !== 'authorized') {
+      if (photoPermission !== 'authorized') {
         Alert.alert(
           I18n.t('editProfile.permissions.allowPhoto'),
           I18n.t('editProfile.permissions.descriptionPhoto'),
@@ -94,12 +92,12 @@ export default class SignupImageForm extends Component {
               onPress: this.setDefaultImage,
               style: 'cancel',
             },
-            Platform.OS === 'android' || this.state.photoPermission === 'undetermined'
+            Platform.OS === 'android' || photoPermission === 'undetermined'
               ? { text: I18n.t('common.allow'), onPress: this.requestPermissionPhoto }
               : { text: I18n.t('common.OpenSettings'), onPress: Permissions.openSettings },
           ],
         );
-      } else if (this.state.cameraPermission !== 'authorized') {
+      } else if (cameraPermission !== 'authorized') {
         Alert.alert(
           I18n.t('editProfile.permissions.allowCamera'),
           I18n.t('editProfile.permissions.descriptionCamera'),
@@ -109,7 +107,7 @@ export default class SignupImageForm extends Component {
               onPress: this.setDefaultImage,
               style: 'cancel',
             },
-            Platform.OS === 'android' || this.state.cameraPermission === 'undetermined'
+            Platform.OS === 'android' || cameraPermission === 'undetermined'
               ? { text: I18n.t('common.allow'), onPress: this.requestPermissionCamera }
               : { text: I18n.t('common.OpenSettings'), onPress: Permissions.openSettings },
           ],
