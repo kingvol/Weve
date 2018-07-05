@@ -63,7 +63,7 @@ class ForgotPassword extends Component {
         step: 2,
       });
     } catch ({ message }) {
-      alert(I18n.t(`backend.${message}`));
+      alert(I18n.t(`backend.${message}`, { defaults: [{ scope: 'chat.error' }] }));
     }
   };
 
@@ -80,12 +80,13 @@ class ForgotPassword extends Component {
         { cancelable: false },
       );
     } catch (error) {
-      alert(I18n.t(`backend.${error.message}`));
+      alert(I18n.t(`backend.${error.message}`, { defaults: [{ scope: 'chat.error' }] }));
       this.setState({ isLoading: false });
     }
   };
 
   renderForm() {
+    const { phone, resetPassword } = this.state;
     return (
       <Container id="ForgotPassword.main-content" style={{ flex: 1 }}>
         {/* <Content id="ForgotPassword.main-content" padder keyboardShouldPersistTaps="handled" contentContainerStyle={{ flex: 1 }}> */}
@@ -120,16 +121,18 @@ class ForgotPassword extends Component {
                 id="ForgotPassword.passwordInput"
                 onChangeText={text => this.onTextChange('resetPassword', text)}
               />
-              <Button
-                block
-                style={styles.button}
-                disabled={!this.state.phone || !this.state.resetPassword}
-                spinner={this.state.isLoading}
-                id="ForgotPassword.resetButton"
-                onPress={this.onSubmitForm}
-              >
-                <Text style={styles.buttonText}>{I18n.t('logIn.reset_password')}</Text>
-              </Button>
+              {phone && resetPassword && resetPassword.length >= 6 ? (
+                <Button
+                  block
+                  style={styles.button}
+                  disabled={!this.state.phone || !this.state.resetPassword}
+                  spinner={this.state.isLoading}
+                  id="ForgotPassword.resetButton"
+                  onPress={this.onSubmitForm}
+                >
+                  <Text style={styles.buttonText}>{I18n.t('logIn.reset_password')}</Text>
+                </Button>
+              ) : null}
             </View>
           </View>
         ) : (

@@ -43,7 +43,7 @@ class VerificationScreen extends Component {
         });
       } catch ({ message }) {
         this.setState({ isLoading: false });
-        Alert.alert(I18n.t(`backend.${message}`));
+        Alert.alert(I18n.t(`backend.${message}`, { defaults: [{ scope: 'chat.error' }] }));
       }
 
       return;
@@ -62,7 +62,7 @@ class VerificationScreen extends Component {
       this.requestVerification(mobileNumber);
     } catch ({ message }) {
       this.setState({ isLoading: false });
-      Alert.alert(I18n.t(`backend.${message}`));
+      Alert.alert(I18n.t(`backend.${message}`, { defaults: [{ scope: 'chat.error' }] }));
     }
   };
 
@@ -96,7 +96,7 @@ class VerificationScreen extends Component {
       this.startResendTimeout();
     } catch ({ message }) {
       this.setState({ isLoading: false });
-      Alert.alert(I18n.t(`backend.${message}`));
+      Alert.alert(I18n.t(`backend.${message}`, { defaults: [{ scope: 'chat.error' }] }));
     }
   };
 
@@ -142,7 +142,7 @@ class VerificationScreen extends Component {
           style={styles.background}
           source={require('../../images/loginBackground.png')}
         >
-          <ScrollView>
+          <ScrollView keyboardShouldPersistTaps="always">
             <View id="Signup.backButtonAndTitleWrapper" style={styles.header}>
               <Button
                 id="Signup.backButton"

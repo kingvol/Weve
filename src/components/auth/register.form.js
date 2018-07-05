@@ -87,7 +87,7 @@ class SignupForm extends Component {
         },
       });
     } catch ({ message }) {
-      alert(I18n.t(`backend.${message}`));
+      alert(I18n.t(`backend.${message}`, { defaults: [{ scope: 'chat.error' }] }));
     }
     const url = 'http://api.ipstack.com/check?access_key=e1a9033da20c96cf61c52598eb00cfb9&format=1';
     await fetch(url)
@@ -534,24 +534,26 @@ class SignupForm extends Component {
                 <SignupImageForm key="imfs" onImageSelect={this.onImageSelect} />
               )}
 
-            <Button
-              id="Signup.submitButton"
-              block
-              style={styles.registerButton}
-              onPress={
-                this.state.isProvider && this.state.step === 1
+            {!disabled && (!this.props.isLoading || !this.state.loading) ? (
+              <Button
+                id="Signup.submitButton"
+                block
+                style={styles.registerButton}
+                onPress={
+                  this.state.isProvider && this.state.step === 1
                   ? this.onContinuePress
-                  : this.handleSubmit
-              }
-              spinner={this.props.isLoading || this.state.loading}
-              disabled={disabled}
-            >
-              <Text style={styles.registerButtonText}>
-                {this.state.isProvider && this.state.step === 1
-                  ? I18n.t('common.continue')
-                  : I18n.t('logIn.sign_up')}
-              </Text>
-            </Button>
+                    : this.handleSubmit
+                }
+                spinner={this.props.isLoading || this.state.loading}
+                disabled={disabled}
+              >
+                <Text style={styles.registerButtonText}>
+                  {this.state.isProvider && this.state.step === 1
+                    ? I18n.t('common.continue')
+                    : I18n.t('logIn.sign_up')}
+                </Text>
+              </Button>
+            ) : null}
 
             <Eula
               isModalVisible={this.state.isModalVisible}

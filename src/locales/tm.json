@@ -82,7 +82,8 @@
         "authority": "Size rugsat berilenok.",
         "error": "Bron ýalñyş!",
         "later": "Soñurrak barlap görüñ."
-      }
+      },
+      "calls": "Aramalar cihazınız tarafından desteklenmiyor."
     }
   },
   "editProfile": {
@@ -94,7 +95,19 @@
     "avatar_error": "Surat alynmady",
     "country": "Döwlet",
     "countryLang": "rus",
-    "region": "Welaýat"
+    "region": "Welaýat",
+    "description": "Profil mazmuny",
+    "symbols": "karakter",
+    "CallOn": "Telefon araması çevrimiçi",
+    "CallOff": "Telefon araması çevrimdışı",
+    "ChatOn": "Sohbet çevrimiçi",
+    "ChatOff": "Sohbet çevrimdışı",
+    "permissions": {
+      "allowPhoto": "Fotoğraflara erişmek için Wevedo'ya izin ver?",
+      "descriptionPhoto": "Profil resmi için fotoğraflara erişimine izin ver",
+      "allowCamera": "Wevedo kameraya erişmesine izin ver?",
+      "descriptionCamera": " Profil resmi için kameraya erişimine izin ver"
+    }
   },
   "inbox": {
     "no_active_dialog": "Häzirki wagtda hiç hili hatyňyz ýok"
@@ -121,7 +134,11 @@
     "fullName": "Ady Familiýasy",
     "continue": "Dowam",
     "category": "Kategoriýa",
-    "share": "Paýlaş"
+    "share": "Paýlaş",
+    "show_more": "Beylekiler",
+    "deny": "Red et",
+    "allow": "Izin ver",
+    "OpenSettings": "Ayarları aç"
   },
   "auth": {
     "enter_code": "Tassyklama kodyny ýazyň",

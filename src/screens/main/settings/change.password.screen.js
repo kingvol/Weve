@@ -155,6 +155,7 @@ class ChangePasswordScreen extends Component {
 
   render() {
     const disabled = this.props.user.loading || !this.state.values.newPassword;
+    const { errors, values } = this.state;
     return (
       <Container id="ChangePassword.container" style={{ backgroundColor }}>
         <Content id="ChangePassword.content" padder keyboardShouldPersistTaps="always">
@@ -191,17 +192,22 @@ class ChangePasswordScreen extends Component {
             isError={this.state.errors.confirmPassword.isError}
             error={this.state.errors.confirmPassword.error}
           />
-          <Button
-            id="ChangePassword.submitButton"
-            style={{ marginTop: 10 }}
-            block
-            success
-            disabled={disabled}
-            onPress={this.onFormSubmit}
-            loading={this.props.user.loading}
-          >
-            {I18n.t('common.save')}
-          </Button>
+          {values.newPassword && values.confirmPassword && values.currentPassword &&
+            !errors.newPassword.isError &&
+            !errors.confirmPassword.isError &&
+            !errors.currentPassword.isError ? (
+              <Button
+                id="ChangePassword.submitButton"
+                style={{ marginTop: 10 }}
+                block
+                success
+                disabled={disabled}
+                onPress={this.onFormSubmit}
+                loading={this.props.user.loading}
+              >
+                {I18n.t('common.save')}
+              </Button>
+            ) : null}
         </Content>
       </Container>
     );

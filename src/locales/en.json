@@ -82,7 +82,8 @@
         "authority": "You do not have the authority to book the dates.",
         "error": "Error booking date!",
         "later": "Please try again later."
-      }
+      },
+      "calls": "Calls are not supported on your device"
     }
   },
   "editProfile": {
@@ -94,7 +95,19 @@
     "avatar_error": "Unable to get photo",
     "country": "Country",
     "countryLang": "eng",
-    "region": "Region"
+    "region": "Region",
+    "description": "Profile description",
+    "symbols": "characters",
+    "CallOn": "Call On",
+    "CallOff": "Call Off",
+    "ChatOn": "Chat On",
+    "ChatOff": "Chat Off",
+    "permissions": {
+      "allowPhoto": "Allow Wevedo to access photos?",
+      "descriptionPhoto": "Wevedo need access to photos for profile picture",
+      "allowCamera": "Allow Wevedo to access camera?",
+      "descriptionCamera": "Wevedo need access to camera for profile picture"
+    }
   },
   "inbox": {
     "no_active_dialog": "There are no active dialogs"
@@ -121,7 +134,11 @@
     "fullName": "Full name",
     "continue": "Continue",
     "category": "Category",
-    "share": "Share"
+    "share": "Share",
+    "show_more": "Show more",
+    "deny": "Deny",
+    "allow": "Allow",
+    "OpenSettings": "Open Settings"
   },
   "auth": {
     "enter_code": "Enter verification code",

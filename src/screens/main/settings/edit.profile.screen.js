@@ -1,5 +1,7 @@
+/* eslint-disable no-underscore-dangle, camelcase */
 import React, { Component } from 'react';
-import { Alert, Keyboard, View } from 'react-native';
+import { Alert, Keyboard, View, Dimensions, TextInput, Platform, Switch } from 'react-native';
+import _ from 'lodash';
 import ImagePicker from 'react-native-image-picker';
 import { Picker, CheckBox, Left } from 'native-base';
 import CountryPicker from 'react-native-country-picker-modal';
@@ -8,6 +10,7 @@ import SpinnerOverlay from 'react-native-loading-spinner-overlay';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DeviceInfo from 'react-native-device-info';
 import MultiSelect from 'react-native-multiple-select';
+import Permissions from 'react-native-permissions';
 import I18n from '../../../locales';
 import config from '../../../../config';
 import countries from '../../../countryLib/countries';
@@ -22,6 +25,7 @@ import {
   Text,
 } from '../../../components/common';
 import { backgroundColor, lightTextColor } from '../../../theme';
+import ProfileImage from '../../../components/home/ProfileImage';
 import { UserActions } from '../../../actions';
 import APIs from '../../../api';
 
@@ -35,27 +39,49 @@ const countryCode = countries.includes(userLocaleCountryCode) ? userLocaleCountr
 const regionName = countryLib[`${countryCode}`].provinces[0];
 const ucFirst = s => (s.substr(0, 1).toLowerCase() + s.substr(1)).replace(' ', '');
 
+const ITEM_WIDTH = Dimensions.get('window').width;
+const maxLength = 100;
+
 class EditProfileScreen extends Component {
   constructor(props) {
     super(props);
     this.onRegionSelect = this.onRegionSelect.bind(this);
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+    const user = Object.assign({}, this.props.user);
+    if (!user.profile.providerImages) { user.profile.providerImages = {}; }
     this.state = {
       values: {
         firstName: this.props.user.profile.firstName || '',
         lastName: this.props.user.profile.lastName || '',
+        fullName: this.props.user.profile.fullName || '',
         phoneNumber: this.props.user.profile.phoneNumber || '',
         profileImageURL: this.props.user.profile.profileImageURL || undefined,
+        providerImages: {
+          0: user.profile.providerImages[0] || undefined,
+          1: user.profile.providerImages[1] || undefined,
+          2: user.profile.providerImages[2] || undefined,
+          3: user.profile.providerImages[3] || undefined,
+          4: user.profile.providerImages[4] || undefined,
+        },
         countryCode,
         regionName,
         isProvider: this.props.user.profile.isProvider,
         categories: this.props.user.profile.categories,
+        bio: this.props.user.profile.bio || '',
+        descriptionLength: this.props.user.profile.bio ? maxLength - this.props.user.profile.bio.length : 100,
+        allowPhoneCalls: this.props.user.profile.allowPhoneCalls === undefined ? true :
+          this.props.user.profile.allowPhoneCalls,
+        chatEnabled: this.props.user.profile.chatEnabled === undefined ? true :
+          this.props.user.profile.chatEnabled,
       },
-      fullName: `${this.props.user.profile.firstName} ${this.props.user.profile.lastName}` || '',
+      fullName: this.props.user.profile.fullName || `${this.props.user.profile.firstName} ${this.props.user.profile.lastName}`,
       loading: false,
       imageUploading: false,
       categories: [],
       profileIconColor: 'grey',
+      isDataModified: false,
+      cameraPermission: 'undetermined',
+      photoPermission: 'undetermined',
     };
   }
 
@@ -83,7 +109,7 @@ class EditProfileScreen extends Component {
         });
       }
     } catch ({ message }) {
-      alert(I18n.t(`backend.${message}`));
+      alert(I18n.t(`backend.${message}`, { defaults: [{ scope: 'chat.error' }] }));
     }
 
     if (this.props.user.profile.countryCode && this.props.user.profile.regionName) {
@@ -125,6 +151,13 @@ class EditProfileScreen extends Component {
     if (!this.props.user.profile._id) {
       this.props.fetchProfile('me');
     }
+    Permissions.checkMultiple(['camera', 'photo']).then((response) => {
+      // response is an object mapping type to permission
+      this.setState({
+        cameraPermission: response.camera,
+        photoPermission: response.photo,
+      });
+    });
   }
 
   componentWillReceiveProps({ user }) {
@@ -152,9 +185,8 @@ class EditProfileScreen extends Component {
   }
 
   onFullNameChange = (value) => {
-    this.setState({
-      fullName: value,
-    });
+    this.dataModified();
+    this.setState({ fullName: value });
     let firstName;
     let lastName;
     if (value.includes(' ')) {
@@ -168,6 +200,7 @@ class EditProfileScreen extends Component {
     this.setState({
       values: {
         ...this.state.values,
+        fullName: value,
         firstName: firstName || '',
         lastName: lastName || '',
       },
@@ -175,6 +208,7 @@ class EditProfileScreen extends Component {
   };
 
   onFieldChange = (key, value) => {
+    this.dataModified();
     this.setState({
       values: {
         ...this.state.values,
@@ -184,6 +218,7 @@ class EditProfileScreen extends Component {
   };
 
   onRegionSelect(region) {
+    this.dataModified();
     this.setState({
       values: {
         ...this.state.values,
@@ -193,6 +228,7 @@ class EditProfileScreen extends Component {
   }
 
   onSubmitForm = async () => {
+    /* Update profile image */
     if (this.state.values.profileImageURL !== this.props.user.profile.profileImageURL) {
       try {
         this.setState({ imageUploading: true });
@@ -205,10 +241,32 @@ class EditProfileScreen extends Component {
           imageUploading: false,
         });
       } catch ({ message }) {
-        Alert.alert(I18n.t(`backend.${message}`));
+        Alert.alert(I18n.t(`backend.${message}`, { defaults: [{ scope: 'chat.error' }] }));
         this.setState({ imageUploading: false });
       }
     }
+
+    const { user } = this.props;
+    const values = Object.assign({}, this.state.values);
+
+    if (!_.isEqual(user.profile.providerImages, values.providerImages)) {
+      await Promise.all(Object.keys(values.providerImages).map(async (index) => {
+        if (user.profile.providerImages[index] !== values.providerImages[index] && values.providerImages[index]) {
+          try {
+            this.setState({ imageUploading: true });
+            const { secure_url } = await this.uploadProfileImage(values.providerImages[index]);
+            values.providerImages[index] = secure_url;
+            this.setState({ values });
+            this.setState({ imageUploading: false });
+          } catch ({ message }) {
+            Alert.alert(I18n.t(`backend.${message}`, { defaults: [{ scope: 'chat.error' }] }));
+            this.setState({ imageUploading: false });
+          }
+        }
+      }));
+      this.setState({ imageUploading: false });
+    }
+
     if (!this.state.values.profileImageURL && this.state.values.isProvider) {
       Alert.alert(
         I18n.t('logIn.upload_photo'), '',
@@ -226,6 +284,7 @@ class EditProfileScreen extends Component {
   };
 
   onCheckboxPress = () => {
+    this.dataModified();
     if (!this.state.values.isProvider) {
       this.setState({
         values: {
@@ -246,6 +305,7 @@ class EditProfileScreen extends Component {
   };
 
   onCategorySelect = (categories) => {
+    this.dataModified();
     this.setState({
       values: {
         ...this.state.values,
@@ -262,6 +322,15 @@ class EditProfileScreen extends Component {
     this.scroll = ref;
   }
 
+  setDefaultImage = () => {
+    this.setState({
+      values: {
+        ...this.state.values,
+        profileImageURL: defaultProfile,
+      },
+    });
+  };
+
   newScrollMethod = () => {
     this.scroll._root.scrollToPosition(0, 0);
     this.setState({ profileIconColor: '#d64635' });
@@ -270,6 +339,26 @@ class EditProfileScreen extends Component {
   updateProfile = () => {
     this.props.fetchProfile('me');
     this.setState({ loading: false });
+  };
+
+  toggleSwitchPhone = (value) => {
+    this.dataModified();
+    this.setState({
+      values: {
+        ...this.state.values,
+        allowPhoneCalls: value,
+      },
+    });
+  };
+
+  toggleSwitchChat = (value) => {
+    this.dataModified();
+    this.setState({
+      values: {
+        ...this.state.values,
+        chatEnabled: value,
+      },
+    });
   };
 
   keyboardDidShow = () => {
@@ -305,7 +394,24 @@ class EditProfileScreen extends Component {
     }).then(raw => raw.json());
   };
 
-  captureImage = () => {
+  requestPermissionCamera = () => {
+    Permissions.request('camera').then((response) => {
+      // Returns once the user has chosen to 'allow' or to 'not allow' access
+      // Response is one of: 'authorized', 'denied', 'restricted', or 'undetermined'
+      this.setState({ cameraPermission: response });
+    });
+  };
+
+  requestPermissionPhoto = () => {
+    Permissions.request('photo').then((response) => {
+      // Returns once the user has chosen to 'allow' or to 'not allow' access
+      // Response is one of: 'authorized', 'denied', 'restricted', or 'undetermined'
+      this.setState({ photoPermission: response });
+    });
+  };
+
+  showImagePickerMethod = () => {
+    this.dataModified();
     const options = {
       title: I18n.t('editProfile.select_avatar'),
       storageOptions: {
@@ -335,10 +441,114 @@ class EditProfileScreen extends Component {
     });
   };
 
+  captureImage = () => {
+    const { photoPermission, cameraPermission } = this.state;
+    if (
+      photoPermission !== 'authorized' ||
+      cameraPermission !== 'authorized'
+    ) {
+      if (photoPermission !== 'authorized') {
+        Alert.alert(
+          I18n.t('editProfile.permissions.allowPhoto'),
+          I18n.t('editProfile.permissions.descriptionPhoto'),
+          [
+            {
+              text: I18n.t('common.deny'),
+              onPress: this.setDefaultImage,
+              style: 'cancel',
+            },
+            Platform.OS === 'android' || photoPermission === 'undetermined'
+              ? { text: I18n.t('common.allow'), onPress: this.requestPermissionPhoto }
+              : { text: I18n.t('common.OpenSettings'), onPress: Permissions.openSettings },
+          ],
+        );
+      } else if (cameraPermission !== 'authorized') {
+        Alert.alert(
+          I18n.t('editProfile.permissions.allowCamera'),
+          I18n.t('editProfile.permissions.descriptionCamera'),
+          [
+            {
+              text: 'Deny',
+              onPress: this.setDefaultImage,
+              style: 'cancel',
+            },
+            Platform.OS === 'android' || cameraPermission === 'undetermined'
+              ? { text: I18n.t('common.allow'), onPress: this.requestPermissionCamera }
+              : { text: I18n.t('common.OpenSettings'), onPress: Permissions.openSettings },
+          ],
+        );
+      }
+    } else {
+      this.showImagePickerMethod();
+    }
+  };
+
+  captureProviderImage = async (index) => {
+    this.dataModified();
+    const options = {
+      title: I18n.t('editProfile.select_avatar'),
+      quality: 0.5,
+      storageOptions: {
+        skipBackup: true,
+      },
+    };
+
+    const imgObj = Object.assign({}, this.state.values.providerImages);
+
+    if (!imgObj[index]) {
+      ImagePicker.showImagePicker(options, (response) => {
+        const { error, uri } = response;
+        if (error) {
+          Alert.alert(
+            I18n.t('editProfile.avatar_error'),
+            `${error}`,
+            [{ text: `${I18n.t('common.ok')}` }],
+            { cancelable: false },
+          );
+          return;
+        }
+
+        if (uri) {
+          imgObj[index] = uri;
+          this.setState({
+            values: {
+              ...this.state.values,
+              providerImages: imgObj,
+            },
+          });
+        }
+      });
+    } else {
+      imgObj[index] = undefined;
+      this.setState({
+        values: {
+          ...this.state.values,
+          providerImages: imgObj,
+        },
+      });
+    }
+  };
+
+  profileDescriptionMethod = (value) => {
+    this.setState({
+      values: {
+        ...this.state.values,
+        descriptionLength: maxLength - value.length,
+        bio: value,
+      },
+      isDataModified: true,
+    });
+  }
+
+  dataModified = () => {
+    this.setState({ isDataModified: true });
+  }
+
 
   render() {
+    const { isDataModified, photoPermission, cameraPermission } = this.state;
     const { phoneNumber } = this.state.values;
-    const { checkBoxText, categoryText } = styles;
+    const { checkBoxText, categoryText, styleDescription } = styles;
     const { isProvider } = this.props.user.profile;
 
     return (
@@ -354,43 +564,120 @@ class EditProfileScreen extends Component {
           keyboardShouldPersistTaps="always"
           ref={this.setScrollRef}
         >
-          <View style={{ justifyContent: 'center' }}>
-            <Button
-              id="EditProfile.imageButtonWrapper"
-              style={{ height: 100 }}
-              transparent
-              onPress={this.captureImage}
-            >
-              <Thumbnail
-                id="EditProfile.profileImage"
-                large
-                source={{
+          { isProvider && photoPermission === 'authorized'
+           && cameraPermission === 'authorized' ? (
+             <View style={{ justifyContent: 'space-between' }}>
+               <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
+                 <ProfileImage
+                   id="EditProfile.imageWrapper1"
+                   onPress={this.captureImage}
+                   source={{
+                  uri:
+                    this.state.values.profileImageURL ||
+                    this.props.user.profile.profileImageURL,
+                }}
+                   hasImage={this.state.values.profileImageURL}
+                   size={2 / 3}
+                   styleContainer={{ marginRight: (ITEM_WIDTH / 20) - 1 }}
+                 />
+
+                 <View style={{ justifyContent: 'flex-start' }}>
+
+                   <ProfileImage
+                     id="EditProfile.imageWrapper2"
+                     onPress={() => this.captureProviderImage(0)}
+                     source={{ uri: this.state.values.providerImages[0] }}
+                     hasImage={!!this.state.values.providerImages[0]}
+                     size={1 / 3}
+                     styleContainer={{ marginBottom: ITEM_WIDTH / 20 }}
+                   />
+
+                   <ProfileImage
+                     id="EditProfile.imageWrapper3"
+                     onPress={() => this.captureProviderImage(1)}
+                     source={{ uri: this.state.values.providerImages[1] }}
+                     hasImage={!!this.state.values.providerImages[1]}
+                     size={1 / 3}
+                   />
+                 </View>
+               </View>
+               <View style={{
+                  flexDirection: 'row',
+                  justifyContent: 'flex-start',
+                  marginTop: ITEM_WIDTH / 20,
+                  marginBottom: ITEM_WIDTH / 20,
+                }}
+               >
+
+                 <ProfileImage
+                   id="EditProfile.imageWrapper6"
+                   onPress={() => this.captureProviderImage(4)}
+                   source={{ uri: this.state.values.providerImages[4] }}
+                   hasImage={!!this.state.values.providerImages[4]}
+                   size={1 / 3}
+                   styleContainer={{ marginRight: ITEM_WIDTH / 20 }}
+                 />
+
+                 <ProfileImage
+                   id="EditProfile.imageWrapper5"
+                   onPress={() => this.captureProviderImage(3)}
+                   source={{ uri: this.state.values.providerImages[3] }}
+                   hasImage={!!this.state.values.providerImages[3]}
+                   size={1 / 3}
+                   styleContainer={{ marginRight: (ITEM_WIDTH / 20) - 1 }}
+                 />
+
+                 <ProfileImage
+                   id="EditProfile.imageWrapper4"
+                   onPress={() => this.captureProviderImage(2)}
+                   source={{ uri: this.state.values.providerImages[2] }}
+                   hasImage={!!this.state.values.providerImages[2]}
+                   size={1 / 3}
+                 />
+
+               </View>
+             </View>
+
+          ) : (
+            <View style={{ justifyContent: 'center' }}>
+              <Button
+                id="EditProfile.imageButtonWrapper"
+                style={{ height: 100 }}
+                transparent
+                onPress={this.captureImage}
+              >
+                <Thumbnail
+                  id="EditProfile.profileImage"
+                  large
+                  source={{
                   uri:
                     this.state.values.profileImageURL ||
                     this.props.user.profile.profileImageURL ||
                     defaultProfile,
                 }}
-              />
-              {!this.state.values.profileImageURL ? (
-                <View
-                  style={{
-                    flex: 0,
-                    bottom: 13,
-                    paddingLeft: 40,
-                    position: 'absolute',
-                  }}
-                >
-                  <Icon
-                    style={{
+                />
+                {!this.state.values.profileImageURL || photoPermission !== 'authorized'
+           || cameraPermission !== 'authorized' ? (
+             <View
+               style={{
+                flex: 0,
+                bottom: 13,
+                paddingLeft: 40,
+                position: 'absolute',
+              }}
+             >
+               <Icon
+                 style={{
                       color: this.state.profileIconColor,
                     }}
-                    size={20}
-                    name="plus"
-                  />
-                </View>
+                 size={20}
+                 name="plus"
+               />
+             </View>
               ) : null}
-            </Button>
-          </View>
+              </Button>
+            </View>
+          )}
           <FieldInput
             name="fullName"
             input={{ value: this.state.fullName }}
@@ -401,6 +688,7 @@ class EditProfileScreen extends Component {
             id="EditProfile.fullNameInput"
             autoCapitalize="words"
           />
+
           <FieldInput
             name="phone"
             input={{ value: phoneNumber.toString() }}
@@ -410,6 +698,52 @@ class EditProfileScreen extends Component {
             component={EditProfileField}
             id="EditProfile.phoneNumberInput"
           />
+          {isProvider && (
+          <View style={{
+            borderColor: lightTextColor,
+            borderBottomWidth: 1,
+            flexDirection: 'row',
+            paddingBottom: 10,
+            justifyContent: 'space-between',
+            }}
+          >
+            <Text style={{ flex: 3, color: lightTextColor }}>
+              {this.state.values.allowPhoneCalls ?
+                  I18n.t('editProfile.CallOn') : I18n.t('editProfile.CallOff') }
+            </Text>
+
+            <Switch
+              onValueChange={this.toggleSwitchPhone}
+              value={this.state.values.allowPhoneCalls}
+              onTintColor="#49d260"
+              thumbTintColor="#e7e7e7"
+            />
+          </View>
+            )}
+
+          {isProvider && (
+          <View style={{
+            marginTop: 15,
+            borderColor: lightTextColor,
+            borderBottomWidth: 1,
+            flexDirection: 'row',
+            paddingBottom: 10,
+            justifyContent: 'space-between',
+             }}
+          >
+            <Text style={{ flex: 3, color: lightTextColor }}>
+              {this.state.values.chatEnabled ?
+                  I18n.t('editProfile.ChatOn') : I18n.t('editProfile.ChatOff') }
+            </Text>
+            <Switch
+              onValueChange={this.toggleSwitchChat}
+              value={this.state.values.chatEnabled}
+              onTintColor="#49d260"
+              thumbTintColor="#e7e7e7"
+            />
+          </View>
+          )}
+
           <View
             style={{
               flexDirection: 'row',
@@ -485,51 +819,73 @@ class EditProfileScreen extends Component {
               <Text style={checkBoxText}>{I18n.t('logIn.advertiser')}</Text>
             </Left>
           </View>)}
-          {this.state.values.isProvider &&
-               (
-               <View style={{ flex: 1 }}>
-                 <View style={{ flexDirection: 'row' }}>
-                   <View style={{ flex: 1 }}>
-                     <MultiSelect
+          {this.state.values.isProvider && (
+          <View style={{ flex: 1 }}>
+            <View style={{ flex: 1 }}>
+              <Text style={{ color: lightTextColor, marginBottom: 7 }}>
+                { I18n.t('editProfile.description') }
+              </Text>
+              <View style={{ height: 140, flex: 1 }}>
+                <TextInput
+                  onChangeText={value => this.profileDescriptionMethod(value)}
+                  value={this.state.values.bio}
+                  style={styleDescription}
+                  maxLength={100}
+                  underlineColorAndroid="transparent"
+                  placeholder={`100 ${I18n.t('editProfile.symbols')}`}
+                  multiline
+                />
+                <Text style={{ fontSize: 10, color: 'lightgrey', textAlign: 'right' }}>
+                  {this.state.values.descriptionLength}
+                </Text>
+              </View>
+            </View>
+            <View style={{ flexDirection: 'row' }}>
+              <View style={{ flex: 1 }}>
+                <MultiSelect
                        // hideTags
-                       items={this.state.categories}
-                       uniqueKey="_id"
-                       ref={this.setMultiselectRef}
-                       onSelectedItemsChange={this.onCategorySelect}
-                       selectedItems={this.state.values.categories}
-                       selectText={I18n.t('common.category')}
-                       searchInputPlaceholderText={`${I18n.t('common.category')}...`}
-                       fontSize={16}
-                       tagRemoveIconColor="#d64635"
-                       tagBorderColor="#f3c200"
-                       tagTextColor={lightTextColor}
-                       selectedItemTextColor={lightTextColor}
-                       selectedItemIconColor={lightTextColor}
-                       itemTextColor="#000"
-                       displayKey="name"
-                       searchInputStyle={{ color: lightTextColor }}
-                       autoFocusInput={false}
-                       submitButtonColor="#d64635"
-                       submitButtonText={I18n.t('common.ok')}
-                       hideSubmitButton
-                     />
-                   </View>
-                 </View>
-                 <Text style={categoryText}>
-                   {I18n.t('logIn.account_activation')}
-                 </Text>
-               </View>
+                  items={this.state.categories}
+                  uniqueKey="_id"
+                  ref={this.setMultiselectRef}
+                  onSelectedItemsChange={this.onCategorySelect}
+                  selectedItems={this.state.values.categories}
+                  selectText={I18n.t('common.category')}
+                  searchInputPlaceholderText={`${I18n.t('common.category')}...`}
+                  fontSize={16}
+                  tagRemoveIconColor="#d64635"
+                  tagBorderColor="#f3c200"
+                  tagTextColor={lightTextColor}
+                  selectedItemTextColor={lightTextColor}
+                  selectedItemIconColor={lightTextColor}
+                  itemTextColor="#000"
+                  displayKey="name"
+                  searchInputStyle={{ color: lightTextColor }}
+                  autoFocusInput={false}
+                  submitButtonColor="#d64635"
+                  submitButtonText={I18n.t('common.ok')}
+                  hideSubmitButton
+                />
+              </View>
+            </View>
+            {this.state.values.isProvider && !this.props.user.profile.isProvider && (
+            <Text style={categoryText}>
+              {I18n.t('logIn.account_activation')}
+            </Text>
+            )}
+          </View>
           )}
-          <Button
-            id="EditProfile.subbmitButton"
-            block
-            success
-            disabled={this.state.loading}
-            onPress={this.onSubmitForm}
-            style={{ marginBottom: this.state.values.isProvider ? 15 : 0 }}
-          >
-            {I18n.t('common.save')}
-          </Button>
+          {isDataModified && (
+            <Button
+              id="EditProfile.subbmitButton"
+              block
+              success
+              disabled={this.state.loading}
+              onPress={this.onSubmitForm}
+              style={{ marginBottom: 15 }}
+            >
+              {I18n.t('common.save')}
+            </Button>
+          )}
         </Content>
       </Container>
     );
@@ -552,5 +908,14 @@ const styles = {
     color: lightTextColor,
     margin: 5,
     fontSize: 12,
+  },
+  styleDescription: {
+    height: 120,
+    borderColor: 'gray',
+    borderWidth: 1,
+    padding: 7,
+    borderRadius: 3,
+    textAlignVertical: 'top',
+    color: '#4d5460',
   },
 };

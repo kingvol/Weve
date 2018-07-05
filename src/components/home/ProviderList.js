@@ -1,4 +1,4 @@
-/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-underscore-dangle,no-confusing-arrow */
 import React, { PureComponent } from 'react';
 import {
   View,
@@ -9,6 +9,7 @@ import {
   Text,
   Dimensions,
 } from 'react-native';
+import { Button } from '.././common';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ProviderListItem from './ProviderListItem';
@@ -24,18 +25,35 @@ const { displayModeChanged } = UIActions;
 const { ProviderApi } = APIs;
 const api = new ProviderApi();
 const ITEM_WIDTH = Dimensions.get('window').width;
+const deviceWidth = Dimensions.get('window').width;
+const PROVIDERS_PER_PAGE = 10;
 
 class ProviderList extends PureComponent {
   state = {
-    providers: null,
+    providers: [],
+    isLoading: false,
+    page: 1,
+    disableMore: true,
   };
 
   componentDidMount() {
     this.fetchProvidersList(
       this.props.category,
+      this.state.page,
       this.props.profile.countryCode,
       this.props.profile.regionName,
     );
+  }
+
+  onMorePress = () => {
+    this.setState({ page: this.state.page + 1 }, () => {
+      this.fetchProvidersList(
+        this.props.category,
+        this.state.page,
+        this.props.profile.countryCode,
+        this.props.profile.regionName,
+      );
+    });
   }
 
   onPressItem = (provider) => {
@@ -56,38 +74,57 @@ class ProviderList extends PureComponent {
     this.props.displayModeChanged();
   };
 
-  fetchProvidersList = async (category, country, region) => {
+  fetchProvidersList = async (category, page, country, region) => {
     try {
-      const providers = await api.fetchListByCategory(category, country, region);
-      this.setState({ providers });
+      this.setState({ isLoading: true });
+      const providers = await api.fetchListByCategory(category, page, country, region);
+      this.setState({
+        isLoading: false,
+        providers: [...this.state.providers, ...providers],
+        disableMore: providers.length < PROVIDERS_PER_PAGE,
+      });
     } catch ({ message }) {
-      Alert.alert(I18n.t(`backend.${message}`));
+      Alert.alert(I18n.t(`backend.${message}`, { defaults: [{ scope: 'chat.error' }] }));
     }
   };
 
+  _renderMoreButton = () => !this.state.disableMore ? (
+    <Button
+      style={styles.moreButton}
+      key="more_button"
+      spinner={this.state.isLoading}
+      onPress={this.onMorePress}
+    >
+      <Text style={styles.moreButtonText}>{I18n.t('common.show_more')}</Text>
+    </Button>
+  ) : null;
+
   _keyExtractor = item => item._id;
 
-  _renderGridItem = ({ item }) => (
+  _renderGridItem = ({ item }) => (item.key === 'button' ? this._renderMoreButton() : (
     <ProviderGridItem
       provider={item}
       id={item._id}
       itemWidth={ITEM_WIDTH / 2}
       onPress={this.onPressItem}
     />
-  );
+  ));
 
-  _renderItem = ({ item }) => (
+  _renderItem = ({ item }) => (item.key === 'button' ? this._renderMoreButton() : (
     <ProviderListItem
       provider={item}
       id={item._id}
       itemWidth={ITEM_WIDTH / 2.5}
       onPress={this.onPressItem}
     />
-  );
+  ));
 
   render() {
     const { containerStyle, buttonsRow, buttonView } = styles;
-    return this.state.providers ? (
+
+    const data = this.state.providers ? [...this.state.providers, { key: 'button' }] : null;
+
+    return this.state.providers.length ? (
       <View style={containerStyle}>
         <View style={buttonsRow}>
           <View style={buttonView}>
@@ -177,7 +214,7 @@ class ProviderList extends PureComponent {
           </View>
         </View>
         <FlatList
-          data={this.state.providers}
+          data={data}
           keyExtractor={this._keyExtractor}
           renderItem={this.props.grid ? this._renderGridItem : this._renderItem}
           key={this.props.grid ? 1 : 0}
@@ -211,5 +248,17 @@ const styles = {
     borderRightWidth: 1,
     flex: 1,
     alignItems: 'center',
+  },
+  moreButton: {
+    width: '50%',
+    borderRadius: 15,
+    marginLeft: deviceWidth / 4,
+    marginTop: 10,
+    alignSelf: 'flex-start',
+    flexDirection: 'column',
+  },
+  moreButtonText: {
+    color: 'white',
+    fontSize: 16,
   },
 };

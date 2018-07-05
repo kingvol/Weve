@@ -18,6 +18,8 @@ target 'wevedo_app' do
 
   pod 'react-native-fast-image', :path => '../node_modules/react-native-fast-image'
 
+  pod 'ReactNativePermissions', :path => '../node_modules/react-native-permissions'
+
   target 'wevedo_appTests' do
     inherit! :search_paths
     # Pods for testing

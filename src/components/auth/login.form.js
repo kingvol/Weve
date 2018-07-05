@@ -201,7 +201,7 @@ class LoginForm extends Component {
                     id="LoginPage.errorText"
                     style={{ color: contrastColor, textAlign: 'center' }}
                   >
-                    {I18n.t(`backend.${error}`)}
+                    {I18n.t(`backend.${error}`, { defaults: [{ scope: 'chat.error' }] })}
                   </Text>
                 </View>
               )}

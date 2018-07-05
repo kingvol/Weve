@@ -16,6 +16,7 @@ if (__DEV__) {
   middleware = [...middleware];
 }
 
+
 const createStoreWithMiddleware = applyMiddleware(...middleware)(createStore);
 
 const store = createStoreWithMiddleware(

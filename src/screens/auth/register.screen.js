@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { AuthActions } from '../../actions';
 import RegisterForm from '../../components/auth/register.form';
 import config from '../../../config';
+import Analytics from '../../services/AnalyticsService';
 
 const { registerUser, loginUser } = AuthActions;
 
@@ -22,6 +23,8 @@ class RegisterScreen extends Component {
     if (!auth.isLoading && this.state.nextStepSignIn) {
       const { phoneNumber, password } = this.state;
       this.switchNextStep();
+      /* Appcenter Analytics */
+      Analytics.trackEvent('Registration', { phoneNumber });
       this.props.loginUser({ phoneNumber, password });
     }
   }
@@ -43,6 +46,7 @@ class RegisterScreen extends Component {
     const body = {
       phoneNumber,
       password,
+      fullName,
       firstName,
       lastName,
       countryCode,
@@ -70,13 +74,14 @@ class RegisterScreen extends Component {
       const { secure_url } = await this.uploadProfileImage(image);
       image = secure_url;
     } catch ({ message }) {
-      alert(I18n.t(`backend.${message}`));
+      alert(I18n.t(`backend.${message}`, { defaults: [{ scope: 'chat.error' }] }));
       this.setState({ loading: false });
     }
 
     const body = {
       phoneNumber,
       password,
+      fullName,
       firstName,
       lastName,
       countryCode,

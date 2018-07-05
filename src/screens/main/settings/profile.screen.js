@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import FastImage from 'react-native-fast-image';
 import { connect } from 'react-redux';
 import I18n from '../../../locales';
 import {
@@ -52,18 +53,23 @@ class ProfileScreen extends Component {
     });
   };
 
-  renderProfileImageName = (firstName, lastName) => (
-    <Row style={{ height: 150 }}>
+  renderProfileImageName = (fullName, firstName, lastName) => (
+    <Row
+      style={{
+        height: 150,
+      }}
+    >
       <Col style={{ alignItems: 'center' }}>
-        <Row size={65}>
-          <Thumbnail
+        <Row size={65} style={{ height: 65 }}>
+          <FastImage
+            style={styles.profileImage}
             id="Profile.profileImage"
             large
             source={{ uri: this.props.user.profile.profileImageURL || defaultProfile }}
           />
         </Row>
         <Row size={35} style={{ height: 20 }}>
-          <Label id="Profile.first_lastName">{`${firstName || ''} ${lastName || ''}`}</Label>
+          <Label id="Profile.first_lastName">{fullName ? fullName : `${firstName || ''} ${lastName || ''}`}</Label>
         </Row>
       </Col>
     </Row>
@@ -73,6 +79,7 @@ class ProfileScreen extends Component {
     const {
       firstName,
       lastName,
+      fullName,
       phoneNumber,
       profileImageURL,
       countryCode,
@@ -92,7 +99,7 @@ class ProfileScreen extends Component {
                 <Icon size={24} name="pencil" />
               </Button>
             </Row>
-            {this.renderProfileImageName(firstName, lastName, profileImageURL)}
+            {this.renderProfileImageName(fullName, firstName, lastName, profileImageURL)}
             <ProfileField
               id="Profile.phoneField"
               icon="phone"
@@ -101,9 +108,9 @@ class ProfileScreen extends Component {
             />
             <ProfileFieldForCountry
               id="Profile.countryField"
-              icon={countryCode || 'GB'}
+              icon={countryCode || ''}
               title={I18n.t('editProfile.region')}
-              subTitle={regionName || 'Barnsley'}
+              subTitle={regionName || ''}
             />
           </Grid>
         </Content>
@@ -116,5 +123,14 @@ const mapStateToProps = state => ({
   user: state.user,
   profile: state.user.profile,
 });
+
+const styles = {
+  profileImage: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+  },
+};
+
 
 export default connect(mapStateToProps, { fetchProfile })(ProfileScreen);
