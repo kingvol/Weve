@@ -142,7 +142,7 @@ class VerificationScreen extends Component {
           style={styles.background}
           source={require('../../images/loginBackground.png')}
         >
-          <ScrollView>
+          <ScrollView keyboardShouldPersistTaps="always">
             <View id="Signup.backButtonAndTitleWrapper" style={styles.header}>
               <Button
                 id="Signup.backButton"
