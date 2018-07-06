@@ -180,8 +180,7 @@ dependencies {
     implementation project(':appcenter')
     implementation 'com.google.firebase:firebase-core:16.0.1' //this decides your firebase SDK version
     implementation 'com.google.firebase:firebase-messaging:17.1.0'
-    implementation project(':react-native-navigation')
-    // implementation 'com.google.android.gms:play-services:15.0.2'
+    implementation project(':react-native-navigation')    
 }
 
 // Run this once to be able to run the application with BUCK
