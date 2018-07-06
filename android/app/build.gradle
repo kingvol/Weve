@@ -101,7 +101,7 @@ def _buildToolsVersion = _ext.has('buildToolsVersion') ? _ext.buildToolsVersion 
 def _minSdkVersion = _ext.has('minSdkVersion') ? _ext.minSdkVersion : 16
 def _targetSdkVersion = _ext.has('targetSdkVersion') ? _ext.targetSdkVersion : 27
 def _supportLibrariesVersion = _ext.has('supportLibrariesVersion') ? _ext.supportLibrariesVersion : '27.1.1'
-def _googlePlayServicesVersion = _ext.has('googlePlayServicesVersion') ? _ext.googlePlayServicesVersion : '+'
+// def _googlePlayServicesVersion = _ext.has('googlePlayServicesVersion') ? _ext.googlePlayServicesVersion : '+'
 
 android {
     compileSdkVersion _compileSdkVersion
@@ -178,9 +178,9 @@ dependencies {
     implementation project(':appcenter-crashes')
     implementation project(':appcenter-analytics')
     implementation project(':appcenter')
-    implementation 'com.google.firebase:firebase-core:16.0.0' //this decides your firebase SDK version
-    implementation 'com.google.firebase:firebase-messaging:17.0.0'    
-    implementation project(':react-native-navigation')
+    implementation 'com.google.firebase:firebase-core:16.0.1' //this decides your firebase SDK version
+    implementation 'com.google.firebase:firebase-messaging:17.1.0'
+    implementation project(':react-native-navigation')    
 }
 
 // Run this once to be able to run the application with BUCK
@@ -190,4 +190,4 @@ task copyDownloadableDepsToLibs(type: Copy) {
     into 'libs'
 }
 
-apply plugin: 'com.google.gms.google-services'
+// apply plugin: 'com.google.gms.google-services'
