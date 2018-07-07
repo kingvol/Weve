@@ -8,19 +8,19 @@ const ITEM_WIDTH = Dimensions.get('window').width;
 const ProfileImage = ({ id, onPress, source, size, hasImage, styleContainer }) => {
   const styles = {
     container: {
-      borderWidth: hasImage ? 0 : 0.15,
+      borderWidth: hasImage ? 0 : 0.7,
       borderColor: 'grey',
-      width: ITEM_WIDTH * size - ITEM_WIDTH / 20 - 1,
-      height: ITEM_WIDTH * size - ITEM_WIDTH / 20 - 1,
+      width: ITEM_WIDTH * size - ITEM_WIDTH / 20,
+      height: ITEM_WIDTH * size - ITEM_WIDTH / 20,
     },
     styleImage: {
-      height: ITEM_WIDTH * size - ITEM_WIDTH / 20 - 1,
-      width: ITEM_WIDTH * size - ITEM_WIDTH / 20 - 1,
+      height: ITEM_WIDTH * size - ITEM_WIDTH / 20,
+      width: ITEM_WIDTH * size - ITEM_WIDTH / 20,
     },
     styleIconImage: {
       flex: 0,
-      bottom: (ITEM_WIDTH * size - ITEM_WIDTH / 20) / 2 - 20,
-      paddingLeft: (ITEM_WIDTH * size - ITEM_WIDTH / 20) / 2 - 20,
+      bottom: (ITEM_WIDTH * size - ITEM_WIDTH / 20) / 2 - 21,
+      paddingLeft: (ITEM_WIDTH * size - ITEM_WIDTH / 20) / 2 - 21,
       position: 'absolute',
     },
     styleIconButton: {
@@ -39,8 +39,8 @@ const ProfileImage = ({ id, onPress, source, size, hasImage, styleContainer }) =
       borderRadius: 10,
       paddingLeft: 5.5,
       paddingRight: 5.5,
-      marginTop: ITEM_WIDTH * size - ITEM_WIDTH / 20 - 20,
-      marginLeft: ITEM_WIDTH * size - ITEM_WIDTH / 20 - 20,
+      marginTop: ITEM_WIDTH * size - ITEM_WIDTH / 20 - 21,
+      marginLeft: ITEM_WIDTH * size - ITEM_WIDTH / 20 - 21,
     },
   };
   const { container, styleImage, styleIconImage, styleIconButton, styleNumber } = styles;
