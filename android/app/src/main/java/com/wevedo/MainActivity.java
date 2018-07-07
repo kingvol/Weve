@@ -16,7 +16,7 @@ public class MainActivity extends SplashActivity {
      */
     // @Override
     protected String getMainComponentName() {
-        return "wevedo_app";
+        return "wevedo";
     }
 
 
