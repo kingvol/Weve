@@ -572,13 +572,13 @@ class EditProfileScreen extends Component {
                    id="EditProfile.imageWrapper1"
                    onPress={this.captureImage}
                    source={{
-                  uri:
-                    this.state.values.profileImageURL ||
-                    this.props.user.profile.profileImageURL,
-                }}
+                        uri:
+                          this.state.values.profileImageURL ||
+                          this.props.user.profile.profileImageURL,
+                      }}
                    hasImage={this.state.values.profileImageURL}
                    size={2 / 3}
-                   styleContainer={{ marginRight: (ITEM_WIDTH / 20) - 1 }}
+                   styleContainer={{ marginRight: (ITEM_WIDTH / 20) - 2 }}
                  />
 
                  <View style={{ justifyContent: 'flex-start' }}>
@@ -624,7 +624,7 @@ class EditProfileScreen extends Component {
                    source={{ uri: this.state.values.providerImages[3] }}
                    hasImage={!!this.state.values.providerImages[3]}
                    size={1 / 3}
-                   styleContainer={{ marginRight: (ITEM_WIDTH / 20) - 1 }}
+                   styleContainer={{ marginRight: (ITEM_WIDTH / 20) - 2 }}
                  />
 
                  <ProfileImage
