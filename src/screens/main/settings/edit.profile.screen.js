@@ -406,6 +406,9 @@ class EditProfileScreen extends Component {
     Permissions.request('photo').then((response) => {
       // Returns once the user has chosen to 'allow' or to 'not allow' access
       // Response is one of: 'authorized', 'denied', 'restricted', or 'undetermined'
+      if (response !== 'authorized') {
+        this.setDefaultImage();
+      }
       this.setState({ photoPermission: response });
     });
   };
@@ -448,7 +451,7 @@ class EditProfileScreen extends Component {
       cameraPermission !== 'authorized'
     ) {
       if (photoPermission !== 'authorized') {
-        Alert.alert(
+        /* Alert.alert(
           I18n.t('editProfile.permissions.allowPhoto'),
           I18n.t('editProfile.permissions.descriptionPhoto'),
           [
@@ -461,9 +464,10 @@ class EditProfileScreen extends Component {
               ? { text: I18n.t('common.allow'), onPress: this.requestPermissionPhoto }
               : { text: I18n.t('common.OpenSettings'), onPress: Permissions.openSettings },
           ],
-        );
+        ); */
+        this.requestPermissionPhoto();
       } else if (cameraPermission !== 'authorized') {
-        Alert.alert(
+        /* Alert.alert(
           I18n.t('editProfile.permissions.allowCamera'),
           I18n.t('editProfile.permissions.descriptionCamera'),
           [
@@ -476,7 +480,8 @@ class EditProfileScreen extends Component {
               ? { text: I18n.t('common.allow'), onPress: this.requestPermissionCamera }
               : { text: I18n.t('common.OpenSettings'), onPress: Permissions.openSettings },
           ],
-        );
+        ); */
+        this.requestPermissionCamera();
       }
     } else {
       this.showImagePickerMethod();
