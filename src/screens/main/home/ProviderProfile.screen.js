@@ -217,7 +217,13 @@ class ProviderProfileScreen extends Component {
 
           {(this.props.provider.bio && this.props.provider.bio.length) ? (
             <Tabs tabBarUnderlineStyle={{ backgroundColor: 'red' }}>
-              <Tab heading={I18n.t('common.calendar')} activeTextStyle={{ color: 'red' }}>
+              <Tab
+                heading={I18n.t('common.calendar')}
+                activeTextStyle={{ color: 'red' }}
+                textStyle={{ color: 'black' }}
+                tabStyle={{ backgroundColor: 'white' }}
+                activeTabStyle={{ backgroundColor: 'white' }}
+              >
                 <Calendar
                   theme={calendarTheme}
                   style={styles.calendar}
@@ -225,7 +231,13 @@ class ProviderProfileScreen extends Component {
                   onDayPress={this.handleDayPress}
                 />
               </Tab>
-              <Tab heading={I18n.t('common.information')} activeTextStyle={{ color: 'red' }}>
+              <Tab
+                heading={I18n.t('common.information')}
+                activeTextStyle={{ color: 'red' }}
+                textStyle={{ color: 'black' }}
+                tabStyle={{ backgroundColor: 'white' }}
+                activeTabStyle={{ backgroundColor: 'white' }}
+              >
                 <View style={styles.infoContainer}>
                   <Text style={styles.text}>{this.props.provider.bio}</Text>
                 </View>
@@ -260,6 +272,7 @@ const styles = {
   },
   text: {
     fontSize: 18,
+    margin: 15,
     marginTop: -50,
   },
   styleImage: {
