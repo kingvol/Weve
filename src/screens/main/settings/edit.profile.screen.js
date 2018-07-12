@@ -432,7 +432,7 @@ class EditProfileScreen extends Component {
       }
 
       if (imgUri) {
-        ImageResizer.createResizedImage(imgUri, 800, 600, 'JPEG', 50).then(({ uri }) => {
+        ImageResizer.createResizedImage(imgUri, 1400, 1200, 'JPEG', 50).then(({ uri }) => {
           this.setState({
             values: {
               ...this.state.values,
