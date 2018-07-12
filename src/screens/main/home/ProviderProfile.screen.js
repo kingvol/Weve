@@ -182,12 +182,7 @@ class ProviderProfileScreen extends Component {
     if (provider.providerImages) {
       const arrayImages = Object.values(provider.providerImages);
       images = arrayImages.filter(e => !!e);
-      if (provider.bio) {
-        images.unshift(provider.bio);
-      }
       images.unshift(provider.profileImageURL);
-    } else if (provider.bio) {
-      images.unshift(provider.bio);
     }
 
     return (
