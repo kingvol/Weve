@@ -11,6 +11,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import DeviceInfo from 'react-native-device-info';
 import MultiSelect from 'react-native-multiple-select';
 import Permissions from 'react-native-permissions';
+import ImageResizer from 'react-native-image-resizer';
 import I18n from '../../../locales';
 import config from '../../../../config';
 import countries from '../../../countryLib/countries';
@@ -422,7 +423,7 @@ class EditProfileScreen extends Component {
       },
     };
     ImagePicker.showImagePicker(options, (response) => {
-      const { error, uri } = response;
+      const { error, uri: imgUri } = response;
       if (error) {
         Alert.alert(
           I18n.t('editProfile.avatar_error'),
@@ -433,12 +434,14 @@ class EditProfileScreen extends Component {
         return;
       }
 
-      if (uri) {
-        this.setState({
-          values: {
-            ...this.state.values,
-            profileImageURL: uri,
-          },
+      if (imgUri) {
+        ImageResizer.createResizedImage(imgUri, 1400, 1200, 'JPEG', 50).then(({ uri }) => {
+          this.setState({
+            values: {
+              ...this.state.values,
+              profileImageURL: uri,
+            },
+          });
         });
       }
     });
@@ -493,6 +496,7 @@ class EditProfileScreen extends Component {
     const options = {
       title: I18n.t('editProfile.select_avatar'),
       quality: 0.5,
+      noData: true,
       storageOptions: {
         skipBackup: true,
       },
@@ -502,7 +506,7 @@ class EditProfileScreen extends Component {
 
     if (!imgObj[index]) {
       ImagePicker.showImagePicker(options, (response) => {
-        const { error, uri } = response;
+        const { error, uri: imgUri } = response;
         if (error) {
           Alert.alert(
             I18n.t('editProfile.avatar_error'),
@@ -513,13 +517,15 @@ class EditProfileScreen extends Component {
           return;
         }
 
-        if (uri) {
-          imgObj[index] = uri;
-          this.setState({
-            values: {
-              ...this.state.values,
-              providerImages: imgObj,
-            },
+        if (imgUri) {
+          ImageResizer.createResizedImage(imgUri, 1400, 1200, 'JPEG', 50).then(({ uri }) => {
+            imgObj[index] = uri;
+            this.setState({
+              values: {
+                ...this.state.values,
+                providerImages: imgObj,
+              },
+            });
           });
         }
       });
