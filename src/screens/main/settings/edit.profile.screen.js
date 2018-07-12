@@ -284,6 +284,12 @@ class EditProfileScreen extends Component {
     }
   };
 
+  onNavigatorEvent = (event) => {
+    if (event.id === 'save') {
+      this.onSubmitForm();
+    }
+  }
+
   onCheckboxPress = () => {
     this.dataModified();
     if (!this.state.values.isProvider) {
@@ -331,6 +337,22 @@ class EditProfileScreen extends Component {
       },
     });
   };
+
+  setSaveButton = () => {
+    Promise.all([
+      Icon.getImageSource('check', 22, '#ffffff'),
+    ]).then((sources) => {
+      this.props.navigator.setButtons({
+        rightButtons: [
+          {
+            icon: sources[0],
+            id: 'save',
+          },
+        ],
+        animated: true,
+      });
+    });
+  }
 
   newScrollMethod = () => {
     this.scroll._root.scrollToPosition(0, 0);
@@ -552,12 +574,15 @@ class EditProfileScreen extends Component {
   }
 
   dataModified = () => {
-    this.setState({ isDataModified: true });
+    if (!this.state.isDataModified) {
+      this.setState({ isDataModified: true });
+      this.setSaveButton();
+    }
   }
 
 
   render() {
-    const { isDataModified, photoPermission, cameraPermission } = this.state;
+    const { photoPermission, cameraPermission } = this.state;
     const { phoneNumber } = this.state.values;
     const { checkBoxText, categoryText, styleDescription } = styles;
     const { isProvider } = this.props.user.profile;
@@ -884,18 +909,6 @@ class EditProfileScreen extends Component {
             </Text>
             )}
           </View>
-          )}
-          {isDataModified && (
-            <Button
-              id="EditProfile.subbmitButton"
-              block
-              success
-              disabled={this.state.loading}
-              onPress={this.onSubmitForm}
-              style={{ marginBottom: 15 }}
-            >
-              {I18n.t('common.save')}
-            </Button>
           )}
         </Content>
       </Container>
