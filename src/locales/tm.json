@@ -138,7 +138,9 @@
     "show_more": "Beylekiler",
     "deny": "Red et",
     "allow": "Izin ver",
-    "OpenSettings": "Ayarları aç"
+    "OpenSettings": "Ayarları aç",
+    "calendar": "Kalendar",
+    "information": "Bilgi"
   },
   "auth": {
     "enter_code": "Tassyklama kodyny ýazyň",

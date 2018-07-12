@@ -139,7 +139,9 @@
     "show_more": "Больше",
     "deny": "Запретить",
     "allow": "Разрешить",
-    "OpenSettings": "Открыть настройки"
+    "OpenSettings": "Открыть настройки",
+    "calendar": "Календарь",
+    "information": "Информация"
   },
   "auth": {
     "enter_code": "   Введите код проверки   ",
