@@ -273,7 +273,7 @@ const styles = {
   text: {
     fontSize: 18,
     margin: 15,
-    marginTop: -50,
+    marginTop: 10,
   },
   styleImage: {
     height: ITEM_WIDTH / 1.5,
