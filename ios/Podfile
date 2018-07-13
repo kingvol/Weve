@@ -24,6 +24,8 @@ target 'wevedo_app' do
 
   pod 'RNKeychain', :path => '../node_modules/react-native-keychain'
 
+  pod 'TouchID', :path => '../node_modules/react-native-touch-id'
+
   target 'wevedo_appTests' do
     inherit! :search_paths
     # Pods for testing

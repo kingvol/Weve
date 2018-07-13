@@ -4,6 +4,7 @@ import android.app.Application;
 import android.support.annotation.NonNull;
 
 import com.facebook.react.ReactApplication;
+import com.rnfingerprint.FingerprintAuthPackage;
 import com.oblador.keychain.KeychainPackage;
 import fr.bamlab.rnimageresizer.ImageResizerPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
@@ -36,6 +37,7 @@ public class MainApplication extends NavigationApplication  {
   public List<ReactPackage> createAdditionalReactPackages() {
     return Arrays.<ReactPackage>asList(
     new MainReactPackage(),
+            new FingerprintAuthPackage(),
             new KeychainPackage(),
             new ImageResizerPackage(),
     new RNDeviceInfo(),

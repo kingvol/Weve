@@ -165,6 +165,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-touch-id')
     implementation project(':react-native-keychain')
     implementation project(':react-native-image-resizer')
     implementation fileTree(dir: "libs", include: ["*.jar"])
