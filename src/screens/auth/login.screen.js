@@ -1,6 +1,6 @@
 /* eslint-disable react/no-did-mount-set-state */
 import React, { Component } from 'react';
-import { AsyncStorage, Alert } from 'react-native';
+import { AsyncStorage, Alert, ToastAndroid, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import * as Keychain from 'react-native-keychain';
 import TouchID from 'react-native-touch-id';
@@ -130,7 +130,17 @@ class LoginScreen extends Component {
             const { username, password } = credentials;
             this.onSubmitPress(username, password);
           });
+      })
+      .catch((error) => {
+        this.handleBiometricsError(error);
       });
+  }
+
+  handleBiometricsError = (error) => {
+    if (error.details === 'failed' && Platform.OS === 'android') {
+      ToastAndroid.show('Failed, please try again', ToastAndroid.SHORT);
+      setTimeout(() => this.processBiometricsAuth(), 100);
+    }
   }
 
   render() {
