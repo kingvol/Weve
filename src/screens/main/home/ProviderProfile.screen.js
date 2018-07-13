@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Content } from 'native-base';
+import { Content, Tab, Tabs } from 'native-base';
 import { View, Alert, Dimensions, Text, Linking } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { connect } from 'react-redux';
@@ -182,12 +182,7 @@ class ProviderProfileScreen extends Component {
     if (provider.providerImages) {
       const arrayImages = Object.values(provider.providerImages);
       images = arrayImages.filter(e => !!e);
-      if (provider.bio) {
-        images.unshift(provider.bio);
-      }
       images.unshift(provider.profileImageURL);
-    } else if (provider.bio) {
-      images.unshift(provider.bio);
     }
 
     return (
@@ -208,11 +203,7 @@ class ProviderProfileScreen extends Component {
             >
               {images.map((item, key) => (
                 <View id={key} key={item} style={styles.slide}>
-                  {provider.bio && key === 1 ? (
-                    <Text style={styles.text}>{item}</Text>
-                  ) : (
-                    <FastImage source={{ uri: item }} style={styleImage} />
-                  )}
+                  <FastImage source={{ uri: item }} style={styleImage} />
                 </View>
               ))}
             </Swiper>
@@ -223,12 +214,43 @@ class ProviderProfileScreen extends Component {
               source={{ uri: this.props.provider.profileImageURL || defaultProfile }}
             />
           )}
-          <Calendar
-            theme={calendarTheme}
-            style={styles.calendar}
-            markedDates={markedDates ? transformedMarkedDates : null}
-            onDayPress={this.handleDayPress}
-          />
+
+          {(this.props.provider.bio && this.props.provider.bio.length) ? (
+            <Tabs tabBarUnderlineStyle={{ backgroundColor: 'red' }}>
+              <Tab
+                heading={I18n.t('common.calendar')}
+                activeTextStyle={{ color: 'red' }}
+                textStyle={{ color: 'black' }}
+                tabStyle={{ backgroundColor: 'white' }}
+                activeTabStyle={{ backgroundColor: 'white' }}
+              >
+                <Calendar
+                  theme={calendarTheme}
+                  style={styles.calendar}
+                  markedDates={markedDates ? transformedMarkedDates : null}
+                  onDayPress={this.handleDayPress}
+                />
+              </Tab>
+              <Tab
+                heading={I18n.t('common.information')}
+                activeTextStyle={{ color: 'red' }}
+                textStyle={{ color: 'black' }}
+                tabStyle={{ backgroundColor: 'white' }}
+                activeTabStyle={{ backgroundColor: 'white' }}
+              >
+                <View style={styles.infoContainer}>
+                  <Text style={styles.text}>{this.props.provider.bio}</Text>
+                </View>
+              </Tab>
+            </Tabs>
+          ) : (
+            <Calendar
+              theme={calendarTheme}
+              style={styles.calendar}
+              markedDates={markedDates ? transformedMarkedDates : null}
+              onDayPress={this.handleDayPress}
+            />
+          )}
         </View>
       </Content>
     );
@@ -250,13 +272,19 @@ const styles = {
   },
   text: {
     fontSize: 18,
-    margin: 30,
+    margin: 15,
+    marginTop: 10,
   },
   styleImage: {
     height: ITEM_WIDTH / 1.5,
     width: ITEM_WIDTH,
   },
   calendar: {},
+  infoContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+  },
 };
 
 const mapStateToProps = state => ({

@@ -138,7 +138,9 @@
     "show_more": "Daha fazla göster",
     "deny": "Red et",
     "allow": "Izin ver",
-    "OpenSettings": "Ayarları aç"
+    "OpenSettings": "Ayarları aç",
+    "calendar": "Takvim",
+    "information": "Açıklama"
   },
   "auth": {
     "enter_code": "Onay şifrenizi giriniz",

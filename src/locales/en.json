@@ -138,7 +138,9 @@
     "show_more": "Show more",
     "deny": "Deny",
     "allow": "Allow",
-    "OpenSettings": "Open Settings"
+    "OpenSettings": "Open Settings",
+    "calendar": "Calendar",
+    "information": "Description"
   },
   "auth": {
     "enter_code": "Enter verification code",

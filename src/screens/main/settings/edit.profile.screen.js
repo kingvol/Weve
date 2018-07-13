@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle, camelcase */
 import React, { Component } from 'react';
-import { Alert, Keyboard, View, Dimensions, TextInput, Platform, Switch } from 'react-native';
+import { Alert, Keyboard, View, Dimensions, TextInput, Switch } from 'react-native';
 import _ from 'lodash';
 import ImagePicker from 'react-native-image-picker';
 import { Picker, CheckBox, Left } from 'native-base';
@@ -11,6 +11,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import DeviceInfo from 'react-native-device-info';
 import MultiSelect from 'react-native-multiple-select';
 import Permissions from 'react-native-permissions';
+import ImageResizer from 'react-native-image-resizer';
 import I18n from '../../../locales';
 import config from '../../../../config';
 import countries from '../../../countryLib/countries';
@@ -40,7 +41,7 @@ const regionName = countryLib[`${countryCode}`].provinces[0];
 const ucFirst = s => (s.substr(0, 1).toLowerCase() + s.substr(1)).replace(' ', '');
 
 const ITEM_WIDTH = Dimensions.get('window').width;
-const maxLength = 100;
+const maxLength = 5000;
 
 class EditProfileScreen extends Component {
   constructor(props) {
@@ -68,7 +69,7 @@ class EditProfileScreen extends Component {
         isProvider: this.props.user.profile.isProvider,
         categories: this.props.user.profile.categories,
         bio: this.props.user.profile.bio || '',
-        descriptionLength: this.props.user.profile.bio ? maxLength - this.props.user.profile.bio.length : 100,
+        descriptionLength: this.props.user.profile.bio ? maxLength - this.props.user.profile.bio.length : maxLength,
         allowPhoneCalls: this.props.user.profile.allowPhoneCalls === undefined ? true :
           this.props.user.profile.allowPhoneCalls,
         chatEnabled: this.props.user.profile.chatEnabled === undefined ? true :
@@ -283,6 +284,12 @@ class EditProfileScreen extends Component {
     }
   };
 
+  onNavigatorEvent = (event) => {
+    if (event.id === 'save') {
+      this.onSubmitForm();
+    }
+  }
+
   onCheckboxPress = () => {
     this.dataModified();
     if (!this.state.values.isProvider) {
@@ -330,6 +337,22 @@ class EditProfileScreen extends Component {
       },
     });
   };
+
+  setSaveButton = () => {
+    Promise.all([
+      Icon.getImageSource('check', 22, '#ffffff'),
+    ]).then((sources) => {
+      this.props.navigator.setButtons({
+        rightButtons: [
+          {
+            icon: sources[0],
+            id: 'save',
+          },
+        ],
+        animated: true,
+      });
+    });
+  }
 
   newScrollMethod = () => {
     this.scroll._root.scrollToPosition(0, 0);
@@ -406,6 +429,9 @@ class EditProfileScreen extends Component {
     Permissions.request('photo').then((response) => {
       // Returns once the user has chosen to 'allow' or to 'not allow' access
       // Response is one of: 'authorized', 'denied', 'restricted', or 'undetermined'
+      if (response !== 'authorized') {
+        this.setDefaultImage();
+      }
       this.setState({ photoPermission: response });
     });
   };
@@ -419,7 +445,7 @@ class EditProfileScreen extends Component {
       },
     };
     ImagePicker.showImagePicker(options, (response) => {
-      const { error, uri } = response;
+      const { error, uri: imgUri } = response;
       if (error) {
         Alert.alert(
           I18n.t('editProfile.avatar_error'),
@@ -430,12 +456,14 @@ class EditProfileScreen extends Component {
         return;
       }
 
-      if (uri) {
-        this.setState({
-          values: {
-            ...this.state.values,
-            profileImageURL: uri,
-          },
+      if (imgUri) {
+        ImageResizer.createResizedImage(imgUri, 1400, 1200, 'JPEG', 50).then(({ uri }) => {
+          this.setState({
+            values: {
+              ...this.state.values,
+              profileImageURL: uri,
+            },
+          });
         });
       }
     });
@@ -448,7 +476,7 @@ class EditProfileScreen extends Component {
       cameraPermission !== 'authorized'
     ) {
       if (photoPermission !== 'authorized') {
-        Alert.alert(
+        /* Alert.alert(
           I18n.t('editProfile.permissions.allowPhoto'),
           I18n.t('editProfile.permissions.descriptionPhoto'),
           [
@@ -461,9 +489,10 @@ class EditProfileScreen extends Component {
               ? { text: I18n.t('common.allow'), onPress: this.requestPermissionPhoto }
               : { text: I18n.t('common.OpenSettings'), onPress: Permissions.openSettings },
           ],
-        );
+        ); */
+        this.requestPermissionPhoto();
       } else if (cameraPermission !== 'authorized') {
-        Alert.alert(
+        /* Alert.alert(
           I18n.t('editProfile.permissions.allowCamera'),
           I18n.t('editProfile.permissions.descriptionCamera'),
           [
@@ -476,7 +505,8 @@ class EditProfileScreen extends Component {
               ? { text: I18n.t('common.allow'), onPress: this.requestPermissionCamera }
               : { text: I18n.t('common.OpenSettings'), onPress: Permissions.openSettings },
           ],
-        );
+        ); */
+        this.requestPermissionCamera();
       }
     } else {
       this.showImagePickerMethod();
@@ -488,6 +518,7 @@ class EditProfileScreen extends Component {
     const options = {
       title: I18n.t('editProfile.select_avatar'),
       quality: 0.5,
+      noData: true,
       storageOptions: {
         skipBackup: true,
       },
@@ -497,7 +528,7 @@ class EditProfileScreen extends Component {
 
     if (!imgObj[index]) {
       ImagePicker.showImagePicker(options, (response) => {
-        const { error, uri } = response;
+        const { error, uri: imgUri } = response;
         if (error) {
           Alert.alert(
             I18n.t('editProfile.avatar_error'),
@@ -508,13 +539,15 @@ class EditProfileScreen extends Component {
           return;
         }
 
-        if (uri) {
-          imgObj[index] = uri;
-          this.setState({
-            values: {
-              ...this.state.values,
-              providerImages: imgObj,
-            },
+        if (imgUri) {
+          ImageResizer.createResizedImage(imgUri, 1400, 1200, 'JPEG', 50).then(({ uri }) => {
+            imgObj[index] = uri;
+            this.setState({
+              values: {
+                ...this.state.values,
+                providerImages: imgObj,
+              },
+            });
           });
         }
       });
@@ -530,23 +563,26 @@ class EditProfileScreen extends Component {
   };
 
   profileDescriptionMethod = (value) => {
+    this.dataModified();
     this.setState({
       values: {
         ...this.state.values,
         descriptionLength: maxLength - value.length,
         bio: value,
       },
-      isDataModified: true,
     });
   }
 
   dataModified = () => {
-    this.setState({ isDataModified: true });
+    if (!this.state.isDataModified) {
+      this.setState({ isDataModified: true });
+      this.setSaveButton();
+    }
   }
 
 
   render() {
-    const { isDataModified, photoPermission, cameraPermission } = this.state;
+    const { photoPermission, cameraPermission } = this.state;
     const { phoneNumber } = this.state.values;
     const { checkBoxText, categoryText, styleDescription } = styles;
     const { isProvider } = this.props.user.profile;
@@ -572,13 +608,13 @@ class EditProfileScreen extends Component {
                    id="EditProfile.imageWrapper1"
                    onPress={this.captureImage}
                    source={{
-                  uri:
-                    this.state.values.profileImageURL ||
-                    this.props.user.profile.profileImageURL,
-                }}
+                        uri:
+                          this.state.values.profileImageURL ||
+                          this.props.user.profile.profileImageURL,
+                      }}
                    hasImage={this.state.values.profileImageURL}
                    size={2 / 3}
-                   styleContainer={{ marginRight: (ITEM_WIDTH / 20) - 1 }}
+                   styleContainer={{ marginRight: (ITEM_WIDTH / 20) - 2 }}
                  />
 
                  <View style={{ justifyContent: 'flex-start' }}>
@@ -624,7 +660,7 @@ class EditProfileScreen extends Component {
                    source={{ uri: this.state.values.providerImages[3] }}
                    hasImage={!!this.state.values.providerImages[3]}
                    size={1 / 3}
-                   styleContainer={{ marginRight: (ITEM_WIDTH / 20) - 1 }}
+                   styleContainer={{ marginRight: (ITEM_WIDTH / 20) - 2 }}
                  />
 
                  <ProfileImage
@@ -830,9 +866,9 @@ class EditProfileScreen extends Component {
                   onChangeText={value => this.profileDescriptionMethod(value)}
                   value={this.state.values.bio}
                   style={styleDescription}
-                  maxLength={100}
+                  maxLength={maxLength}
                   underlineColorAndroid="transparent"
-                  placeholder={`100 ${I18n.t('editProfile.symbols')}`}
+                  placeholder={`5000 ${I18n.t('editProfile.symbols')}`}
                   multiline
                 />
                 <Text style={{ fontSize: 10, color: 'lightgrey', textAlign: 'right' }}>
@@ -873,18 +909,6 @@ class EditProfileScreen extends Component {
             </Text>
             )}
           </View>
-          )}
-          {isDataModified && (
-            <Button
-              id="EditProfile.subbmitButton"
-              block
-              success
-              disabled={this.state.loading}
-              onPress={this.onSubmitForm}
-              style={{ marginBottom: 15 }}
-            >
-              {I18n.t('common.save')}
-            </Button>
           )}
         </Content>
       </Container>
