@@ -205,7 +205,6 @@ class LoginForm extends Component {
                   </Text>
                 </View>
               )}
-              <Text>Biometrics enabled: {this.props.biometricsEnabled ? 'yes' : 'no'}</Text>
               <Button
                 id="LoginPage.forgotPasswordButton"
                 style={{ flex: error ? 1 : 2 }}

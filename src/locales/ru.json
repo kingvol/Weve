@@ -27,7 +27,8 @@
     "landscape":
       "*Загрузите изображение альбомной ориентации - ваш профиль будет отлично смотреться",
     "biometrics": "Хотите войти в систему с помощью отпечатка пальца?",
-    "biometrics_title": "Touch/Fingerprint ID"
+    "biometrics_title": "Touch/Fingerprint ID",
+    "biometrics_scan": "Просканируйте палец для входа"
   },
   "eula": {
     "error": "Извините, вы не можете зарегистрироваться",

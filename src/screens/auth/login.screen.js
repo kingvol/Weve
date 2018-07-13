@@ -9,6 +9,7 @@ import I18n from 'react-native-i18n';
 import { AuthActions } from '../../actions';
 import { startTabBasedApp } from '../../../index';
 import LoginForm from '../../components/auth/login.form';
+// import BiometricsModal from './biometrics.modal';
 import Analytics from '../../services/AnalyticsService';
 
 const { loginUser } = AuthActions;
@@ -37,6 +38,10 @@ class LoginScreen extends Component {
       this.setState({ biometricsEnabled: !!credentials.username && !isBiometricsDeclined });
     } catch (error) {
       this.setState({ biometricsEnabled: false });
+    }
+
+    if (this.state.biometricsEnabled && this.state.biometricsSupported) {
+      this.processBiometricsAuth();
     }
   }
 
@@ -81,13 +86,9 @@ class LoginScreen extends Component {
           startTabBasedApp();
         }
       } else {
-        await AsyncStorage.setItem('is_biometrics_declined', 'yes');
         startTabBasedApp();
       }
     }
-
-    AsyncStorage.removeItem('is_biometrics_declined');
-    Keychain.resetGenericPassword();
   }
 
   onSubmitPress = (phoneNumber, password) => {
@@ -115,6 +116,22 @@ class LoginScreen extends Component {
       },
     });
   };
+
+  processBiometricsAuth = () => {
+    const configObject = {
+      title: 'Wevedo', // Android
+      color: '#e00606', // Android,
+    };
+
+    TouchID.authenticate(I18n.t('logIn.biometrics_scan'), configObject)
+      .then(() => {
+        Keychain.getGenericPassword() // Retrieve the credentials from the keychain
+          .then((credentials) => {
+            const { username, password } = credentials;
+            this.onSubmitPress(username, password);
+          });
+      });
+  }
 
   render() {
     return (

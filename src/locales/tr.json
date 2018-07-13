@@ -26,7 +26,8 @@
     "tap_on_icon": "Resim simgesine dokunun",
     "landscape": "*Lütfen manzara resminizi yükleyiniz - profiliniz harika görünecek",
     "biometrics": "Parmak izi ile oturum açmak ister misiniz?",
-    "biometrics_title": "Touch/Fingerprint ID"
+    "biometrics_title": "Touch/Fingerprint ID",
+    "biometrics_scan": "Oturum açmak için parmağınızı tarayın"
   },
   "eula": {
     "error": "Maalesef kaydolamazsınız",
