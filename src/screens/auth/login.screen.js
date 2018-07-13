@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { AsyncStorage, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import * as Keychain from 'react-native-keychain';
+import I18n from 'react-native-i18n';
 
 import { AuthActions } from '../../actions';
 import { startTabBasedApp } from '../../../index';
@@ -36,11 +37,11 @@ class LoginScreen extends Component {
       const isBiometricsDeclined = await AsyncStorage.getItem('is_biometrics_declined');
       if (!isBiometricsDeclined && !this.state.biometricsEnabled) {
         await Alert.alert(
-          'Biometrics auth',
-          'Would you like to sign in using fingerprint?',
+          I18n.t('logIn.biometrics_title'),
+          I18n.t('logIn.biometrics'),
           [
             {
-              text: 'Yes',
+              text: I18n.t('common.allow'),
               onPress: async () => {
                 await Keychain.setGenericPassword( // enables auth with biometr.
                   this.state.phoneNumber,
@@ -50,7 +51,7 @@ class LoginScreen extends Component {
               },
             },
             {
-              text: 'No',
+              text: I18n.t('common.deny'),
               onPress: async () => {
                 await AsyncStorage.setItem('is_biometrics_declined', 'yes');
                 startTabBasedApp();
@@ -68,6 +69,7 @@ class LoginScreen extends Component {
         startTabBasedApp();
       }
     }
+    Keychain.resetGenericPassword();
   }
 
   onSubmitPress = (phoneNumber, password) => {

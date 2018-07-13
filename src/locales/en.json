@@ -24,7 +24,9 @@
     "upload_photo": "It's time to upload your photo",
     "photo_saved": "Photo saved",
     "tap_on_icon": "Tap on photo icon",
-    "landscape": "*Please upload landscape image - your profile will look great"
+    "landscape": "*Please upload landscape image - your profile will look great",
+    "biometrics": "Would you like to sign in with fingerprint?",
+    "biometrics_title": "Biometrics auth"
   },
   "eula": {
     "error": "Sorry you cannot sign up!",

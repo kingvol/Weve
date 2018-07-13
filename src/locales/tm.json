@@ -24,7 +24,9 @@
     "upload_photo": "Suratyňyzy ýükläň",
     "photo_saved": "Surayňyz hasaba geçirildi",
     "tap_on_icon": "Surat belgisine basyň",
-    "landscape": "*Suratyñyzy albomny stilde ýükleseñiz has owadan görüner"
+    "landscape": "*Suratyñyzy albomny stilde ýükleseñiz has owadan görüner",
+    "biometrics": "Parmak izi ile oturum açmak ister misiniz?",
+    "biometrics_title": "Touch/Fingerprint ID"
   },
   "eula": {
     "error": "Bagyşlaň,siz registrasiýa bolup bilmeýäňiz",
