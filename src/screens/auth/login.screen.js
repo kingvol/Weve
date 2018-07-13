@@ -58,6 +58,14 @@ class LoginScreen extends Component {
             I18n.t('logIn.biometrics'),
             [
               {
+                text: I18n.t('common.deny'),
+                onPress: async () => {
+                  await AsyncStorage.setItem('is_biometrics_declined', 'yes');
+                  startTabBasedApp();
+                },
+                style: 'cancel',
+              },
+              {
                 text: I18n.t('common.allow'),
                 onPress: async () => {
                   await Keychain.setGenericPassword( // enables auth with biometr.
@@ -66,14 +74,6 @@ class LoginScreen extends Component {
                   );
                   startTabBasedApp();
                 },
-              },
-              {
-                text: I18n.t('common.deny'),
-                onPress: async () => {
-                  await AsyncStorage.setItem('is_biometrics_declined', 'yes');
-                  startTabBasedApp();
-                },
-                style: 'cancel',
               },
             ],
             { cancelable: false },
@@ -119,8 +119,8 @@ class LoginScreen extends Component {
 
   processBiometricsAuth = () => {
     const configObject = {
-      title: 'Wevedo', // Android
-      color: '#e00606', // Android,
+      title: 'Fingerprint ID', // Android
+      color: 'grey', // Android,
     };
 
     TouchID.authenticate(I18n.t('logIn.biometrics_scan'), configObject)

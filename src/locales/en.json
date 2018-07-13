@@ -25,8 +25,8 @@
     "photo_saved": "Photo saved",
     "tap_on_icon": "Tap on photo icon",
     "landscape": "*Please upload landscape image - your profile will look great",
-    "biometrics": "Would you like to sign in with fingerprint?",
-    "biometrics_title": "Biometrics auth",
+    "biometrics": "Fingerprint login?",
+    "biometrics_title": "Fingerprint ID",
     "biometrics_scan": "Scan your finger to sign in"
   },
   "eula": {
