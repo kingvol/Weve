@@ -868,7 +868,7 @@ class EditProfileScreen extends Component {
                   style={styleDescription}
                   maxLength={maxLength}
                   underlineColorAndroid="transparent"
-                  placeholder={`100 ${I18n.t('editProfile.symbols')}`}
+                  placeholder={`5000 ${I18n.t('editProfile.symbols')}`}
                   multiline
                 />
                 <Text style={{ fontSize: 10, color: 'lightgrey', textAlign: 'right' }}>

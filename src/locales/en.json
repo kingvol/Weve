@@ -140,7 +140,7 @@
     "allow": "Allow",
     "OpenSettings": "Open Settings",
     "calendar": "Calendar",
-    "information": "Information"
+    "information": "Description"
   },
   "auth": {
     "enter_code": "Enter verification code",
