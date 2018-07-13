@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle, camelcase */
 import React, { Component } from 'react';
-import { Alert, Keyboard, View, Dimensions, TextInput, Platform, Switch } from 'react-native';
+import { Alert, Keyboard, View, Dimensions, TextInput, Switch } from 'react-native';
 import _ from 'lodash';
 import ImagePicker from 'react-native-image-picker';
 import { Picker, CheckBox, Left } from 'native-base';
@@ -41,7 +41,7 @@ const regionName = countryLib[`${countryCode}`].provinces[0];
 const ucFirst = s => (s.substr(0, 1).toLowerCase() + s.substr(1)).replace(' ', '');
 
 const ITEM_WIDTH = Dimensions.get('window').width;
-const maxLength = 100;
+const maxLength = 5000;
 
 class EditProfileScreen extends Component {
   constructor(props) {
@@ -69,7 +69,7 @@ class EditProfileScreen extends Component {
         isProvider: this.props.user.profile.isProvider,
         categories: this.props.user.profile.categories,
         bio: this.props.user.profile.bio || '',
-        descriptionLength: this.props.user.profile.bio ? maxLength - this.props.user.profile.bio.length : 100,
+        descriptionLength: this.props.user.profile.bio ? maxLength - this.props.user.profile.bio.length : maxLength,
         allowPhoneCalls: this.props.user.profile.allowPhoneCalls === undefined ? true :
           this.props.user.profile.allowPhoneCalls,
         chatEnabled: this.props.user.profile.chatEnabled === undefined ? true :
@@ -563,13 +563,13 @@ class EditProfileScreen extends Component {
   };
 
   profileDescriptionMethod = (value) => {
+    this.dataModified();
     this.setState({
       values: {
         ...this.state.values,
         descriptionLength: maxLength - value.length,
         bio: value,
       },
-      isDataModified: true,
     });
   }
 
@@ -866,7 +866,7 @@ class EditProfileScreen extends Component {
                   onChangeText={value => this.profileDescriptionMethod(value)}
                   value={this.state.values.bio}
                   style={styleDescription}
-                  maxLength={100}
+                  maxLength={maxLength}
                   underlineColorAndroid="transparent"
                   placeholder={`100 ${I18n.t('editProfile.symbols')}`}
                   multiline
