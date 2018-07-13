@@ -92,6 +92,7 @@
 		F8DF0F1F207F64BE007D2631 /* Firebase.h in Frameworks */ = {isa = PBXBuildFile; fileRef = F8DF0F14207F64BD007D2631 /* Firebase.h */; };
 		F8DF0F20207F64BE007D2631 /* FirebaseMessaging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8DF0F15207F64BE007D2631 /* FirebaseMessaging.framework */; };
 		F8DF0FAA207F669A007D2631 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8DF0F7A207F669A007D2631 /* StoreKit.framework */; };
+		F8DFDE7E20F8D0C2005D6FD0 /* libRNKeychain.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F8DFDE7B20F8D0A4005D6FD0 /* libRNKeychain.a */; };
 		FBBA7F46622E463EB25A9926 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C95A0BF40EDB48C2B309E543 /* MaterialIcons.ttf */; };
 /* End PBXBuildFile section */
 
@@ -474,6 +475,20 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RNFIRMessaging;
 		};
+		F8DFDE7A20F8D0A4005D6FD0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F8DFDE7520F8D0A4005D6FD0 /* RNKeychain.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 5D82366F1B0CE05B005A9EF3;
+			remoteInfo = RNKeychain;
+		};
+		F8DFDE7C20F8D0A4005D6FD0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F8DFDE7520F8D0A4005D6FD0 /* RNKeychain.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6478985F1F38BF9100DA1C12;
+			remoteInfo = "RNKeychain-tvOS";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -572,6 +587,7 @@
 		F8DF0F14207F64BD007D2631 /* Firebase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Firebase.h; path = Frameworks/Firebase.h; sourceTree = "<group>"; };
 		F8DF0F15207F64BE007D2631 /* FirebaseMessaging.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseMessaging.framework; path = Frameworks/FirebaseMessaging.framework; sourceTree = "<group>"; };
 		F8DF0F7A207F669A007D2631 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		F8DFDE7520F8D0A4005D6FD0 /* RNKeychain.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNKeychain.xcodeproj; path = "../node_modules/react-native-keychain/RNKeychain.xcodeproj"; sourceTree = "<group>"; };
 		FC8D25C36683430B8B4F4A41 /* libAppCenterReactNative.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAppCenterReactNative.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -589,6 +605,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F8DFDE7E20F8D0C2005D6FD0 /* libRNKeychain.a in Frameworks */,
 				F8AB12E220F7A6EF00998AFA /* libRCTImageResizer.a in Frameworks */,
 				D0D4BCC920EAA1050037A3A2 /* libReactNativePermissions.a in Frameworks */,
 				D0D858BF20A61EE000299E0B /* libFastImage.a in Frameworks */,
@@ -855,6 +872,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				F8DFDE7520F8D0A4005D6FD0 /* RNKeychain.xcodeproj */,
 				F8AB12DC20F7A69700998AFA /* RCTImageResizer.xcodeproj */,
 				D0D4BCC320EAA0D90037A3A2 /* ReactNativePermissions.xcodeproj */,
 				D0D858B820A61EA700299E0B /* FastImage.xcodeproj */,
@@ -1050,6 +1068,15 @@
 			isa = PBXGroup;
 			children = (
 				F8DF0E05207F56D5007D2631 /* libRNFIRMessaging.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F8DFDE7620F8D0A4005D6FD0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F8DFDE7B20F8D0A4005D6FD0 /* libRNKeychain.a */,
+				F8DFDE7D20F8D0A4005D6FD0 /* libRNKeychain.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1279,6 +1306,10 @@
 				{
 					ProductGroup = D045521820695BBA0021B2F7 /* Products */;
 					ProjectRef = D045521720695BBA0021B2F7 /* RNImagePicker.xcodeproj */;
+				},
+				{
+					ProductGroup = F8DFDE7620F8D0A4005D6FD0 /* Products */;
+					ProjectRef = F8DFDE7520F8D0A4005D6FD0 /* RNKeychain.xcodeproj */;
 				},
 				{
 					ProductGroup = D078704B205DC473001EAB6D /* Products */;
@@ -1658,6 +1689,20 @@
 			fileType = archive.ar;
 			path = libRNFIRMessaging.a;
 			remoteRef = F8DF0E04207F56D5007D2631 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F8DFDE7B20F8D0A4005D6FD0 /* libRNKeychain.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNKeychain.a;
+			remoteRef = F8DFDE7A20F8D0A4005D6FD0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F8DFDE7D20F8D0A4005D6FD0 /* libRNKeychain.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNKeychain.a;
+			remoteRef = F8DFDE7C20F8D0A4005D6FD0 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
