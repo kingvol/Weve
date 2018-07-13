@@ -1,5 +1,6 @@
+/* eslint-disable react/no-did-mount-set-state */
 import React, { Component } from 'react';
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import * as Keychain from 'react-native-keychain';
 
@@ -20,21 +21,52 @@ class LoginScreen extends Component {
   async componentDidMount() {
     try {
       const credentials = await Keychain.getGenericPassword();
-      this.setState({ biometricsEnabled : !!credentials.username });
-      console.warn(credentials);
+      const isBiometricsDeclined = await AsyncStorage.getItem('is_biometrics_declined');
+      this.setState({ biometricsEnabled: !!credentials.username && !isBiometricsDeclined });
     } catch (error) {
-      this.setState({ biometricsEnabled : false });
+      this.setState({ biometricsEnabled: false });
     }
   }
 
   async componentWillUpdate({ auth }) {
     if (auth.isAuthorized && auth.accessToken) {
       await AsyncStorage.setItem('wevedo_access_token', auth.accessToken);
-      await Keychain.setGenericPassword( // enables auth with biometr.
-        this.state.phoneNumber,
-        this.state.password,
-      );
-      startTabBasedApp();
+
+      /* Biometrics */
+      const isBiometricsDeclined = await AsyncStorage.getItem('is_biometrics_declined');
+      if (!isBiometricsDeclined && !this.state.biometricsEnabled) {
+        await Alert.alert(
+          'Biometrics auth',
+          'Would you like to sign in using fingerprint?',
+          [
+            {
+              text: 'Yes',
+              onPress: async () => {
+                await Keychain.setGenericPassword( // enables auth with biometr.
+                  this.state.phoneNumber,
+                  this.state.password,
+                );
+                startTabBasedApp();
+              },
+            },
+            {
+              text: 'No',
+              onPress: async () => {
+                await AsyncStorage.setItem('is_biometrics_declined', 'yes');
+                startTabBasedApp();
+              },
+              style: 'cancel',
+            },
+          ],
+          { cancelable: false },
+        );
+      } else {
+        await Keychain.setGenericPassword( // enables auth with biometr.
+          this.state.phoneNumber,
+          this.state.password,
+        );
+        startTabBasedApp();
+      }
     }
   }
 
