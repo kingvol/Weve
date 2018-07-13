@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { AsyncStorage, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import * as Keychain from 'react-native-keychain';
+import TouchID from 'react-native-touch-id';
 import I18n from 'react-native-i18n';
 
 import { AuthActions } from '../../actions';
@@ -17,9 +18,19 @@ class LoginScreen extends Component {
     password: '',
     phoneNumber: '',
     biometricsEnabled: false,
+    biometricsSupported: false,
   }
 
   async componentDidMount() {
+    try {
+      await TouchID.isSupported();
+      this.setState({
+        biometricsSupported: true,
+      });
+    } catch (error) {
+      this.setState({ biometricsSupported: false });
+    }
+
     try {
       const credentials = await Keychain.getGenericPassword();
       const isBiometricsDeclined = await AsyncStorage.getItem('is_biometrics_declined');
@@ -34,41 +45,48 @@ class LoginScreen extends Component {
       await AsyncStorage.setItem('wevedo_access_token', auth.accessToken);
 
       /* Biometrics */
-      const isBiometricsDeclined = await AsyncStorage.getItem('is_biometrics_declined');
-      if (!isBiometricsDeclined && !this.state.biometricsEnabled) {
-        await Alert.alert(
-          I18n.t('logIn.biometrics_title'),
-          I18n.t('logIn.biometrics'),
-          [
-            {
-              text: I18n.t('common.allow'),
-              onPress: async () => {
-                await Keychain.setGenericPassword( // enables auth with biometr.
-                  this.state.phoneNumber,
-                  this.state.password,
-                );
-                startTabBasedApp();
+      if (this.state.biometricsSupported) {
+        const isBiometricsDeclined = await AsyncStorage.getItem('is_biometrics_declined');
+        if (!isBiometricsDeclined && !this.state.biometricsEnabled) {
+          await Alert.alert(
+            I18n.t('logIn.biometrics_title'),
+            I18n.t('logIn.biometrics'),
+            [
+              {
+                text: I18n.t('common.allow'),
+                onPress: async () => {
+                  await Keychain.setGenericPassword( // enables auth with biometr.
+                    this.state.phoneNumber,
+                    this.state.password,
+                  );
+                  startTabBasedApp();
+                },
               },
-            },
-            {
-              text: I18n.t('common.deny'),
-              onPress: async () => {
-                await AsyncStorage.setItem('is_biometrics_declined', 'yes');
-                startTabBasedApp();
+              {
+                text: I18n.t('common.deny'),
+                onPress: async () => {
+                  await AsyncStorage.setItem('is_biometrics_declined', 'yes');
+                  startTabBasedApp();
+                },
+                style: 'cancel',
               },
-              style: 'cancel',
-            },
-          ],
-          { cancelable: false },
-        );
+            ],
+            { cancelable: false },
+          );
+        } else {
+          await Keychain.setGenericPassword( // enables auth with biometr.
+            this.state.phoneNumber,
+            this.state.password,
+          );
+          startTabBasedApp();
+        }
       } else {
-        await Keychain.setGenericPassword( // enables auth with biometr.
-          this.state.phoneNumber,
-          this.state.password,
-        );
+        await AsyncStorage.setItem('is_biometrics_declined', 'yes');
         startTabBasedApp();
       }
     }
+
+    AsyncStorage.removeItem('is_biometrics_declined');
     Keychain.resetGenericPassword();
   }
 
