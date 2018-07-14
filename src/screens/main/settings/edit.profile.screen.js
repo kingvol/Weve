@@ -182,6 +182,8 @@ class EditProfileScreen extends Component {
         animated: true,
         animationType: 'fade',
       });
+    } else if (event.id === 'save') {
+      this.onSubmitForm();
     }
   }
 
@@ -283,12 +285,6 @@ class EditProfileScreen extends Component {
       this.setState({ loading: true });
     }
   };
-
-  onNavigatorEvent = (event) => {
-    if (event.id === 'save') {
-      this.onSubmitForm();
-    }
-  }
 
   onCheckboxPress = () => {
     this.dataModified();
