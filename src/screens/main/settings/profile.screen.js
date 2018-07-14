@@ -29,6 +29,7 @@ class ProfileScreen extends Component {
 
   componentDidMount() {
     this.props.fetchProfile('me');
+    this.setEditButton();
   }
 
   onNavigatorEvent(event) {
@@ -37,6 +38,8 @@ class ProfileScreen extends Component {
         animated: true,
         animationType: 'fade',
       });
+    } else if (event.id === 'edit') {
+      this.onEditPress();
     }
   }
 
@@ -50,6 +53,21 @@ class ProfileScreen extends Component {
         navBarButtonColor: 'white',
         navBarTextFontFamily: primaryFont,
       },
+    });
+  };
+
+  setEditButton = () => {
+    Promise.all([Icon.getImageSource('pencil', 22, '#ffffff')]).then((sources) => {
+      this.props.navigator.setButtons({
+        rightButtons: [
+          {
+            icon: sources[0],
+
+            id: 'edit',
+          },
+        ],
+        animated: true,
+      });
     });
   };
 
@@ -69,7 +87,9 @@ class ProfileScreen extends Component {
           />
         </Row>
         <Row size={35} style={{ height: 20 }}>
-          <Label id="Profile.first_lastName">{fullName ? fullName : `${firstName || ''} ${lastName || ''}`}</Label>
+          <Label id="Profile.first_lastName">
+            {fullName || `${firstName || ''} ${lastName || ''}`}
+          </Label>
         </Row>
       </Col>
     </Row>
@@ -89,16 +109,6 @@ class ProfileScreen extends Component {
       <Container id="Profile.container" style={{ backgroundColor }}>
         <Content id="Profile.content" padder>
           <Grid id="Profile.grid">
-            <Row id="Profile.row.editButtonWrapper" style={{ justifyContent: 'flex-end' }}>
-              <Button
-                id="Profile.row.editProfileButton"
-                style={{ marginRight: 10 }}
-                transparent
-                onPress={this.onEditPress}
-              >
-                <Icon size={24} name="pencil" />
-              </Button>
-            </Row>
             {this.renderProfileImageName(fullName, firstName, lastName, profileImageURL)}
             <ProfileField
               id="Profile.phoneField"
@@ -131,6 +141,5 @@ const styles = {
     borderRadius: 40,
   },
 };
-
 
 export default connect(mapStateToProps, { fetchProfile })(ProfileScreen);
