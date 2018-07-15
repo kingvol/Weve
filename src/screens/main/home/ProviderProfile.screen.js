@@ -48,8 +48,7 @@ class ProviderProfileScreen extends Component {
               icon: sources[0],
               id: 'chat',
               disabled:
-                !this.props.provider.chatEnabled &&
-                this.props.provider.chatEnabled !== undefined,
+                !this.props.provider.chatEnabled && this.props.provider.chatEnabled !== undefined,
             },
             {
               icon: sources[1],
@@ -215,7 +214,7 @@ class ProviderProfileScreen extends Component {
             />
           )}
 
-          {(this.props.provider.bio && this.props.provider.bio.length) ? (
+          {this.props.provider.bio && this.props.provider.bio.length ? (
             <Tabs tabBarUnderlineStyle={{ backgroundColor: 'red' }}>
               <Tab
                 heading={I18n.t('common.calendar')}
@@ -239,6 +238,10 @@ class ProviderProfileScreen extends Component {
                 activeTabStyle={{ backgroundColor: 'white' }}
               >
                 <View style={styles.infoContainer}>
+                  <Text style={styles.textHead}>
+                    {`${provider.firstName.toUpperCase()} · ${provider.lastName.toUpperCase() ||
+                      ''} · ${provider.regionName.toUpperCase()}`}
+                  </Text>
                   <Text style={styles.text}>{this.props.provider.bio}</Text>
                 </View>
               </Tab>
@@ -270,7 +273,11 @@ const styles = {
     height: ITEM_WIDTH / 1.5,
     alignItems: 'center',
   },
+  textHead: {
+    marginTop: 10,
+  },
   text: {
+    color: 'black',
     fontSize: 18,
     margin: 15,
     marginTop: 10,
@@ -282,7 +289,6 @@ const styles = {
   calendar: {},
   infoContainer: {
     alignItems: 'center',
-    justifyContent: 'center',
     flex: 1,
   },
 };
