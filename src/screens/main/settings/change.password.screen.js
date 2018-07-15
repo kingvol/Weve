@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Alert, Keyboard } from 'react-native';
+import * as Keychain from 'react-native-keychain';
 import { Button, Container, Content, FieldInput } from '../../../components/common';
 import { connect } from 'react-redux';
 import I18n from '../../../locales';
@@ -127,8 +128,9 @@ class ChangePasswordScreen extends Component {
     }
   };
 
-  onFormSubmit = () => {
+  onFormSubmit = async () => {
     this.setState({ processing: true });
+    await Keychain.resetGenericPassword();
     this.props.changePassword({
       password: this.state.values.newPassword,
       currentPassword: this.state.values.currentPassword,

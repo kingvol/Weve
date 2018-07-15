@@ -4,6 +4,7 @@
 /* eslint-disable global-require */
 import React, { Component } from 'react';
 import { Alert, ImageBackground, StyleSheet, View } from 'react-native';
+import * as Keychain from 'react-native-keychain';
 import { Icon } from 'native-base';
 import I18n from 'react-native-i18n';
 import { Button, Container, FieldInput, Text } from '../../components/common';
@@ -32,7 +33,8 @@ class ForgotPassword extends Component {
     });
   };
 
-  onSubmitForm = () => {
+  onSubmitForm = async () => {
+    await Keychain.resetGenericPassword();
     if (this.state.step === 1) {
       this.requestResetToken();
     } else {
