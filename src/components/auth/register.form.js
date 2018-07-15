@@ -272,7 +272,6 @@ class SignupForm extends Component {
     return (
       <ScrollView id="SignUp.content" contentContainerStyle={{ justifyContent: 'space-between' }}>
         <Modal
-          animationType="fade"
           transparent={false}
           visible={this.state.modalForUserProfileVisible}
           onRequestClose={() => this.onSupplierPress(false)}
