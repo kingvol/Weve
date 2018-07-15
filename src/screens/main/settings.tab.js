@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { AsyncStorage, View, TouchableOpacity, Share } from 'react-native';
+import { Button, Left, Switch, Icon as NBIcon } from 'native-base';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import FastImage from 'react-native-fast-image';
@@ -114,6 +115,21 @@ class SettingsTab extends Component {
                 )}
               </ListItem>
             ))}
+
+            <ListItem icon>
+              <Left>
+                <Button style={{ backgroundColor: 'grey' }} >
+                  <NBIcon name="ios-finger-print-outline" />
+                </Button>
+              </Left>
+              <Body>
+                <Text>Fingerprint login</Text>
+              </Body>
+              <Right>
+                <Switch value={false} />
+              </Right>
+            </ListItem>
+
           </List>
           {vars.DB_ENV === 'test' && <Text style={{ alignSelf: 'center' }}>DEV</Text>}
         </Content>
