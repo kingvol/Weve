@@ -183,6 +183,10 @@ class ProviderProfileScreen extends Component {
       images = arrayImages.filter(e => !!e);
       images.unshift(provider.profileImageURL);
     }
+    const nameWithRegion = provider.fullName
+      ? `${provider.fullName.toUpperCase()} · ${provider.regionName.toUpperCase()}`
+      : `${provider.firstName.toUpperCase()} ${provider.lastName.toUpperCase() ||
+          ''} · ${provider.regionName.toUpperCase()}`;
 
     return (
       <Content contentContainerStyle={{ flexGrow: 1 }}>
@@ -238,9 +242,15 @@ class ProviderProfileScreen extends Component {
                 activeTabStyle={{ backgroundColor: 'white' }}
               >
                 <View style={styles.infoContainer}>
-                  <Text style={styles.textHead}>
-                    {`${provider.firstName.toUpperCase()} · ${provider.lastName.toUpperCase() ||
-                      ''} · ${provider.regionName.toUpperCase()}`}
+                  <Text
+                    adjustsFontSizeToFit
+                    minimumFontScale={0.5}
+                    style={{
+                      fontSize: (1.2 * ITEM_WIDTH) / nameWithRegion.length,
+                      marginTop: 10,
+                    }}
+                  >
+                    {nameWithRegion}
                   </Text>
                   <Text style={styles.text}>{this.props.provider.bio}</Text>
                 </View>
@@ -272,9 +282,6 @@ const styles = {
     justifyContent: 'flex-start',
     height: ITEM_WIDTH / 1.5,
     alignItems: 'center',
-  },
-  textHead: {
-    marginTop: 10,
   },
   text: {
     color: 'black',
