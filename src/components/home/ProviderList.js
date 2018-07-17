@@ -9,9 +9,9 @@ import {
   Text,
   Dimensions,
 } from 'react-native';
-import { Button } from '.././common';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { Button } from '.././common';
 import ProviderListItem from './ProviderListItem';
 import ProviderGridItem from './ProviderGridItem';
 import { primaryFont, backgroundColor } from '../../theme';
@@ -54,12 +54,12 @@ class ProviderList extends PureComponent {
         this.props.profile.regionName,
       );
     });
-  }
+  };
 
   onPressItem = (provider) => {
     this.props.navigator.push({
       screen: 'wevedo.ProviderProfile',
-      title: `${provider.firstName} ${provider.lastName || ''}`,
+      title: provider.fullName || `${provider.firstName} ${provider.lastName || ''}`,
       passProps: { provider },
       navigatorStyle: {
         navBarBackgroundColor: '#d64635',
@@ -88,36 +88,45 @@ class ProviderList extends PureComponent {
     }
   };
 
-  _renderMoreButton = () => !this.state.disableMore ? (
-    <Button
-      style={styles.moreButton}
-      key="more_button"
-      spinner={this.state.isLoading}
-      onPress={this.onMorePress}
-    >
-      <Text style={styles.moreButtonText}>{I18n.t('common.show_more')}</Text>
-    </Button>
-  ) : null;
+  _renderMoreButton = () =>
+    !this.state.disableMore ? (
+      <Button
+        style={styles.moreButton}
+        key="more_button"
+        spinner={this.state.isLoading}
+        onPress={this.onMorePress}
+      >
+        <Text style={styles.moreButtonText}>{I18n.t('common.show_more')}</Text>
+      </Button>
+    ) : null;
 
   _keyExtractor = item => item._id;
 
-  _renderGridItem = ({ item }) => (item.key === 'button' ? this._renderMoreButton() : (
-    <ProviderGridItem
-      provider={item}
-      id={item._id}
-      itemWidth={ITEM_WIDTH / 2}
-      onPress={this.onPressItem}
-    />
-  ));
+  _renderGridItem = ({ item }) =>
+    item.key === 'button' ? (
+      this._renderMoreButton()
+    ) : (
+      <ProviderGridItem
+        provider={item}
+        id={item._id}
+        key={item._id.toString()}
+        itemWidth={ITEM_WIDTH / 2}
+        onPress={this.onPressItem}
+      />
+    );
 
-  _renderItem = ({ item }) => (item.key === 'button' ? this._renderMoreButton() : (
-    <ProviderListItem
-      provider={item}
-      id={item._id}
-      itemWidth={ITEM_WIDTH / 2.5}
-      onPress={this.onPressItem}
-    />
-  ));
+  _renderItem = ({ item }) =>
+    item.key === 'button' ? (
+      this._renderMoreButton()
+    ) : (
+      <ProviderListItem
+        provider={item}
+        id={item._id}
+        key={item._id.toString()}
+        itemWidth={ITEM_WIDTH / 2.5}
+        onPress={this.onPressItem}
+      />
+    );
 
   render() {
     const { containerStyle, buttonsRow, buttonView } = styles;
