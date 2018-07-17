@@ -48,6 +48,7 @@
     "react-native-navigation": "^1.1.388",
     "react-native-permissions": "^1.1.1",
     "react-native-phone-input": "^0.2.1",
+    "react-native-progress": "^3.5.0",
     "react-native-swiper": "^1.5.13",
     "react-native-tab-view": "^0.0.77",
     "react-native-touch-id": "^4.0.4",
