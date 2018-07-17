@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle, camelcase */
 import React, { Component } from 'react';
 import { Alert, Keyboard, View, Dimensions, TextInput, Switch } from 'react-native';
+import Upload from 'react-native-background-upload';
 import _ from 'lodash';
 import ImagePicker from 'react-native-image-picker';
 import { Picker, CheckBox, Left } from 'native-base';
@@ -343,6 +344,8 @@ class EditProfileScreen extends Component {
       if (uri) {
         this.setState({
           videoURI: uri,
+        }, () => {
+          this.startVideoUpload(uri);
         });
       }
     });
@@ -605,6 +608,42 @@ class EditProfileScreen extends Component {
       this.setState({ isDataModified: true });
       this.setSaveButton();
     }
+  }
+
+  startVideoUpload = (path) => {
+    const options = {
+      url: 'cloudinary url goes here..', // don't forgot to extract it to config obj.
+      path,
+      method: 'POST',
+      type: 'raw',
+      headers: {
+        'content-type': 'application/octet-stream',
+        'my-custom-header': 's3headervalueorwhateverweneed',
+      },
+      // Below are options only supported on Android
+      notification: {
+        enabled: true,
+      },
+    };
+
+    Upload.startUpload(options).then((uploadId) => {
+      console.warn('Upload started');
+      Upload.addListener('progress', uploadId, (data) => {
+        console.warn(`Progress: ${data.progress}%`);
+      });
+      Upload.addListener('error', uploadId, (data) => {
+        console.warn(`Error: ${data.error}%`);
+      });
+      Upload.addListener('cancelled', uploadId, (data) => {
+        console.warn(`Cancelled!`);
+      });
+      Upload.addListener('completed', uploadId, (data) => {
+        // data includes responseCode: number and responseBody: Object
+        console.warn('Completed!');
+      });
+    }).catch((err) => {
+      console.warn('Upload error!', err);
+    });
   }
 
   render() {
