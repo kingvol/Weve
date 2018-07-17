@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -95,6 +94,7 @@
 		F8DF0FAA207F669A007D2631 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8DF0F7A207F669A007D2631 /* StoreKit.framework */; };
 		F8DFDE7E20F8D0C2005D6FD0 /* libRNKeychain.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F8DFDE7B20F8D0A4005D6FD0 /* libRNKeychain.a */; };
 		FBBA7F46622E463EB25A9926 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C95A0BF40EDB48C2B309E543 /* MaterialIcons.ttf */; };
+		2A62338EAD0F462D9CC14FF1 /* libVydiaRNFileUploader.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F2B4FBB1EC39433FBF17EF0F /* libVydiaRNFileUploader.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -598,6 +598,8 @@
 		F8DF0F7A207F669A007D2631 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		F8DFDE7520F8D0A4005D6FD0 /* RNKeychain.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNKeychain.xcodeproj; path = "../node_modules/react-native-keychain/RNKeychain.xcodeproj"; sourceTree = "<group>"; };
 		FC8D25C36683430B8B4F4A41 /* libAppCenterReactNative.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAppCenterReactNative.a; sourceTree = "<group>"; };
+		87B19A0CC2A64D288C83377A /* VydiaRNFileUploader.xcodeproj */ = {isa = PBXFileReference; name = "VydiaRNFileUploader.xcodeproj"; path = "../node_modules/react-native-background-upload/ios/VydiaRNFileUploader.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		F2B4FBB1EC39433FBF17EF0F /* libVydiaRNFileUploader.a */ = {isa = PBXFileReference; name = "libVydiaRNFileUploader.a"; path = "libVydiaRNFileUploader.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -654,6 +656,7 @@
 				3DCFBF285C53B2122E09EDA8 /* libPods-wevedo_app.a in Frameworks */,
 				A60632FB0C244F58BD6F9322 /* libAppCenterReactNativeAnalytics.a in Frameworks */,
 				404C8B4731FD4017B9758F2B /* libAppCenterReactNativeCrashes.a in Frameworks */,
+				2A62338EAD0F462D9CC14FF1 /* libVydiaRNFileUploader.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -908,6 +911,7 @@
 				34B6CBD6D1A44A878F3E9D1B /* AppCenterReactNative.xcodeproj */,
 				676A5E6B7136421CBC3329B8 /* AppCenterReactNativeAnalytics.xcodeproj */,
 				725E102A3FBC42FBA2AC4BCE /* AppCenterReactNativeCrashes.xcodeproj */,
+				87B19A0CC2A64D288C83377A /* VydiaRNFileUploader.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -2097,6 +2101,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -2124,6 +2129,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -2242,6 +2248,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -2282,6 +2289,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -2315,6 +2323,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.wevedo_app-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2340,6 +2349,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
