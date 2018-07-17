@@ -83,6 +83,9 @@ class EditProfileScreen extends Component {
       isDataModified: false,
       cameraPermission: 'undetermined',
       photoPermission: 'undetermined',
+      /* Video upload */
+      videoURI: '',
+      isVideoUploading: false,
     };
   }
 
@@ -316,6 +319,34 @@ class EditProfileScreen extends Component {
       },
     });
   };
+
+  onVideoUploadPress = () => {
+    /* Open video picker */
+    const options = {
+      mediaType: 'video',
+      noData: true,
+      storageOptions: {
+        skipBackup: true,
+      },
+    };
+    ImagePicker.launchImageLibrary(options, ({ error, uri }) => {
+      if (error) {
+        Alert.alert(
+          I18n.t('editProfile.avatar_error'),
+          `${error}`,
+          [{ text: `${I18n.t('common.ok')}` }],
+          { cancelable: false },
+        );
+        return;
+      }
+
+      if (uri) {
+        this.setState({
+          videoURI: uri,
+        });
+      }
+    });
+  }
 
   setMultiSelectRef = (ref) => {
     this.multiSelect = ref;
@@ -575,7 +606,6 @@ class EditProfileScreen extends Component {
       this.setSaveButton();
     }
   }
-
 
   render() {
     const { photoPermission, cameraPermission } = this.state;
@@ -904,6 +934,11 @@ class EditProfileScreen extends Component {
               {I18n.t('logIn.account_activation')}
             </Text>
             )}
+            <View style={styles.videoField}>
+              <Button onPress={this.onVideoUploadPress}>
+                <Text>Upload a video</Text>
+              </Button>
+            </View>
           </View>
           )}
         </Content>
@@ -937,5 +972,8 @@ const styles = {
     borderRadius: 3,
     textAlignVertical: 'top',
     color: '#4d5460',
+  },
+  videoField: {
+    margin: 20,
   },
 };
