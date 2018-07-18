@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Content, Tab, Tabs } from 'native-base';
-import { View, Alert, Dimensions, Text, Linking } from 'react-native';
+import { View, Alert, Dimensions, Text, Linking, Modal, TouchableWithoutFeedback } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { connect } from 'react-redux';
 import Swiper from 'react-native-swiper';
@@ -25,11 +25,15 @@ const calendarTheme = {
 
 const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png';
 const ITEM_WIDTH = Dimensions.get('window').width;
+const ITEM_HEIGHT = Dimensions.get('window').height;
 
 class ProviderProfileScreen extends Component {
   constructor(props) {
     super(props);
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+    this.state = {
+      modalForImageVisible: false,
+    };
   }
 
   componentDidMount() {
@@ -104,6 +108,10 @@ class ProviderProfileScreen extends Component {
         .catch(error => alert(I18n.t('chat.error')));
     }
   }
+
+  setModalForImageVisible = (visible) => {
+    this.setState({ modalForImageVisible: visible });
+  };
 
   handleDayPress = ({ timestamp, dateString }) => {
     if (this.props.user.profile.isProvider) {
@@ -190,6 +198,19 @@ class ProviderProfileScreen extends Component {
 
     return (
       <Content contentContainerStyle={{ flexGrow: 1 }}>
+        <Modal
+          transparent={false}
+          visible={this.state.modalForImageVisible}
+          onRequestClose={() => this.setModalForImageVisible(false)}
+        >
+          <TouchableWithoutFeedback onPress={() => this.setModalForImageVisible(false)}>
+            <FastImage
+              style={{ height: ITEM_HEIGHT }}
+              resizeMode={FastImage.resizeMode.cover}
+              source={{ uri: this.props.provider.profileImageURL || defaultProfile }}
+            />
+          </TouchableWithoutFeedback>
+        </Modal>
         <View style={{ minHeight: 500 }}>
           {provider.profileImageURL && provider.providerImages && images.length > 1 ? (
             <Swiper
@@ -211,11 +232,13 @@ class ProviderProfileScreen extends Component {
               ))}
             </Swiper>
           ) : (
-            <FastImage
-              style={styles.image}
-              resizeMode={FastImage.resizeMode.contain}
-              source={{ uri: this.props.provider.profileImageURL || defaultProfile }}
-            />
+            <TouchableWithoutFeedback onPress={() => this.setModalForImageVisible(true)}>
+              <FastImage
+                style={styles.image}
+                resizeMode={FastImage.resizeMode.contain}
+                source={{ uri: this.props.provider.profileImageURL || defaultProfile }}
+              />
+            </TouchableWithoutFeedback>
           )}
 
           {this.props.provider.bio && this.props.provider.bio.length ? (
