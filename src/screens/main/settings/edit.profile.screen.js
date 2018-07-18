@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle, camelcase */
 import React, { Component } from 'react';
 import { Alert, Keyboard, View, Dimensions, TextInput, Switch } from 'react-native';
+import * as Progress from 'react-native-progress';
 import Upload from 'react-native-background-upload';
 import _ from 'lodash';
 import ImagePicker from 'react-native-image-picker';
@@ -636,26 +637,46 @@ class EditProfileScreen extends Component {
 
       Upload.addListener('progress', uploadId, (data) => {
         this.setState({ videoUploadProgress: data.progress });
-        console.warn(`Progress: ${data.progress}%`);
+        console.log(`Progress: ${data.progress}%`);
       });
 
       Upload.addListener('error', uploadId, (data) => {
-        console.warn(`Error: ${data.error}%`);
+        console.log(`Error: ${data.error}%`);
       });
 
       Upload.addListener('cancelled', uploadId, (data) => {
-        console.warn(`Cancelled!`);
+        console.log(`Cancelled!`);
       });
 
       Upload.addListener('completed', uploadId, ({ responseBody }) => {
-        this.setState({ isVideoUploading: false });
-        console.warn(responseBody.secure_url);
+        this.setState({ isVideoUploading: false, videoUploadProgress: 100 });
+        console.log(responseBody.secure_url);
         // data includes responseCode: number and responseBody: Object
-        console.warn('Completed!');
+        console.log('Completed!');
       });
     }).catch((err) => {
       console.warn('Upload error!', err);
     });
+  }
+
+  renderVideoStatus = () => {
+    const { isVideoUploading, videoUploadProgress } = this.state;
+
+    if (!isVideoUploading && !videoUploadProgress) {
+      return (
+        <Button onPress={this.onVideoUploadPress}>
+          <Text>Upload a video</Text>
+        </Button>
+      );
+    }
+
+    if (!isVideoUploading && videoUploadProgress === 100) {
+      return <Text>Done</Text>;
+    }
+
+    return (
+      <Progress.Circle size={50} progress={videoUploadProgress / 100} showsText />
+    );
   }
 
   render() {
@@ -986,9 +1007,7 @@ class EditProfileScreen extends Component {
             </Text>
             )}
             <View style={styles.videoField}>
-              <Button onPress={this.onVideoUploadPress}>
-                <Text>Upload a video</Text>
-              </Button>
+              {this.renderVideoStatus()}
             </View>
           </View>
           )}
