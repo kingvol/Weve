@@ -1,7 +1,7 @@
 /* eslint-disable no-confusing-arrow */
 import React, { Component } from 'react';
 import { Content, Tab, Tabs } from 'native-base';
-import { View, Alert, Dimensions, Text, Linking } from 'react-native';
+import { View, Alert, Dimensions, Text, Linking, Platform } from 'react-native';
 import VideoPlayer from 'react-native-video-controls';
 import FastImage from 'react-native-fast-image';
 import { connect } from 'react-redux';
@@ -168,6 +168,8 @@ class ProviderProfileScreen extends Component {
       disableVolume
       disableBack
       paused
+      repeat={Platform.OS === 'ios'}
+      disableSeekbar={Platform.OS === 'ios'}
     />
   );
 
