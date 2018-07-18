@@ -81,6 +81,7 @@
 		F81767AE20F90E28003A0477 /* libTouchID.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F81767AD20F90DF5003A0477 /* libTouchID.a */; };
 		F82C9C8020FE6871000D659B /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F82C9C7D20FE6861000D659B /* libART.a */; };
 		F881820D204F515C0012547F /* libReactNativeNavigation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F881820B204F511A0012547F /* libReactNativeNavigation.a */; };
+		F8A233E320FFD54D00A53A9A /* libRCTVideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F8A233E020FFD53500A53A9A /* libRCTVideo.a */; };
 		F8AB12E220F7A6EF00998AFA /* libRCTImageResizer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F8AB12E120F7A69800998AFA /* libRCTImageResizer.a */; };
 		F8DF0E0B207F5704007D2631 /* libRNFIRMessaging.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F8DF0E05207F56D5007D2631 /* libRNFIRMessaging.a */; };
 		F8DF0F16207F64BE007D2631 /* module.modulemap in Frameworks */ = {isa = PBXBuildFile; fileRef = F8DF0EDC207F64BD007D2631 /* module.modulemap */; };
@@ -492,6 +493,20 @@
 			remoteGlobalIDString = 9936F32F1F5F2E5B0010BF04;
 			remoteInfo = "privatedata-tvOS";
 		};
+		F8A233DF20FFD53500A53A9A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F8A233DA20FFD53500A53A9A /* RCTVideo.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RCTVideo;
+		};
+		F8A233E120FFD53500A53A9A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F8A233DA20FFD53500A53A9A /* RCTVideo.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 641E28441F0EEC8500443AF6;
+			remoteInfo = "RCTVideo-tvOS";
+		};
 		F8AB12E020F7A69800998AFA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F8AB12DC20F7A69700998AFA /* RCTImageResizer.xcodeproj */;
@@ -605,6 +620,7 @@
 		F82C9C7720FE6860000D659B /* ART.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ART.xcodeproj; path = "../node_modules/react-native/Libraries/ART/ART.xcodeproj"; sourceTree = "<group>"; };
 		F8682C9F3B52752012152ADA /* libPods-wevedo_appTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-wevedo_appTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F88181E1204F511A0012547F /* ReactNativeNavigation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeNavigation.xcodeproj; path = "../node_modules/react-native-navigation/ios/ReactNativeNavigation.xcodeproj"; sourceTree = "<group>"; };
+		F8A233DA20FFD53500A53A9A /* RCTVideo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTVideo.xcodeproj; path = "../node_modules/react-native-video/ios/RCTVideo.xcodeproj"; sourceTree = "<group>"; };
 		F8AB12DC20F7A69700998AFA /* RCTImageResizer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTImageResizer.xcodeproj; path = "../node_modules/react-native-image-resizer/ios/RCTImageResizer.xcodeproj"; sourceTree = "<group>"; };
 		F8DF0DD7207F56D5007D2631 /* RNFIRMessaging.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNFIRMessaging.xcodeproj; path = "../node_modules/react-native-fcm/ios/RNFIRMessaging.xcodeproj"; sourceTree = "<group>"; };
 		F8DF0E21207F5C15007D2631 /* wevedo_app.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = wevedo_app.entitlements; path = wevedo_app/wevedo_app.entitlements; sourceTree = "<group>"; };
@@ -640,6 +656,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F8A233E320FFD54D00A53A9A /* libRCTVideo.a in Frameworks */,
 				F82C9C8020FE6871000D659B /* libART.a in Frameworks */,
 				F81767AE20F90E28003A0477 /* libTouchID.a in Frameworks */,
 				F8DFDE7E20F8D0C2005D6FD0 /* libRNKeychain.a in Frameworks */,
@@ -910,6 +927,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				F8A233DA20FFD53500A53A9A /* RCTVideo.xcodeproj */,
 				F82C9C7720FE6860000D659B /* ART.xcodeproj */,
 				F81767A820F90DF5003A0477 /* TouchID.xcodeproj */,
 				F8DFDE7520F8D0A4005D6FD0 /* RNKeychain.xcodeproj */,
@@ -1121,6 +1139,15 @@
 				F2B4FBB1EC39433FBF17EF0F /* libVydiaRNFileUploader.a */,
 			);
 			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		F8A233DB20FFD53500A53A9A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F8A233E020FFD53500A53A9A /* libRCTVideo.a */,
+				F8A233E220FFD53500A53A9A /* libRCTVideo.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		F8AB12DD20F7A69700998AFA /* Products */ = {
@@ -1345,6 +1372,10 @@
 				{
 					ProductGroup = 00C302E01ABCB9EE00DB3ED1 /* Products */;
 					ProjectRef = 00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */;
+				},
+				{
+					ProductGroup = F8A233DB20FFD53500A53A9A /* Products */;
+					ProjectRef = F8A233DA20FFD53500A53A9A /* RCTVideo.xcodeproj */;
 				},
 				{
 					ProductGroup = 139FDEE71B06529A00C62182 /* Products */;
@@ -1782,6 +1813,20 @@
 			fileType = archive.ar;
 			path = "libprivatedata-tvOS.a";
 			remoteRef = F894A6242042F8CF00EFA64B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F8A233E020FFD53500A53A9A /* libRCTVideo.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTVideo.a;
+			remoteRef = F8A233DF20FFD53500A53A9A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F8A233E220FFD53500A53A9A /* libRCTVideo.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTVideo.a;
+			remoteRef = F8A233E120FFD53500A53A9A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		F8AB12E120F7A69800998AFA /* libRCTImageResizer.a */ = {
