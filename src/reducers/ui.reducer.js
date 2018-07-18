@@ -1,7 +1,7 @@
 import { DISPLAY_MODE_CHANGED } from '../actions/actionTypes';
 
 const initialState = {
-  grid: true,
+  grid: false,
 };
 
 export default (state = initialState, action) => {
