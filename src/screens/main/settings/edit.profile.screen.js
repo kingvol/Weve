@@ -59,6 +59,7 @@ class EditProfileScreen extends Component {
         fullName: this.props.user.profile.fullName || '',
         phoneNumber: this.props.user.profile.phoneNumber || '',
         profileImageURL: this.props.user.profile.profileImageURL || undefined,
+        profileVideoURL: this.props.user.profile.profileVideoURL || '',
         providerImages: {
           0: user.profile.providerImages[0] || undefined,
           1: user.profile.providerImages[1] || undefined,
@@ -86,7 +87,6 @@ class EditProfileScreen extends Component {
       cameraPermission: 'undetermined',
       photoPermission: 'undetermined',
       /* Video upload */
-      videoURI: '',
       isVideoUploading: false,
       videoUploadProgress: 0,
     };
@@ -344,11 +344,7 @@ class EditProfileScreen extends Component {
       }
 
       if (uri) {
-        this.setState({
-          videoURI: uri,
-        }, () => {
-          this.startVideoUpload(uri);
-        });
+        this.startVideoUpload(uri);
       }
     });
   }
@@ -644,15 +640,20 @@ class EditProfileScreen extends Component {
         console.log(`Error: ${data.error}%`);
       });
 
-      Upload.addListener('cancelled', uploadId, (data) => {
-        console.log(`Cancelled!`);
+      Upload.addListener('cancelled', uploadId, () => {
+        console.log('Cancelled!');
       });
 
-      Upload.addListener('completed', uploadId, ({ responseBody }) => {
-        this.setState({ isVideoUploading: false, videoUploadProgress: 100 });
-        console.log(responseBody.secure_url);
-        // data includes responseCode: number and responseBody: Object
-        console.log('Completed!');
+      Upload.addListener('completed', uploadId, ({ responseBody }) => { // typeof responseBody === string
+        const body = JSON.parse(responseBody);
+        this.setState({
+          isVideoUploading: false,
+          videoUploadProgress: 100,
+          values: {
+            ...this.state.values,
+            profileVideoURL: body.secure_url,
+          },
+        }, this.dataModified);
       });
     }).catch((err) => {
       console.warn('Upload error!', err);
