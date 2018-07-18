@@ -103,7 +103,7 @@ class ProviderList extends PureComponent {
   _keyExtractor = item => item._id;
 
   _renderGridItem = ({ item }) =>
-    item.key === 'button' ? (
+    item._id === 'button' ? (
       this._renderMoreButton()
     ) : (
       <ProviderGridItem
@@ -115,8 +115,8 @@ class ProviderList extends PureComponent {
       />
     );
 
-  _renderItem = ({ item }) =>
-    item.key === 'button' ? (
+  _renderItem = ({ item }) =>   
+    item._id === 'button' ? (
       this._renderMoreButton()
     ) : (
       <ProviderListItem
@@ -131,7 +131,9 @@ class ProviderList extends PureComponent {
   render() {
     const { containerStyle, buttonsRow, buttonView } = styles;
 
-    const data = this.state.providers ? [...this.state.providers, { key: 'button' }] : null;
+    const data = this.state.providers
+      ? [...this.state.providers, { _id: 'button' }]
+      : null;
 
     return this.state.providers.length ? (
       <View style={containerStyle}>
