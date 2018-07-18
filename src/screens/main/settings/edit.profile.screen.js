@@ -611,14 +611,18 @@ class EditProfileScreen extends Component {
   }
 
   startVideoUpload = (path) => {
+    const { cloudinary: { apiKey, cloud } } = config;
+    const timestamp = Date.now().toString();
+
     const options = {
-      url: 'cloudinary url goes here..', // don't forgot to extract it to config obj.
+      url: `https://api.cloudinary.com/v1_1/${cloud}/video/upload?upload_preset=profileImg&secure=true`,
       path,
       method: 'POST',
-      type: 'raw',
-      headers: {
-        'content-type': 'application/octet-stream',
-        'my-custom-header': 's3headervalueorwhateverweneed',
+      type: 'multipart',
+      field: 'file',
+      parameters: {
+        timestamp,
+        api_key: apiKey,
       },
       // Below are options only supported on Android
       notification: {
@@ -632,7 +636,7 @@ class EditProfileScreen extends Component {
         console.warn(`Progress: ${data.progress}%`);
       });
       Upload.addListener('error', uploadId, (data) => {
-        console.warn(`Error: ${data.error}%`);
+        console.warn(`Error: ${data}%`);
       });
       Upload.addListener('cancelled', uploadId, (data) => {
         console.warn(`Cancelled!`);
