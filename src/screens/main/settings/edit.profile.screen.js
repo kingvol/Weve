@@ -87,6 +87,7 @@ class EditProfileScreen extends Component {
       /* Video upload */
       videoURI: '',
       isVideoUploading: false,
+      videoUploadProgress: 0,
     };
   }
 
@@ -615,7 +616,7 @@ class EditProfileScreen extends Component {
     const timestamp = Date.now().toString();
 
     const options = {
-      url: `https://api.cloudinary.com/v1_1/${cloud}/video/upload?upload_preset=profileImg&secure=true`,
+      url: `https://api.cloudinary.com/v1_1/${cloud}/video/upload?secure=true&upload_preset=profileImg`,
       path,
       method: 'POST',
       type: 'multipart',
@@ -626,22 +627,29 @@ class EditProfileScreen extends Component {
       },
       // Below are options only supported on Android
       notification: {
-        enabled: true,
+        enabled: false,
       },
     };
 
     Upload.startUpload(options).then((uploadId) => {
-      console.warn('Upload started');
+      this.setState({ isVideoUploading: true });
+
       Upload.addListener('progress', uploadId, (data) => {
+        this.setState({ videoUploadProgress: data.progress });
         console.warn(`Progress: ${data.progress}%`);
       });
+
       Upload.addListener('error', uploadId, (data) => {
-        console.warn(`Error: ${data}%`);
+        console.warn(`Error: ${data.error}%`);
       });
+
       Upload.addListener('cancelled', uploadId, (data) => {
         console.warn(`Cancelled!`);
       });
-      Upload.addListener('completed', uploadId, (data) => {
+
+      Upload.addListener('completed', uploadId, ({ responseBody }) => {
+        this.setState({ isVideoUploading: false });
+        console.warn(responseBody.secure_url);
         // data includes responseCode: number and responseBody: Object
         console.warn('Completed!');
       });
