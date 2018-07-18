@@ -1,6 +1,8 @@
+/* eslint-disable no-confusing-arrow */
 import React, { Component } from 'react';
 import { Content, Tab, Tabs } from 'native-base';
 import { View, Alert, Dimensions, Text, Linking } from 'react-native';
+import VideoPlayer from 'react-native-video-controls';
 import FastImage from 'react-native-fast-image';
 import { connect } from 'react-redux';
 import Swiper from 'react-native-swiper';
@@ -159,6 +161,16 @@ class ProviderProfileScreen extends Component {
     Analytics.trackEvent('Booked date', { provider: this.props.user._id, date: timestamp });
   };
 
+  renderVideoPlayer = videoUrl => (
+    <VideoPlayer
+      key={videoUrl}
+      source={{ uri: videoUrl }}
+      disableVolume
+      disableBack
+      paused
+    />
+  );
+
   render() {
     const { profile } = this.props.user; // authUser
     const { provider } = this.props;
@@ -182,6 +194,12 @@ class ProviderProfileScreen extends Component {
       const arrayImages = Object.values(provider.providerImages);
       images = arrayImages.filter(e => !!e);
       images.unshift(provider.profileImageURL);
+      if (provider.profileVideoURL) {
+        images.splice(1, 0, {
+          id: 'video',
+          url: provider.profileVideoURL,
+        });
+      }
     }
     const nameWithRegion = provider.fullName
       ? `${provider.fullName.toUpperCase()} · ${provider.regionName.toUpperCase()}`
@@ -195,16 +213,14 @@ class ProviderProfileScreen extends Component {
             <Swiper
               style={styles.wrapper}
               showsButtons
-              autoplay
+              autoplay={!provider.profileVideoURL}
               autoplayTimeout={5}
               dotColor="#c4c4c4"
               activeDotColor="#d64635"
-              // paginationStyle={{ bottom: 7 }}
-              // buttonWrapperStyle={{ paddingHorizontal: 20 }}
               nextButton={<Text style={{ color: '#d64635', fontSize: 35 }}>›</Text>}
               prevButton={<Text style={{ color: '#d64635', fontSize: 35 }}>‹</Text>}
             >
-              {images.map((item, key) => (
+              {images.map((item, key) => item.id === 'video' ? this.renderVideoPlayer(item.url) : (
                 <View id={key} key={item} style={styles.slide}>
                   <FastImage source={{ uri: item }} style={styleImage} />
                 </View>
