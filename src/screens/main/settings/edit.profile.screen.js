@@ -1046,5 +1046,7 @@ const styles = {
   },
   videoField: {
     margin: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 };
