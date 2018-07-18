@@ -89,6 +89,7 @@ class EditProfileScreen extends Component {
       /* Video upload */
       isVideoUploading: false,
       videoUploadProgress: 0,
+      uploadId: '',
     };
   }
 
@@ -629,7 +630,7 @@ class EditProfileScreen extends Component {
     };
 
     Upload.startUpload(options).then((uploadId) => {
-      this.setState({ isVideoUploading: true });
+      this.setState({ isVideoUploading: true, uploadId });
 
       Upload.addListener('progress', uploadId, (data) => {
         this.setState({ videoUploadProgress: data.progress });
@@ -660,8 +661,31 @@ class EditProfileScreen extends Component {
     });
   }
 
+  cancelVideoUpload = () => {
+    const { uploadId } = this.state;
+    Upload.cancelUpload(uploadId);
+    this.setState({
+      uploadId: '',
+      isVideoUploading: false,
+      videoUploadProgress: 0,
+    });
+  }
+
   renderVideoStatus = () => {
     const { isVideoUploading, videoUploadProgress } = this.state;
+    const { profile } = this.props.user;
+
+    if (!isVideoUploading && !videoUploadProgress && profile.profileVideoURL) {
+      return [
+        <Text>Video uploaded</Text>,
+        <Button onPress={this.onVideoUploadPress}>
+          <Text>Upload new video</Text>
+        </Button>,
+        <Button danger>
+          <Text>Remove</Text>
+        </Button>,
+      ];
+    }
 
     if (!isVideoUploading && !videoUploadProgress) {
       return (
@@ -675,9 +699,12 @@ class EditProfileScreen extends Component {
       return <Text>Done</Text>;
     }
 
-    return (
-      <Progress.Circle size={50} progress={videoUploadProgress / 100} showsText />
-    );
+    return [
+      <Progress.Circle size={50} progress={videoUploadProgress / 100} showsText />,
+      <Button onPress={this.cancelVideoUpload}>
+        <Text>Cancel</Text>
+      </Button>,
+    ];
   }
 
   render() {
