@@ -214,7 +214,7 @@ class ProviderProfileScreen extends Component {
         <Modal
           transparent={false}
           visible={this.state.modalForImageVisible}
-          onRequestClose={() => this.setModalForImageVisible(false)}
+          onRequestClose={() => this.setModalForImageVisible(false)}          
         >
           <TouchableWithoutFeedback onPress={() => this.setModalForImageVisible(false)}>
             <Icon style={styleIconButton} size={20} name="remove" />
@@ -224,6 +224,7 @@ class ProviderProfileScreen extends Component {
             cropHeight={ITEM_HEIGHT}
             imageWidth={ITEM_WIDTH}
             imageHeight={ITEM_HEIGHT}
+            style={{backgroundColor: 'black'}}
           >
             <FastImage
               style={styleImageFullScreen}
@@ -350,8 +351,7 @@ const styles = {
   },
   styleIconButton: {
     color: '#d64635',
-    backgroundColor: 'white',
-    borderRadius: 12,
+    backgroundColor: 'black',   
     paddingTop: 0.8,
     paddingBottom: 0.8,
     paddingLeft: 3.3,
