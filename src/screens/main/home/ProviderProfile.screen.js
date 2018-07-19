@@ -161,10 +161,22 @@ class ProviderProfileScreen extends Component {
     Analytics.trackEvent('Booked date', { provider: this.props.user._id, date: timestamp });
   };
 
+  openFullScreen = () => {
+    this.videoPlayer.player.ref.presentFullscreenPlayer();
+  }
+
+  closeFullScreen = () => {
+    this.videoPlayer.player.ref.dismissFullscreenPlayer();
+  }
+
   renderVideoPlayer = videoUrl => (
     <VideoPlayer
       key={videoUrl}
       source={{ uri: videoUrl }}
+      toggleResizeModeOnFullscreen={false}
+      ref={(ref) => { this.videoPlayer = ref; }}
+      onEnterFullscreen={this.openFullScreen}
+      onExitFullscreen={this.closeFullScreen}
       disableVolume
       disableBack
       paused
@@ -315,6 +327,10 @@ const styles = {
   infoContainer: {
     alignItems: 'center',
     flex: 1,
+  },
+  video: {
+    aspectRatio: 1,
+    width: '100%',
   },
 };
 
