@@ -5,7 +5,7 @@ import * as Progress from 'react-native-progress';
 import Upload from 'react-native-background-upload';
 import _ from 'lodash';
 import ImagePicker from 'react-native-image-picker';
-import { Picker, CheckBox, Left } from 'native-base';
+import { Picker, CheckBox, Left, Button as NBButton } from 'native-base';
 import CountryPicker from 'react-native-country-picker-modal';
 import { connect } from 'react-redux';
 import SpinnerOverlay from 'react-native-loading-spinner-overlay';
@@ -684,15 +684,17 @@ class EditProfileScreen extends Component {
     const { isVideoUploading, videoUploadProgress } = this.state;
 
     if (!isVideoUploading && !videoUploadProgress && this.state.values.profileVideoURL) {
-      return [
-        <Text>Video uploaded</Text>,
-        <Button onPress={this.onVideoUploadPress}>
-          <Text>Upload new video</Text>
-        </Button>,
-        <Button onPress={this.onRemoveVideoPress} danger>
-          <Text>Remove</Text>
-        </Button>,
-      ];
+      return (
+        <View style={styles.videoButtonsContainer}>
+          <Text style={{ marginRight: 5 }}>{I18n.t('editProfile.video_uploaded')}</Text>
+          <NBButton warning onPress={this.onVideoUploadPress} style={{ margin: 5 }}>
+            <Text>{I18n.t('editProfile.new_video')}</Text>
+          </NBButton>
+          <Button onPress={this.onRemoveVideoPress} style={{ margin: 5 }}>
+            <Text>{I18n.t('common.remove')}</Text>
+          </Button>
+        </View>
+      );
     }
 
     if (!isVideoUploading && !videoUploadProgress) {
@@ -1083,6 +1085,12 @@ const styles = {
   },
   videoField: {
     margin: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  videoButtonsContainer: {
+    flex: 1,
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },

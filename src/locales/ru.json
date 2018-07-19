@@ -113,7 +113,9 @@
       "descriptionCamera": "Wevedo необходим доступ к камере для установки изображения профиля"
     },
     "upload_a_video": "Добавить видео",
-    "uploading_completed": "Видео загружено"
+    "uploading_completed": "Видео загружено",
+    "video_uploaded": "Видео загружено",
+    "new_video": "Сменить"
   },
   "inbox": {
     "no_active_dialog": "Нет активных диалогов"
@@ -130,6 +132,7 @@
     "ok": "ОК",
     "error": "Ошибка",
     "done": "Подтвердить",
+    "remove": "Удалить",
     "save": "Сохранить",
     "email": "Электронная почта",
     "phone": "Номер телефона",

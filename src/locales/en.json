@@ -112,7 +112,9 @@
       "descriptionCamera": "Wevedo need access to camera for profile picture"
     },
     "upload_a_video": "Upload a video",
-    "uploading_completed": "Uploading completed"
+    "uploading_completed": "Uploading completed",
+    "video_uploaded": "Video uploaded",
+    "new_video": "New video"
   },
   "inbox": {
     "no_active_dialog": "There are no active dialogs"
@@ -128,6 +130,7 @@
   "common": {
     "ok": "OK",
     "error": "Error",
+    "remove": "Remove",
     "done": "Done",
     "save": "Save",
     "email": "Email",

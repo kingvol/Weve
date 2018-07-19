@@ -112,7 +112,9 @@
       "descriptionCamera": " Profil resmi için kameraya erişimine izin ver"
     },
     "upload_a_video": "Video yüklemek",
-    "uploading_completed": "Yükleme tamamlandı"
+    "uploading_completed": "Yükleme tamamlandı",
+    "video_uploaded": "Video yüklendi",
+    "new_video": "Yeni video"
   },
   "inbox": {
     "no_active_dialog": "Etkin iletişim kutusu yok"
@@ -129,6 +131,7 @@
     "ok": "Tamam",
     "error": "Hata",
     "done": "Tamam",
+    "remove": "Onayla",
     "save": "Kayıt et",
     "email": "E-posta",
     "phone": "Cep numara",
