@@ -110,7 +110,9 @@
       "descriptionPhoto": "Profil resmi için fotoğraflara erişimine izin ver",
       "allowCamera": "Wevedo kameraya erişmesine izin ver?",
       "descriptionCamera": " Profil resmi için kameraya erişimine izin ver"
-    }
+    },
+    "upload_a_video": "Video yüklemek",
+    "uploading_completed": "Yükleme tamamlandı"
   },
   "inbox": {
     "no_active_dialog": "Häzirki wagtda hiç hili hatyňyz ýok"

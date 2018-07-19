@@ -111,7 +111,9 @@
       "descriptionPhoto": "Wevedo необходим доступ к фотографиям для установки изображения профиля",
       "allowCamera": "Разрешить Wevedo доступ к камере?",
       "descriptionCamera": "Wevedo необходим доступ к камере для установки изображения профиля"
-    }
+    },
+    "upload_a_video": "Добавить видео",
+    "uploading_completed": "Видео загружено"
   },
   "inbox": {
     "no_active_dialog": "Нет активных диалогов"

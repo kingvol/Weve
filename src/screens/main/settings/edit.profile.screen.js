@@ -698,17 +698,19 @@ class EditProfileScreen extends Component {
     if (!isVideoUploading && !videoUploadProgress) {
       return (
         <Button onPress={this.onVideoUploadPress}>
-          <Text>Upload a video</Text>
+          <Text>{I18n.t('editProfile.upload_a_video')}</Text>
         </Button>
       );
     }
 
     if (!isVideoUploading && videoUploadProgress === 100) {
-      return <Text>Done</Text>;
+      return <Text style={{ marginBottom: 20 }}>{I18n.t('editProfile.uploading_completed')}</Text>;
     }
 
     return [
-      <Progress.Circle size={50} progress={videoUploadProgress / 100} showsText />,
+      <View style={{ marginBottom: 20 }}>
+        <Progress.Circle size={80} progress={videoUploadProgress / 100} showsText />
+      </View>,
       <Button onPress={this.cancelVideoUpload}>
         <Text>Cancel</Text>
       </Button>,

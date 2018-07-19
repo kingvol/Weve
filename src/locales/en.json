@@ -110,7 +110,9 @@
       "descriptionPhoto": "Wevedo need access to photos for profile picture",
       "allowCamera": "Allow Wevedo to access camera?",
       "descriptionCamera": "Wevedo need access to camera for profile picture"
-    }
+    },
+    "upload_a_video": "Upload a video",
+    "uploading_completed": "Uploading completed"
   },
   "inbox": {
     "no_active_dialog": "There are no active dialogs"
