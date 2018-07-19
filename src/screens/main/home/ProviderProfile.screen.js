@@ -12,6 +12,7 @@ import {
 import FastImage from 'react-native-fast-image';
 import { connect } from 'react-redux';
 import Swiper from 'react-native-swiper';
+import ImageZoom from 'react-native-image-pan-zoom';
 import { Calendar } from 'react-native-calendars';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
@@ -41,11 +42,11 @@ class ProviderProfileScreen extends Component {
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     this.state = {
       modalForImageVisible: false,
-      fullScreenSwiper: false,
+      fullScreenImageUrl: this.props.provider.profileImageURL || defaultProfile,
     };
   }
 
-  componentDidMount() {
+  componentDidMount() {    
     const { _id } = this.props.user.profile;
 
     Analytics.trackEvent('Provider profile view', { _id });
@@ -118,12 +119,8 @@ class ProviderProfileScreen extends Component {
     }
   }
 
-  setModalForImageVisible = (visible) => {
-    this.setState({ modalForImageVisible: visible });
-  };
-
-  setFullScreenSwiper = (bool) => {
-    this.setState({ fullScreenSwiper: bool });
+  setModalForImageVisible = (visible, link) => {
+    this.setState({ modalForImageVisible: visible, fullScreenImageUrl: link });
   };
 
   handleDayPress = ({ timestamp, dateString }) => {
@@ -183,14 +180,7 @@ class ProviderProfileScreen extends Component {
   render() {
     const { profile } = this.props.user; // authUser
     const { provider } = this.props;
-    const {
-      styleImage,
-      styleImageFullScreen,
-      slide,
-      slideFullScreen,
-      wrapper,
-      wrapperFullScreen,
-    } = styles;
+    const { styleImage, styleImageFullScreen, slide, wrapper, styleIconButton } = styles;
 
     const markedDates = profile._id === provider._id ? profile.bookedDates : provider.bookedDates;
 
@@ -210,11 +200,14 @@ class ProviderProfileScreen extends Component {
       const arrayImages = Object.values(provider.providerImages);
       images = arrayImages.filter(e => !!e);
       images.unshift(provider.profileImageURL);
+      images.map(item => (FastImage.preload([{ uri: item }])));
     }
     const nameWithRegion = provider.fullName
       ? `${provider.fullName.toUpperCase()} · ${provider.regionName.toUpperCase()}`
       : `${provider.firstName.toUpperCase()} ${provider.lastName.toUpperCase() ||
           ''} · ${provider.regionName.toUpperCase()}`;
+
+    const singleProfileImage = this.props.provider.profileImageURL || defaultProfile;
 
     return (
       <Content contentContainerStyle={{ flexGrow: 1 }}>
@@ -224,17 +217,26 @@ class ProviderProfileScreen extends Component {
           onRequestClose={() => this.setModalForImageVisible(false)}
         >
           <TouchableWithoutFeedback onPress={() => this.setModalForImageVisible(false)}>
+            <Icon style={styleIconButton} size={20} name="remove" />
+          </TouchableWithoutFeedback>
+          <ImageZoom
+            cropWidth={ITEM_WIDTH}
+            cropHeight={ITEM_HEIGHT}
+            imageWidth={ITEM_WIDTH}
+            imageHeight={ITEM_HEIGHT}
+          >
             <FastImage
               style={styleImageFullScreen}
-              resizeMode={FastImage.resizeMode.cover}
-              source={{ uri: this.props.provider.profileImageURL || defaultProfile }}
+              resizeMode={FastImage.resizeMode.contain}
+              source={{ uri: this.state.fullScreenImageUrl }}
+              priority={FastImage.priority.high}
             />
-          </TouchableWithoutFeedback>
+          </ImageZoom>
         </Modal>
         <View style={{ minHeight: 500 }}>
           {provider.profileImageURL && provider.providerImages && images.length > 1 ? (
             <Swiper
-              style={this.state.fullScreenSwiper ? wrapperFullScreen : wrapper}
+              style={wrapper}
               showsButtons
               autoplay
               autoplayTimeout={5}
@@ -249,24 +251,21 @@ class ProviderProfileScreen extends Component {
                 <TouchableWithoutFeedback
                   id={key}
                   key={item}
-                  style={this.state.fullScreenSwiper ? slideFullScreen : slide}
-                  onPress={() => this.setFullScreenSwiper(!this.state.fullScreenSwiper)}
+                  style={slide}
+                  onPress={() => this.setModalForImageVisible(true, item)}
                 >
-                  {/* <View id={key} key={item} style={styles.slide}> */}
-                  <FastImage
-                    source={{ uri: item }}
-                    style={this.state.fullScreenSwiper ? styleImageFullScreen : styleImage}
-                  />
-                  {/* </View> */}
+                  <FastImage source={{ uri: item }} style={styleImage} />
                 </TouchableWithoutFeedback>
               ))}
             </Swiper>
           ) : (
-            <TouchableWithoutFeedback onPress={() => this.setModalForImageVisible(true)}>
+            <TouchableWithoutFeedback
+              onPress={() => this.setModalForImageVisible(true, singleProfileImage)}
+            >
               <FastImage
                 style={styles.image}
                 resizeMode={FastImage.resizeMode.contain}
-                source={{ uri: this.props.provider.profileImageURL || defaultProfile }}
+                source={{ uri: singleProfileImage }}
               />
             </TouchableWithoutFeedback>
           )}
@@ -330,20 +329,11 @@ const styles = {
   wrapper: {
     height: ITEM_WIDTH / 1.5,
   },
-  wrapperFullScreen: {
-    height: ITEM_HEIGHT - 120,
-  },
   slide: {
     flex: 1,
     justifyContent: 'flex-start',
     height: ITEM_WIDTH / 1.5,
     alignItems: 'center',
-  },
-  slideFullScreen: {
-    // flex: 1,
-    // justifyContent: 'flex-start',
-    height: ITEM_HEIGHT - 120,
-    // alignItems: 'center',
   },
   text: {
     color: 'black',
@@ -357,6 +347,15 @@ const styles = {
   },
   styleImageFullScreen: {
     height: ITEM_HEIGHT,
+  },
+  styleIconButton: {
+    color: '#d64635',
+    backgroundColor: 'white',
+    borderRadius: 12,
+    paddingTop: 0.8,
+    paddingBottom: 0.8,
+    paddingLeft: 3.3,
+    paddingRight: 3.3,
   },
   calendar: {},
   infoContainer: {
