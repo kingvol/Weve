@@ -1,6 +1,14 @@
 import React, { Component } from 'react';
 import { Content, Tab, Tabs } from 'native-base';
-import { View, Alert, Dimensions, Text, Linking, Modal, TouchableWithoutFeedback } from 'react-native';
+import {
+  View,
+  Alert,
+  Dimensions,
+  Text,
+  Linking,
+  Modal,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { connect } from 'react-redux';
 import Swiper from 'react-native-swiper';
@@ -33,6 +41,7 @@ class ProviderProfileScreen extends Component {
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     this.state = {
       modalForImageVisible: false,
+      fullScreenSwiper: false,
     };
   }
 
@@ -113,6 +122,10 @@ class ProviderProfileScreen extends Component {
     this.setState({ modalForImageVisible: visible });
   };
 
+  setFullScreenSwiper = (bool) => {
+    this.setState({ fullScreenSwiper: bool });
+  };
+
   handleDayPress = ({ timestamp, dateString }) => {
     if (this.props.user.profile.isProvider) {
       const { _id } = this.props.user.profile;
@@ -170,7 +183,14 @@ class ProviderProfileScreen extends Component {
   render() {
     const { profile } = this.props.user; // authUser
     const { provider } = this.props;
-    const { styleImage } = styles;
+    const {
+      styleImage,
+      styleImageFullScreen,
+      slide,
+      slideFullScreen,
+      wrapper,
+      wrapperFullScreen,
+    } = styles;
 
     const markedDates = profile._id === provider._id ? profile.bookedDates : provider.bookedDates;
 
@@ -205,7 +225,7 @@ class ProviderProfileScreen extends Component {
         >
           <TouchableWithoutFeedback onPress={() => this.setModalForImageVisible(false)}>
             <FastImage
-              style={{ height: ITEM_HEIGHT }}
+              style={styleImageFullScreen}
               resizeMode={FastImage.resizeMode.cover}
               source={{ uri: this.props.provider.profileImageURL || defaultProfile }}
             />
@@ -214,7 +234,7 @@ class ProviderProfileScreen extends Component {
         <View style={{ minHeight: 500 }}>
           {provider.profileImageURL && provider.providerImages && images.length > 1 ? (
             <Swiper
-              style={styles.wrapper}
+              style={this.state.fullScreenSwiper ? wrapperFullScreen : wrapper}
               showsButtons
               autoplay
               autoplayTimeout={5}
@@ -226,9 +246,19 @@ class ProviderProfileScreen extends Component {
               prevButton={<Text style={{ color: '#d64635', fontSize: 35 }}>‹</Text>}
             >
               {images.map((item, key) => (
-                <View id={key} key={item} style={styles.slide}>
-                  <FastImage source={{ uri: item }} style={styleImage} />
-                </View>
+                <TouchableWithoutFeedback
+                  id={key}
+                  key={item}
+                  style={this.state.fullScreenSwiper ? slideFullScreen : slide}
+                  onPress={() => this.setFullScreenSwiper(!this.state.fullScreenSwiper)}
+                >
+                  {/* <View id={key} key={item} style={styles.slide}> */}
+                  <FastImage
+                    source={{ uri: item }}
+                    style={this.state.fullScreenSwiper ? styleImageFullScreen : styleImage}
+                  />
+                  {/* </View> */}
+                </TouchableWithoutFeedback>
               ))}
             </Swiper>
           ) : (
@@ -269,7 +299,7 @@ class ProviderProfileScreen extends Component {
                     adjustsFontSizeToFit
                     minimumFontScale={0.5}
                     style={{
-                      fontSize: (1.2 * ITEM_WIDTH) / nameWithRegion.length,
+                      fontSize: 1.2 * ITEM_WIDTH / nameWithRegion.length,
                       marginTop: 10,
                     }}
                   >
@@ -300,11 +330,20 @@ const styles = {
   wrapper: {
     height: ITEM_WIDTH / 1.5,
   },
+  wrapperFullScreen: {
+    height: ITEM_HEIGHT - 120,
+  },
   slide: {
     flex: 1,
     justifyContent: 'flex-start',
     height: ITEM_WIDTH / 1.5,
     alignItems: 'center',
+  },
+  slideFullScreen: {
+    // flex: 1,
+    // justifyContent: 'flex-start',
+    height: ITEM_HEIGHT - 120,
+    // alignItems: 'center',
   },
   text: {
     color: 'black',
@@ -315,6 +354,9 @@ const styles = {
   styleImage: {
     height: ITEM_WIDTH / 1.5,
     width: ITEM_WIDTH,
+  },
+  styleImageFullScreen: {
+    height: ITEM_HEIGHT,
   },
   calendar: {},
   infoContainer: {
