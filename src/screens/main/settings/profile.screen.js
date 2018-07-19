@@ -4,10 +4,8 @@ import FastImage from 'react-native-fast-image';
 import { connect } from 'react-redux';
 import I18n from '../../../locales';
 import {
-  Button,
   Container,
   Content,
-  Thumbnail,
   Label,
   Row,
   Grid,
