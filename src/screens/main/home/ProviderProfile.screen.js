@@ -46,7 +46,7 @@ class ProviderProfileScreen extends Component {
     };
   }
 
-  componentDidMount() {    
+  componentDidMount() {
     const { _id } = this.props.user.profile;
 
     Analytics.trackEvent('Provider profile view', { _id });
@@ -200,7 +200,7 @@ class ProviderProfileScreen extends Component {
       const arrayImages = Object.values(provider.providerImages);
       images = arrayImages.filter(e => !!e);
       images.unshift(provider.profileImageURL);
-      images.map(item => (FastImage.preload([{ uri: item }])));
+      images.map(item => FastImage.preload([{ uri: item }]));
     }
     const nameWithRegion = provider.fullName
       ? `${provider.fullName.toUpperCase()} · ${provider.regionName.toUpperCase()}`
