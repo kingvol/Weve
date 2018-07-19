@@ -182,6 +182,7 @@ class ProviderProfileScreen extends Component {
       onEnterFullscreen={this.openFullScreen}
       onExitFullscreen={this.closeFullScreen}
       disableBack
+      disableVolume
       disableFullscreen={Platform.OS === 'android'}
       paused
       repeat={Platform.OS === 'ios'}
