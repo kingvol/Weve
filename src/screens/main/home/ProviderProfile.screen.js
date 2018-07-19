@@ -177,7 +177,7 @@ class ProviderProfileScreen extends Component {
     <VideoPlayer
       key={videoUrl}
       source={{ uri: videoUrl }}
-      toggleResizeModeOnFullscreen={false}
+      toggleResizeModeOnFullscreen={Platform.OS === 'android'}
       ref={this.setVideoRef}
       onEnterFullscreen={this.openFullScreen}
       onExitFullscreen={this.closeFullScreen}
