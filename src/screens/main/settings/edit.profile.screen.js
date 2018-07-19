@@ -350,6 +350,15 @@ class EditProfileScreen extends Component {
     });
   }
 
+  onRemoveVideoPress = () => {
+    this.setState({
+      values: {
+        ...this.state.values,
+        profileVideoURL: '',
+      },
+    }, this.dataModified);
+  }
+
   setMultiSelectRef = (ref) => {
     this.multiSelect = ref;
   }
@@ -673,15 +682,14 @@ class EditProfileScreen extends Component {
 
   renderVideoStatus = () => {
     const { isVideoUploading, videoUploadProgress } = this.state;
-    const { profile } = this.props.user;
 
-    if (!isVideoUploading && !videoUploadProgress && profile.profileVideoURL) {
+    if (!isVideoUploading && !videoUploadProgress && this.state.values.profileVideoURL) {
       return [
         <Text>Video uploaded</Text>,
         <Button onPress={this.onVideoUploadPress}>
           <Text>Upload new video</Text>
         </Button>,
-        <Button danger>
+        <Button onPress={this.onRemoveVideoPress} danger>
           <Text>Remove</Text>
         </Button>,
       ];
