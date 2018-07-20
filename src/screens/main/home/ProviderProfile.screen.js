@@ -163,15 +163,15 @@ class ProviderProfileScreen extends Component {
 
   openFullScreen = () => {
     this.videoPlayer.player.ref.presentFullscreenPlayer();
-  }
+  };
 
   closeFullScreen = () => {
     this.videoPlayer.player.ref.dismissFullscreenPlayer();
-  }
+  };
 
   setVideoRef = (ref) => {
     this.videoPlayer = ref;
-  }
+  };
 
   renderVideoPlayer = videoUrl => (
     <VideoPlayer
@@ -185,7 +185,7 @@ class ProviderProfileScreen extends Component {
       disableVolume
       disableFullscreen={Platform.OS === 'android'}
       paused
-      repeat={Platform.OS === 'ios'}
+      repeat // {Platform.OS === 'ios'}
       disableSeekbar={Platform.OS === 'ios'}
     />
   );
@@ -239,11 +239,14 @@ class ProviderProfileScreen extends Component {
               nextButton={<Text style={{ color: '#d64635', fontSize: 35 }}>›</Text>}
               prevButton={<Text style={{ color: '#d64635', fontSize: 35 }}>‹</Text>}
             >
-              {images.map((item, key) => item.id === 'video' ? this.renderVideoPlayer(item.url) : (
-                <View id={key} key={item} style={styles.slide}>
-                  <FastImage source={{ uri: item }} style={styleImage} />
-                </View>
-              ))}
+              {images.map((item, key) =>
+                  item.id === 'video' ? (
+                    this.renderVideoPlayer(item.url)
+                  ) : (
+                    <View id={key} key={item} style={styles.slide}>
+                      <FastImage source={{ uri: item }} style={styleImage} />
+                    </View>
+                  ))}
             </Swiper>
           ) : (
             <FastImage
@@ -281,7 +284,7 @@ class ProviderProfileScreen extends Component {
                     adjustsFontSizeToFit
                     minimumFontScale={0.5}
                     style={{
-                      fontSize: (1.2 * ITEM_WIDTH) / nameWithRegion.length,
+                      fontSize: 1.2 * ITEM_WIDTH / nameWithRegion.length,
                       marginTop: 10,
                     }}
                   >
