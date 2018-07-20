@@ -686,13 +686,13 @@ class EditProfileScreen extends Component {
     if (!isVideoUploading && !videoUploadProgress && this.state.values.profileVideoURL) {
       return (
         <View style={styles.videoButtonsContainer}>
-          <Text style={{ marginRight: 5 }}>{I18n.t('editProfile.video_uploaded')}</Text>
-          <NBButton warning onPress={this.onVideoUploadPress} style={{ margin: 5 }}>
+          {/* <Text style={{ marginRight: 5 }}>{I18n.t('editProfile.video_uploaded')}</Text> */}
+          <NBButton warning rounded onPress={this.onVideoUploadPress} style={{ margin: 5 }}>
             <Text>{I18n.t('editProfile.new_video')}</Text>
           </NBButton>
-          <Button onPress={this.onRemoveVideoPress} style={{ margin: 5 }}>
-            <Text>{I18n.t('common.remove')}</Text>
-          </Button>
+          <NBButton danger rounded onPress={this.onRemoveVideoPress} style={{ margin: 5 }}>
+            <Text>{I18n.t('editProfile.remove_video')}</Text>
+          </NBButton>
         </View>
       );
     }
@@ -706,7 +706,11 @@ class EditProfileScreen extends Component {
     }
 
     if (!isVideoUploading && videoUploadProgress === 100) {
-      return <Text style={{ marginBottom: 20 }}>{I18n.t('editProfile.uploading_completed')}</Text>;
+      return (
+        <Text style={{ marginBottom: 20, color: 'green' }}>
+          {I18n.t('editProfile.uploading_completed')}
+        </Text>
+      );
     }
 
     return [

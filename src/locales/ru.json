@@ -115,7 +115,8 @@
     "upload_a_video": "Добавить видео",
     "uploading_completed": "Видео загружено",
     "video_uploaded": "Видео загружено",
-    "new_video": "Сменить"
+    "new_video": "Сменить видео",
+    "remove_video": "Удалить видео"
   },
   "inbox": {
     "no_active_dialog": "Нет активных диалогов"

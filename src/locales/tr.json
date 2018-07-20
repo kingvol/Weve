@@ -114,7 +114,8 @@
     "upload_a_video": "Video yüklemek",
     "uploading_completed": "Yükleme tamamlandı",
     "video_uploaded": "Video yüklendi",
-    "new_video": "Yeni video"
+    "new_video": "Yeni video",
+    "remove_video": "Onayla video"
   },
   "inbox": {
     "no_active_dialog": "Etkin iletişim kutusu yok"
