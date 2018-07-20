@@ -31,7 +31,8 @@
     "react-native": "0.53.3",
     "react-native-background-upload": "^4.4.0",
     "react-native-calendars": "^1.17.7",
-    "react-native-country-picker-modal": "https://github.com/Preeternal/react-native-country-picker-modal.git",
+    "react-native-country-picker-modal":
+      "https://github.com/Preeternal/react-native-country-picker-modal.git",
     "react-native-device-info": "^0.21.5",
     "react-native-easy-grid": "^0.1.17",
     "react-native-fast-image": "^4.0.14",
@@ -54,7 +55,7 @@
     "react-native-touch-id": "^4.0.4",
     "react-native-vector-icons": "^4.5.0",
     "react-native-video": "^3.1.0",
-    "react-native-video-controls": "^2.2.3",
+    "react-native-video-player": "^0.9.1",
     "react-redux": "^5.0.7",
     "redux": "^3.7.2",
     "redux-persist": "^5.10.0",
@@ -74,9 +75,7 @@
     "redux-logger": "^3.0.6"
   },
   "rnpm": {
-    "assets": [
-      "./src/assets/Fonts/"
-    ]
+    "assets": ["./src/assets/Fonts/"]
   },
   "jest": {
     "preset": "react-native"

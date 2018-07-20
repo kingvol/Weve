@@ -1,8 +1,8 @@
 /* eslint-disable no-confusing-arrow */
 import React, { Component } from 'react';
 import { Content, Tab, Tabs } from 'native-base';
-import { View, Alert, Dimensions, Text, Linking, Platform } from 'react-native';
-import VideoPlayer from 'react-native-video-controls';
+import { View, Alert, Dimensions, Text, Linking } from 'react-native';
+import VideoPlayer from 'react-native-video-player';
 import FastImage from 'react-native-fast-image';
 import { connect } from 'react-redux';
 import Swiper from 'react-native-swiper';
@@ -161,33 +161,8 @@ class ProviderProfileScreen extends Component {
     Analytics.trackEvent('Booked date', { provider: this.props.user._id, date: timestamp });
   };
 
-  openFullScreen = () => {
-    this.videoPlayer.player.ref.presentFullscreenPlayer();
-  };
-
-  closeFullScreen = () => {
-    this.videoPlayer.player.ref.dismissFullscreenPlayer();
-  };
-
-  setVideoRef = (ref) => {
-    this.videoPlayer = ref;
-  };
-
   renderVideoPlayer = videoUrl => (
-    <VideoPlayer
-      key={videoUrl}
-      source={{ uri: videoUrl }}
-      toggleResizeModeOnFullscreen={Platform.OS === 'android'}
-      ref={this.setVideoRef}
-      onEnterFullscreen={this.openFullScreen}
-      onExitFullscreen={this.closeFullScreen}
-      disableBack
-      disableVolume
-      disableFullscreen={Platform.OS === 'android'}
-      paused
-      repeat // {Platform.OS === 'ios'}
-      disableSeekbar={Platform.OS === 'ios'}
-    />
+    <VideoPlayer style={{ height: '100%' }} video={{ uri: videoUrl }} />
   );
 
   render() {
