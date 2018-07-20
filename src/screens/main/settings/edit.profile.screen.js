@@ -79,7 +79,7 @@ class EditProfileScreen extends Component {
       loading: false,
       imageUploading: false,
       categories: [],
-      profileIconColor: 'grey',
+      profileIconColor: 'green',
       isDataModified: false,
       cameraPermission: 'undetermined',
       photoPermission: 'undetermined',
@@ -701,6 +701,12 @@ class EditProfileScreen extends Component {
                <Icon
                  style={{
                       color: this.state.profileIconColor,
+                      backgroundColor: 'white',
+                      borderRadius: 12,
+                      paddingTop: 0.8,
+                      paddingBottom: 0.8,
+                      paddingLeft: 3.3,
+                      paddingRight: 3.3,
                     }}
                  size={20}
                  name="plus"
