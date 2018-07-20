@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle, camelcase */
 import React, { Component } from 'react';
-import { Alert, Keyboard, View, Dimensions, TextInput, Switch } from 'react-native';
+import { Alert, Keyboard, View, Dimensions, TextInput, Switch, Platform } from 'react-native';
 import _ from 'lodash';
 import ImagePicker from 'react-native-image-picker';
 import { Picker, CheckBox, Left } from 'native-base';
@@ -826,7 +826,14 @@ class EditProfileScreen extends Component {
             </View>
             <Picker
               mode="dropdown"
-              style={{ color: lightTextColor, flex: 3, alignItems: 'flex-end' }}
+              style={Platform.OS === 'android' ? {
+                color: lightTextColor,
+                flex: 3,
+                alignItems: 'flex-end',
+              } : {
+                flex: 3,
+                alignItems: 'flex-end',
+              }}
               itemTextStyle={{ color: lightTextColor }}
               placeholder={I18n.t('logIn.select_category')}
               selectedValue={this.state.values.regionName}
