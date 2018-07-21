@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle, camelcase */
 import React, { Component } from 'react';
-import { Alert, Keyboard, View, Dimensions, TextInput, Switch } from 'react-native';
+import { Alert, Keyboard, View, Dimensions, TextInput, Switch, Platform } from 'react-native';
 import * as Progress from 'react-native-progress';
 import Upload from 'react-native-background-upload';
 import _ from 'lodash';
@@ -82,7 +82,7 @@ class EditProfileScreen extends Component {
       loading: false,
       imageUploading: false,
       categories: [],
-      profileIconColor: 'grey',
+      profileIconColor: 'green',
       isDataModified: false,
       cameraPermission: 'undetermined',
       photoPermission: 'undetermined',
@@ -847,6 +847,12 @@ class EditProfileScreen extends Component {
                <Icon
                  style={{
                       color: this.state.profileIconColor,
+                      backgroundColor: 'white',
+                      borderRadius: 12,
+                      paddingTop: 0.8,
+                      paddingBottom: 0.8,
+                      paddingLeft: 3.3,
+                      paddingRight: 3.3,
                     }}
                  size={20}
                  name="plus"
@@ -972,7 +978,14 @@ class EditProfileScreen extends Component {
             </View>
             <Picker
               mode="dropdown"
-              style={{ color: lightTextColor, flex: 3, alignItems: 'flex-end' }}
+              style={Platform.OS === 'android' ? {
+                color: lightTextColor,
+                flex: 3,
+                alignItems: 'flex-end',
+              } : {
+                flex: 3,
+                alignItems: 'flex-end',
+              }}
               itemTextStyle={{ color: lightTextColor }}
               placeholder={I18n.t('logIn.select_category')}
               selectedValue={this.state.values.regionName}

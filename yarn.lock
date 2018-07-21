@@ -4588,6 +4588,10 @@ react-native-i18n@^2.0.12:
   dependencies:
     i18n-js "^3.0.3"
 
+react-native-image-pan-zoom@^2.1.7:
+  version "2.1.7"
+  resolved "https://registry.yarnpkg.com/react-native-image-pan-zoom/-/react-native-image-pan-zoom-2.1.7.tgz#1c066e66f8f345f5e1fc187f02d92c482952bb59"
+
 react-native-image-picker@^0.26.10:
   version "0.26.10"
   resolved "https://registry.yarnpkg.com/react-native-image-picker/-/react-native-image-picker-0.26.10.tgz#0bb9ab928984948c67aee0b9e64216bee007a9fc"
@@ -4687,6 +4691,10 @@ react-native-tab-view@^0.0.77:
   resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-0.0.77.tgz#11ceb8e7c23100d07e628dc151b57797524d00d4"
   dependencies:
     prop-types "^15.6.0"
+
+react-native-touch-id@^4.0.4:
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/react-native-touch-id/-/react-native-touch-id-4.0.4.tgz#7dbc051c9966bbcd33c2cfbb8d3bad171770b6b7"
 
 react-native-vector-icons@^4.5.0:
   version "4.5.0"
