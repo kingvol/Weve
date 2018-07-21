@@ -1,3 +1,4 @@
+/* eslint-disable no-confusing-arrow */
 import React, { Component } from 'react';
 import { Content, Tab, Tabs } from 'native-base';
 import {
@@ -9,6 +10,7 @@ import {
   Modal,
   TouchableWithoutFeedback,
 } from 'react-native';
+import VideoPlayer from 'react-native-video-player';
 import FastImage from 'react-native-fast-image';
 import { connect } from 'react-redux';
 import Swiper from 'react-native-swiper';
@@ -177,6 +179,10 @@ class ProviderProfileScreen extends Component {
     Analytics.trackEvent('Booked date', { provider: this.props.user._id, date: timestamp });
   };
 
+  renderVideoPlayer = videoUrl => (
+    <VideoPlayer style={{ height: '100%' }} video={{ uri: videoUrl }} />
+  );
+
   render() {
     const { profile } = this.props.user; // authUser
     const { provider } = this.props;
@@ -201,6 +207,12 @@ class ProviderProfileScreen extends Component {
       images = arrayImages.filter(e => !!e);
       images.unshift(provider.profileImageURL);
       images.map(item => FastImage.preload([{ uri: item }]));
+      if (provider.profileVideoURL) {
+        images.splice(1, 0, {
+          id: 'video',
+          url: provider.profileVideoURL,
+        });
+      }
     }
     const nameWithRegion = provider.fullName
       ? `${provider.fullName.toUpperCase()} · ${provider.regionName.toUpperCase()}`
@@ -214,7 +226,7 @@ class ProviderProfileScreen extends Component {
         <Modal
           transparent={false}
           visible={this.state.modalForImageVisible}
-          onRequestClose={() => this.setModalForImageVisible(false)}          
+          onRequestClose={() => this.setModalForImageVisible(false)}
         >
           <TouchableWithoutFeedback onPress={() => this.setModalForImageVisible(false)}>
             <Icon style={styleIconButton} size={20} name="remove" />
@@ -224,7 +236,7 @@ class ProviderProfileScreen extends Component {
             cropHeight={ITEM_HEIGHT}
             imageWidth={ITEM_WIDTH}
             imageHeight={ITEM_HEIGHT}
-            style={{backgroundColor: 'black'}}
+            style={{ backgroundColor: 'black' }}
           >
             <FastImage
               style={styleImageFullScreen}
@@ -239,25 +251,26 @@ class ProviderProfileScreen extends Component {
             <Swiper
               style={wrapper}
               showsButtons
-              autoplay
+              autoplay={!provider.profileVideoURL}
               autoplayTimeout={5}
               dotColor="#c4c4c4"
               activeDotColor="#d64635"
-              // paginationStyle={{ bottom: 7 }}
-              // buttonWrapperStyle={{ paddingHorizontal: 20 }}
               nextButton={<Text style={{ color: '#d64635', fontSize: 35 }}>›</Text>}
               prevButton={<Text style={{ color: '#d64635', fontSize: 35 }}>‹</Text>}
             >
-              {images.map((item, key) => (
-                <TouchableWithoutFeedback
-                  id={key}
-                  key={item}
-                  style={slide}
-                  onPress={() => this.setModalForImageVisible(true, item)}
-                >
-                  <FastImage source={{ uri: item }} style={styleImage} />
-                </TouchableWithoutFeedback>
-              ))}
+              {images.map((item, key) =>
+                  item.id === 'video' ? (
+                    this.renderVideoPlayer(item.url)
+                  ) : (
+                    <TouchableWithoutFeedback
+                      id={key}
+                      key={item}
+                      style={slide}
+                      onPress={() => this.setModalForImageVisible(true, item)}
+                    >
+                      <FastImage source={{ uri: item }} style={styleImage} />
+                    </TouchableWithoutFeedback>
+                  ))}
             </Swiper>
           ) : (
             <TouchableWithoutFeedback
@@ -351,7 +364,7 @@ const styles = {
   },
   styleIconButton: {
     color: '#d64635',
-    backgroundColor: 'black',   
+    backgroundColor: 'black',
     paddingTop: 0.8,
     paddingBottom: 0.8,
     paddingLeft: 3.3,
@@ -361,6 +374,10 @@ const styles = {
   infoContainer: {
     alignItems: 'center',
     flex: 1,
+  },
+  video: {
+    aspectRatio: 1,
+    width: '100%',
   },
 };
 

@@ -110,7 +110,12 @@
       "descriptionPhoto": "Wevedo need access to photos for profile picture",
       "allowCamera": "Allow Wevedo to access camera?",
       "descriptionCamera": "Wevedo need access to camera for profile picture"
-    }
+    },
+    "upload_a_video": "Upload a video",
+    "uploading_completed": "Upload complete",
+    "video_uploaded": "Video uploaded",
+    "new_video": "New video",
+    "remove_video": "Remove video"
   },
   "inbox": {
     "no_active_dialog": "There are no active dialogs"
@@ -126,6 +131,7 @@
   "common": {
     "ok": "OK",
     "error": "Error",
+    "remove": "Remove",
     "done": "Done",
     "save": "Save",
     "email": "Email",

@@ -4,6 +4,8 @@ import android.app.Application;
 import android.support.annotation.NonNull;
 
 import com.facebook.react.ReactApplication;
+import com.brentvatne.react.ReactVideoPackage;
+import com.vydia.RNUploader.UploaderReactPackage;
 import com.rnfingerprint.FingerprintAuthPackage;
 import com.oblador.keychain.KeychainPackage;
 import fr.bamlab.rnimageresizer.ImageResizerPackage;
@@ -37,6 +39,8 @@ public class MainApplication extends NavigationApplication  {
   public List<ReactPackage> createAdditionalReactPackages() {
     return Arrays.<ReactPackage>asList(
     new MainReactPackage(),
+            new ReactVideoPackage(),
+            new UploaderReactPackage(),
             new FingerprintAuthPackage(),
             new KeychainPackage(),
             new ImageResizerPackage(),

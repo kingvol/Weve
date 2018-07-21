@@ -1,9 +1,11 @@
 /* eslint-disable no-underscore-dangle, camelcase */
 import React, { Component } from 'react';
 import { Alert, Keyboard, View, Dimensions, TextInput, Switch, Platform } from 'react-native';
+import * as Progress from 'react-native-progress';
+import Upload from 'react-native-background-upload';
 import _ from 'lodash';
 import ImagePicker from 'react-native-image-picker';
-import { Picker, CheckBox, Left } from 'native-base';
+import { Picker, CheckBox, Left, Button as NBButton } from 'native-base';
 import CountryPicker from 'react-native-country-picker-modal';
 import { connect } from 'react-redux';
 import SpinnerOverlay from 'react-native-loading-spinner-overlay';
@@ -57,6 +59,7 @@ class EditProfileScreen extends Component {
         fullName: this.props.user.profile.fullName || '',
         phoneNumber: this.props.user.profile.phoneNumber || '',
         profileImageURL: this.props.user.profile.profileImageURL || undefined,
+        profileVideoURL: this.props.user.profile.profileVideoURL || '',
         providerImages: {
           0: user.profile.providerImages[0] || undefined,
           1: user.profile.providerImages[1] || undefined,
@@ -83,6 +86,10 @@ class EditProfileScreen extends Component {
       isDataModified: false,
       cameraPermission: 'undetermined',
       photoPermission: 'undetermined',
+      /* Video upload */
+      isVideoUploading: false,
+      videoUploadProgress: 0,
+      uploadId: '',
     };
   }
 
@@ -316,6 +323,41 @@ class EditProfileScreen extends Component {
       },
     });
   };
+
+  onVideoUploadPress = () => {
+    /* Open video picker */
+    const options = {
+      mediaType: 'video',
+      noData: true,
+      storageOptions: {
+        skipBackup: true,
+      },
+    };
+    ImagePicker.launchImageLibrary(options, ({ error, uri }) => {
+      if (error) {
+        Alert.alert(
+          I18n.t('editProfile.avatar_error'),
+          `${error}`,
+          [{ text: `${I18n.t('common.ok')}` }],
+          { cancelable: false },
+        );
+        return;
+      }
+
+      if (uri) {
+        this.startVideoUpload(uri);
+      }
+    });
+  }
+
+  onRemoveVideoPress = () => {
+    this.setState({
+      values: {
+        ...this.state.values,
+        profileVideoURL: '',
+      },
+    }, this.dataModified);
+  }
 
   setMultiSelectRef = (ref) => {
     this.multiSelect = ref;
@@ -576,6 +618,110 @@ class EditProfileScreen extends Component {
     }
   }
 
+  startVideoUpload = (path) => {
+    const { cloudinary: { apiKey, cloud } } = config;
+    const timestamp = Date.now().toString();
+
+    const options = {
+      url: `https://api.cloudinary.com/v1_1/${cloud}/video/upload?secure=true&upload_preset=profileImg`,
+      path,
+      method: 'POST',
+      type: 'multipart',
+      field: 'file',
+      parameters: {
+        timestamp,
+        api_key: apiKey,
+      },
+      // Below are options only supported on Android
+      notification: {
+        enabled: false,
+      },
+    };
+
+    Upload.startUpload(options).then((uploadId) => {
+      this.setState({ isVideoUploading: true, uploadId });
+
+      Upload.addListener('progress', uploadId, (data) => {
+        this.setState({ videoUploadProgress: data.progress });
+        console.log(`Progress: ${data.progress}%`);
+      });
+
+      Upload.addListener('error', uploadId, (data) => {
+        console.log(`Error: ${data.error}%`);
+      });
+
+      Upload.addListener('cancelled', uploadId, () => {
+        console.log('Cancelled!');
+      });
+
+      Upload.addListener('completed', uploadId, ({ responseBody }) => { // typeof responseBody === string
+        const body = JSON.parse(responseBody);
+        this.setState({
+          isVideoUploading: false,
+          videoUploadProgress: 100,
+          values: {
+            ...this.state.values,
+            profileVideoURL: body.secure_url,
+          },
+        }, this.dataModified);
+      });
+    }).catch((err) => {
+      console.warn('Upload error!', err);
+    });
+  }
+
+  cancelVideoUpload = () => {
+    const { uploadId } = this.state;
+    Upload.cancelUpload(uploadId);
+    this.setState({
+      uploadId: '',
+      isVideoUploading: false,
+      videoUploadProgress: 0,
+    });
+  }
+
+  renderVideoStatus = () => {
+    const { isVideoUploading, videoUploadProgress } = this.state;
+
+    if (!isVideoUploading && !videoUploadProgress && this.state.values.profileVideoURL) {
+      return (
+        <View style={styles.videoButtonsContainer}>
+          {/* <Text style={{ marginRight: 5 }}>{I18n.t('editProfile.video_uploaded')}</Text> */}
+          <NBButton warning rounded onPress={this.onVideoUploadPress} style={{ margin: 5 }}>
+            <Text>{I18n.t('editProfile.new_video')}</Text>
+          </NBButton>
+          <NBButton danger rounded onPress={this.onRemoveVideoPress} style={{ margin: 5 }}>
+            <Text>{I18n.t('editProfile.remove_video')}</Text>
+          </NBButton>
+        </View>
+      );
+    }
+
+    if (!isVideoUploading && !videoUploadProgress) {
+      return (
+        <Button onPress={this.onVideoUploadPress}>
+          <Text>{I18n.t('editProfile.upload_a_video')}</Text>
+        </Button>
+      );
+    }
+
+    if (!isVideoUploading && videoUploadProgress === 100) {
+      return (
+        <Text style={{ marginBottom: 20, color: 'green' }}>
+          {I18n.t('editProfile.uploading_completed')}
+        </Text>
+      );
+    }
+
+    return [
+      <View style={{ marginBottom: 20 }}>
+        <Progress.Circle size={80} progress={videoUploadProgress / 100} showsText />
+      </View>,
+      <Button onPress={this.cancelVideoUpload}>
+        <Text>Cancel</Text>
+      </Button>,
+    ];
+  }
 
   render() {
     const { photoPermission, cameraPermission } = this.state;
@@ -917,6 +1063,9 @@ class EditProfileScreen extends Component {
               {I18n.t('logIn.account_activation')}
             </Text>
             )}
+            <View style={styles.videoField}>
+              {this.renderVideoStatus()}
+            </View>
           </View>
           )}
         </Content>
@@ -950,5 +1099,16 @@ const styles = {
     borderRadius: 3,
     textAlignVertical: 'top',
     color: '#4d5460',
+  },
+  videoField: {
+    margin: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  videoButtonsContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 };

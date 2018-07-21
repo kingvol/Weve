@@ -110,7 +110,12 @@
       "descriptionPhoto": "Profil resmi için fotoğraflara erişimine izin ver",
       "allowCamera": "Wevedo kameraya erişmesine izin ver?",
       "descriptionCamera": " Profil resmi için kameraya erişimine izin ver"
-    }
+    },
+    "upload_a_video": "Video yüklemek",
+    "uploading_completed": "Yükleme tamamlandı",
+    "video_uploaded": "Video yüklendi",
+    "new_video": "Yeni video",
+    "remove_video": "Hawa video"
   },
   "inbox": {
     "no_active_dialog": "Häzirki wagtda hiç hili hatyňyz ýok"
@@ -126,6 +131,7 @@
   "common": {
     "ok": "Bolýa",
     "error": "Ýalňyş",
+    "remove": "Hawa",
     "done": "Tassyklamak",
     "save": "Ýatda sakla",
     "email": "Elektron poçta",

@@ -110,7 +110,12 @@
       "descriptionPhoto": "Profil resmi için fotoğraflara erişimine izin ver",
       "allowCamera": "Wevedo kameraya erişmesine izin ver?",
       "descriptionCamera": " Profil resmi için kameraya erişimine izin ver"
-    }
+    },
+    "upload_a_video": "Video yüklemek",
+    "uploading_completed": "Yükleme tamamlandı",
+    "video_uploaded": "Video yüklendi",
+    "new_video": "Yeni video",
+    "remove_video": "Onayla video"
   },
   "inbox": {
     "no_active_dialog": "Etkin iletişim kutusu yok"
@@ -127,6 +132,7 @@
     "ok": "Tamam",
     "error": "Hata",
     "done": "Tamam",
+    "remove": "Onayla",
     "save": "Kayıt et",
     "email": "E-posta",
     "phone": "Cep numara",
