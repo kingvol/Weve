@@ -17,6 +17,7 @@ const Button = (props) => {
   return (
     <BaseButton
       block
+      rounded
       {...props}
       textStyle={childText ? innerTextStyle : null}
       style={[
