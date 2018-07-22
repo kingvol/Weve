@@ -4,6 +4,10 @@ import android.app.Application;
 import android.support.annotation.NonNull;
 
 import com.facebook.react.ReactApplication;
+import com.corbt.keepawake.KCKeepAwakePackage;
+import com.BV.LinearGradient.LinearGradientPackage;
+import com.github.yamill.orientation.OrientationPackage;
+import com.corbt.keepawake.KCKeepAwakePackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.vydia.RNUploader.UploaderReactPackage;
 import com.rnfingerprint.FingerprintAuthPackage;
@@ -39,6 +43,10 @@ public class MainApplication extends NavigationApplication  {
   public List<ReactPackage> createAdditionalReactPackages() {
     return Arrays.<ReactPackage>asList(
     new MainReactPackage(),
+            new KCKeepAwakePackage(),
+            new LinearGradientPackage(),
+            new OrientationPackage(),
+            new KCKeepAwakePackage(),
             new ReactVideoPackage(),
             new UploaderReactPackage(),
             new FingerprintAuthPackage(),

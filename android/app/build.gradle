@@ -165,6 +165,10 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-keep-awake')
+    implementation project(':react-native-linear-gradient')
+    implementation project(':react-native-orientation')
+    implementation project(':react-native-keep-awake')
     implementation project(':react-native-video')
     implementation project(':react-native-background-upload')
     implementation project(':react-native-touch-id')
