@@ -10,7 +10,8 @@ import {
   Modal,
   TouchableWithoutFeedback,
 } from 'react-native';
-import VideoPlayer from 'react-native-video-player';
+import Video from 'react-native-af-video-player';
+// import VideoPlayer from 'react-native-video-player';
 import FastImage from 'react-native-fast-image';
 import { connect } from 'react-redux';
 import Swiper from 'react-native-swiper';
@@ -24,6 +25,7 @@ import { updateProfile, fetchProfile } from '../../../actions/user.actions';
 import Analytics from '../../../services/AnalyticsService';
 
 import I18n from '../../../locales';
+import wevedoImages from '../../../images';
 
 const calendarTheme = {
   selectedDayBackgroundColor: lightTextColor,
@@ -45,6 +47,9 @@ class ProviderProfileScreen extends Component {
     this.state = {
       modalForImageVisible: false,
       fullScreenImageUrl: this.props.provider.profileImageURL || defaultProfile,
+      wrapperStyle: {
+        height: ITEM_WIDTH / 1.5,
+      },
     };
   }
 
@@ -180,7 +185,13 @@ class ProviderProfileScreen extends Component {
   };
 
   renderVideoPlayer = videoUrl => (
-    <VideoPlayer style={{ height: '100%' }} video={{ uri: videoUrl }} />
+    // <VideoPlayer style={{ height: '100%' }} video={{ uri: videoUrl }} />
+    <Video
+      url={videoUrl}
+      style={{ height: '100%' }}
+      placeholder={wevedoImages.logo}
+      onFullScreen={(value) => { value === true ? this.setState({ wrapperStyle: { height: ITEM_HEIGHT } }) : this.setState({ wrapperStyle: { height: ITEM_WIDTH / 1.5 } }); }}
+    />
   );
 
   render() {
@@ -249,7 +260,7 @@ class ProviderProfileScreen extends Component {
         <View style={{ minHeight: 500 }}>
           {provider.profileImageURL && provider.providerImages && images.length > 1 ? (
             <Swiper
-              style={wrapper}
+              style={this.state.wrapperStyle}
               showsButtons
               autoplay={!provider.profileVideoURL}
               autoplayTimeout={5}
@@ -342,6 +353,9 @@ const styles = {
   },
   wrapper: {
     height: ITEM_WIDTH / 1.5,
+  },
+  styleVideoFullScreen: {
+    height: ITEM_HEIGHT,
   },
   slide: {
     flex: 1,
