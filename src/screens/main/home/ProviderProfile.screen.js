@@ -47,9 +47,7 @@ class ProviderProfileScreen extends Component {
     this.state = {
       modalForImageVisible: false,
       fullScreenImageUrl: this.props.provider.profileImageURL || defaultProfile,
-      wrapperStyle: {
-        height: ITEM_WIDTH / 1.5,
-      },
+      videoFullScreen: false,
     };
   }
 
@@ -122,7 +120,7 @@ class ProviderProfileScreen extends Component {
             return Linking.openURL(`tel:${this.props.provider.phoneNumber}`);
           }
         })
-        .catch(error => alert(I18n.t('chat.error')));
+        .catch(() => alert(I18n.t('chat.error')));
     }
   }
 
@@ -184,20 +182,34 @@ class ProviderProfileScreen extends Component {
     Analytics.trackEvent('Booked date', { provider: this.props.user._id, date: timestamp });
   };
 
+  onFullScreen = (status) => {
+    this.setState({ videoFullScreen: status });
+  };
+
   renderVideoPlayer = videoUrl => (
     // <VideoPlayer style={{ height: '100%' }} video={{ uri: videoUrl }} />
     <Video
+      key={videoUrl}
       url={videoUrl}
-      style={{ height: '100%' }}
+      style={{ height: '100%', width: '100%' }}
+      logo={`${wevedoImages.logo}`}
+      // resizeMode="cover"
       placeholder={wevedoImages.logo}
-      onFullScreen={(value) => { value === true ? this.setState({ wrapperStyle: { height: ITEM_HEIGHT } }) : this.setState({ wrapperStyle: { height: ITEM_WIDTH / 1.5 } }); }}
+      fullScreenOnly
     />
   );
 
   render() {
     const { profile } = this.props.user; // authUser
     const { provider } = this.props;
-    const { styleImage, styleImageFullScreen, slide, wrapper, styleIconButton } = styles;
+    const {
+      styleImage,
+      styleImageFullScreen,
+      slide,
+      wrapper,
+      styleIconButton,
+      styleIconImage,
+    } = styles;
 
     const markedDates = profile._id === provider._id ? profile.bookedDates : provider.bookedDates;
 
@@ -238,29 +250,45 @@ class ProviderProfileScreen extends Component {
           transparent={false}
           visible={this.state.modalForImageVisible}
           onRequestClose={() => this.setModalForImageVisible(false)}
+          style={{ backgroundColor: 'black' }}
         >
-          <TouchableWithoutFeedback onPress={() => this.setModalForImageVisible(false)}>
-            <Icon style={styleIconButton} size={20} name="remove" />
-          </TouchableWithoutFeedback>
-          <ImageZoom
-            cropWidth={ITEM_WIDTH}
-            cropHeight={ITEM_HEIGHT}
-            imageWidth={ITEM_WIDTH}
-            imageHeight={ITEM_HEIGHT}
-            style={{ backgroundColor: 'black' }}
-          >
-            <FastImage
-              style={styleImageFullScreen}
-              resizeMode={FastImage.resizeMode.contain}
-              source={{ uri: this.state.fullScreenImageUrl }}
-              priority={FastImage.priority.high}
+          {!this.state.videoFullScreen && (
+            <TouchableWithoutFeedback onPress={() => this.setModalForImageVisible(false)}>
+              <Icon style={styleIconButton} size={20} name="remove" />
+            </TouchableWithoutFeedback>
+          )}
+          {typeof this.state.fullScreenImageUrl === 'object' ? (
+            <Video
+              key={provider.profileVideoURL}
+              url={provider.profileVideoURL}
+              style={{ height: '97%' }}
+              logo={`${wevedoImages.logo}`}
+              // resizeMode="cover"
+              placeholder={wevedoImages.logo}
+              onFullScreen={status => this.onFullScreen(status)}
+              // fullScreenOnly
             />
-          </ImageZoom>
+          ) : (
+            <ImageZoom
+              cropWidth={ITEM_WIDTH}
+              cropHeight={ITEM_HEIGHT}
+              imageWidth={ITEM_WIDTH}
+              imageHeight={ITEM_HEIGHT}
+              style={{ backgroundColor: 'black' }}
+            >
+              <FastImage
+                style={styleImageFullScreen}
+                resizeMode={FastImage.resizeMode.contain}
+                source={{ uri: this.state.fullScreenImageUrl }}
+                priority={FastImage.priority.high}
+              />
+            </ImageZoom>
+          )}
         </Modal>
         <View style={{ minHeight: 500 }}>
           {provider.profileImageURL && provider.providerImages && images.length > 1 ? (
             <Swiper
-              style={this.state.wrapperStyle}
+              style={wrapper}
               showsButtons
               autoplay={!provider.profileVideoURL}
               autoplayTimeout={5}
@@ -269,19 +297,30 @@ class ProviderProfileScreen extends Component {
               nextButton={<Text style={{ color: '#d64635', fontSize: 35 }}>›</Text>}
               prevButton={<Text style={{ color: '#d64635', fontSize: 35 }}>‹</Text>}
             >
-              {images.map((item, key) =>
-                  item.id === 'video' ? (
-                    this.renderVideoPlayer(item.url)
+              {images.map((item, key) => (
+                // item.id === 'video' ? (
+                //   this.renderVideoPlayer(item.url)
+
+                // ) : (
+                <TouchableWithoutFeedback
+                  id={key}
+                  key={item}
+                  style={slide}
+                  onPress={() => this.setModalForImageVisible(true, item)}
+                >
+                  {item.id === 'video' ? (
+                    <View>
+                      <FastImage source={wevedoImages.logo} style={styleImage} />
+                      <View style={styleIconImage}>
+                        <Icon style={{ color: 'white' }} size={40} name="film" />
+                      </View>
+                    </View>
                   ) : (
-                    <TouchableWithoutFeedback
-                      id={key}
-                      key={item}
-                      style={slide}
-                      onPress={() => this.setModalForImageVisible(true, item)}
-                    >
-                      <FastImage source={{ uri: item }} style={styleImage} />
-                    </TouchableWithoutFeedback>
-                  ))}
+                    <FastImage source={{ uri: item }} style={styleImage} />
+                  )}
+                </TouchableWithoutFeedback>
+                // )
+              ))}
             </Swiper>
           ) : (
             <TouchableWithoutFeedback
@@ -354,9 +393,6 @@ const styles = {
   wrapper: {
     height: ITEM_WIDTH / 1.5,
   },
-  styleVideoFullScreen: {
-    height: ITEM_HEIGHT,
-  },
   slide: {
     flex: 1,
     justifyContent: 'flex-start',
@@ -372,6 +408,13 @@ const styles = {
   styleImage: {
     height: ITEM_WIDTH / 1.5,
     width: ITEM_WIDTH,
+  },
+  styleIconImage: {
+    flex: 0,
+    alignSelf: 'center',
+    paddingTop: ITEM_WIDTH / 1.5 / 2,
+    // paddingLeft: ITEM_WIDTH / 2,
+    position: 'absolute',
   },
   styleImageFullScreen: {
     height: ITEM_HEIGHT,
