@@ -9,9 +9,9 @@ import {
   Linking,
   Modal,
   TouchableWithoutFeedback,
+  TouchableOpacity,
 } from 'react-native';
-import Video from 'react-native-af-video-player';
-// import VideoPlayer from 'react-native-video-player';
+import Video, { ScrollView, Container } from 'react-native-af-video-player';
 import FastImage from 'react-native-fast-image';
 import { connect } from 'react-redux';
 import Swiper from 'react-native-swiper';
@@ -25,7 +25,6 @@ import { updateProfile, fetchProfile } from '../../../actions/user.actions';
 import Analytics from '../../../services/AnalyticsService';
 
 import I18n from '../../../locales';
-import wevedoImages from '../../../images';
 
 const calendarTheme = {
   selectedDayBackgroundColor: lightTextColor,
@@ -124,6 +123,10 @@ class ProviderProfileScreen extends Component {
     }
   }
 
+  onFullScreen = (status) => {
+    this.setState({ videoFullScreen: status });
+  };
+
   setModalForImageVisible = (visible, link) => {
     this.setState({ modalForImageVisible: visible, fullScreenImageUrl: link });
   };
@@ -182,23 +185,6 @@ class ProviderProfileScreen extends Component {
     Analytics.trackEvent('Booked date', { provider: this.props.user._id, date: timestamp });
   };
 
-  onFullScreen = (status) => {
-    this.setState({ videoFullScreen: status });
-  };
-
-  renderVideoPlayer = videoUrl => (
-    // <VideoPlayer style={{ height: '100%' }} video={{ uri: videoUrl }} />
-    <Video
-      key={videoUrl}
-      url={videoUrl}
-      style={{ height: '100%', width: '100%' }}
-      logo={`${wevedoImages.logo}`}
-      // resizeMode="cover"
-      placeholder={wevedoImages.logo}
-      fullScreenOnly
-    />
-  );
-
   render() {
     const { profile } = this.props.user; // authUser
     const { provider } = this.props;
@@ -251,6 +237,7 @@ class ProviderProfileScreen extends Component {
           visible={this.state.modalForImageVisible}
           onRequestClose={() => this.setModalForImageVisible(false)}
           style={{ backgroundColor: 'black' }}
+          supportedOrientations={['portrait', 'landscape']}
         >
           {!this.state.videoFullScreen && (
             <TouchableWithoutFeedback onPress={() => this.setModalForImageVisible(false)}>
@@ -258,16 +245,22 @@ class ProviderProfileScreen extends Component {
             </TouchableWithoutFeedback>
           )}
           {typeof this.state.fullScreenImageUrl === 'object' ? (
-            <Video
-              key={provider.profileVideoURL}
-              url={provider.profileVideoURL}
-              style={{ height: '97%' }}
-              logo={`${wevedoImages.logo}`}
-              // resizeMode="cover"
-              placeholder={wevedoImages.logo}
-              onFullScreen={status => this.onFullScreen(status)}
-              // fullScreenOnly
-            />
+            // <Container style={{ margin: 10 }}>
+              <Video
+                key={provider.profileVideoURL}
+                url={provider.profileVideoURL}
+                style={{
+                flex: 1,
+                backgroundColor: 'black',
+                justifyContent: 'flex-start',
+              }}
+                logo="http://wevedo.com/img/logo.png"
+                onFullScreen={status => this.onFullScreen(status)}
+                fullScreenOnly
+                autoPlay
+                onEnd={() => this.setModalForImageVisible(false)}
+              />
+            // </Container>
           ) : (
             <ImageZoom
               cropWidth={ITEM_WIDTH}
@@ -298,10 +291,6 @@ class ProviderProfileScreen extends Component {
               prevButton={<Text style={{ color: '#d64635', fontSize: 35 }}>‹</Text>}
             >
               {images.map((item, key) => (
-                // item.id === 'video' ? (
-                //   this.renderVideoPlayer(item.url)
-
-                // ) : (
                 <TouchableWithoutFeedback
                   id={key}
                   key={item}
@@ -309,17 +298,18 @@ class ProviderProfileScreen extends Component {
                   onPress={() => this.setModalForImageVisible(true, item)}
                 >
                   {item.id === 'video' ? (
-                    <View>
-                      <FastImage source={wevedoImages.logo} style={styleImage} />
-                      <View style={styleIconImage}>
-                        <Icon style={{ color: 'white' }} size={40} name="film" />
-                      </View>
+                    <View style={{ flex: 1, backgroundColor: 'black' }}>
+                      <TouchableOpacity
+                        onPress={() => this.setModalForImageVisible(true, item)}
+                        style={styleIconImage}
+                      >
+                        <Icon style={{ color: 'white' }} size={45} name="play-circle-o" />
+                      </TouchableOpacity>
                     </View>
                   ) : (
                     <FastImage source={{ uri: item }} style={styleImage} />
                   )}
                 </TouchableWithoutFeedback>
-                // )
               ))}
             </Swiper>
           ) : (
@@ -412,8 +402,7 @@ const styles = {
   styleIconImage: {
     flex: 0,
     alignSelf: 'center',
-    paddingTop: ITEM_WIDTH / 1.5 / 2,
-    // paddingLeft: ITEM_WIDTH / 2,
+    paddingTop: ITEM_WIDTH / 1.5 / 2.4,
     position: 'absolute',
   },
   styleImageFullScreen: {
