@@ -4,6 +4,7 @@ import { AsyncStorage, View, TouchableOpacity, Share } from 'react-native';
 import { Button, Left, Switch, Icon as NBIcon } from 'native-base';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import * as Keychain from 'react-native-keychain';
 import TouchID from 'react-native-touch-id';
 import FastImage from 'react-native-fast-image';
 
@@ -40,6 +41,7 @@ class SettingsTab extends Component {
     this.state = {
       biometricsSupported: false,
       biometricsEnabled: null,
+      credentialsAvailable: null,
     };
   }
 
@@ -93,10 +95,12 @@ class SettingsTab extends Component {
 
   checkBiometricsStatus = async () => {
     const isDeclined = await AsyncStorage.getItem('is_biometrics_declined');
+    const credentials = await Keychain.getGenericPassword();
     this.setState({
       biometricsEnabled: !isDeclined,
+      credentialsAvailable: !!credentials,
     });
-  }
+  };
 
   toogleBiometrics = async () => {
     const { biometricsEnabled } = this.state;
@@ -107,7 +111,7 @@ class SettingsTab extends Component {
       await AsyncStorage.removeItem('is_biometrics_declined');
       this.checkBiometricsStatus();
     }
-  }
+  };
 
   ShareMessage = () => {
     Share.share({
@@ -148,10 +152,11 @@ class SettingsTab extends Component {
               </ListItem>
             ))}
 
-            {this.state.biometricsSupported ? (
+            {this.state.biometricsSupported &&
+            !(!this.state.credentialsAvailable && !this.state.biometricsEnabled) ? (
               <ListItem icon>
                 <Left>
-                  <Button style={{ backgroundColor: 'grey' }} >
+                  <Button style={{ backgroundColor: 'grey' }}>
                     <NBIcon name="ios-finger-print-outline" />
                   </Button>
                 </Left>
@@ -159,11 +164,13 @@ class SettingsTab extends Component {
                   <Text>Fingerprint login</Text>
                 </Body>
                 <Right>
-                  <Switch onValueChange={this.toogleBiometrics} value={this.state.biometricsEnabled} />
+                  <Switch
+                    onValueChange={this.toogleBiometrics}
+                    value={this.state.biometricsEnabled}
+                  />
                 </Right>
               </ListItem>
             ) : null}
-
           </List>
           {vars.DB_ENV === 'test' && <Text style={{ alignSelf: 'center' }}>DEV</Text>}
         </Content>
