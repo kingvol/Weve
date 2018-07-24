@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import * as Keychain from 'react-native-keychain';
 
 import { AuthActions } from '../../actions';
 import RegisterForm from '../../components/auth/register.form';
@@ -25,6 +26,7 @@ class RegisterScreen extends Component {
       this.switchNextStep();
       /* Appcenter Analytics */
       Analytics.trackEvent('Registration', { phoneNumber });
+      Keychain.resetGenericPassword();
       this.props.loginUser({ phoneNumber, password });
     }
   }

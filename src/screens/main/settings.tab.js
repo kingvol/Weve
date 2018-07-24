@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import { AsyncStorage, View, TouchableOpacity, Share } from 'react-native';
 import { Button, Left, Switch, Icon as NBIcon } from 'native-base';
 import { connect } from 'react-redux';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import * as Keychain from 'react-native-keychain';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import TouchID from 'react-native-touch-id';
 import FastImage from 'react-native-fast-image';
 
@@ -94,10 +94,10 @@ class SettingsTab extends Component {
   };
 
   checkBiometricsStatus = async () => {
-    const isDeclined = await AsyncStorage.getItem('is_biometrics_declined');
     const credentials = await Keychain.getGenericPassword();
+    const isBiometricsDeclined = await AsyncStorage.getItem('is_biometrics_declined');
     this.setState({
-      biometricsEnabled: !isDeclined,
+      biometricsEnabled: !!credentials.username && !isBiometricsDeclined,
       credentialsAvailable: !!credentials,
     });
   };
