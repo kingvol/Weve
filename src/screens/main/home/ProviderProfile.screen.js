@@ -256,6 +256,7 @@ class ProviderProfileScreen extends Component {
               autoPlay
               onEnd={() => this.setModalForImageVisible(false)}
               onMorePress={() => this.setModalForImageVisible(false)}
+              onError={() => this.setModalForImageVisible(false)}
             />
           ) : (
             <View>
