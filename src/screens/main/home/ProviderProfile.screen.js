@@ -11,7 +11,7 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity,
 } from 'react-native';
-import Video, { ScrollView, Container } from 'react-native-af-video-player';
+import Video from 'react-native-af-video-player';
 import FastImage from 'react-native-fast-image';
 import { connect } from 'react-redux';
 import Swiper from 'react-native-swiper';
@@ -46,7 +46,6 @@ class ProviderProfileScreen extends Component {
     this.state = {
       modalForImageVisible: false,
       fullScreenImageUrl: this.props.provider.profileImageURL || defaultProfile,
-      videoFullScreen: false,
     };
   }
 
@@ -122,10 +121,6 @@ class ProviderProfileScreen extends Component {
         .catch(() => alert(I18n.t('chat.error')));
     }
   }
-
-  onFullScreen = (status) => {
-    this.setState({ videoFullScreen: status });
-  };
 
   setModalForImageVisible = (visible, link) => {
     this.setState({ modalForImageVisible: visible, fullScreenImageUrl: link });
@@ -239,43 +234,48 @@ class ProviderProfileScreen extends Component {
           style={{ backgroundColor: 'black' }}
           supportedOrientations={['portrait', 'landscape']}
         >
-          {!this.state.videoFullScreen && (
-            <TouchableWithoutFeedback onPress={() => this.setModalForImageVisible(false)}>
-              <Icon style={styleIconButton} size={20} name="remove" />
-            </TouchableWithoutFeedback>
-          )}
           {typeof this.state.fullScreenImageUrl === 'object' ? (
-            // <Container style={{ margin: 10 }}>
-              <Video
-                key={provider.profileVideoURL}
-                url={provider.profileVideoURL}
-                style={{
+            <Video
+              key={provider.profileVideoURL}
+              url={provider.profileVideoURL}
+              style={{
                 flex: 1,
                 backgroundColor: 'black',
-                justifyContent: 'flex-start',
+                justifyContent: 'center',
               }}
-                logo="http://wevedo.com/img/logo.png"
-                onFullScreen={status => this.onFullScreen(status)}
-                fullScreenOnly
-                autoPlay
-                onEnd={() => this.setModalForImageVisible(false)}
-              />
-            // </Container>
+              logo="http://wevedo.com/img/logo.png"
+              title={
+                provider.fullName
+                  ? `${provider.fullName}`
+                  : `${provider.firstName} ${provider.lastName || ''}`
+              }
+              inlineOnly
+              resizeMode="stretch"
+              lockRatio={4 / 3}
+              autoPlay
+              onEnd={() => this.setModalForImageVisible(false)}
+              onMorePress={() => this.setModalForImageVisible(false)}
+            />
           ) : (
-            <ImageZoom
-              cropWidth={ITEM_WIDTH}
-              cropHeight={ITEM_HEIGHT}
-              imageWidth={ITEM_WIDTH}
-              imageHeight={ITEM_HEIGHT}
-              style={{ backgroundColor: 'black' }}
-            >
-              <FastImage
-                style={styleImageFullScreen}
-                resizeMode={FastImage.resizeMode.contain}
-                source={{ uri: this.state.fullScreenImageUrl }}
-                priority={FastImage.priority.high}
-              />
-            </ImageZoom>
+            <View>
+              <TouchableWithoutFeedback onPress={() => this.setModalForImageVisible(false)}>
+                <Icon style={styleIconButton} size={20} name="remove" />
+              </TouchableWithoutFeedback>
+              <ImageZoom
+                cropWidth={ITEM_WIDTH}
+                cropHeight={ITEM_HEIGHT}
+                imageWidth={ITEM_WIDTH}
+                imageHeight={ITEM_HEIGHT}
+                style={{ backgroundColor: 'black' }}
+              >
+                <FastImage
+                  style={styleImageFullScreen}
+                  resizeMode={FastImage.resizeMode.contain}
+                  source={{ uri: this.state.fullScreenImageUrl }}
+                  priority={FastImage.priority.high}
+                />
+              </ImageZoom>
+            </View>
           )}
         </Modal>
         <View style={{ minHeight: 500 }}>
@@ -402,7 +402,7 @@ const styles = {
   styleIconImage: {
     flex: 0,
     alignSelf: 'center',
-    paddingTop: ITEM_WIDTH / 1.5 / 2.4,
+    paddingTop: ITEM_WIDTH / 1.5 / 2.3,
     position: 'absolute',
   },
   styleImageFullScreen: {
@@ -415,15 +415,12 @@ const styles = {
     paddingBottom: 0.8,
     paddingLeft: 3.3,
     paddingRight: 3.3,
+    justifyContent: 'flex-end',
   },
   calendar: {},
   infoContainer: {
     alignItems: 'center',
     flex: 1,
-  },
-  video: {
-    aspectRatio: 1,
-    width: '100%',
   },
 };
 
