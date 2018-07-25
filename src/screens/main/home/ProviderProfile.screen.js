@@ -183,6 +183,7 @@ class ProviderProfileScreen extends Component {
   render() {
     const { profile } = this.props.user; // authUser
     const { provider } = this.props;
+<<<<<<< HEAD
     const {
       styleImage,
       styleImageFullScreen,
@@ -191,6 +192,9 @@ class ProviderProfileScreen extends Component {
       styleIconButton,
       styleIconImage,
     } = styles;
+=======
+    const { styleImage, styleImageFullScreen, slide, wrapper, styleIconButton, dotsStyle } = styles;
+>>>>>>> dev
 
     const markedDates = profile._id === provider._id ? profile.bookedDates : provider.bookedDates;
 
@@ -210,7 +214,7 @@ class ProviderProfileScreen extends Component {
       const arrayImages = Object.values(provider.providerImages);
       images = arrayImages.filter(e => !!e);
       images.unshift(provider.profileImageURL);
-      images.map(item => FastImage.preload([{ uri: item }]));
+      images.forEach(item => FastImage.preload([{ uri: item }]));
       if (provider.profileVideoURL) {
         images.splice(1, 0, {
           id: 'video',
@@ -285,8 +289,16 @@ class ProviderProfileScreen extends Component {
               showsButtons
               autoplay={!provider.profileVideoURL}
               autoplayTimeout={5}
-              dotColor="#c4c4c4"
-              activeDotColor="#d64635"
+              dot={
+                <View
+                  style={[{ backgroundColor: '#c4c4c4' }, dotsStyle]}
+                />
+              }
+              activeDot={
+                <View
+                  style={[{ backgroundColor: '#d64635' }, dotsStyle]}
+                />
+              }
               nextButton={<Text style={{ color: '#d64635', fontSize: 35 }}>›</Text>}
               prevButton={<Text style={{ color: '#d64635', fontSize: 35 }}>‹</Text>}
             >
@@ -421,6 +433,15 @@ const styles = {
   infoContainer: {
     alignItems: 'center',
     flex: 1,
+  },
+  dotsStyle: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    marginLeft: 3,
+    marginRight: 3,
+    marginTop: 3,
+    marginBottom: 33,
   },
 };
 

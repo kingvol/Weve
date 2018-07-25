@@ -50,7 +50,7 @@ class LoginScreen extends Component {
       await AsyncStorage.setItem('wevedo_access_token', auth.accessToken);
 
       /* Biometrics */
-      if (this.state.biometricsSupported) {
+      if (this.state.biometricsSupported && this.state.password) {
         const isBiometricsDeclined = await AsyncStorage.getItem('is_biometrics_declined');
         if (!isBiometricsDeclined && !this.state.biometricsEnabled) {
           await Alert.alert(
