@@ -286,16 +286,8 @@ class ProviderProfileScreen extends Component {
               showsButtons
               autoplay={!provider.profileVideoURL}
               autoplayTimeout={5}
-              dot={
-                <View
-                  style={[{ backgroundColor: '#c4c4c4' }, dotsStyle]}
-                />
-              }
-              activeDot={
-                <View
-                  style={[{ backgroundColor: '#d64635' }, dotsStyle]}
-                />
-              }
+              dot={<View style={[{ backgroundColor: '#c4c4c4' }, dotsStyle]} />}
+              activeDot={<View style={[{ backgroundColor: '#d64635' }, dotsStyle]} />}
               nextButton={<Text style={{ color: '#d64635', fontSize: 35 }}>›</Text>}
               prevButton={<Text style={{ color: '#d64635', fontSize: 35 }}>‹</Text>}
             >
@@ -438,7 +430,7 @@ const styles = {
     marginLeft: 3,
     marginRight: 3,
     marginTop: 3,
-    marginBottom: 33,
+    marginBottom: 10,
   },
 };
 
