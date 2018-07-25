@@ -183,7 +183,6 @@ class ProviderProfileScreen extends Component {
   render() {
     const { profile } = this.props.user; // authUser
     const { provider } = this.props;
-<<<<<<< HEAD
     const {
       styleImage,
       styleImageFullScreen,
@@ -191,10 +190,8 @@ class ProviderProfileScreen extends Component {
       wrapper,
       styleIconButton,
       styleIconImage,
+      dotsStyle,
     } = styles;
-=======
-    const { styleImage, styleImageFullScreen, slide, wrapper, styleIconButton, dotsStyle } = styles;
->>>>>>> dev
 
     const markedDates = profile._id === provider._id ? profile.bookedDates : provider.bookedDates;
 
