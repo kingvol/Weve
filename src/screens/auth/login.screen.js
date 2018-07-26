@@ -20,7 +20,7 @@ class LoginScreen extends Component {
     phoneNumber: '',
     biometricsEnabled: false,
     biometricsSupported: false,
-  }
+  };
 
   async componentDidMount() {
     try {
@@ -68,7 +68,8 @@ class LoginScreen extends Component {
               {
                 text: I18n.t('common.allow'),
                 onPress: async () => {
-                  await Keychain.setGenericPassword( // enables auth with biometr.
+                  await Keychain.setGenericPassword(
+                    // enables auth with biometr.
                     this.state.phoneNumber,
                     this.state.password,
                   );
@@ -79,7 +80,8 @@ class LoginScreen extends Component {
             { cancelable: false },
           );
         } else {
-          await Keychain.setGenericPassword( // enables auth with biometr.
+          await Keychain.setGenericPassword(
+            // enables auth with biometr.
             this.state.phoneNumber,
             this.state.password,
           );
@@ -134,14 +136,14 @@ class LoginScreen extends Component {
       .catch((error) => {
         this.handleBiometricsError(error);
       });
-  }
+  };
 
   handleBiometricsError = (error) => {
     if (error.details === 'failed' && Platform.OS === 'android') {
       ToastAndroid.show('Failed, please try again', ToastAndroid.SHORT);
       setTimeout(() => this.processBiometricsAuth(), 100);
     }
-  }
+  };
 
   render() {
     return (
