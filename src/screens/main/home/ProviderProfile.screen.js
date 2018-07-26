@@ -11,7 +11,6 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity,
 } from 'react-native';
-import PropTypes from 'prop-types';
 import Video from 'react-native-af-video-player';
 import FastImage from 'react-native-fast-image';
 import { connect } from 'react-redux';
@@ -378,14 +377,6 @@ class ProviderProfileScreen extends Component {
     );
   }
 }
-
-ProviderProfileScreen.propTypes = Object.assign({}, Video.propTypes, {
-  RCTVideo: { onVideoAudioBecomingNoisy: PropTypes.bool },
-});
-
-// Video.propTypes = {
-//   RCTVideo: { onVideoAudioBecomingNoisy: PropTypes.bool },
-// };
 
 const styles = {
   image: {
