@@ -7,7 +7,7 @@ import { Alert, ImageBackground, StyleSheet, View } from 'react-native';
 import * as Keychain from 'react-native-keychain';
 import { Icon } from 'native-base';
 import I18n from 'react-native-i18n';
-import { Button, Container, FieldInput, Text } from '../../components/common';
+import { Button, Container, FieldInput, Text, Logo } from '../../components/common';
 import { white } from '../../theme/colors';
 import APIs from '../../api';
 
@@ -103,6 +103,7 @@ class ForgotPassword extends Component {
           </Button>
           <Text style={styles.headerText}>{I18n.t('logIn.forgot_password_title')}</Text>
         </View>
+        <Logo styleContainer={{ marginTop: -60 }} />
         {this.state.step === 1 ? (
           <View id="ForgotPassword.formWrapper" style={styles.formWrapper}>
             <View id="ForgotPassword.form" style={styles.form}>

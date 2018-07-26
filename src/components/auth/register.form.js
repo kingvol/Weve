@@ -16,7 +16,7 @@ import CountryPicker from 'react-native-country-picker-modal';
 import MultiSelect from 'react-native-multiple-select';
 import FastImage from 'react-native-fast-image';
 import { contrastColor, primaryFont, backgroundColor } from '../../theme';
-import { Button, Container, FieldInput, Text } from '../../components/common';
+import { Button, Container, FieldInput, Text, Logo } from '../../components/common';
 import SignupImageForm from './signupImage.form';
 import Eula from './EULA';
 import countries from '../../countryLib/countries';
@@ -325,6 +325,7 @@ class SignupForm extends Component {
             {I18n.t('logIn.sign_up')}
           </Text>
         </View>
+        <Logo styleContainer={{ marginTop: 30 }} />
 
         <View
           id="Signup.formWrapper"
