@@ -255,7 +255,7 @@ class ProviderProfileScreen extends Component {
               // lockPortraitOnFsExit
               // inlineOnly
               // resizeMode="stretch"
-              resizeMode="cover"
+              // resizeMode="cover"
               // lockRatio={isPortrait ? undefined : 1}
               autoPlay
               onEnd={() => this.setModalForImageVisible(false)}
