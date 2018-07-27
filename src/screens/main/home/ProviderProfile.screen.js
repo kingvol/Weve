@@ -435,7 +435,7 @@ const styles = {
     marginLeft: 3,
     marginRight: 3,
     marginTop: 3,
-    marginBottom: 10,
+    marginBottom: ITEM_WIDTH / 1.5 - 45,
   },
 };
 

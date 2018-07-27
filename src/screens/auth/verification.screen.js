@@ -4,7 +4,7 @@ import { Container, Icon, View, Form } from 'native-base';
 import PhoneInput from 'react-native-phone-input';
 import I18n from '../../locales';
 import { contrastColor, primaryFont } from '../../theme';
-import { Button, Text, FieldInput } from '../../components/common';
+import { Button, Text, FieldInput, Logo } from '../../components/common';
 
 import APIs from '../../api';
 import vars from '../../env/vars';
@@ -160,6 +160,7 @@ class VerificationScreen extends Component {
               </Text>
             </View>
             <View style={styles.contentContainer}>
+              <Logo styleContainer={{ marginBottom: 10 }} />
               <Text style={styles.titleText}>
                 {this.state.step === 1 ? I18n.t('common.phoneNumber') : I18n.t('auth.enter_code')}
               </Text>

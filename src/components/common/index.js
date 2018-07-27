@@ -23,6 +23,7 @@ import {
 import Button from './Button';
 import Center from './Center';
 
+export Logo from './Logo';
 export * from './FieldInput';
 export * from './ProfileField';
 export * from './EditProfileField';
