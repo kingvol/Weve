@@ -39,6 +39,8 @@ const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png
 const ITEM_WIDTH = Dimensions.get('window').width;
 const ITEM_HEIGHT = Dimensions.get('window').height;
 
+// const isPortrait = () => ITEM_HEIGHT >= ITEM_WIDTH;
+
 class ProviderProfileScreen extends Component {
   constructor(props) {
     super(props);
@@ -241,8 +243,7 @@ class ProviderProfileScreen extends Component {
               url={provider.profileVideoURL}
               style={{
                 flex: 1,
-                backgroundColor: 'black',
-                justifyContent: 'center',
+                // justifyContent: 'center',
               }}
               logo="http://wevedo.com/img/logo.png"
               title={
@@ -250,9 +251,12 @@ class ProviderProfileScreen extends Component {
                   ? `${provider.fullName}`
                   : `${provider.firstName} ${provider.lastName || ''}`
               }
-              inlineOnly
-              resizeMode="stretch"
-              lockRatio={4 / 3}
+              // rotateToFullScreen={isPortrait ? false : true}
+              // lockPortraitOnFsExit
+              // inlineOnly
+              // resizeMode="stretch"
+              resizeMode="cover"
+              // lockRatio={isPortrait ? undefined : 1}
               autoPlay
               onEnd={() => this.setModalForImageVisible(false)}
               onMorePress={() => this.setModalForImageVisible(false)}
