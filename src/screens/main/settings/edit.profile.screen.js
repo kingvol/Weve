@@ -196,7 +196,6 @@ class EditProfileScreen extends Component {
 
   onFullNameChange = (value) => {
     this.dataModified();
-    if (value.length > 80) value = value.substring(0, 80);
     this.setState({ fullName: value });
     let firstName;
     let lastName;
@@ -865,7 +864,7 @@ class EditProfileScreen extends Component {
           )}
           <FieldInput
             name="fullName"
-            input={{ value: this.state.fullName }}
+            input={{ value: this.state.fullName, maxLength: 80 }}
             placeholder={I18n.t('common.fullName')}
             color={lightTextColor}
             onChangeText={value => this.onFullNameChange(value)}
