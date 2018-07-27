@@ -715,11 +715,11 @@ class EditProfileScreen extends Component {
     }
 
     return [
-      <View style={{ marginBottom: 20 }}>
+      <View key="addVideoProgress" style={{ marginBottom: 20 }}>
         <Progress.Circle size={80} progress={videoUploadProgress / 100} showsText />
       </View>,
-      <Button onPress={this.cancelVideoUpload}>
-        <Text>Cancel</Text>
+      <Button key="cancelUpload" onPress={this.cancelVideoUpload}>
+        <Text>{I18n.t('menu.homeTab.booking.cancel')}</Text>
       </Button>,
     ];
   }
