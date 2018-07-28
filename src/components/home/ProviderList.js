@@ -115,7 +115,7 @@ class ProviderList extends PureComponent {
       />
     );
 
-  _renderItem = ({ item }) =>   
+  _renderItem = ({ item }) =>
     item._id === 'button' ? (
       this._renderMoreButton()
     ) : (
@@ -131,11 +131,9 @@ class ProviderList extends PureComponent {
   render() {
     const { containerStyle, buttonsRow, buttonView } = styles;
 
-    const data = this.state.providers
-      ? [...this.state.providers, { _id: 'button' }]
-      : null;
+    const data = this.state.providers ? [...this.state.providers, { _id: 'button' }] : null;
 
-    return this.state.providers.length ? (
+    return !this.state.isLoading ? (
       <View style={containerStyle}>
         <View style={buttonsRow}>
           <View style={buttonView}>
