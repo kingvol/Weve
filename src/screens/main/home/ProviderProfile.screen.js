@@ -9,8 +9,9 @@ import {
   Linking,
   Modal,
   TouchableWithoutFeedback,
+  TouchableOpacity,
 } from 'react-native';
-import VideoPlayer from 'react-native-video-player';
+import Video from 'react-native-af-video-player';
 import FastImage from 'react-native-fast-image';
 import { connect } from 'react-redux';
 import Swiper from 'react-native-swiper';
@@ -37,6 +38,8 @@ const calendarTheme = {
 const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png';
 const ITEM_WIDTH = Dimensions.get('window').width;
 const ITEM_HEIGHT = Dimensions.get('window').height;
+
+// const isPortrait = () => ITEM_HEIGHT >= ITEM_WIDTH;
 
 class ProviderProfileScreen extends Component {
   constructor(props) {
@@ -117,7 +120,7 @@ class ProviderProfileScreen extends Component {
             return Linking.openURL(`tel:${this.props.provider.phoneNumber}`);
           }
         })
-        .catch(error => alert(I18n.t('chat.error')));
+        .catch(() => alert(I18n.t('chat.error')));
     }
   }
 
@@ -179,14 +182,18 @@ class ProviderProfileScreen extends Component {
     Analytics.trackEvent('Booked date', { provider: this.props.user._id, date: timestamp });
   };
 
-  renderVideoPlayer = videoUrl => (
-    <VideoPlayer style={{ height: '100%' }} video={{ uri: videoUrl }} />
-  );
-
   render() {
     const { profile } = this.props.user; // authUser
     const { provider } = this.props;
-    const { styleImage, styleImageFullScreen, slide, wrapper, styleIconButton, dotsStyle } = styles;
+    const {
+      styleImage,
+      styleImageFullScreen,
+      slide,
+      wrapper,
+      styleIconButton,
+      styleIconImage,
+      dotsStyle,
+    } = styles;
 
     const markedDates = profile._id === provider._id ? profile.bookedDates : provider.bookedDates;
 
@@ -227,24 +234,55 @@ class ProviderProfileScreen extends Component {
           transparent={false}
           visible={this.state.modalForImageVisible}
           onRequestClose={() => this.setModalForImageVisible(false)}
+          style={{ backgroundColor: 'black' }}
+          supportedOrientations={['portrait', 'landscape']}
         >
-          <TouchableWithoutFeedback onPress={() => this.setModalForImageVisible(false)}>
-            <Icon style={styleIconButton} size={20} name="remove" />
-          </TouchableWithoutFeedback>
-          <ImageZoom
-            cropWidth={ITEM_WIDTH}
-            cropHeight={ITEM_HEIGHT}
-            imageWidth={ITEM_WIDTH}
-            imageHeight={ITEM_HEIGHT}
-            style={{ backgroundColor: 'black' }}
-          >
-            <FastImage
-              style={styleImageFullScreen}
-              resizeMode={FastImage.resizeMode.contain}
-              source={{ uri: this.state.fullScreenImageUrl }}
-              priority={FastImage.priority.high}
+          {typeof this.state.fullScreenImageUrl === 'object' ? (
+            <Video
+              key={provider.profileVideoURL}
+              url={provider.profileVideoURL}
+              style={{
+                flex: 1,
+                // justifyContent: 'center',
+              }}
+              logo="http://wevedo.com/img/logo.png"
+              title={
+                provider.fullName
+                  ? `${provider.fullName}`
+                  : `${provider.firstName} ${provider.lastName || ''}`
+              }
+              // rotateToFullScreen={isPortrait ? false : true}
+              // lockPortraitOnFsExit
+              // inlineOnly
+              // resizeMode="stretch"
+              // resizeMode="cover"
+              // lockRatio={isPortrait ? undefined : 1}
+              autoPlay
+              onEnd={() => this.setModalForImageVisible(false)}
+              onMorePress={() => this.setModalForImageVisible(false)}
+              onError={() => this.setModalForImageVisible(false)}
             />
-          </ImageZoom>
+          ) : (
+            <View>
+              <TouchableWithoutFeedback onPress={() => this.setModalForImageVisible(false)}>
+                <Icon style={styleIconButton} size={20} name="remove" />
+              </TouchableWithoutFeedback>
+              <ImageZoom
+                cropWidth={ITEM_WIDTH}
+                cropHeight={ITEM_HEIGHT}
+                imageWidth={ITEM_WIDTH}
+                imageHeight={ITEM_HEIGHT}
+                style={{ backgroundColor: 'black' }}
+              >
+                <FastImage
+                  style={styleImageFullScreen}
+                  resizeMode={FastImage.resizeMode.contain}
+                  source={{ uri: this.state.fullScreenImageUrl }}
+                  priority={FastImage.priority.high}
+                />
+              </ImageZoom>
+            </View>
+          )}
         </Modal>
         <View style={{ minHeight: 500 }}>
           {provider.profileImageURL && provider.providerImages && images.length > 1 ? (
@@ -253,32 +291,32 @@ class ProviderProfileScreen extends Component {
               showsButtons
               autoplay={!provider.profileVideoURL}
               autoplayTimeout={5}
-              dot={
-                <View
-                  style={[{ backgroundColor: '#c4c4c4' }, dotsStyle]}
-                />
-              }
-              activeDot={
-                <View
-                  style={[{ backgroundColor: '#d64635' }, dotsStyle]}
-                />
-              }
+              dot={<View style={[{ backgroundColor: '#c4c4c4' }, dotsStyle]} />}
+              activeDot={<View style={[{ backgroundColor: '#d64635' }, dotsStyle]} />}
               nextButton={<Text style={{ color: '#d64635', fontSize: 35 }}>›</Text>}
               prevButton={<Text style={{ color: '#d64635', fontSize: 35 }}>‹</Text>}
             >
-              {images.map((item, key) =>
-                  item.id === 'video' ? (
-                    this.renderVideoPlayer(item.url)
+              {images.map((item, key) => (
+                <TouchableWithoutFeedback
+                  id={key}
+                  key={item}
+                  style={slide}
+                  onPress={() => this.setModalForImageVisible(true, item)}
+                >
+                  {item.id === 'video' ? (
+                    <View style={{ flex: 1, backgroundColor: 'black' }}>
+                      <TouchableOpacity
+                        onPress={() => this.setModalForImageVisible(true, item)}
+                        style={styleIconImage}
+                      >
+                        <Icon style={{ color: 'white' }} size={45} name="play-circle-o" />
+                      </TouchableOpacity>
+                    </View>
                   ) : (
-                    <TouchableWithoutFeedback
-                      id={key}
-                      key={item}
-                      style={slide}
-                      onPress={() => this.setModalForImageVisible(true, item)}
-                    >
-                      <FastImage source={{ uri: item }} style={styleImage} />
-                    </TouchableWithoutFeedback>
-                  ))}
+                    <FastImage source={{ uri: item }} style={styleImage} />
+                  )}
+                </TouchableWithoutFeedback>
+              ))}
             </Swiper>
           ) : (
             <TouchableWithoutFeedback
@@ -367,6 +405,12 @@ const styles = {
     height: ITEM_WIDTH / 1.5,
     width: ITEM_WIDTH,
   },
+  styleIconImage: {
+    flex: 0,
+    alignSelf: 'center',
+    paddingTop: ITEM_WIDTH / 1.5 / 2.3,
+    position: 'absolute',
+  },
   styleImageFullScreen: {
     height: ITEM_HEIGHT,
   },
@@ -377,15 +421,12 @@ const styles = {
     paddingBottom: 0.8,
     paddingLeft: 3.3,
     paddingRight: 3.3,
+    justifyContent: 'flex-end',
   },
   calendar: {},
   infoContainer: {
     alignItems: 'center',
     flex: 1,
-  },
-  video: {
-    aspectRatio: 1,
-    width: '100%',
   },
   dotsStyle: {
     width: 8,
