@@ -339,6 +339,7 @@ class SignupForm extends Component {
                   color={contrastColor}
                   placeholder={I18n.t('common.fullName')}
                   errorColor={contrastColor}
+                  input={{ maxLength: 50 }}
                   onChangeText={text => this.onFieldChange('fullName', text)}
                   onBlur={() => this.onBlur('fullName', this.state.values.fullName)}
                   id="SignUp.fullNameInput"
