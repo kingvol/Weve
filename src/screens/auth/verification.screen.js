@@ -208,18 +208,18 @@ class VerificationScreen extends Component {
                   <Text style={styles.resendText}>{I18n.t('auth.resend_code')}</Text>
                 </TouchableOpacity>
               )}
-              {
+              {!disabled && (
                 <Button
                   id="Verification.submitButton"
                   block
                   style={styles.button}
                   onPress={this.state.step === 1 ? this.onContinuePress : this.handleSubmit}
                   spinner={this.state.isLoading}
-                  disabled={this.state.isLoading || disabled}
+                  disabled={this.state.isLoading}
                 >
                   <Text style={styles.buttonText}>{I18n.t('common.continue')}</Text>
                 </Button>
-              }
+              )}
               {vars.DB_ENV === 'test' &&
                 this.state.step === 1 && (
                   <View
