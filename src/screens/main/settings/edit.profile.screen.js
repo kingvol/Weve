@@ -864,7 +864,7 @@ class EditProfileScreen extends Component {
           )}
           <FieldInput
             name="fullName"
-            input={{ value: this.state.fullName, maxLength: 80 }}
+            input={{ value: this.state.fullName, maxLength: 50 }}
             placeholder={I18n.t('common.fullName')}
             color={lightTextColor}
             onChangeText={value => this.onFullNameChange(value)}
