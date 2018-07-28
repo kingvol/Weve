@@ -18,10 +18,10 @@ const categories = [
     imageSource: images.venue,
   },
   {
-    route: 'Artist',
+    route: 'Transport',
     screenIndex: 1,
-    title: I18n.t('categories.artist'),
-    imageSource: images.artist,
+    title: I18n.t('categories.transport'),
+    imageSource: images.transport,
   },
   {
     route: 'Photo',

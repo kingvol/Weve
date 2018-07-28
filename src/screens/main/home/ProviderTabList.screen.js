@@ -19,7 +19,7 @@ class ProviderTabList extends Component {
         index: this.props.routeIndex || 0,
         routes: [
           { key: 'venue', title: I18n.t('categories.venue') },
-          { key: 'artist', title: I18n.t('categories.artist') },
+          { key: 'transport', title: I18n.t('categories.transport') },
           { key: 'photo', title: I18n.t('categories.photo') },
           { key: 'catering', title: I18n.t('categories.catering') },
           { key: 'entertainment', title: I18n.t('categories.entertainment') },
@@ -48,7 +48,7 @@ class ProviderTabList extends Component {
   }
 
   VenueRoute = () => <ProviderList category="Venue" navigator={this.props.navigator} />;
-  ArtistRoute = () => <ProviderList category="Artist" navigator={this.props.navigator} />;
+  TransportRoute = () => <ProviderList category="Transport" navigator={this.props.navigator} />;
   PhotoRoute = () => <ProviderList category="Photo" navigator={this.props.navigator} />;
   CateringRoute = () => <ProviderList category="Catering" navigator={this.props.navigator} />;
   EntertainmentRoute = () => (
@@ -81,18 +81,14 @@ class ProviderTabList extends Component {
   );
 
   _renderLabel = ({ route }) => (
-    <Text
-      style={styles.labelText}
-      adjustsFontSizeToFit
-      minimumFontScale={0.8}
-    >
+    <Text style={styles.labelText} adjustsFontSizeToFit minimumFontScale={0.8}>
       {route.title.toUpperCase()}
     </Text>
-  )
+  );
 
   _renderScene = SceneMap({
     venue: this.VenueRoute,
-    artist: this.ArtistRoute,
+    transport: this.TransportRoute,
     photo: this.PhotoRoute,
     catering: this.CateringRoute,
     entertainment: this.EntertainmentRoute,
@@ -122,7 +118,6 @@ const styles = {
   labelText: {
     padding: 7,
     color: 'red',
-
   },
 };
 
