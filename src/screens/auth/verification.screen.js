@@ -29,6 +29,7 @@ class VerificationScreen extends Component {
 
   onContinuePress = async () => {
     const mobileNumber = this.phoneInput.getValue();
+    this.setState({ isLoading: true });
     // check for test case
     if (mobileNumber === testNumber || (vars.DB_ENV === 'test' && this.state.switchValue)) {
       try {
@@ -50,6 +51,7 @@ class VerificationScreen extends Component {
     }
     const isValid = this.phoneInput.isValidNumber();
     if (!isValid) {
+      this.setState({ isLoading: false });
       return;
     }
     try {
@@ -206,18 +208,18 @@ class VerificationScreen extends Component {
                   <Text style={styles.resendText}>{I18n.t('auth.resend_code')}</Text>
                 </TouchableOpacity>
               )}
-              {!disabled && (
+              {
                 <Button
                   id="Verification.submitButton"
                   block
                   style={styles.button}
                   onPress={this.state.step === 1 ? this.onContinuePress : this.handleSubmit}
                   spinner={this.state.isLoading}
-                  disabled={disabled}
+                  disabled={this.state.isLoading || disabled}
                 >
                   <Text style={styles.buttonText}>{I18n.t('common.continue')}</Text>
                 </Button>
-              )}
+              }
               {vars.DB_ENV === 'test' &&
                 this.state.step === 1 && (
                   <View
