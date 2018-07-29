@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ImageBackground, ScrollView, Alert, TouchableOpacity, Switch } from 'react-native';
+import { ImageBackground, ScrollView, Alert, TouchableOpacity, Switch, Keyboard } from 'react-native';
 import { Container, Icon, View, Form } from 'native-base';
 import PhoneInput from 'react-native-phone-input';
 import I18n from '../../locales';
@@ -74,6 +74,9 @@ class VerificationScreen extends Component {
 
   onTextChange = (key, value) => {
     this.setState({ [key]: value });
+    if (key === 'enteredCode') {
+      if (value.length === 4) Keyboard.dismiss();
+    }
   };
 
   onResendPress = () => {
@@ -85,6 +88,7 @@ class VerificationScreen extends Component {
   numberPhoneCheck = () => {
     const isValid = this.phoneInput.isValidNumber();
     this.setState({ phone: isValid });
+    if (isValid) Keyboard.dismiss();
   };
 
   requestVerification = async (number) => {
