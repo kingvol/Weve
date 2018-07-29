@@ -12,7 +12,7 @@ import {
   TouchableOpacity,
   Platform,
 } from 'react-native';
-import Video from 'react-native-af-video-player';
+import Video, { Container } from 'react-native-af-video-player';
 import FastImage from 'react-native-fast-image';
 import { connect } from 'react-redux';
 import Swiper from 'react-native-swiper';
@@ -131,7 +131,10 @@ class ProviderProfileScreen extends Component {
   };
 
   setModalForImageVisible = (visible, link) => {
-    this.setState({ modalForImageVisible: visible, fullScreenImageUrl: link });
+    this.setState({ modalForImageVisible: visible });
+    if (link) {
+      this.setState({ fullScreenImageUrl: link });
+    }
   };
 
   handleDayPress = ({ timestamp, dateString }) => {
@@ -239,35 +242,39 @@ class ProviderProfileScreen extends Component {
         <Modal
           transparent={false}
           visible={this.state.modalForImageVisible}
-          onRequestClose={() => this.setModalForImageVisible(false)}          
+          onRequestClose={() => this.setModalForImageVisible(false)}
+          supportedOrientations={['portrait', 'landscape']}
         >
           {typeof this.state.fullScreenImageUrl === 'object' ? (
-            <Video
-              key={provider.profileVideoURL}
-              url={provider.profileVideoURL}
-              style={{
-                flex: 1,
-                justifyContent: 'center',
-              }}
-              logo="http://wevedo.com/img/logo.png"
-              title={
-                provider.fullName
-                  ? `${provider.fullName}`
-                  : `${provider.firstName} ${provider.lastName || ''}`
-              }
-              inlineOnly={Platform.OS === 'ios'}
-              resizeMode={Platform.OS === 'ios' || this.state.videoFullScreen ? 'cover' : 'contain'}
-              onFullScreen={status => this.onFullScreen(status)}
-              autoPlay
-              onEnd={() => this.f(false)}
-              onMorePress={() => this.setModalForImageVisible(false)}
-              onError={() => this.setModalForImageVisible(false)}
-            />
+            <Container style={{ flex: 1, backgroundColor: 'black' }}>
+              <Video
+                key={provider.profileVideoURL}
+                url={provider.profileVideoURL}
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  marginTop: Platform.OS === 'ios' && 20,
+                }}
+                logo={Platform.OS === 'ios' ? require('../../../images/WevedoLogoalpha.jpg') : "http://wevedo.com/img/logo.png"} // eslint-disable-line global-require
+                title={
+                  provider.fullName
+                    ? `${provider.fullName}`
+                    : `${provider.firstName} ${provider.lastName || ''}`
+                }
+                inlineOnly={Platform.OS === 'ios'}
+                resizeMode={Platform.OS === 'ios' || this.state.videoFullScreen ? 'cover' : 'contain'}
+                onFullScreen={status => this.onFullScreen(status)}
+                autoPlay
+                onEnd={() => this.setModalForImageVisible(false)}
+                onMorePress={() => this.setModalForImageVisible(false)}
+                onError={() => this.setModalForImageVisible(false)}
+              />
+            </Container>
           ) : (
-            <View>
-              <TouchableWithoutFeedback onPress={() => this.setModalForImageVisible(false)}>
+            <View style={{ backgroundColor: 'black' }}>
+              <TouchableOpacity style={{ marginTop: Platform.OS === 'ios' ? 20 : 5, marginLeft: 5 }} onPress={() => this.setModalForImageVisible(false)}>
                 <Icon style={styleIconButton} size={20} name="remove" />
-              </TouchableWithoutFeedback>
+              </TouchableOpacity>
               <ImageZoom
                 cropWidth={ITEM_WIDTH}
                 cropHeight={ITEM_HEIGHT}
