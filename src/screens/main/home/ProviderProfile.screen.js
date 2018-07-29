@@ -202,6 +202,8 @@ class ProviderProfileScreen extends Component {
       styleIconButton,
       styleIconImage,
       dotsStyle,
+      styleIosMargin,
+      styleVideoIos,
     } = styles;
 
     const markedDates = profile._id === provider._id ? profile.bookedDates : provider.bookedDates;
@@ -250,12 +252,11 @@ class ProviderProfileScreen extends Component {
               <Video
                 key={provider.profileVideoURL}
                 url={provider.profileVideoURL}
-                style={{
+                style={Platform.OS === 'ios' ? styleVideoIos : {
                   flex: 1,
                   justifyContent: 'center',
-                  marginTop: Platform.OS === 'ios' && 20,
                 }}
-                logo={Platform.OS === 'ios' ? require('../../../images/WevedoLogoalpha.jpg') : "http://wevedo.com/img/logo.png"} // eslint-disable-line global-require
+                logo={Platform.OS === 'ios' ? require('../../../images/WevedoLogoalpha.jpg') : 'http://wevedo.com/img/logo.png'} // eslint-disable-line global-require
                 title={
                   provider.fullName
                     ? `${provider.fullName}`
@@ -272,8 +273,8 @@ class ProviderProfileScreen extends Component {
             </Container>
           ) : (
             <View style={{ backgroundColor: 'black' }}>
-              <TouchableOpacity style={{ marginTop: Platform.OS === 'ios' ? 20 : 5, marginLeft: 5 }} onPress={() => this.setModalForImageVisible(false)}>
-                <Icon style={styleIconButton} size={20} name="remove" />
+              <TouchableOpacity style={Platform.OS === 'ios' ? styleIosMargin : {}} onPress={() => this.setModalForImageVisible(false)}>
+                <Icon style={styleIconButton} size={30} name="remove" />
               </TouchableOpacity>
               <ImageZoom
                 cropWidth={ITEM_WIDTH}
@@ -422,6 +423,12 @@ const styles = {
   styleImageFullScreen: {
     height: ITEM_HEIGHT,
   },
+  styleVideoIos: {
+    flex: 1,
+    justifyContent: 'center',
+    marginTop: 20, 
+  },
+  styleIosMargin: { marginTop: 20 },
   styleIconButton: {
     color: '#d64635',
     backgroundColor: 'black',
