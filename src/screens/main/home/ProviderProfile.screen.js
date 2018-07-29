@@ -10,6 +10,7 @@ import {
   Modal,
   TouchableWithoutFeedback,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import Video from 'react-native-af-video-player';
 import FastImage from 'react-native-fast-image';
@@ -48,6 +49,7 @@ class ProviderProfileScreen extends Component {
     this.state = {
       modalForImageVisible: false,
       fullScreenImageUrl: this.props.provider.profileImageURL || defaultProfile,
+      videoFullScreen: false,
     };
   }
 
@@ -123,6 +125,10 @@ class ProviderProfileScreen extends Component {
         .catch(() => alert(I18n.t('chat.error')));
     }
   }
+
+  onFullScreen = (status) => {
+    this.setState({ videoFullScreen: status });
+  };
 
   setModalForImageVisible = (visible, link) => {
     this.setState({ modalForImageVisible: visible, fullScreenImageUrl: link });
@@ -233,9 +239,7 @@ class ProviderProfileScreen extends Component {
         <Modal
           transparent={false}
           visible={this.state.modalForImageVisible}
-          onRequestClose={() => this.setModalForImageVisible(false)}
-          style={{ backgroundColor: 'black' }}
-          supportedOrientations={['portrait', 'landscape']}
+          onRequestClose={() => this.setModalForImageVisible(false)}          
         >
           {typeof this.state.fullScreenImageUrl === 'object' ? (
             <Video
@@ -243,7 +247,7 @@ class ProviderProfileScreen extends Component {
               url={provider.profileVideoURL}
               style={{
                 flex: 1,
-                // justifyContent: 'center',
+                justifyContent: 'center',
               }}
               logo="http://wevedo.com/img/logo.png"
               title={
@@ -251,14 +255,11 @@ class ProviderProfileScreen extends Component {
                   ? `${provider.fullName}`
                   : `${provider.firstName} ${provider.lastName || ''}`
               }
-              // rotateToFullScreen={isPortrait ? false : true}
-              // lockPortraitOnFsExit
-              // inlineOnly
-              // resizeMode="stretch"
-              // resizeMode="cover"
-              // lockRatio={isPortrait ? undefined : 1}
+              inlineOnly={Platform.OS === 'ios'}
+              resizeMode={Platform.OS === 'ios' || this.state.videoFullScreen ? 'cover' : 'contain'}
+              onFullScreen={status => this.onFullScreen(status)}
               autoPlay
-              onEnd={() => this.setModalForImageVisible(false)}
+              onEnd={() => this.f(false)}
               onMorePress={() => this.setModalForImageVisible(false)}
               onError={() => this.setModalForImageVisible(false)}
             />
@@ -289,7 +290,7 @@ class ProviderProfileScreen extends Component {
             <Swiper
               style={wrapper}
               showsButtons
-              autoplay={!provider.profileVideoURL}
+              autoplay
               autoplayTimeout={5}
               dot={<View style={[{ backgroundColor: '#c4c4c4' }, dotsStyle]} />}
               activeDot={<View style={[{ backgroundColor: '#d64635' }, dotsStyle]} />}
