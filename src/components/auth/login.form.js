@@ -1,11 +1,20 @@
 import React, { Component } from 'react';
-import { ImageBackground, TouchableOpacity, View, ScrollView } from 'react-native';
+import {
+  ImageBackground,
+  TouchableOpacity,
+  View,
+  Animated,
+  Keyboard,
+} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { CardItem, Container, Form, Icon, Item, Input, Label, Title } from 'native-base';
 import I18n from '../../locales';
 import { primaryColor, backgroundColor, contrastColor, primaryFont } from '../../theme';
 import images from '../../images';
 import { Button, Center, Text } from '../../components/common';
+
+const logoSize = 80;
+const AnimatedFastImage = Animated.createAnimatedComponent(FastImage);
 
 class LoginForm extends Component {
   constructor() {
@@ -20,7 +29,23 @@ class LoginForm extends Component {
       phoneNumberLabel: `${I18n.t('common.example')}: +44...`,
       phoneNumberError: false,
     };
+
+    this.imageOuterHeight = new Animated.Value(logoSize);
+    this.imageOuterWight = new Animated.Value(logoSize);
+    this.imageHeight = new Animated.Value(logoSize - 6);
+    this.imageWight = new Animated.Value(logoSize - 6);
   }
+
+  componentDidMount() {
+    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
+    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
+  }
+
+  componentWillUnmount() {
+    this.keyboardDidShowListener.remove();
+    this.keyboardDidHideListener.remove();
+  }
+
 
   onForgotPress = () => {
     this.props.onForgotPress();
@@ -65,6 +90,48 @@ class LoginForm extends Component {
       });
     }
   }
+
+  keyboardDidShow = (event) => {
+    Animated.parallel([
+      Animated.timing(this.imageOuterHeight, {
+        duration: event.duration,
+        toValue: logoSize / 2,
+      }),
+      Animated.timing(this.imageOuterWight, {
+        duration: event.duration,
+        toValue: logoSize / 2,
+      }),
+      Animated.timing(this.imageHeight, {
+        duration: event.duration,
+        toValue: (logoSize - 6) / 2,
+      }),
+      Animated.timing(this.imageWight, {
+        duration: event.duration,
+        toValue: (logoSize - 6) / 2,
+      }),
+    ]).start();
+  };
+
+  keyboardDidHide = () => {
+    Animated.parallel([
+      Animated.timing(this.imageOuterHeight, {
+        duration: logoSize / 2,
+        toValue: logoSize,
+      }),
+      Animated.timing(this.imageOuterWight, {
+        duration: logoSize / 2,
+        toValue: logoSize,
+      }),
+      Animated.timing(this.imageHeight, {
+        duration: (logoSize - 6) / 2,
+        toValue: logoSize - 6,
+      }),
+      Animated.timing(this.imageWight, {
+        duration: (logoSize - 6) / 2,
+        toValue: logoSize - 6,
+      }),
+    ]).start();
+  };
 
   switchSecure() {
     this.setState({ secureVisible: !this.state.secureVisible });
@@ -120,130 +187,134 @@ class LoginForm extends Component {
     const secure = !this.state.secureVisible;
 
     return (
-      <ScrollView>
-        <Container containerStyle={containerStyle} id="LoginPage.main-content">
-          <ImageBackground resizeMode="cover" style={background} source={images.backGround}>
-            <CardItem style={header} id="LoginPage.logo-container">
-              <Title style={headerText} id="LoginPage.accountLoginText">
-                {I18n.t('logIn.account_login')}
-              </Title>
-            </CardItem>
-            <CardItem style={pic} id="LoginPage.logoWrapper">
-              <View style={logoOuterCircle} id="LoginPage.logoOuterCircle">
-                <FastImage id="LoginPage.logo" source={images.logo} style={logoInnerCircle} />
-              </View>
-            </CardItem>
-            <Form id="LoginPage.form-container" style={form}>
-              <View style={itemStyle}>
-                <Item
-                  error={this.state.phoneNumberError}
-                  id="LoginPage.phoneNumberInput"
-                  floatingLabel
-                  style={item}
-                >
-                  <Label style={label}>{I18n.t('common.phone')}</Label>
-                  <Input
-                    style={input}
-                    autoCapitalize="none"
-                    keyboardType="phone-pad"
-                    autoCorrect={false}
-                    value={this.state.phoneNumber}
-                    onChangeText={text => this.numberPhoneCheck(text)}
-                    onBlur={() => this.onBlur('phoneNumber', this.state.phoneNumber)}
-                  />
-                  {this.state.phoneNumberError && (
-                    <Icon name="close-circle" style={{ color: 'red' }} />
+      <Container
+        containerStyle={[containerStyle, { paddingBottom: this.keyboardHeight }]}
+        id="LoginPage.main-content"
+      >
+        <ImageBackground resizeMode="cover" style={background} source={images.backGround}>
+          <CardItem style={header} id="LoginPage.logo-container">
+            <Title style={headerText} id="LoginPage.accountLoginText">
+              {I18n.t('logIn.account_login')}
+            </Title>
+          </CardItem>
+          <CardItem style={pic} id="LoginPage.logoWrapper">
+            <Animated.View
+              style={[logoOuterCircle, { height: this.imageOuterHeight, width: this.imageOuterWight }]}
+              id="LoginPage.logoOuterCircle"
+            >
+              <AnimatedFastImage id="LoginPage.logo" source={images.logo} style={[logoInnerCircle, { height: this.imageHeight, width: this.imageWight }]} />
+            </Animated.View>
+          </CardItem>
+          <Form id="LoginPage.form-container" style={form}>
+            <View style={itemStyle}>
+              <Item
+                error={this.state.phoneNumberError}
+                id="LoginPage.phoneNumberInput"
+                floatingLabel
+                style={item}
+              >
+                <Label style={label}>{I18n.t('common.phone')}</Label>
+                <Input
+                  style={input}
+                  autoCapitalize="none"
+                  keyboardType="phone-pad"
+                  autoCorrect={false}
+                  value={this.state.phoneNumber}
+                  onChangeText={text => this.numberPhoneCheck(text)}
+                  onBlur={() => this.onBlur('phoneNumber', this.state.phoneNumber)}
+                />
+                {this.state.phoneNumberError && (
+                <Icon name="close-circle" style={{ color: 'red' }} />
                   )}
-                </Item>
-                <View />
-              </View>
-              <Text style={errorText}>{this.state.phoneNumberLabel}</Text>
-              <View style={itemStyle}>
-                <Item
-                  error={this.state.passwordError}
-                  id="LoginPage.passwordInput"
-                  floatingLabel
-                  style={itemPassword}
-                >
-                  <Label style={label}>{I18n.t('common.password')}</Label>
-                  <Input
-                    style={input}
-                    value={this.state.password}
-                    onChangeText={text => this.onFieldChange('password', text)}
+              </Item>
+              <View />
+            </View>
+            <Text style={errorText}>{this.state.phoneNumberLabel}</Text>
+            <View style={itemStyle}>
+              <Item
+                error={this.state.passwordError}
+                id="LoginPage.passwordInput"
+                floatingLabel
+                style={itemPassword}
+              >
+                <Label style={label}>{I18n.t('common.password')}</Label>
+                <Input
+                  style={input}
+                  value={this.state.password}
+                  onChangeText={text => this.onFieldChange('password', text)}
                     // onFocus={this.onFocus('password', this.state.password)}
-                    onBlur={() => this.onBlur('password', this.state.password)}
-                    secureTextEntry={secure}
-                  />
-                  {this.state.passwordError && (
-                    <Icon name="close-circle" style={{ color: 'red' }} />
+                  onBlur={() => this.onBlur('password', this.state.password)}
+                  secureTextEntry={secure}
+                />
+                {this.state.passwordError && (
+                <Icon name="close-circle" style={{ color: 'red' }} />
                   )}
-                </Item>
-                <View
-                  style={{
+              </Item>
+              <View
+                style={{
                     alignSelf: 'flex-end',
                     bottom: 2,
                     flex: 0,
                   }}
-                >
-                  <TouchableOpacity onPress={this.switchSecure}>
-                    <Icon
-                      style={{ color: 'white' }}
-                      size={24}
-                      name={secure ? 'md-eye-off' : 'eye'}
-                    />
-                  </TouchableOpacity>
-                </View>
+              >
+                <TouchableOpacity onPress={this.switchSecure}>
+                  <Icon
+                    style={{ color: 'white' }}
+                    size={24}
+                    name={secure ? 'md-eye-off' : 'eye'}
+                  />
+                </TouchableOpacity>
               </View>
-              <Text style={errorText}>{this.state.passwordLabel}</Text>
-              {error && (
-                <View style={styles.errorContainer}>
-                  <Text
-                    id="LoginPage.errorText"
-                    style={{ color: contrastColor, textAlign: 'center' }}
-                  >
-                    {I18n.t(`backend.${error}`, { defaults: [{ scope: 'chat.error' }] })}
-                  </Text>
-                </View>
+            </View>
+            <Text style={errorText}>{this.state.passwordLabel}</Text>
+            {error && (
+            <View style={styles.errorContainer}>
+              <Text
+                id="LoginPage.errorText"
+                style={{ color: contrastColor, textAlign: 'center' }}
+              >
+                {I18n.t(`backend.${error}`, { defaults: [{ scope: 'chat.error' }] })}
+              </Text>
+            </View>
               )}
-              <Button
-                id="LoginPage.forgotPasswordButton"
-                style={{ flex: error ? 1 : 2 }}
-                block
-                transparent
-                onPress={this.onForgotPress}
-              >
-                <Text style={Object.assign({ marginTop: error ? 0 : 35 }, textForgot)}>
-                  {I18n.t('logIn.forgot_your_password').toUpperCase()}
-                </Text>
-              </Button>
-              <Button
-                id="LoginPage.loginButton"
-                block
-                style={loginButton}
-                onPress={this.handleSubmit}
-                disabled={disabled}
-                spinner={isLoading}
-              >
-                <Text style={loginButtonText}>{I18n.t('logIn.log_in')}</Text>
-              </Button>
-              <Center id="LoginPage.dontHaveAnAccountContainer" style={OR}>
-                <View style={or} />
-                <Text style={orText}>{I18n.t('logIn.or')}</Text>
-                <View style={or} />
-              </Center>
-              <Button
-                id="LoginPage.signUpButton"
-                style={register}
-                block
-                transparent
-                onPress={this.props.onRegisterPress}
-              >
-                <Text style={textRegister}>{I18n.t('logIn.register').toUpperCase()}</Text>
-              </Button>
-            </Form>
-          </ImageBackground>
-        </Container>
-      </ScrollView>
+            <Button
+              id="LoginPage.forgotPasswordButton"
+              style={{ flex: error ? 1 : 2 }}
+              block
+              transparent
+              onPress={this.onForgotPress}
+            >
+              <Text style={Object.assign({ marginTop: error ? 0 : 35 }, textForgot)}>
+                {I18n.t('logIn.forgot_your_password').toUpperCase()}
+              </Text>
+            </Button>
+            <Button
+              id="LoginPage.loginButton"
+              block
+              style={loginButton}
+              onPress={this.handleSubmit}
+              disabled={disabled}
+              spinner={isLoading}
+            >
+              <Text style={loginButtonText}>{I18n.t('logIn.log_in')}</Text>
+            </Button>
+            <Center id="LoginPage.dontHaveAnAccountContainer" style={OR}>
+              <View style={or} />
+              <Text style={orText}>{I18n.t('logIn.or')}</Text>
+              <View style={or} />
+            </Center>
+            <Button
+              id="LoginPage.signUpButton"
+              style={register}
+              block
+              transparent
+              onPress={this.props.onRegisterPress}
+            >
+              <Text style={textRegister}>{I18n.t('logIn.register').toUpperCase()}</Text>
+            </Button>
+          </Form>
+        </ImageBackground>
+      </Container>
     );
   }
 }
@@ -251,6 +322,7 @@ class LoginForm extends Component {
 const styles = {
   containerStyle: {
     flex: 1,
+    justifyContent: 'space-between',
   },
   background: {
     flex: 1,
@@ -265,7 +337,6 @@ const styles = {
   },
   header: {
     alignSelf: 'center',
-    flex: 0.3,
     backgroundColor: 'transparent',
   },
   headerText: {
@@ -276,7 +347,6 @@ const styles = {
     ...primaryFont,
   },
   pic: {
-    flex: 0.8,
     alignSelf: 'center',
     backgroundColor: 'transparent',
   },
@@ -286,17 +356,19 @@ const styles = {
     width: 80,
     height: 80,
     backgroundColor,
-    // top: 30,
+    justifyContent: 'center',
   },
   logoInnerCircle: {
     borderRadius: 37,
     width: 74,
     height: 74,
     margin: 3,
+    alignSelf: 'center',
   },
   form: {
     flex: 3,
     backgroundColor: 'rgba(0,0,0,0.5)',
+    paddingTop: 10,
     marginLeft: 15,
     marginRight: 15,
     marginBottom: 15,
@@ -306,10 +378,11 @@ const styles = {
     flex: 1,
     marginTop: 4,
     marginRight: 34,
+    paddingBottom: 5,
   },
   itemStyle: {
     flexDirection: 'row',
-    flex: 2,
+    // flex: 2,
     marginTop: 4,
     marginLeft: 10,
     marginRight: 10,
@@ -318,6 +391,7 @@ const styles = {
     flex: 1,
     marginTop: 4,
     marginRight: 10,
+    paddingBottom: 5,
   },
   label: {
     flex: 1,
