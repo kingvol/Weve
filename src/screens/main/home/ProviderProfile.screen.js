@@ -252,18 +252,28 @@ class ProviderProfileScreen extends Component {
               <Video
                 key={provider.profileVideoURL}
                 url={provider.profileVideoURL}
-                style={Platform.OS === 'ios' ? styleVideoIos : {
-                  flex: 1,
-                  justifyContent: 'center',
-                }}
-                logo={Platform.OS === 'ios' ? require('../../../images/WevedoLogoalpha.jpg') : 'http://wevedo.com/img/logo.png'} // eslint-disable-line global-require
+                style={
+                  Platform.OS === 'ios'
+                    ? styleVideoIos
+                    : {
+                        flex: 1,
+                        justifyContent: 'center',
+                      }
+                }
+                logo={
+                  Platform.OS === 'ios'
+                    ? require('../../../images/WevedoLogoalpha.jpg') // eslint-disable-line global-require
+                    : 'http://wevedo.com/img/logo.png'
+                } 
                 title={
                   provider.fullName
                     ? `${provider.fullName}`
                     : `${provider.firstName} ${provider.lastName || ''}`
                 }
                 inlineOnly={Platform.OS === 'ios'}
-                resizeMode={Platform.OS === 'ios' || this.state.videoFullScreen ? 'cover' : 'contain'}
+                resizeMode={
+                  Platform.OS === 'ios' || this.state.videoFullScreen ? 'cover' : 'contain'
+                }
                 onFullScreen={status => this.onFullScreen(status)}
                 autoPlay
                 onEnd={() => this.setModalForImageVisible(false)}
@@ -273,7 +283,10 @@ class ProviderProfileScreen extends Component {
             </Container>
           ) : (
             <View style={{ backgroundColor: 'black' }}>
-              <TouchableOpacity style={Platform.OS === 'ios' ? styleIosMargin : {}} onPress={() => this.setModalForImageVisible(false)}>
+              <TouchableOpacity
+                style={Platform.OS === 'ios' ? styleIosMargin : {}}
+                onPress={() => this.setModalForImageVisible(false)}
+              >
                 <Icon style={styleIconButton} size={30} name="remove" />
               </TouchableOpacity>
               <ImageZoom
@@ -426,7 +439,7 @@ const styles = {
   styleVideoIos: {
     flex: 1,
     justifyContent: 'center',
-    marginTop: 20, 
+    marginTop: 20,
   },
   styleIosMargin: { marginTop: 20 },
   styleIconButton: {
