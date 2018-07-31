@@ -687,11 +687,27 @@ class EditProfileScreen extends Component {
       return (
         <View style={styles.videoButtonsContainer}>
           {/* <Text style={{ marginRight: 5 }}>{I18n.t('editProfile.video_uploaded')}</Text> */}
-          <NBButton warning rounded onPress={this.onVideoUploadPress} style={{ margin: 5 }}>
-            <Text>{I18n.t('editProfile.new_video')}</Text>
+          <NBButton
+            warning
+            rounded
+            onPress={this.onVideoUploadPress}
+            style={{ margin: 5 }}
+          >
+            <Text
+              style={{ fontSize: 0.35 * ITEM_WIDTH / I18n.t('editProfile.new_video').length }}
+            >{I18n.t('editProfile.new_video')}
+            </Text>
           </NBButton>
-          <NBButton danger rounded onPress={this.onRemoveVideoPress} style={{ margin: 5 }}>
-            <Text>{I18n.t('editProfile.remove_video')}</Text>
+          <NBButton
+            danger
+            rounded
+            onPress={this.onRemoveVideoPress}
+            style={{ margin: 5 }}
+          >
+            <Text
+              style={{ fontSize: 0.35 * ITEM_WIDTH / I18n.t('editProfile.new_video').length }}
+            >{I18n.t('editProfile.remove_video')}
+            </Text>
           </NBButton>
         </View>
       );
