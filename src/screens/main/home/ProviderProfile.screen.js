@@ -245,7 +245,7 @@ class ProviderProfileScreen extends Component {
           transparent={false}
           visible={this.state.modalForImageVisible}
           onRequestClose={() => this.setModalForImageVisible(false)}
-          supportedOrientations={['portrait', 'landscape']}
+          supportedOrientations={['portrait']}
         >
           {typeof this.state.fullScreenImageUrl === 'object' ? (
             <Container style={{ flex: 1, backgroundColor: 'black' }}>
@@ -262,7 +262,7 @@ class ProviderProfileScreen extends Component {
                     ? `${provider.fullName}`
                     : `${provider.firstName} ${provider.lastName || ''}`
                 }
-                inlineOnly={Platform.OS === 'ios'}
+                inlineOnly
                 resizeMode={Platform.OS === 'ios' || this.state.videoFullScreen ? 'cover' : 'contain'}
                 onFullScreen={status => this.onFullScreen(status)}
                 autoPlay
