@@ -1,20 +1,10 @@
 import React, { Component } from 'react';
-import {
-  ImageBackground,
-  TouchableOpacity,
-  View,
-  Animated,
-  Keyboard,
-} from 'react-native';
-import FastImage from 'react-native-fast-image';
+import { ImageBackground, TouchableOpacity, View } from 'react-native';
 import { CardItem, Container, Form, Icon, Item, Input, Label, Title } from 'native-base';
 import I18n from '../../locales';
-import { primaryColor, backgroundColor, contrastColor, primaryFont } from '../../theme';
+import { primaryColor, contrastColor, primaryFont } from '../../theme';
 import images from '../../images';
-import { Button, Center, Text } from '../../components/common';
-
-const logoSize = 80;
-const AnimatedFastImage = Animated.createAnimatedComponent(FastImage);
+import { Button, Center, Text, Logo } from '../../components/common';
 
 class LoginForm extends Component {
   constructor() {
@@ -29,23 +19,7 @@ class LoginForm extends Component {
       phoneNumberLabel: `${I18n.t('common.example')}: +44...`,
       phoneNumberError: false,
     };
-
-    this.imageOuterHeight = new Animated.Value(logoSize);
-    this.imageOuterWight = new Animated.Value(logoSize);
-    this.imageHeight = new Animated.Value(logoSize - 6);
-    this.imageWight = new Animated.Value(logoSize - 6);
   }
-
-  componentDidMount() {
-    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
-    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
-  }
-
-  componentWillUnmount() {
-    this.keyboardDidShowListener.remove();
-    this.keyboardDidHideListener.remove();
-  }
-
 
   onForgotPress = () => {
     this.props.onForgotPress();
@@ -91,48 +65,6 @@ class LoginForm extends Component {
     }
   }
 
-  keyboardDidShow = (event) => {
-    Animated.parallel([
-      Animated.timing(this.imageOuterHeight, {
-        duration: event.duration,
-        toValue: logoSize / 2,
-      }),
-      Animated.timing(this.imageOuterWight, {
-        duration: event.duration,
-        toValue: logoSize / 2,
-      }),
-      Animated.timing(this.imageHeight, {
-        duration: event.duration,
-        toValue: (logoSize - 6) / 2,
-      }),
-      Animated.timing(this.imageWight, {
-        duration: event.duration,
-        toValue: (logoSize - 6) / 2,
-      }),
-    ]).start();
-  };
-
-  keyboardDidHide = () => {
-    Animated.parallel([
-      Animated.timing(this.imageOuterHeight, {
-        duration: logoSize / 2,
-        toValue: logoSize,
-      }),
-      Animated.timing(this.imageOuterWight, {
-        duration: logoSize / 2,
-        toValue: logoSize,
-      }),
-      Animated.timing(this.imageHeight, {
-        duration: (logoSize - 6) / 2,
-        toValue: logoSize - 6,
-      }),
-      Animated.timing(this.imageWight, {
-        duration: (logoSize - 6) / 2,
-        toValue: logoSize - 6,
-      }),
-    ]).start();
-  };
-
   switchSecure() {
     this.setState({ secureVisible: !this.state.secureVisible });
   }
@@ -161,10 +93,7 @@ class LoginForm extends Component {
       background,
       header,
       headerText,
-      pic,
       form,
-      logoOuterCircle,
-      logoInnerCircle,
       itemStyle,
       itemPassword,
       item,
@@ -197,14 +126,7 @@ class LoginForm extends Component {
               {I18n.t('logIn.account_login')}
             </Title>
           </CardItem>
-          <CardItem style={pic} id="LoginPage.logoWrapper">
-            <Animated.View
-              style={[logoOuterCircle, { height: this.imageOuterHeight, width: this.imageOuterWight }]}
-              id="LoginPage.logoOuterCircle"
-            >
-              <AnimatedFastImage id="LoginPage.logo" source={images.logo} style={[logoInnerCircle, { height: this.imageHeight, width: this.imageWight }]} />
-            </Animated.View>
-          </CardItem>
+          <Logo styleContainer={{ marginBottom: 10 }} />
           <Form id="LoginPage.form-container" style={form}>
             <View style={itemStyle}>
               <Item
@@ -224,8 +146,8 @@ class LoginForm extends Component {
                   onBlur={() => this.onBlur('phoneNumber', this.state.phoneNumber)}
                 />
                 {this.state.phoneNumberError && (
-                <Icon name="close-circle" style={{ color: 'red' }} />
-                  )}
+                  <Icon name="close-circle" style={{ color: 'red' }} />
+                )}
               </Item>
               <View />
             </View>
@@ -242,41 +164,35 @@ class LoginForm extends Component {
                   style={input}
                   value={this.state.password}
                   onChangeText={text => this.onFieldChange('password', text)}
-                    // onFocus={this.onFocus('password', this.state.password)}
+                  // onFocus={this.onFocus('password', this.state.password)}
                   onBlur={() => this.onBlur('password', this.state.password)}
                   secureTextEntry={secure}
                 />
-                {this.state.passwordError && (
-                <Icon name="close-circle" style={{ color: 'red' }} />
-                  )}
+                {this.state.passwordError && <Icon name="close-circle" style={{ color: 'red' }} />}
               </Item>
               <View
                 style={{
-                    alignSelf: 'flex-end',
-                    bottom: 2,
-                    flex: 0,
-                  }}
+                  alignSelf: 'flex-end',
+                  bottom: 2,
+                  flex: 0,
+                }}
               >
                 <TouchableOpacity onPress={this.switchSecure}>
-                  <Icon
-                    style={{ color: 'white' }}
-                    size={24}
-                    name={secure ? 'md-eye-off' : 'eye'}
-                  />
+                  <Icon style={{ color: 'white' }} size={24} name={secure ? 'md-eye-off' : 'eye'} />
                 </TouchableOpacity>
               </View>
             </View>
             <Text style={errorText}>{this.state.passwordLabel}</Text>
             {error && (
-            <View style={styles.errorContainer}>
-              <Text
-                id="LoginPage.errorText"
-                style={{ color: contrastColor, textAlign: 'center' }}
-              >
-                {I18n.t(`backend.${error}`, { defaults: [{ scope: 'chat.error' }] })}
-              </Text>
-            </View>
-              )}
+              <View style={styles.errorContainer}>
+                <Text
+                  id="LoginPage.errorText"
+                  style={{ color: contrastColor, textAlign: 'center' }}
+                >
+                  {I18n.t(`backend.${error}`, { defaults: [{ scope: 'chat.error' }] })}
+                </Text>
+              </View>
+            )}
             <Button
               id="LoginPage.forgotPasswordButton"
               style={{ flex: error ? 1 : 2 }}
@@ -345,25 +261,6 @@ const styles = {
     color: 'white',
     fontSize: 25,
     ...primaryFont,
-  },
-  pic: {
-    alignSelf: 'center',
-    backgroundColor: 'transparent',
-  },
-
-  logoOuterCircle: {
-    borderRadius: 40,
-    width: 80,
-    height: 80,
-    backgroundColor,
-    justifyContent: 'center',
-  },
-  logoInnerCircle: {
-    borderRadius: 37,
-    width: 74,
-    height: 74,
-    margin: 3,
-    alignSelf: 'center',
   },
   form: {
     flex: 3,

@@ -262,9 +262,6 @@ class SignupForm extends Component {
       background,
       headerModal,
       headerModalText,
-      pic,
-      logoOuterCircle,
-      logoInnerCircle,
       registerButton,
       registerButtonText,
     } = styles;
@@ -277,11 +274,7 @@ class SignupForm extends Component {
           onRequestClose={() => this.onSupplierPress(false)}
         >
           <ImageBackground resizeMode="cover" style={background} source={images.backGround}>
-            <CardItem style={pic} id="RegisterPage.logoWrapper">
-              <View style={logoOuterCircle} id="RegisterPage.logoOuterCircle">
-                <FastImage id="RegisterPage.logo" source={images.logo} style={logoInnerCircle} />
-              </View>
-            </CardItem>
+            <Logo styleContainer={{ marginTop: 50, marginBottom: 10 }} />
             <CardItem style={headerModal} id="RegisterPage.logo-container">
               <Title style={headerModalText} id="RegisterPage.accountLoginText">
                 {I18n.t('logIn.account_type')}
@@ -613,25 +606,6 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 25,
     ...primaryFont,
-  },
-  pic: {
-    flex: 1,
-    alignSelf: 'center',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
-    backgroundColor: 'transparent',
-  },
-  logoOuterCircle: {
-    borderRadius: 50,
-    width: 90,
-    height: 90,
-    backgroundColor,
-  },
-  logoInnerCircle: {
-    borderRadius: 47,
-    width: 84,
-    height: 84,
-    margin: 3,
   },
   registerButton: {
     marginTop: 10,
