@@ -207,7 +207,7 @@ class LoginForm extends Component {
             <Button
               id="LoginPage.loginButton"
               block
-              style={loginButton}
+              style={Object.assign(loginButton, { flex: error ? 1 : 0.5 })}
               onPress={this.handleSubmit}
               disabled={disabled}
               spinner={isLoading}
@@ -275,11 +275,10 @@ const styles = {
     flex: 1,
     marginTop: 4,
     marginRight: 34,
-    paddingBottom: 5,
+    paddingBottom: 3,
   },
   itemStyle: {
     flexDirection: 'row',
-    // flex: 2,
     marginTop: 4,
     marginLeft: 10,
     marginRight: 10,
@@ -288,7 +287,7 @@ const styles = {
     flex: 1,
     marginTop: 4,
     marginRight: 10,
-    paddingBottom: 5,
+    paddingBottom: 3,
   },
   label: {
     flex: 1,
@@ -299,15 +298,16 @@ const styles = {
   input: {
     flex: 1,
     color: contrastColor,
+    paddingBottom: 5,
     ...primaryFont,
   },
   textForgot: {
+    marginBottom: 5,
     color: contrastColor,
     ...primaryFont,
   },
   loginButton: {
-    flex: 1,
-    marginTop: 10,
+    marginTop: 20,
     marginLeft: 20,
     marginRight: 20,
     backgroundColor: '#f3c200',
