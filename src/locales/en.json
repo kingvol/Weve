@@ -2,6 +2,7 @@
   "logIn": {
     "log_in": "LOGIN",
     "sign_up": "Sign Up",
+    "verification": "Verification",
     "account_login": "Account Login",
     "account_type": "Account type",
     "user": "User",

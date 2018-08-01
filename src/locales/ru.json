@@ -2,6 +2,7 @@
   "logIn": {
     "log_in": "Войти",
     "sign_up": "Регистрация",
+    "verification": "Верификация",
     "account_login": "Логин аккаунта",
     "account_type": "Тип аккаунта",
     "user": "Пользователь",
