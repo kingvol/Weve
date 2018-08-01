@@ -14,6 +14,9 @@ class Logo extends PureComponent {
     this.imageOuterWight = new Animated.Value(logoSize);
     this.imageHeight = new Animated.Value(logoSize - 6);
     this.imageWight = new Animated.Value(logoSize - 6);
+    this.state = {
+      margin: 1,
+    };
   }
 
   componentDidMount() {
@@ -45,6 +48,9 @@ class Logo extends PureComponent {
         toValue: (logoSize - 6) / 2,
       }),
     ]).start();
+    this.setState({
+      margin: 2,
+    });
   };
 
   keyboardDidHide = () => {
@@ -66,13 +72,22 @@ class Logo extends PureComponent {
         toValue: logoSize - 6,
       }),
     ]).start();
+    this.setState({
+      margin: 1,
+    });
   };
 
   render() {
     const { styleContainer } = this.props;
     const { pic, logoOuterCircle, logoInnerCircle } = styles;
     return (
-      <View style={[styleContainer, pic]}>
+      <View
+        style={[
+          pic,
+          { marginTop: 30 / this.state.margin, marginBottom: 20 / this.state.margin },
+          styleContainer,
+        ]}
+      >
         <Animated.View
           style={[logoOuterCircle, { height: this.imageOuterHeight, width: this.imageOuterWight }]}
           id="logoOuterCircle"
