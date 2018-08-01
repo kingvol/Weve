@@ -5,7 +5,7 @@ import * as Progress from 'react-native-progress';
 import Upload from 'react-native-background-upload';
 import _ from 'lodash';
 import ImagePicker from 'react-native-image-picker';
-import { Picker, CheckBox, Left, Button as NBButton } from 'native-base';
+import { Picker, CheckBox, Left, Button as NBButton, Icon as NBIcon } from 'native-base';
 import CountryPicker from 'react-native-country-picker-modal';
 import { connect } from 'react-redux';
 import SpinnerOverlay from 'react-native-loading-spinner-overlay';
@@ -723,9 +723,12 @@ class EditProfileScreen extends Component {
 
     if (!isVideoUploading && videoUploadProgress === 100) {
       return (
-        <Text style={{ marginBottom: 20, color: 'green' }}>
-          {I18n.t('editProfile.uploading_completed')}
-        </Text>
+        <View style={{ flex: 1, flexDirection: 'row' }}>
+          <NBIcon name="md-checkmark" style={{ paddingRight: 15, fontSize: 35, color: 'green' }} />
+          <Text style={{ marginBottom: 20, color: 'green', marginTop: 5 }}>
+            {I18n.t('editProfile.uploading_completed')}
+          </Text>
+        </View>
       );
     }
 
