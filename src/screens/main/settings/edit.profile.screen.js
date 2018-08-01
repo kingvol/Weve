@@ -995,28 +995,27 @@ class EditProfileScreen extends Component {
                 closeable
               />
             </View>
-            <Picker
-              mode="dropdown"
-              style={Platform.OS === 'android' ? {
-                color: lightTextColor,
-                flex: 3,
-                alignItems: 'flex-end',
-              } : {
-                flex: 3,
-                alignItems: 'flex-end',
-              }}
-              itemTextStyle={{ color: lightTextColor }}
-              placeholder={I18n.t('logIn.select_category')}
-              selectedValue={this.state.values.regionName}
-              onValueChange={this.onRegionSelect}
-              placeholderTextColor={lightTextColor}
-              placeholderStyle={{ color: lightTextColor }}
-              textStyle={{ color: lightTextColor }}
+            <View
+              style={{ flex: 3 }}
             >
-              {countryLib[`${this.state.values.countryCode}`].provinces.map(item => (
-                <Picker.Item label={item} value={item} key={item} />
+              <Picker
+                mode="dropdown"
+                style={Platform.OS === 'android' ?
+                  { flex: 1, color: lightTextColor, alignItems: 'flex-end' } :
+                  { flex: 1, alignItems: 'flex-end' }}
+                itemTextStyle={{ color: lightTextColor }}
+                placeholder={I18n.t('logIn.select_category')}
+                selectedValue={this.state.values.regionName}
+                onValueChange={this.onRegionSelect}
+                placeholderTextColor={lightTextColor}
+                placeholderStyle={{ color: lightTextColor }}
+                textStyle={{ color: lightTextColor }}
+              >
+                {countryLib[`${this.state.values.countryCode}`].provinces.map(item => (
+                  <Picker.Item label={item} value={item} key={item} />
               ))}
-            </Picker>
+              </Picker>
+            </View>
           </View>
           { !isProvider && (
           <View style={{ marginLeft: -10, marginBottom: 10, flexDirection: 'row' }}>

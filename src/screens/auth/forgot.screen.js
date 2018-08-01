@@ -90,7 +90,7 @@ class ForgotPassword extends Component {
   renderForm() {
     const { phone, resetPassword } = this.state;
     return (
-      <Container id="ForgotPassword.main-content" style={{ flex: 1 }}>
+      <View id="ForgotPassword.main-content" style={{ flex: 1 }}>
         {/* <Content id="ForgotPassword.main-content" padder keyboardShouldPersistTaps="handled" contentContainerStyle={{ flex: 1 }}> */}
         <View style={styles.headerWrapper}>
           <Button
@@ -163,7 +163,7 @@ class ForgotPassword extends Component {
             </View>
           </View>
         )}
-      </Container>
+      </View>
     );
   }
 
@@ -185,6 +185,7 @@ class ForgotPassword extends Component {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: '#f3c200',
   },
   background: {
@@ -216,6 +217,8 @@ const styles = StyleSheet.create({
   form: {
     backgroundColor: 'rgba(0,0,0,0.5)',
     padding: 10,
+    marginLeft: 15,
+    marginRight: 15,
     flexDirection: 'column',
   },
   button: {

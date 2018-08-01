@@ -14,8 +14,7 @@ import {
 import DeviceInfo from 'react-native-device-info';
 import CountryPicker from 'react-native-country-picker-modal';
 import MultiSelect from 'react-native-multiple-select';
-import FastImage from 'react-native-fast-image';
-import { contrastColor, primaryFont, backgroundColor } from '../../theme';
+import { contrastColor, primaryFont } from '../../theme';
 import { Button, Container, FieldInput, Text, Logo } from '../../components/common';
 import SignupImageForm from './signupImage.form';
 import Eula from './EULA';
@@ -262,26 +261,19 @@ class SignupForm extends Component {
       background,
       headerModal,
       headerModalText,
-      pic,
-      logoOuterCircle,
-      logoInnerCircle,
       registerButton,
       registerButtonText,
     } = styles;
 
     return (
-      <ScrollView id="SignUp.content" contentContainerStyle={{ justifyContent: 'space-between' }}>
+      <ScrollView id="SignUp.content" contentContainerStyle={{ justifyContent: 'center' }}>
         <Modal
           transparent={false}
           visible={this.state.modalForUserProfileVisible}
           onRequestClose={() => this.onSupplierPress(false)}
         >
           <ImageBackground resizeMode="cover" style={background} source={images.backGround}>
-            <CardItem style={pic} id="RegisterPage.logoWrapper">
-              <View style={logoOuterCircle} id="RegisterPage.logoOuterCircle">
-                <FastImage id="RegisterPage.logo" source={images.logo} style={logoInnerCircle} />
-              </View>
-            </CardItem>
+            <Logo styleContainer={{ marginTop: 60, marginBottom: -30 }} />
             <CardItem style={headerModal} id="RegisterPage.logo-container">
               <Title style={headerModalText} id="RegisterPage.accountLoginText">
                 {I18n.t('logIn.account_type')}
@@ -325,11 +317,11 @@ class SignupForm extends Component {
             {I18n.t('logIn.sign_up')}
           </Text>
         </View>
-        <Logo styleContainer={{ marginTop: 30 }} />
+        <Logo />
 
         <View
           id="Signup.formWrapper"
-          style={{ flex: 3, justifyContent: 'flex-start', marginTop: 30 }}
+          style={{ flex: 3, justifyContent: 'flex-start' }}
         >
           <View style={styles.formWrapper}>
             {this.state.step === 1 && (
@@ -421,20 +413,22 @@ class SignupForm extends Component {
                       closeable
                     />
                   </View>
-                  <Picker
-                    mode="dropdown"
-                    style={{ color: 'white', flex: 3, alignItems: 'flex-end' }}
-                    placeholder={I18n.t('logIn.select_category')}
-                    selectedValue={this.state.values.regionName}
-                    onValueChange={this.onRegionSelect}
-                    placeholderTextColor="white"
-                    placeholderStyle={{ color: 'white' }}
-                    textStyle={{ color: 'white' }}
-                  >
-                    {countryLib[`${this.state.values.countryCode}`].provinces.map(item => (
-                      <Picker.Item label={item} value={item} key={item} />
+                  <View style={{ flex: 3 }}>
+                    <Picker
+                      mode="dropdown"
+                      style={{ color: 'white', flex: 1, alignItems: 'flex-end' }}
+                      placeholder={I18n.t('logIn.select_category')}
+                      selectedValue={this.state.values.regionName}
+                      onValueChange={this.onRegionSelect}
+                      placeholderTextColor="white"
+                      placeholderStyle={{ color: 'white' }}
+                      textStyle={{ color: 'white' }}
+                    >
+                      {countryLib[`${this.state.values.countryCode}`].provinces.map(item => (
+                        <Picker.Item label={item} value={item} key={item} />
                     ))}
-                  </Picker>
+                    </Picker>
+                  </View>
                 </View>
 
                 {this.state.isProvider &&
@@ -613,25 +607,6 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 25,
     ...primaryFont,
-  },
-  pic: {
-    flex: 1,
-    alignSelf: 'center',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
-    backgroundColor: 'transparent',
-  },
-  logoOuterCircle: {
-    borderRadius: 50,
-    width: 90,
-    height: 90,
-    backgroundColor,
-  },
-  logoInnerCircle: {
-    borderRadius: 47,
-    width: 84,
-    height: 84,
-    margin: 3,
   },
   registerButton: {
     marginTop: 10,

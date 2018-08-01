@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { ImageBackground, ScrollView, Alert, TouchableOpacity, Switch, Keyboard } from 'react-native';
+import {
+  ImageBackground,
+  ScrollView,
+  Alert,
+  TouchableOpacity,
+  Switch,
+  Keyboard,
+} from 'react-native';
 import { Container, Icon, View, Form } from 'native-base';
 import PhoneInput from 'react-native-phone-input';
 import I18n from '../../locales';
@@ -166,7 +173,7 @@ class VerificationScreen extends Component {
               </Text>
             </View>
             <View style={styles.contentContainer}>
-              <Logo styleContainer={{ marginBottom: 10 }} />
+              <Logo styleContainer={{ marginTop: -20 }} />
               <Text style={styles.titleText}>
                 {this.state.step === 1 ? I18n.t('common.phoneNumber') : I18n.t('auth.enter_code')}
               </Text>
