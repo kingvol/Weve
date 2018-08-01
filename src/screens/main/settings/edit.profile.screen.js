@@ -642,7 +642,7 @@ class EditProfileScreen extends Component {
       this.setState({ isVideoUploading: true, uploadId });
 
       Upload.addListener('progress', uploadId, (data) => {
-        this.setState({ videoUploadProgress: data.progress });
+        this.setState({ videoUploadProgress: this.state.isVideoUploading ? data.progress : 0 });
         console.log(`Progress: ${data.progress}%`);
       });
 
