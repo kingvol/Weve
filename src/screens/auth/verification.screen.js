@@ -167,9 +167,9 @@ class VerificationScreen extends Component {
               </Button>
               <Text
                 id="Verification.titleText"
-                style={{ color: contrastColor, fontSize: 25, flex: 1.6, ...primaryFont }}
+                style={{ color: contrastColor, fontSize: 25, flex: 2, ...primaryFont }}
               >
-                {I18n.t('logIn.sign_up')}
+                {I18n.t('logIn.verification')}
               </Text>
             </View>
             <View style={styles.contentContainer}>
