@@ -189,51 +189,63 @@ class LoginForm extends Component {
                 </View>
                 <Text style={errorText}>{this.state.passwordLabel}</Text>
               </View>
-              {error && (
-                <View style={styles.errorContainer}>
+              <View style={{ flex: 2, justifyContent: 'space-between' }}>
+                {error && (
+                  <View style={styles.errorContainer}>
+                    <Text
+                      id="LoginPage.errorText"
+                      style={{ color: contrastColor, textAlign: 'center' }}
+                    >
+                      {I18n.t(`backend.${error}`, { defaults: [{ scope: 'chat.error' }] })}
+                    </Text>
+                  </View>
+                )}
+                <Button
+                  id="LoginPage.forgotPasswordButton"
+                  style={{
+                    flex: error ? 1 : 2,
+                    marginTop: 5,
+                    marginBottom: 5,
+                    justifyContent: 'flex-end',
+                  }}
+                  block
+                  transparent
+                  onPress={this.onForgotPress}
+                >
                   <Text
-                    id="LoginPage.errorText"
-                    style={{ color: contrastColor, textAlign: 'center' }}
+                    style={Object.assign(
+                      { textAlignVertical: error ? 'center' : 'bottom' },
+                      textForgot,
+                    )}
                   >
-                    {I18n.t(`backend.${error}`, { defaults: [{ scope: 'chat.error' }] })}
+                    {I18n.t('logIn.forgot_your_password').toUpperCase()}
                   </Text>
-                </View>
-              )}
-              <Button
-                id="LoginPage.forgotPasswordButton"
-                style={{ flex: error ? 1 : 2 }}
-                block
-                transparent
-                onPress={this.onForgotPress}
-              >
-                <Text style={Object.assign({ marginTop: error ? 0 : 35 }, textForgot)}>
-                  {I18n.t('logIn.forgot_your_password').toUpperCase()}
-                </Text>
-              </Button>
-              <Button
-                id="LoginPage.loginButton"
-                block
-                style={Object.assign(loginButton, { flex: error ? 0.7 : 0.55 })}
-                onPress={this.handleSubmit}
-                disabled={disabled}
-                spinner={isLoading}
-              >
-                <Text style={loginButtonText}>{I18n.t('logIn.log_in')}</Text>
-              </Button>
-              <Center id="LoginPage.dontHaveAnAccountContainer" style={OR}>
-                <View style={or} />
-                <Text style={orText}>{I18n.t('logIn.or')}</Text>
-                <View style={or} />
-              </Center>
-              <Button
-                id="LoginPage.signUpButton"
-                style={register}
-                block
-                transparent
-                onPress={this.props.onRegisterPress}
-              >
-                <Text style={textRegister}>{I18n.t('logIn.register').toUpperCase()}</Text>
-              </Button>
+                </Button>
+                <Button
+                  id="LoginPage.loginButton"
+                  block
+                  style={Object.assign(loginButton, { flex: error ? 1.2 : 1 })}
+                  onPress={this.handleSubmit}
+                  disabled={disabled}
+                  spinner={isLoading}
+                >
+                  <Text style={loginButtonText}>{I18n.t('logIn.log_in')}</Text>
+                </Button>
+                <Center id="LoginPage.dontHaveAnAccountContainer" style={OR}>
+                  <View style={or} />
+                  <Text style={orText}>{I18n.t('logIn.or')}</Text>
+                  <View style={or} />
+                </Center>
+                <Button
+                  id="LoginPage.signUpButton"
+                  style={register}
+                  block
+                  transparent
+                  onPress={this.props.onRegisterPress}
+                >
+                  <Text style={textRegister}>{I18n.t('logIn.register').toUpperCase()}</Text>
+                </Button>
+              </View>
             </Form>
           </ImageBackground>
         </Container>
@@ -310,7 +322,6 @@ const styles = {
     ...primaryFont,
   },
   textForgot: {
-    marginBottom: 5,
     color: contrastColor,
     ...primaryFont,
   },
@@ -342,7 +353,7 @@ const styles = {
     ...primaryFont,
   },
   register: {
-    flex: 0.7,
+    flex: 1,
     bottom: 5,
   },
   textRegister: {
@@ -351,7 +362,6 @@ const styles = {
   },
   errorContainer: {
     flex: 1,
-    paddingTop: 65,
   },
   errorText: {
     fontSize: 10,
