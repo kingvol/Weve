@@ -3,7 +3,7 @@
  */
 /* eslint-disable global-require */
 import React, { Component } from 'react';
-import { Alert, ImageBackground, StyleSheet, View } from 'react-native';
+import { Alert, ImageBackground, StyleSheet, View, ScrollView } from 'react-native';
 import * as Keychain from 'react-native-keychain';
 import { Icon } from 'native-base';
 import I18n from 'react-native-i18n';
@@ -91,7 +91,6 @@ class ForgotPassword extends Component {
     const { phone, resetPassword } = this.state;
     return (
       <View id="ForgotPassword.main-content" style={{ flex: 1 }}>
-        {/* <Content id="ForgotPassword.main-content" padder keyboardShouldPersistTaps="handled" contentContainerStyle={{ flex: 1 }}> */}
         <View style={styles.headerWrapper}>
           <Button
             id="ForgotPassword.backButton"
@@ -169,16 +168,18 @@ class ForgotPassword extends Component {
 
   render() {
     return (
-      <Container id="ForgotPassword.container" style={styles.container}>
-        <ImageBackground
-          id="ForgotPassword.bg-image"
-          resizeMode="cover"
-          style={styles.background}
-          source={require('../../images/loginBackground.png')}
-        >
-          {this.renderForm()}
-        </ImageBackground>
-      </Container>
+      <ScrollView>
+        <Container id="ForgotPassword.container" style={styles.container}>
+          <ImageBackground
+            id="ForgotPassword.bg-image"
+            resizeMode="cover"
+            style={styles.background}
+            source={require('../../images/loginBackground.png')}
+          >
+            {this.renderForm()}
+          </ImageBackground>
+        </Container>
+      </ScrollView>
     );
   }
 }

@@ -10,10 +10,8 @@ const AnimatedFastImage = Animated.createAnimatedComponent(FastImage);
 class Logo extends PureComponent {
   constructor() {
     super();
-    this.imageOuterHeight = new Animated.Value(logoSize);
-    this.imageOuterWight = new Animated.Value(logoSize);
-    this.imageHeight = new Animated.Value(logoSize - 6);
-    this.imageWight = new Animated.Value(logoSize - 6);
+    this.imageHeight = new Animated.Value(logoSize);
+    this.imageWight = new Animated.Value(logoSize);
     this.state = {
       margin: 1,
     };
@@ -31,21 +29,13 @@ class Logo extends PureComponent {
 
   keyboardDidShow = (event) => {
     Animated.parallel([
-      Animated.timing(this.imageOuterHeight, {
-        duration: event.duration,
-        toValue: logoSize / 2,
-      }),
-      Animated.timing(this.imageOuterWight, {
-        duration: event.duration,
-        toValue: logoSize / 2,
-      }),
       Animated.timing(this.imageHeight, {
         duration: event.duration,
-        toValue: (logoSize - 6) / 2,
+        toValue: logoSize / 2,
       }),
       Animated.timing(this.imageWight, {
         duration: event.duration,
-        toValue: (logoSize - 6) / 2,
+        toValue: logoSize / 2,
       }),
     ]).start();
     this.setState({
@@ -55,21 +45,13 @@ class Logo extends PureComponent {
 
   keyboardDidHide = () => {
     Animated.parallel([
-      Animated.timing(this.imageOuterHeight, {
-        duration: logoSize / 2,
-        toValue: logoSize,
-      }),
-      Animated.timing(this.imageOuterWight, {
-        duration: logoSize / 2,
-        toValue: logoSize,
-      }),
       Animated.timing(this.imageHeight, {
-        duration: (logoSize - 6) / 2,
-        toValue: logoSize - 6,
+        duration: logoSize / 2,
+        toValue: logoSize,
       }),
       Animated.timing(this.imageWight, {
-        duration: (logoSize - 6) / 2,
-        toValue: logoSize - 6,
+        duration: logoSize / 2,
+        toValue: logoSize,
       }),
     ]).start();
     this.setState({
@@ -79,7 +61,7 @@ class Logo extends PureComponent {
 
   render() {
     const { styleContainer } = this.props;
-    const { pic, logoOuterCircle, logoInnerCircle } = styles;
+    const { pic, logoInnerCircle } = styles;
     return (
       <View
         style={[
@@ -88,16 +70,11 @@ class Logo extends PureComponent {
           styleContainer,
         ]}
       >
-        <Animated.View
-          style={[logoOuterCircle, { height: this.imageOuterHeight, width: this.imageOuterWight }]}
-          id="logoOuterCircle"
-        >
-          <AnimatedFastImage
-            id="logo"
-            source={images.logo}
-            style={[logoInnerCircle, { height: this.imageHeight, width: this.imageWight }]}
-          />
-        </Animated.View>
+        <AnimatedFastImage
+          id="logo"
+          source={images.logoRounded}
+          style={[logoInnerCircle, { height: this.imageHeight, width: this.imageWight }]}
+        />
       </View>
     );
   }
@@ -108,18 +85,7 @@ const styles = {
     alignSelf: 'center',
     backgroundColor: 'transparent',
   },
-  logoOuterCircle: {
-    borderRadius: 40,
-    width: 80,
-    height: 80,
-    backgroundColor,
-    justifyContent: 'center',
-  },
   logoInnerCircle: {
-    borderRadius: 37,
-    width: 74,
-    height: 74,
-    margin: 3,
     alignSelf: 'center',
   },
 };
