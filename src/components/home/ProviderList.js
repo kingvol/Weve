@@ -9,6 +9,7 @@ import {
   Text,
   Dimensions,
 } from 'react-native';
+import _ from 'lodash';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Button } from '.././common';
@@ -131,7 +132,10 @@ class ProviderList extends PureComponent {
   render() {
     const { containerStyle, buttonsRow, buttonView } = styles;
 
-    const data = this.state.providers ? [...this.state.providers, { _id: 'button' }] : null;
+    let data = this.state.providers ? [...this.state.providers, { _id: 'button' }] : null;
+    if (data.length) {
+      data = _.sortBy(data, 'createdAt').reverse();
+    }
 
     return !this.state.isLoading ? (
       <View style={containerStyle}>
