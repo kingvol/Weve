@@ -86,9 +86,6 @@ const styles = {
     backgroundColor: 'transparent',
   },
   logoInnerCircle: {
-    borderRadius: 40,
-    width: 80,
-    height: 80,
     alignSelf: 'center',
   },
 };
