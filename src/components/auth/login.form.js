@@ -199,17 +199,19 @@ class LoginForm extends Component {
                   </Text>
                 </View>
               )}
-              <Button
-                id="LoginPage.forgotPasswordButton"
-                style={{ flex: error ? 1 : 2 }}
-                block
-                transparent
-                onPress={this.onForgotPress}
-              >
-                <Text style={Object.assign({ marginTop: error ? 0 : 35 }, textForgot)}>
-                  {I18n.t('logIn.forgot_your_password').toUpperCase()}
-                </Text>
-              </Button>
+              <View style={{ flex: 1, marginTop: 50 }}>
+                <Button
+                  id="LoginPage.forgotPasswordButton"
+                  style={{ flex: 0.1 }}
+                  block
+                  transparent
+                  onPress={this.onForgotPress}
+                >
+                  <Text style={Object.assign({ marginTop: error ? 0 : 35 }, textForgot)}>
+                    {I18n.t('logIn.forgot_your_password').toUpperCase()}
+                  </Text>
+                </Button>
+              </View>
               <Button
                 id="LoginPage.loginButton"
                 block
