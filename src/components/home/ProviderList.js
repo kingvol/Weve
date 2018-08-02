@@ -81,7 +81,7 @@ class ProviderList extends PureComponent {
       const providers = await api.fetchListByCategory(category, page, country, region);
       this.setState({
         isLoading: false,
-        providers: [...this.state.providers, ...providers],
+        providers: _.sortBy([...this.state.providers, ...providers], 'createdAt').reverse(),
         disableMore: providers.length < PROVIDERS_PER_PAGE,
       });
     } catch ({ message }) {
@@ -132,10 +132,7 @@ class ProviderList extends PureComponent {
   render() {
     const { containerStyle, buttonsRow, buttonView } = styles;
 
-    let data = this.state.providers ? [...this.state.providers, { _id: 'button' }] : null;
-    if (data.length) {
-      data = _.sortBy(data, 'createdAt').reverse();
-    }
+    const data = this.state.providers ? [...this.state.providers, { _id: 'button' }] : null;
 
     return !this.state.isLoading ? (
       <View style={containerStyle}>
