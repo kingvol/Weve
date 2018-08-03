@@ -27,7 +27,14 @@ class ProviderListItem extends Component {
             }}
             source={{ uri: profileImageURL || defaultProfile }}
           />
-          <View style={{ margin: 10, justifyContent: 'center', flexWrap: 'wrap' }}>
+          <View
+            style={{
+              margin: 10,
+              flexDirection: 'row',
+              flex: 1,
+              flexWrap: 'wrap',
+            }}
+          >
             <Text style={[styles.artistTitle, { marginRight: 5 }]}>
               {`${firstName} ${lastName || ''}`}
             </Text>
@@ -54,8 +61,7 @@ const styles = StyleSheet.create({
   artistTitle: {
     ...primaryFont,
     color: 'red',
-    flex: 1,
-    flexWrap: 'wrap',
+    textAlignVertical: 'center',
   },
 });
 
