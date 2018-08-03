@@ -33,6 +33,7 @@ class ProviderListItem extends Component {
               flexDirection: 'row',
               flex: 1,
               flexWrap: 'wrap',
+              alignItems: 'center',
             }}
           >
             <Text style={[styles.artistTitle, { marginRight: 5 }]}>
