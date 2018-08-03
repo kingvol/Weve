@@ -1,7 +1,11 @@
+/* eslint-disable react/no-did-mount-set-state */
 import React, { Component } from 'react';
 import { AsyncStorage, View, TouchableOpacity, Share } from 'react-native';
+import { Button, Left, Switch, Icon as NBIcon } from 'native-base';
 import { connect } from 'react-redux';
+import * as Keychain from 'react-native-keychain';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import TouchID from 'react-native-touch-id';
 import FastImage from 'react-native-fast-image';
 
 import I18n from '../../locales';
@@ -34,9 +38,22 @@ class SettingsTab extends Component {
   constructor(props) {
     super(props);
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+    this.state = {
+      biometricsSupported: false,
+      biometricsEnabled: null,
+      credentialsAvailable: null,
+    };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    try {
+      await TouchID.isSupported();
+      this.setState({ biometricsSupported: true });
+      this.checkBiometricsStatus();
+    } catch (error) {
+      this.setState({ biometricsSupported: false });
+    }
+
     Promise.all([Icon.getImageSource('sign-out', 20, '#ffffff')]).then((sources) => {
       this.props.navigator.setButtons({
         rightButtons: [
@@ -74,6 +91,26 @@ class SettingsTab extends Component {
         navBarTextFontFamily: primaryFont,
       },
     });
+  };
+
+  checkBiometricsStatus = async () => {
+    const credentials = await Keychain.getGenericPassword();
+    const isBiometricsDeclined = await AsyncStorage.getItem('is_biometrics_declined');
+    this.setState({
+      biometricsEnabled: !!credentials.username && !isBiometricsDeclined,
+      credentialsAvailable: !!credentials,
+    });
+  };
+
+  toogleBiometrics = async () => {
+    const { biometricsEnabled } = this.state;
+    if (biometricsEnabled) {
+      await AsyncStorage.setItem('is_biometrics_declined', 'true');
+      this.checkBiometricsStatus();
+    } else {
+      await AsyncStorage.removeItem('is_biometrics_declined');
+      this.checkBiometricsStatus();
+    }
   };
 
   ShareMessage = () => {
@@ -114,6 +151,26 @@ class SettingsTab extends Component {
                 )}
               </ListItem>
             ))}
+
+            {this.state.biometricsSupported &&
+            !(!this.state.credentialsAvailable && !this.state.biometricsEnabled) ? (
+              <ListItem icon>
+                <Left>
+                  <Button style={{ backgroundColor: 'grey' }}>
+                    <NBIcon name="ios-finger-print-outline" />
+                  </Button>
+                </Left>
+                <Body>
+                  <Text>Fingerprint login</Text>
+                </Body>
+                <Right>
+                  <Switch
+                    onValueChange={this.toogleBiometrics}
+                    value={this.state.biometricsEnabled}
+                  />
+                </Right>
+              </ListItem>
+            ) : null}
           </List>
           {vars.DB_ENV === 'test' && <Text style={{ alignSelf: 'center' }}>DEV</Text>}
         </Content>

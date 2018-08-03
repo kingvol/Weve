@@ -4,6 +4,13 @@ import android.app.Application;
 import android.support.annotation.NonNull;
 
 import com.facebook.react.ReactApplication;
+import com.corbt.keepawake.KCKeepAwakePackage;
+import com.BV.LinearGradient.LinearGradientPackage;
+import com.github.yamill.orientation.OrientationPackage;
+import com.brentvatne.react.ReactVideoPackage;
+import com.vydia.RNUploader.UploaderReactPackage;
+import com.rnfingerprint.FingerprintAuthPackage;
+import com.oblador.keychain.KeychainPackage;
 import fr.bamlab.rnimageresizer.ImageResizerPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.imagepicker.ImagePickerPackage;
@@ -35,7 +42,14 @@ public class MainApplication extends NavigationApplication  {
   public List<ReactPackage> createAdditionalReactPackages() {
     return Arrays.<ReactPackage>asList(
     new MainReactPackage(),
-            new ImageResizerPackage(),
+    new KCKeepAwakePackage(),
+    new LinearGradientPackage(),
+    new OrientationPackage(), 
+    new ReactVideoPackage(),
+    new UploaderReactPackage(),
+    new FingerprintAuthPackage(),
+    new KeychainPackage(),
+    new ImageResizerPackage(),
     new RNDeviceInfo(),
     new FIRMessagingPackage(),
     new ImagePickerPackage(),

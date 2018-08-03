@@ -2,6 +2,7 @@
   "logIn": {
     "log_in": "LOGIN",
     "sign_up": "Sign Up",
+    "verification": "Verification",
     "account_login": "Account Login",
     "account_type": "Account type",
     "user": "User",
@@ -24,7 +25,10 @@
     "upload_photo": "It's time to upload your photo",
     "photo_saved": "Photo saved",
     "tap_on_icon": "Tap on photo icon",
-    "landscape": "*Please upload landscape image - your profile will look great"
+    "landscape": "*Please upload landscape image - your profile will look great",
+    "biometrics": "Fingerprint login?",
+    "biometrics_title": "Fingerprint ID",
+    "biometrics_scan": "Scan your finger to sign in"
   },
   "eula": {
     "error": "Sorry you cannot sign up!",
@@ -50,13 +54,13 @@
   },
   "categories": {
     "categories": "Categories",
-    "artist": "Artist",
+    "transport": "Transport",
     "photo": "Photo",
     "venue": "Venue",
     "makeup": "Beauty",
     "entertainment": "Entertainment",
     "decoration": "Decoration",
-    "costume": "Costume",
+    "costume": "Boutique",
     "catering": "Catering",
     "cake": "Cake"
   },
@@ -107,7 +111,12 @@
       "descriptionPhoto": "Wevedo need access to photos for profile picture",
       "allowCamera": "Allow Wevedo to access camera?",
       "descriptionCamera": "Wevedo need access to camera for profile picture"
-    }
+    },
+    "upload_a_video": "Upload a video",
+    "uploading_completed": "Upload complete",
+    "video_uploaded": "Video uploaded",
+    "new_video": "New video",
+    "remove_video": "Remove video"
   },
   "inbox": {
     "no_active_dialog": "There are no active dialogs"
@@ -123,6 +132,7 @@
   "common": {
     "ok": "OK",
     "error": "Error",
+    "remove": "Remove",
     "done": "Done",
     "save": "Save",
     "email": "Email",

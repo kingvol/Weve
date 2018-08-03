@@ -2,6 +2,7 @@
   "logIn": {
     "log_in": "Içeri gir",
     "sign_up": "Registrasiýa",
+    "verification": "Werifikasiýa",
     "account_login": "Hasaba girimek",
     "account_type": "Üyelik Seçenekleri",
     "user": "Üye",
@@ -24,7 +25,10 @@
     "upload_photo": "Suratyňyzy ýükläň",
     "photo_saved": "Surayňyz hasaba geçirildi",
     "tap_on_icon": "Surat belgisine basyň",
-    "landscape": "*Suratyñyzy albomny stilde ýükleseñiz has owadan görüner"
+    "landscape": "*Suratyñyzy albomny stilde ýükleseñiz has owadan görüner",
+    "biometrics": "Parmak izi ile oturum açmak ister misiniz?",
+    "biometrics_title": "Touch/Fingerprint ID",
+    "biometrics_scan": "Oturum açmak için parmağınızı tarayın"
   },
   "eula": {
     "error": "Bagyşlaň,siz registrasiýa bolup bilmeýäňiz",
@@ -50,13 +54,13 @@
   },
   "categories": {
     "categories": "Kategoriýalar",
-    "artist": "Artist",
+    "transport": "Araç",
     "photo": "Suratçy",
     "venue": "Restoran",
     "makeup": "Owadanlyk",
     "entertainment": "Hezillik",
     "decoration": "Bezeg",
-    "costume": "Egin-eşik",
+    "costume": "Elbise",
     "catering": "Catering",
     "cake": "Tort"
   },
@@ -107,7 +111,12 @@
       "descriptionPhoto": "Profil resmi için fotoğraflara erişimine izin ver",
       "allowCamera": "Wevedo kameraya erişmesine izin ver?",
       "descriptionCamera": " Profil resmi için kameraya erişimine izin ver"
-    }
+    },
+    "upload_a_video": "Video yüklemek",
+    "uploading_completed": "Yükleme tamamlandı",
+    "video_uploaded": "Video yüklendi",
+    "new_video": "Yeni video",
+    "remove_video": "Hawa video"
   },
   "inbox": {
     "no_active_dialog": "Häzirki wagtda hiç hili hatyňyz ýok"
@@ -123,6 +132,7 @@
   "common": {
     "ok": "Bolýa",
     "error": "Ýalňyş",
+    "remove": "Hawa",
     "done": "Tassyklamak",
     "save": "Ýatda sakla",
     "email": "Elektron poçta",

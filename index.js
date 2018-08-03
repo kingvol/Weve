@@ -12,7 +12,6 @@ import { primaryFont } from './src/theme';
 
 AppRegistry.registerComponent('wevedo_app', () => AppBootstrap);
 
-
 if (Platform.OS === 'ios') {
   persistStore(store, null, () => {
     registerScreens(store, Provider);
@@ -30,6 +29,9 @@ export const startSingleScreenApp = () => {
         navBarHidden: true,
         disabledBackGesture: true,
       },
+    },
+    appStyle: {
+      orientation: 'portrait',
     },
   });
 };
@@ -85,6 +87,7 @@ export const startTabBasedApp = () => {
         tabBarSelectedButtonColor: '#d64635',
       },
       appStyle: {
+        orientation: 'portrait',
         tabBarButtonColor: '#c4c4c4',
         tabBarSelectedButtonColor: '#d64635',
       },

@@ -3,10 +3,11 @@
  */
 /* eslint-disable global-require */
 import React, { Component } from 'react';
-import { Alert, ImageBackground, StyleSheet, View } from 'react-native';
+import { Alert, ImageBackground, StyleSheet, View, ScrollView } from 'react-native';
+import * as Keychain from 'react-native-keychain';
 import { Icon } from 'native-base';
 import I18n from 'react-native-i18n';
-import { Button, Container, FieldInput, Text } from '../../components/common';
+import { Button, Container, FieldInput, Text, Logo } from '../../components/common';
 import { white } from '../../theme/colors';
 import APIs from '../../api';
 
@@ -32,7 +33,8 @@ class ForgotPassword extends Component {
     });
   };
 
-  onSubmitForm = () => {
+  onSubmitForm = async () => {
+    await Keychain.resetGenericPassword();
     if (this.state.step === 1) {
       this.requestResetToken();
     } else {
@@ -88,8 +90,7 @@ class ForgotPassword extends Component {
   renderForm() {
     const { phone, resetPassword } = this.state;
     return (
-      <Container id="ForgotPassword.main-content" style={{ flex: 1 }}>
-        {/* <Content id="ForgotPassword.main-content" padder keyboardShouldPersistTaps="handled" contentContainerStyle={{ flex: 1 }}> */}
+      <View id="ForgotPassword.main-content" style={{ flex: 1 }}>
         <View style={styles.headerWrapper}>
           <Button
             id="ForgotPassword.backButton"
@@ -101,6 +102,7 @@ class ForgotPassword extends Component {
           </Button>
           <Text style={styles.headerText}>{I18n.t('logIn.forgot_password_title')}</Text>
         </View>
+        <Logo styleContainer={{ marginTop: -60 }} />
         {this.state.step === 1 ? (
           <View id="ForgotPassword.formWrapper" style={styles.formWrapper}>
             <View id="ForgotPassword.form" style={styles.form}>
@@ -160,28 +162,31 @@ class ForgotPassword extends Component {
             </View>
           </View>
         )}
-      </Container>
+      </View>
     );
   }
 
   render() {
     return (
-      <Container id="ForgotPassword.container" style={styles.container}>
-        <ImageBackground
-          id="ForgotPassword.bg-image"
-          resizeMode="cover"
-          style={styles.background}
-          source={require('../../images/loginBackground.png')}
-        >
-          {this.renderForm()}
-        </ImageBackground>
-      </Container>
+      <ScrollView>
+        <Container id="ForgotPassword.container" style={styles.container}>
+          <ImageBackground
+            id="ForgotPassword.bg-image"
+            resizeMode="cover"
+            style={styles.background}
+            source={require('../../images/loginBackground.png')}
+          >
+            {this.renderForm()}
+          </ImageBackground>
+        </Container>
+      </ScrollView>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: '#f3c200',
   },
   background: {
@@ -213,6 +218,8 @@ const styles = StyleSheet.create({
   form: {
     backgroundColor: 'rgba(0,0,0,0.5)',
     padding: 10,
+    marginLeft: 15,
+    marginRight: 15,
     flexDirection: 'column',
   },
   button: {

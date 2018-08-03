@@ -2,6 +2,7 @@
   "logIn": {
     "log_in": "Oturumu aç",
     "sign_up": "Kayıt ol",
+    "verification": "Doğrulama",
     "account_login": "Hesap girişi",
     "account_type": "Üyelik Seçenekleri",
     "user": "Üye",
@@ -24,7 +25,10 @@
     "upload_photo": "Resminizi yükleme vakti",
     "photo_saved": "Resminiz yüklendi",
     "tap_on_icon": "Resim simgesine dokunun",
-    "landscape": "*Lütfen manzara resminizi yükleyiniz - profiliniz harika görünecek"
+    "landscape": "*Lütfen manzara resminizi yükleyiniz - profiliniz harika görünecek",
+    "biometrics": "Parmak izi ile oturum açmak ister misiniz?",
+    "biometrics_title": "Touch/Fingerprint ID",
+    "biometrics_scan": "Oturum açmak için parmağınızı tarayın"
   },
   "eula": {
     "error": "Maalesef kaydolamazsınız",
@@ -50,13 +54,13 @@
   },
   "categories": {
     "categories": "Kategoriler",
-    "artist": "Sanatçı",
+    "transport": "Araç",
     "photo": "Fotoğrafçı",
     "venue": "Mekan",
     "makeup": "Güzellik",
     "entertainment": "Eğlence",
     "decoration": "Dekorasyon",
-    "costume": "Kıyafet",
+    "costume": "Elbise",
     "catering": "Catering",
     "cake": "Pasta"
   },
@@ -107,7 +111,12 @@
       "descriptionPhoto": "Profil resmi için fotoğraflara erişimine izin ver",
       "allowCamera": "Wevedo kameraya erişmesine izin ver?",
       "descriptionCamera": " Profil resmi için kameraya erişimine izin ver"
-    }
+    },
+    "upload_a_video": "Video yüklemek",
+    "uploading_completed": "Yükleme tamamlandı",
+    "video_uploaded": "Video yüklendi",
+    "new_video": "Yeni video",
+    "remove_video": "Onayla video"
   },
   "inbox": {
     "no_active_dialog": "Etkin iletişim kutusu yok"
@@ -124,6 +133,7 @@
     "ok": "Tamam",
     "error": "Hata",
     "done": "Tamam",
+    "remove": "Onayla",
     "save": "Kayıt et",
     "email": "E-posta",
     "phone": "Cep numara",

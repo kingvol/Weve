@@ -1,9 +1,22 @@
+/* eslint-disable no-confusing-arrow */
 import React, { Component } from 'react';
 import { Content, Tab, Tabs } from 'native-base';
-import { View, Alert, Dimensions, Text, Linking } from 'react-native';
+import {
+  View,
+  Alert,
+  Dimensions,
+  Text,
+  Linking,
+  Modal,
+  TouchableWithoutFeedback,
+  TouchableOpacity,
+  Platform,
+} from 'react-native';
+import Video, { Container } from 'react-native-af-video-player';
 import FastImage from 'react-native-fast-image';
 import { connect } from 'react-redux';
 import Swiper from 'react-native-swiper';
+import ImageZoom from 'react-native-image-pan-zoom';
 import { Calendar } from 'react-native-calendars';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
@@ -25,11 +38,19 @@ const calendarTheme = {
 
 const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png';
 const ITEM_WIDTH = Dimensions.get('window').width;
+const ITEM_HEIGHT = Dimensions.get('window').height;
+
+// const isPortrait = () => ITEM_HEIGHT >= ITEM_WIDTH;
 
 class ProviderProfileScreen extends Component {
   constructor(props) {
     super(props);
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+    this.state = {
+      modalForImageVisible: false,
+      fullScreenImageUrl: this.props.provider.profileImageURL || defaultProfile,
+      videoFullScreen: false,
+    };
   }
 
   componentDidMount() {
@@ -48,8 +69,7 @@ class ProviderProfileScreen extends Component {
               icon: sources[0],
               id: 'chat',
               disabled:
-                !this.props.provider.chatEnabled &&
-                this.props.provider.chatEnabled !== undefined,
+                !this.props.provider.chatEnabled && this.props.provider.chatEnabled !== undefined,
             },
             {
               icon: sources[1],
@@ -102,9 +122,20 @@ class ProviderProfileScreen extends Component {
             return Linking.openURL(`tel:${this.props.provider.phoneNumber}`);
           }
         })
-        .catch(error => alert(I18n.t('chat.error')));
+        .catch(() => alert(I18n.t('chat.error')));
     }
   }
+
+  onFullScreen = (status) => {
+    this.setState({ videoFullScreen: status });
+  };
+
+  setModalForImageVisible = (visible, link) => {
+    this.setState({ modalForImageVisible: visible });
+    if (link) {
+      this.setState({ fullScreenImageUrl: link });
+    }
+  };
 
   handleDayPress = ({ timestamp, dateString }) => {
     if (this.props.user.profile.isProvider) {
@@ -163,7 +194,17 @@ class ProviderProfileScreen extends Component {
   render() {
     const { profile } = this.props.user; // authUser
     const { provider } = this.props;
-    const { styleImage } = styles;
+    const {
+      styleImage,
+      styleImageFullScreen,
+      slide,
+      wrapper,
+      styleIconButton,
+      styleIconImage,
+      dotsStyle,
+      styleIosMargin,
+      styleVideoIos,
+    } = styles;
 
     const markedDates = profile._id === provider._id ? profile.bookedDates : provider.bookedDates;
 
@@ -183,39 +224,135 @@ class ProviderProfileScreen extends Component {
       const arrayImages = Object.values(provider.providerImages);
       images = arrayImages.filter(e => !!e);
       images.unshift(provider.profileImageURL);
+      images.forEach(item => FastImage.preload([{ uri: item }]));
+      if (provider.profileVideoURL) {
+        images.splice(1, 0, {
+          id: 'video',
+          url: provider.profileVideoURL,
+        });
+      }
     }
+    const nameWithRegion = provider.fullName
+      ? `${provider.fullName.toUpperCase()} · ${provider.regionName.toUpperCase()}`
+      : `${provider.firstName.toUpperCase()} ${provider.lastName.toUpperCase() ||
+          ''} · ${provider.regionName.toUpperCase()}`;
+
+    const singleProfileImage = this.props.provider.profileImageURL || defaultProfile;
 
     return (
       <Content contentContainerStyle={{ flexGrow: 1 }}>
+        <Modal
+          transparent={false}
+          visible={this.state.modalForImageVisible}
+          onRequestClose={() => this.setModalForImageVisible(false)}
+          supportedOrientations={['portrait', 'landscape']}
+        >
+          {typeof this.state.fullScreenImageUrl === 'object' ? (
+            <Container style={{ flex: 1, backgroundColor: 'black' }}>
+              <Video
+                key={provider.profileVideoURL}
+                url={provider.profileVideoURL}
+                style={
+                  Platform.OS === 'ios'
+                    ? styleVideoIos
+                    : {
+                        flex: 1,
+                        justifyContent: 'center',
+                      }
+                }
+                logo={
+                  Platform.OS === 'ios'
+                    ? require('../../../images/WevedoLogoalpha.jpg') // eslint-disable-line global-require
+                    : 'http://wevedo.com/img/logo.png'
+                } 
+                title={
+                  provider.fullName
+                    ? `${provider.fullName}`
+                    : `${provider.firstName} ${provider.lastName || ''}`
+                }
+                inlineOnly={Platform.OS === 'ios'}
+                resizeMode={
+                  Platform.OS === 'ios' || this.state.videoFullScreen ? 'cover' : 'contain'
+                }
+                onFullScreen={status => this.onFullScreen(status)}
+                autoPlay
+                onEnd={() => this.setModalForImageVisible(false)}
+                onMorePress={() => this.setModalForImageVisible(false)}
+                onError={() => this.setModalForImageVisible(false)}
+              />
+            </Container>
+          ) : (
+            <View style={{ backgroundColor: 'black' }}>
+              <TouchableOpacity
+                style={Platform.OS === 'ios' ? styleIosMargin : {}}
+                onPress={() => this.setModalForImageVisible(false)}
+              >
+                <Icon style={styleIconButton} size={30} name="remove" />
+              </TouchableOpacity>
+              <ImageZoom
+                cropWidth={ITEM_WIDTH}
+                cropHeight={ITEM_HEIGHT}
+                imageWidth={ITEM_WIDTH}
+                imageHeight={ITEM_HEIGHT}
+                style={{ backgroundColor: 'black' }}
+              >
+                <FastImage
+                  style={styleImageFullScreen}
+                  resizeMode={FastImage.resizeMode.contain}
+                  source={{ uri: this.state.fullScreenImageUrl }}
+                  priority={FastImage.priority.high}
+                />
+              </ImageZoom>
+            </View>
+          )}
+        </Modal>
         <View style={{ minHeight: 500 }}>
           {provider.profileImageURL && provider.providerImages && images.length > 1 ? (
             <Swiper
-              style={styles.wrapper}
+              style={wrapper}
               showsButtons
               autoplay
               autoplayTimeout={5}
-              dotColor="#c4c4c4"
-              activeDotColor="#d64635"
-              // paginationStyle={{ bottom: 7 }}
-              // buttonWrapperStyle={{ paddingHorizontal: 20 }}
+              dot={<View style={[{ backgroundColor: '#c4c4c4' }, dotsStyle]} />}
+              activeDot={<View style={[{ backgroundColor: '#d64635' }, dotsStyle]} />}
               nextButton={<Text style={{ color: '#d64635', fontSize: 35 }}>›</Text>}
               prevButton={<Text style={{ color: '#d64635', fontSize: 35 }}>‹</Text>}
             >
               {images.map((item, key) => (
-                <View id={key} key={item} style={styles.slide}>
-                  <FastImage source={{ uri: item }} style={styleImage} />
-                </View>
+                <TouchableWithoutFeedback
+                  id={key}
+                  key={item}
+                  style={slide}
+                  onPress={() => this.setModalForImageVisible(true, item)}
+                >
+                  {item.id === 'video' ? (
+                    <View style={{ flex: 1, backgroundColor: 'black' }}>
+                      <TouchableOpacity
+                        onPress={() => this.setModalForImageVisible(true, item)}
+                        style={styleIconImage}
+                      >
+                        <Icon style={{ color: 'white' }} size={45} name="play-circle-o" />
+                      </TouchableOpacity>
+                    </View>
+                  ) : (
+                    <FastImage source={{ uri: item }} style={styleImage} />
+                  )}
+                </TouchableWithoutFeedback>
               ))}
             </Swiper>
           ) : (
-            <FastImage
-              style={styles.image}
-              resizeMode={FastImage.resizeMode.contain}
-              source={{ uri: this.props.provider.profileImageURL || defaultProfile }}
-            />
+            <TouchableWithoutFeedback
+              onPress={() => this.setModalForImageVisible(true, singleProfileImage)}
+            >
+              <FastImage
+                style={styles.image}
+                resizeMode={FastImage.resizeMode.contain}
+                source={{ uri: singleProfileImage }}
+              />
+            </TouchableWithoutFeedback>
           )}
 
-          {(this.props.provider.bio && this.props.provider.bio.length) ? (
+          {this.props.provider.bio && this.props.provider.bio.length ? (
             <Tabs tabBarUnderlineStyle={{ backgroundColor: 'red' }}>
               <Tab
                 heading={I18n.t('common.calendar')}
@@ -239,6 +376,16 @@ class ProviderProfileScreen extends Component {
                 activeTabStyle={{ backgroundColor: 'white' }}
               >
                 <View style={styles.infoContainer}>
+                  <Text
+                    adjustsFontSizeToFit
+                    minimumFontScale={0.5}
+                    style={{
+                      fontSize: 1.2 * ITEM_WIDTH / nameWithRegion.length,
+                      marginTop: 10,
+                    }}
+                  >
+                    {nameWithRegion}
+                  </Text>
                   <Text style={styles.text}>{this.props.provider.bio}</Text>
                 </View>
               </Tab>
@@ -271,6 +418,7 @@ const styles = {
     alignItems: 'center',
   },
   text: {
+    color: 'black',
     fontSize: 18,
     margin: 15,
     marginTop: 10,
@@ -279,11 +427,43 @@ const styles = {
     height: ITEM_WIDTH / 1.5,
     width: ITEM_WIDTH,
   },
+  styleIconImage: {
+    flex: 0,
+    alignSelf: 'center',
+    paddingTop: ITEM_WIDTH / 1.5 / 2.3,
+    position: 'absolute',
+  },
+  styleImageFullScreen: {
+    height: ITEM_HEIGHT,
+  },
+  styleVideoIos: {
+    flex: 1,
+    justifyContent: 'center',
+    marginTop: 20,
+  },
+  styleIosMargin: { marginTop: 20 },
+  styleIconButton: {
+    color: '#d64635',
+    backgroundColor: 'black',
+    paddingTop: 0.8,
+    paddingBottom: 0.8,
+    paddingLeft: 3.3,
+    paddingRight: 3.3,
+    justifyContent: 'flex-end',
+  },
   calendar: {},
   infoContainer: {
     alignItems: 'center',
-    justifyContent: 'center',
     flex: 1,
+  },
+  dotsStyle: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    marginLeft: 3,
+    marginRight: 3,
+    marginTop: 3,
+    marginBottom: ITEM_WIDTH / 1.5 - 45,
   },
 };
 

@@ -1,10 +1,17 @@
 import React, { Component } from 'react';
-import { ImageBackground, ScrollView, Alert, TouchableOpacity, Switch } from 'react-native';
+import {
+  ImageBackground,
+  ScrollView,
+  Alert,
+  TouchableOpacity,
+  Switch,
+  Keyboard,
+} from 'react-native';
 import { Container, Icon, View, Form } from 'native-base';
 import PhoneInput from 'react-native-phone-input';
 import I18n from '../../locales';
 import { contrastColor, primaryFont } from '../../theme';
-import { Button, Text, FieldInput } from '../../components/common';
+import { Button, Text, FieldInput, Logo } from '../../components/common';
 
 import APIs from '../../api';
 import vars from '../../env/vars';
@@ -29,6 +36,7 @@ class VerificationScreen extends Component {
 
   onContinuePress = async () => {
     const mobileNumber = this.phoneInput.getValue();
+    this.setState({ isLoading: true });
     // check for test case
     if (mobileNumber === testNumber || (vars.DB_ENV === 'test' && this.state.switchValue)) {
       try {
@@ -50,6 +58,7 @@ class VerificationScreen extends Component {
     }
     const isValid = this.phoneInput.isValidNumber();
     if (!isValid) {
+      this.setState({ isLoading: false });
       return;
     }
     try {
@@ -72,6 +81,9 @@ class VerificationScreen extends Component {
 
   onTextChange = (key, value) => {
     this.setState({ [key]: value });
+    if (key === 'enteredCode') {
+      if (value.length === 4) Keyboard.dismiss();
+    }
   };
 
   onResendPress = () => {
@@ -83,6 +95,7 @@ class VerificationScreen extends Component {
   numberPhoneCheck = () => {
     const isValid = this.phoneInput.isValidNumber();
     this.setState({ phone: isValid });
+    if (isValid) Keyboard.dismiss();
   };
 
   requestVerification = async (number) => {
@@ -154,15 +167,16 @@ class VerificationScreen extends Component {
               </Button>
               <Text
                 id="Verification.titleText"
-                style={{ color: contrastColor, fontSize: 25, flex: 1.6, ...primaryFont }}
+                style={{ color: contrastColor, fontSize: 25, flex: 2, ...primaryFont }}
               >
-                {I18n.t('logIn.sign_up')}
+                {I18n.t('logIn.verification')}
               </Text>
             </View>
             <View style={styles.contentContainer}>
-              <Text style={styles.titleText}>
+              <Logo styleContainer={{ marginTop: -20 }} />
+              { /* <Text style={styles.titleText}>
                 {this.state.step === 1 ? I18n.t('common.phoneNumber') : I18n.t('auth.enter_code')}
-              </Text>
+              </Text> */}
 
               <Form>
                 {this.state.step === 1 ? (
@@ -212,7 +226,7 @@ class VerificationScreen extends Component {
                   style={styles.button}
                   onPress={this.state.step === 1 ? this.onContinuePress : this.handleSubmit}
                   spinner={this.state.isLoading}
-                  disabled={disabled}
+                  disabled={this.state.isLoading}
                 >
                   <Text style={styles.buttonText}>{I18n.t('common.continue')}</Text>
                 </Button>
