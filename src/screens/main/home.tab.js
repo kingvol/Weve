@@ -12,40 +12,40 @@ import startPushService from '../../services/PushService';
 
 const categories = [
   {
-    route: 'Venue',
-    screenIndex: 0,
-    title: I18n.t('categories.venue'),
-    imageSource: images.venue,
-  },
-  {
-    route: 'Transport',
-    screenIndex: 1,
-    title: I18n.t('categories.transport'),
-    imageSource: images.transport,
-  },
-  {
     route: 'Photo',
-    screenIndex: 2,
+    screenIndex: 0,
     title: I18n.t('categories.photo'),
     imageSource: images.photo,
   },
   {
     route: 'Catering',
-    screenIndex: 3,
+    screenIndex: 1,
     title: I18n.t('categories.catering'),
     imageSource: images.catering,
   },
   {
     route: 'Entertainment',
-    screenIndex: 4,
+    screenIndex: 2,
     title: I18n.t('categories.entertainment'),
     imageSource: images.ent,
   },
   {
     route: 'MakeUp',
-    screenIndex: 5,
+    screenIndex: 3,
     title: I18n.t('categories.makeup'),
     imageSource: images.make_up,
+  },
+  {
+    route: 'Cake',
+    screenIndex: 4,
+    title: I18n.t('categories.cake'),
+    imageSource: images.cake,
+  },
+  {
+    route: 'Decoration',
+    screenIndex: 5,
+    title: I18n.t('categories.decoration'),
+    imageSource: images.decoration,
   },
   {
     route: 'Costume',
@@ -54,16 +54,16 @@ const categories = [
     imageSource: images.costume,
   },
   {
-    route: 'Decoration',
+    route: 'Venue',
     screenIndex: 7,
-    title: I18n.t('categories.decoration'),
-    imageSource: images.decoration,
+    title: I18n.t('categories.venue'),
+    imageSource: images.venue,
   },
   {
-    route: 'Cake',
+    route: 'Transport',
     screenIndex: 8,
-    title: I18n.t('categories.cake'),
-    imageSource: images.cake,
+    title: I18n.t('categories.transport'),
+    imageSource: images.transport,
   },
 ];
 
