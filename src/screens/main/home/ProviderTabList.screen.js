@@ -18,15 +18,15 @@ class ProviderTabList extends Component {
       tabBarState: {
         index: this.props.routeIndex || 0,
         routes: [
-          { key: 'venue', title: I18n.t('categories.venue') },
-          { key: 'transport', title: I18n.t('categories.transport') },
           { key: 'photo', title: I18n.t('categories.photo') },
           { key: 'catering', title: I18n.t('categories.catering') },
           { key: 'entertainment', title: I18n.t('categories.entertainment') },
           { key: 'makeup', title: I18n.t('categories.makeup') },
-          { key: 'costume', title: I18n.t('categories.costume') },
-          { key: 'decoration', title: I18n.t('categories.decoration') },
           { key: 'cake', title: I18n.t('categories.cake') },
+          { key: 'decoration', title: I18n.t('categories.decoration') },
+          { key: 'costume', title: I18n.t('categories.costume') },
+          { key: 'venue', title: I18n.t('categories.venue') },
+          { key: 'transport', title: I18n.t('categories.transport') },
         ],
       },
       visible: false,
@@ -47,17 +47,17 @@ class ProviderTabList extends Component {
     }
   }
 
-  VenueRoute = () => <ProviderList category="Venue" navigator={this.props.navigator} />;
-  TransportRoute = () => <ProviderList category="Transport" navigator={this.props.navigator} />;
   PhotoRoute = () => <ProviderList category="Photo" navigator={this.props.navigator} />;
   CateringRoute = () => <ProviderList category="Catering" navigator={this.props.navigator} />;
   EntertainmentRoute = () => (
     <ProviderList category="Entertainment" navigator={this.props.navigator} />
   );
   MakeupRoute = () => <ProviderList category="Make up" navigator={this.props.navigator} />;
-  ConstumeRoute = () => <ProviderList category="Costume" navigator={this.props.navigator} />;
-  DecorationRoute = () => <ProviderList category="Decoration" navigator={this.props.navigator} />;
   CakeRoute = () => <ProviderList category="Cake" navigator={this.props.navigator} />;
+  DecorationRoute = () => <ProviderList category="Decoration" navigator={this.props.navigator} />;
+  ConstumeRoute = () => <ProviderList category="Costume" navigator={this.props.navigator} />;
+  VenueRoute = () => <ProviderList category="Venue" navigator={this.props.navigator} />;
+  TransportRoute = () => <ProviderList category="Transport" navigator={this.props.navigator} />;
 
   _handleIndexChange = (index) => {
     this.setState({
@@ -87,15 +87,15 @@ class ProviderTabList extends Component {
   );
 
   _renderScene = SceneMap({
-    venue: this.VenueRoute,
-    transport: this.TransportRoute,
     photo: this.PhotoRoute,
     catering: this.CateringRoute,
     entertainment: this.EntertainmentRoute,
     makeup: this.MakeupRoute,
-    costume: this.ConstumeRoute,
-    decoration: this.DecorationRoute,
     cake: this.CakeRoute,
+    decoration: this.DecorationRoute,
+    costume: this.ConstumeRoute,
+    venue: this.VenueRoute,
+    transport: this.TransportRoute,
   });
 
   render() {
