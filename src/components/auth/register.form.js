@@ -10,6 +10,7 @@ import {
   View,
   Modal,
   TouchableOpacity,
+  Dimensions,
 } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import CountryPicker from 'react-native-country-picker-modal';
@@ -28,6 +29,7 @@ const { AuthApi, CategoryApi } = APIs;
 const categoryApi = new CategoryApi();
 const api = new AuthApi();
 const ucFirst = s => (s.substr(0, 1).toLowerCase() + s.substr(1)).replace(' ', '');
+const ITEM_WIDTH = Dimensions.get('window').width;
 
 class SignupForm extends Component {
   constructor(props) {
@@ -286,7 +288,7 @@ class SignupForm extends Component {
                 style={registerButton}
                 onPress={() => this.onSupplierPress(false)}
               >
-                <Text style={registerButtonText}>{I18n.t('logIn.user')}</Text>
+                <Text style={[registerButtonText, { fontSize: 0.5 * ITEM_WIDTH / I18n.t('logIn.supplier').length }]}>{I18n.t('logIn.user')}</Text>
               </Button>
               <View style={{ marginTop: 25 }}>
                 <Button
@@ -295,7 +297,7 @@ class SignupForm extends Component {
                   style={registerButton}
                   onPress={() => this.onSupplierPress(true)}
                 >
-                  <Text style={registerButtonText}>{I18n.t('logIn.supplier')}</Text>
+                  <Text style={[registerButtonText, { fontSize: 0.5 * ITEM_WIDTH / I18n.t('logIn.supplier').length }]}>{I18n.t('logIn.supplier')}</Text>
                 </Button>
               </View>
             </View>
@@ -304,18 +306,20 @@ class SignupForm extends Component {
         <View id="Signup.backButtonAndTitleWrapper" style={styles.header}>
           <Button
             id="Signup.backButton"
-            style={{ flex: 1 }}
+            style={{ flex: 1, justifyContent: 'center', alignSelf: 'center' }}
             transparent
             onPress={this.props.onBackPress}
           >
             <Icon style={{ color: 'white', fontSize: 40 }} name="ios-arrow-back" />
           </Button>
-          <Text
-            id="Signup.titleText"
-            style={{ color: contrastColor, fontSize: 25, flex: 1.6, ...primaryFont }}
-          >
-            {I18n.t('logIn.sign_up')}
-          </Text>
+          <View style={{ flex: 1.7, justifyContent: 'center', alignSelf: 'center' }}>
+            <Text
+              id="Signup.titleText"
+              style={{ color: contrastColor, fontSize: 25, ...primaryFont }}
+            >
+              {I18n.t('logIn.sign_up')}
+            </Text>
+          </View>
         </View>
         <Logo />
 
@@ -592,7 +596,7 @@ const styles = StyleSheet.create({
   },
   header: {
     flex: 1,
-    justifyContent: 'flex-start',
+    justifyContent: 'space-around',
     top: 20,
     flexDirection: 'row',
   },
