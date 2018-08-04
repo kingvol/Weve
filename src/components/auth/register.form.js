@@ -288,7 +288,7 @@ class SignupForm extends Component {
                 style={registerButton}
                 onPress={() => this.onSupplierPress(false)}
               >
-                <Text style={[registerButtonText, { fontSize: 0.5 * ITEM_WIDTH / I18n.t('logIn.supplier').length }]}>{I18n.t('logIn.user')}</Text>
+                <Text style={[registerButtonText, { fontSize: ITEM_WIDTH / 26 }]}>{I18n.t('logIn.user')}</Text>
               </Button>
               <View style={{ marginTop: 25 }}>
                 <Button
@@ -297,7 +297,7 @@ class SignupForm extends Component {
                   style={registerButton}
                   onPress={() => this.onSupplierPress(true)}
                 >
-                  <Text style={[registerButtonText, { fontSize: 0.5 * ITEM_WIDTH / I18n.t('logIn.supplier').length }]}>{I18n.t('logIn.supplier')}</Text>
+                  <Text style={[registerButtonText, { fontSize: ITEM_WIDTH / 26 }]}>{I18n.t('logIn.supplier')}</Text>
                 </Button>
               </View>
             </View>
