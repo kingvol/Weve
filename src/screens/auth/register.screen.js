@@ -32,7 +32,13 @@ class RegisterScreen extends Component {
   }
 
   onBackPress = () => {
-    this.props.navigator.pop();
+    this.props.navigator.resetTo({
+      screen: 'wevedo.verificationScreen',
+      navigatorStyle: {
+        navBarHidden: true,
+        screenBackgroundColor: 'orange',
+      },
+    });
   };
 
   onFormSubmit = (password, fullName, countryCode, regionName) => {
