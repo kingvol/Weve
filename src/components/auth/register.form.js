@@ -120,6 +120,12 @@ class SignupForm extends Component {
     });
   };
 
+  onBackPress = () => {
+    this.setState({
+      modalForUserProfileVisible: true,
+    });
+  }
+
   onContinuePress = () => {
     this.setState({
       step: 2,
@@ -270,7 +276,7 @@ class SignupForm extends Component {
         <Modal
           transparent={false}
           visible={this.state.modalForUserProfileVisible}
-          onRequestClose={() => this.onSupplierPress(false)}
+          onRequestClose={() => this.props.onBackPress()}
         >
           <ImageBackground resizeMode="cover" style={background} source={images.backGround}>
             <Logo styleContainer={{ marginTop: 60, marginBottom: -30 }} />
@@ -306,7 +312,7 @@ class SignupForm extends Component {
             id="Signup.backButton"
             style={{ flex: 1 }}
             transparent
-            onPress={this.props.onBackPress}
+            onPress={this.onBackPress}
           >
             <Icon style={{ color: 'white', fontSize: 40 }} name="ios-arrow-back" />
           </Button>

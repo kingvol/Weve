@@ -76,7 +76,13 @@ class VerificationScreen extends Component {
   };
 
   onBackPress = () => {
-    this.props.navigator.pop();
+    this.props.navigator.resetTo({
+      screen: 'wevedo.loginScreen',
+      navigatorStyle: {
+        navBarHidden: true,
+        screenBackgroundColor: 'orange',
+      },
+    });
   };
 
   onTextChange = (key, value) => {
@@ -153,7 +159,7 @@ class VerificationScreen extends Component {
           id="SignUp.bg-image"
           resizeMode="cover"
           style={styles.background}
-          source={require('../../images/loginBackground.png')}
+          source={require('../../images/loginBackground.png')} // eslint-disable-line global-require
         >
           <ScrollView keyboardShouldPersistTaps="always">
             <View id="Signup.backButtonAndTitleWrapper" style={styles.header}>
@@ -174,7 +180,7 @@ class VerificationScreen extends Component {
             </View>
             <View style={styles.contentContainer}>
               <Logo styleContainer={{ marginTop: -20 }} />
-              { /* <Text style={styles.titleText}>
+              {/* <Text style={styles.titleText}>
                 {this.state.step === 1 ? I18n.t('common.phoneNumber') : I18n.t('auth.enter_code')}
               </Text> */}
 
