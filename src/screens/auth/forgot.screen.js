@@ -104,7 +104,7 @@ class ForgotPassword extends Component {
           </Button>
           <Text style={styles.headerText}>{I18n.t('logIn.forgot_password_title')}</Text>
         </View>
-        <Logo styleContainer={{ marginTop: -60 }} />
+        <Logo adaptive styleContainer={{ marginTop: -60 }} />
         {this.state.step === 1 ? (
           <View id="ForgotPassword.formWrapper" style={styles.formWrapper}>
             <View id="ForgotPassword.form" style={styles.form}>
