@@ -165,18 +165,24 @@ class VerificationScreen extends Component {
             <View id="Signup.backButtonAndTitleWrapper" style={styles.header}>
               <Button
                 id="Signup.backButton"
-                style={{ flex: 1 }}
+                style={{ flex: 1, justifyContent: 'center', alignSelf: 'center' }}
                 transparent
                 onPress={this.onBackPress}
               >
                 <Icon style={{ color: 'white', fontSize: 40 }} name="ios-arrow-back" />
               </Button>
-              <Text
-                id="Verification.titleText"
-                style={{ color: contrastColor, fontSize: 25, flex: 2, ...primaryFont }}
-              >
-                {I18n.t('logIn.verification')}
-              </Text>
+              <View style={{ flex: 2.2, justifyContent: 'center', alignSelf: 'center' }}>
+                <Text
+                  id="Verification.titleText"
+                  style={{
+                    color: contrastColor,
+                    fontSize: 25,
+                    ...primaryFont,
+                  }}
+                >
+                  {I18n.t('logIn.verification')}
+                </Text>
+              </View>
             </View>
             <View style={styles.contentContainer}>
               <Logo styleContainer={{ marginTop: -20 }} />

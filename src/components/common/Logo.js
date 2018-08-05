@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react';
-import { View, Animated, Keyboard } from 'react-native';
+import { View, Animated, Keyboard, Dimensions } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import { backgroundColor } from '../../theme';
 import images from '../../images';
 
-const logoSize = 80;
+const ITEM_WIDTH = Dimensions.get('window').width;
+const logoSize = ITEM_WIDTH / 4.5;
 const AnimatedFastImage = Animated.createAnimatedComponent(FastImage);
 
 class Logo extends PureComponent {
