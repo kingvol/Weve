@@ -40,7 +40,6 @@ const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png
 const ITEM_WIDTH = Dimensions.get('window').width;
 const ITEM_HEIGHT = Dimensions.get('window').height;
 
-// const isPortrait = () => ITEM_HEIGHT >= ITEM_WIDTH;
 
 class ProviderProfileScreen extends Component {
   constructor(props) {
