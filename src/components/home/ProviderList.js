@@ -129,6 +129,7 @@ class ProviderList extends PureComponent {
       />
     );
 
+
   render() {
     const { containerStyle, buttonsRow, buttonView } = styles;
 
