@@ -173,7 +173,7 @@ class VerificationScreen extends Component {
               </Text>
             </View>
             <View style={styles.contentContainer}>
-              <Logo styleContainer={{ marginTop: -20 }} />
+              <Logo adaptive styleContainer={{ marginTop: -20 }} />
               { /* <Text style={styles.titleText}>
                 {this.state.step === 1 ? I18n.t('common.phoneNumber') : I18n.t('auth.enter_code')}
               </Text> */}
