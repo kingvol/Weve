@@ -129,6 +129,7 @@ class ProviderList extends PureComponent {
       />
     );
 
+
   render() {
     const { containerStyle, buttonsRow, buttonView } = styles;
 
@@ -234,7 +235,7 @@ class ProviderList extends PureComponent {
       </View>
     ) : (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <ActivityIndicator />
+        <ActivityIndicator size="large" color="#d64635" />
       </View>
     );
   }

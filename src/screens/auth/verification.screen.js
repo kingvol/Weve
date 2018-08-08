@@ -76,7 +76,13 @@ class VerificationScreen extends Component {
   };
 
   onBackPress = () => {
-    this.props.navigator.pop();
+    this.props.navigator.resetTo({
+      screen: 'wevedo.loginScreen',
+      navigatorStyle: {
+        navBarHidden: true,
+        screenBackgroundColor: 'orange',
+      },
+    });
   };
 
   onTextChange = (key, value) => {
@@ -153,28 +159,34 @@ class VerificationScreen extends Component {
           id="SignUp.bg-image"
           resizeMode="cover"
           style={styles.background}
-          source={require('../../images/loginBackground.png')}
+          source={require('../../images/loginBackground.png')} // eslint-disable-line global-require
         >
           <ScrollView keyboardShouldPersistTaps="always">
             <View id="Signup.backButtonAndTitleWrapper" style={styles.header}>
               <Button
                 id="Signup.backButton"
-                style={{ flex: 1 }}
+                style={{ flex: 1, justifyContent: 'center', alignSelf: 'center' }}
                 transparent
                 onPress={this.onBackPress}
               >
                 <Icon style={{ color: 'white', fontSize: 40 }} name="ios-arrow-back" />
               </Button>
-              <Text
-                id="Verification.titleText"
-                style={{ color: contrastColor, fontSize: 25, flex: 2, ...primaryFont }}
-              >
-                {I18n.t('logIn.verification')}
-              </Text>
+              <View style={{ flex: 2.2, justifyContent: 'center', alignSelf: 'center' }}>
+                <Text
+                  id="Verification.titleText"
+                  style={{
+                    color: contrastColor,
+                    fontSize: 25,
+                    ...primaryFont,
+                  }}
+                >
+                  {I18n.t('logIn.verification')}
+                </Text>
+              </View>
             </View>
             <View style={styles.contentContainer}>
               <Logo adaptive styleContainer={{ marginTop: -20 }} />
-              { /* <Text style={styles.titleText}>
+              {/* <Text style={styles.titleText}>
                 {this.state.step === 1 ? I18n.t('common.phoneNumber') : I18n.t('auth.enter_code')}
               </Text> */}
 

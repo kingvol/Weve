@@ -226,7 +226,7 @@ class Chat extends Component {
     ) : (
       <Container>
         <Center>
-          <ActivityIndicator />
+          <ActivityIndicator size="large" color="#d64635" />
         </Center>
       </Container>
     );
