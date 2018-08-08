@@ -11,6 +11,8 @@ import { Button, Container, FieldInput, Text, Logo } from '../../components/comm
 import { white } from '../../theme/colors';
 import APIs from '../../api';
 
+const RESET_TOKEN_LENGTH = 4;
+
 const { AuthApi } = APIs;
 const api = new AuthApi();
 
@@ -88,7 +90,7 @@ class ForgotPassword extends Component {
   };
 
   renderForm() {
-    const { phone, resetPassword } = this.state;
+    const { phone, resetPassword, resetToken } = this.state;
     return (
       <View id="ForgotPassword.main-content" style={{ flex: 1 }}>
         <View style={styles.headerWrapper}>
@@ -102,7 +104,7 @@ class ForgotPassword extends Component {
           </Button>
           <Text style={styles.headerText}>{I18n.t('logIn.forgot_password_title')}</Text>
         </View>
-        <Logo styleContainer={{ marginTop: -60 }} />
+        <Logo adaptive styleContainer={{ marginTop: -60 }} />
         {this.state.step === 1 ? (
           <View id="ForgotPassword.formWrapper" style={styles.formWrapper}>
             <View id="ForgotPassword.form" style={styles.form}>
@@ -150,15 +152,17 @@ class ForgotPassword extends Component {
                 id="ForgotPassword.codeInput"
                 onChangeText={text => this.onTextChange('resetToken', text)}
               />
-              <Button
-                block
-                style={styles.button}
-                spinner={this.state.isLoading}
-                id="ForgotPassword.resetButton"
-                onPress={this.onSubmitForm}
-              >
-                <Text style={styles.buttonText}>{I18n.t('logIn.reset_password')}</Text>
-              </Button>
+              {resetToken.length === RESET_TOKEN_LENGTH ? (
+                <Button
+                  block
+                  style={styles.button}
+                  spinner={this.state.isLoading}
+                  id="ForgotPassword.resetButton"
+                  onPress={this.onSubmitForm}
+                >
+                  <Text style={styles.buttonText}>{I18n.t('logIn.reset_password')}</Text>
+                </Button>
+              ) : null}
             </View>
           </View>
         )}

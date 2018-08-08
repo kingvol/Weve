@@ -124,7 +124,7 @@ class LoginForm extends Component {
                 {I18n.t('logIn.account_login')}
               </Title>
             </CardItem>
-            <Logo />
+            <Logo adaptive />
             <Form id="LoginPage.form-container" style={form}>
               <View style={{ flex: 2 }}>
                 <View style={itemStyle}>
