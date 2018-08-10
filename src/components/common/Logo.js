@@ -1,3 +1,4 @@
+// @flow
 import React, { PureComponent } from 'react';
 import { View, Animated, Keyboard, Dimensions } from 'react-native';
 import FastImage from 'react-native-fast-image';
@@ -7,7 +8,12 @@ const ITEM_WIDTH = Dimensions.get('window').width;
 const logoSize = ITEM_WIDTH / 4.5;
 const AnimatedFastImage = Animated.createAnimatedComponent(FastImage);
 
-class Logo extends PureComponent {
+type Props = {
+  styleContainer?: Object,
+  adaptive?: boolean,
+};
+
+class Logo extends PureComponent<Props> {
   constructor() {
     super();
     this.imageHeight = new Animated.Value(logoSize);
@@ -28,6 +34,8 @@ class Logo extends PureComponent {
   }
 
   keyboardDidShow = (event) => {
+    const { adaptive } = this.props;
+    if (!adaptive) return;
     Animated.parallel([
       Animated.timing(this.imageHeight, {
         duration: event.duration,
@@ -44,6 +52,8 @@ class Logo extends PureComponent {
   };
 
   keyboardDidHide = () => {
+    const { adaptive } = this.props;
+    if (!adaptive) return;
     Animated.parallel([
       Animated.timing(this.imageHeight, {
         duration: logoSize / 2,
@@ -60,7 +70,7 @@ class Logo extends PureComponent {
   };
 
   render() {
-    const { styleContainer } = this.props;
+    const { styleContainer, adaptive } = this.props;
     const { pic, logoInnerCircle } = styles;
     return (
       <View
@@ -70,11 +80,19 @@ class Logo extends PureComponent {
           styleContainer,
         ]}
       >
-        <AnimatedFastImage
-          id="logo"
-          source={images.logoRounded}
-          style={[logoInnerCircle, { height: this.imageHeight, width: this.imageWight }]}
-        />
+        {adaptive ? (
+          <AnimatedFastImage
+            id="logo"
+            source={images.logoRounded}
+            style={[logoInnerCircle, { height: this.imageHeight, width: this.imageWight }]}
+          />
+        ) : (
+          <FastImage
+            id="logo"
+            source={images.logoRounded}
+            style={[logoInnerCircle, { height: logoSize, width: logoSize }]}
+          />
+        )}
       </View>
     );
   }

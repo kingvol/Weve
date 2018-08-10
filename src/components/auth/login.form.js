@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ImageBackground, TouchableOpacity, View, ScrollView } from 'react-native';
+import { ImageBackground, TouchableOpacity, View, ScrollView, Platform } from 'react-native';
 import { CardItem, Container, Form, Icon, Item, Input, Label, Title } from 'native-base';
 import I18n from '../../locales';
 import { primaryColor, contrastColor, primaryFont } from '../../theme';
@@ -124,7 +124,7 @@ class LoginForm extends Component {
                 {I18n.t('logIn.account_login')}
               </Title>
             </CardItem>
-            <Logo />
+            <Logo adaptive />
             <Form id="LoginPage.form-container" style={form}>
               <View style={{ flex: 2 }}>
                 <View style={itemStyle}>
@@ -272,6 +272,7 @@ const styles = {
   },
   header: {
     alignSelf: 'center',
+    marginTop: Platform.OS === 'ios' ? 15 : 0,
     backgroundColor: 'transparent',
   },
   headerText: {
