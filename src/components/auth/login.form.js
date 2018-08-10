@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ImageBackground, TouchableOpacity, View, ScrollView } from 'react-native';
+import { ImageBackground, TouchableOpacity, View, ScrollView, Platform } from 'react-native';
 import { CardItem, Container, Form, Icon, Item, Input, Label, Title } from 'native-base';
 import I18n from '../../locales';
 import { primaryColor, contrastColor, primaryFont } from '../../theme';
@@ -272,6 +272,7 @@ const styles = {
   },
   header: {
     alignSelf: 'center',
+    marginTop: Platform.OS === 'ios' ? 15 : 0,
     backgroundColor: 'transparent',
   },
   headerText: {

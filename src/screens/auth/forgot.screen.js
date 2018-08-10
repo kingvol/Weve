@@ -3,7 +3,7 @@
  */
 /* eslint-disable global-require */
 import React, { Component } from 'react';
-import { Alert, ImageBackground, StyleSheet, View, ScrollView } from 'react-native';
+import { Alert, ImageBackground, StyleSheet, View, ScrollView, Platform } from 'react-native';
 import * as Keychain from 'react-native-keychain';
 import { Icon } from 'native-base';
 import I18n from 'react-native-i18n';
@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
   },
   headerWrapper: {
     justifyContent: 'flex-start',
-    top: 20,
+    top: Platform.OS === 'ios' ? 35 : 20,
     flex: 1,
     flexDirection: 'row',
   },

@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Switch,
   Keyboard,
+  Platform,
 } from 'react-native';
 import { Container, Icon, View, Form } from 'native-base';
 import PhoneInput from 'react-native-phone-input';
@@ -277,7 +278,7 @@ const styles = {
   header: {
     flex: 0.1,
     justifyContent: 'flex-start',
-    top: 20,
+    top: Platform.OS === 'ios' ? 30 : 20,
     flexDirection: 'row',
   },
   background: {
