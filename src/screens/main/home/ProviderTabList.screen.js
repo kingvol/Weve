@@ -1,10 +1,15 @@
 /* eslint-disable no-underscore-dangle, react/no-unused-state */
 import React, { Component } from 'react';
 import { Dimensions, View, Text } from 'react-native';
+import { connect } from 'react-redux';
 import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import I18n from '../../../locales';
 import ProviderList from '../../../components/home/ProviderList';
+import { UIActions } from '../../../actions';
+
+const { shortListChanged } = UIActions;
 
 const initialLayout = {
   height: 0,
@@ -34,6 +39,27 @@ class ProviderTabList extends Component {
     this.props.navigator.setOnNavigatorEvent(this.handleNavigatorEvent.bind(this));
   }
 
+  componentDidMount() {
+    Promise.all([
+      Icon.getImageSource('heart', 20, '#ffffff'),
+      Icon.getImageSource('heart-o', 20, '#ffffff'),
+    ]).then((sources) => {
+      this.props.navigator.setButtons({
+        rightButtons: [
+          {
+            icon: this.props.shortlisted ? sources[0] : sources[1],
+            id: 'shortlisted',
+          },
+        ],
+        animated: true,
+      });
+    });
+  }
+
+  onShortListChange = () => {
+    this.props.shortListChanged();
+  };
+
   handleNavigatorEvent(event) {
     if (event.id === 'willAppear') {
       this.setState({ visible: true });
@@ -44,6 +70,22 @@ class ProviderTabList extends Component {
         animated: true,
         animationType: 'fade',
       });
+    } else if (event.id === 'shortlisted') {
+      Promise.all([
+        Icon.getImageSource('heart', 20, '#ffffff'),
+        Icon.getImageSource('heart-o', 20, '#ffffff'),
+      ]).then((sources) => {
+        this.props.navigator.setButtons({
+          rightButtons: [
+            {
+              icon: this.props.shortlisted ? sources[0] : sources[1],
+              id: 'shortlisted',
+            },
+          ],
+          animated: true,
+        });
+      });
+      this.onShortListChange();
     }
   }
 
@@ -121,4 +163,8 @@ const styles = {
   },
 };
 
-export default ProviderTabList;
+const mapStateToProps = state => ({
+  shortlisted: state.ui.shortlisted,
+});
+
+export default connect(mapStateToProps, { shortListChanged })(ProviderTabList);
