@@ -163,15 +163,17 @@ class VerificationScreen extends Component {
         >
           <ScrollView keyboardShouldPersistTaps="always">
             <View id="Signup.backButtonAndTitleWrapper" style={styles.header}>
-              <Button
-                id="Signup.backButton"
-                style={{ flex: 1, justifyContent: 'center', alignSelf: 'center' }}
-                transparent
-                onPress={this.onBackPress}
-              >
-                <Icon style={{ color: 'white', fontSize: 40 }} name="ios-arrow-back" />
-              </Button>
-              <View style={{ flex: 2.2, justifyContent: 'center', alignSelf: 'center' }}>
+              <View style={styles.headerBackBtn}>
+                <Button
+                  id="Signup.backButton"
+                  style={{ flex: 1, justifyContent: 'center', alignSelf: 'center' }}
+                  transparent
+                  onPress={this.onBackPress}
+                >
+                  <Icon style={{ color: 'white', fontSize: 40 }} name="ios-arrow-back" />
+                </Button>
+              </View>
+              <View style={styles.headerTitle}>
                 <Text
                   id="Verification.titleText"
                   style={{
@@ -280,6 +282,15 @@ const styles = {
     justifyContent: 'flex-start',
     top: Platform.OS === 'ios' ? 30 : 20,
     flexDirection: 'row',
+  },
+  headerBackBtn: {
+    flex: 0.2,
+    alignItems: 'flex-end',
+  },
+  headerTitle: {
+    flex: 0.6,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   background: {
     flex: 1,
