@@ -281,7 +281,7 @@ class SignupForm extends Component {
           onRequestClose={() => this.props.onBackPress()}
         >
           <ImageBackground resizeMode="cover" style={background} source={images.backGround}>
-            <Logo styleContainer={{ marginTop: 60, marginBottom: -30 }} />
+            <Logo styleContainer={{ marginTop: 60 }} />
             <CardItem style={headerModal} id="RegisterPage.logo-container">
               <Title style={headerModalText} id="RegisterPage.accountLoginText">
                 {I18n.t('logIn.account_type')}
