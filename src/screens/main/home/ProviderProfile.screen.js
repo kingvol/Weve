@@ -40,7 +40,6 @@ const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png
 const ITEM_WIDTH = Dimensions.get('window').width;
 const ITEM_HEIGHT = Dimensions.get('window').height;
 
-
 class ProviderProfileScreen extends Component {
   constructor(props) {
     super(props);
@@ -263,7 +262,7 @@ class ProviderProfileScreen extends Component {
                   Platform.OS === 'ios'
                     ? require('../../../images/WevedoLogoalpha.jpg') // eslint-disable-line global-require
                     : 'http://wevedo.com/img/logo.png'
-                } 
+                }
                 title={
                   provider.fullName
                     ? `${provider.fullName}`
@@ -281,28 +280,33 @@ class ProviderProfileScreen extends Component {
               />
             </Container>
           ) : (
-            <View style={{ backgroundColor: 'black' }}>
-              <TouchableOpacity
-                style={Platform.OS === 'ios' ? styleIosMargin : {}}
-                onPress={() => this.setModalForImageVisible(false)}
-              >
-                <Icon style={styleIconButton} size={30} name="remove" />
-              </TouchableOpacity>
-              <ImageZoom
-                cropWidth={ITEM_WIDTH}
-                cropHeight={ITEM_HEIGHT}
-                imageWidth={ITEM_WIDTH}
-                imageHeight={ITEM_HEIGHT}
-                style={{ backgroundColor: 'black' }}
-              >
-                <FastImage
-                  style={styleImageFullScreen}
-                  resizeMode={FastImage.resizeMode.contain}
-                  source={{ uri: this.state.fullScreenImageUrl }}
-                  priority={FastImage.priority.high}
-                />
-              </ImageZoom>
-            </View>
+            [
+              <View style={styles.exitZoomView}>
+                <TouchableOpacity onPress={() => this.setModalForImageVisible(false)}>
+                  <Icon
+                    style={{ ...styleIconButton, backgroundColor: 'transparent' }}
+                    size={30}
+                    name="remove"
+                  />
+                </TouchableOpacity>
+              </View>,
+              <View style={{ backgroundColor: 'black' }}>
+                <ImageZoom
+                  cropWidth={ITEM_WIDTH}
+                  cropHeight={ITEM_HEIGHT}
+                  imageWidth={ITEM_WIDTH}
+                  imageHeight={ITEM_HEIGHT}
+                  style={{ backgroundColor: 'black' }}
+                >
+                  <FastImage
+                    style={styleImageFullScreen}
+                    resizeMode={FastImage.resizeMode.contain}
+                    source={{ uri: this.state.fullScreenImageUrl }}
+                    priority={FastImage.priority.high}
+                  />
+                </ImageZoom>
+              </View>,
+            ]
           )}
         </Modal>
         <View style={{ minHeight: 500 }}>
@@ -440,14 +444,15 @@ const styles = {
     justifyContent: 'center',
     marginTop: 20,
   },
-  styleIosMargin: { marginTop: 20 },
+  exitZoomView: {
+    position: 'absolute',
+    backgroundColor: 'transparent',
+    zIndex: 1,
+    top: 20,
+    left: 20,
+  },
   styleIconButton: {
-    color: '#d64635',
-    backgroundColor: 'black',
-    paddingTop: 0.8,
-    paddingBottom: 0.8,
-    paddingLeft: 3.3,
-    paddingRight: 3.3,
+    color: 'white', // '#d64635',
     justifyContent: 'flex-end',
   },
   calendar: {},
