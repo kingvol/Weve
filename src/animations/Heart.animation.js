@@ -44,7 +44,7 @@ class HeartAnimation extends Component {
           ref={(animation) => {
             this.animation = animation;
           }}
-          source={require('./sources/heart2.json')}
+          source={require('./sources/heart.json')}
           loop={false}
         />
       </TouchableWithoutFeedback>
