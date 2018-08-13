@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TouchableWithoutFeedback } from 'react-native';
+import { TouchableWithoutFeedback, Platform } from 'react-native';
 import LottieView from 'lottie-react-native';
 
 class HeartAnimation extends Component {
@@ -20,11 +20,15 @@ class HeartAnimation extends Component {
   };
 
   fillIn = () => {
-    this.animation.play(0, 50);
+    this.animation.play(0, 30);
   };
 
   fillOut = () => {
-    this.animation.play(30, 0);
+    if (Platform.OS === 'android') {
+      this.animation.reset();
+    } else {
+      this.animation.play(30, 1);
+    }
   };
 
   render() {
