@@ -13,6 +13,12 @@ class ProviderListItem extends Component {
     favorites: !!this.props.user.profile.favoriteProviders.includes(this.props.provider._id),
   };
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      favorites: !!nextProps.user.profile.favoriteProviders.includes(this.props.provider._id),
+    });
+  }
+
   onItemPress = () => {
     this.props.onPress(this.props.provider);
   };
