@@ -1,6 +1,6 @@
 /* eslint-disable no-confusing-arrow */
 import React, { Component } from 'react';
-import { Content, Tab, Tabs } from 'native-base';
+import { Content, Tab, Tabs, Icon as NBIcon } from 'native-base';
 import {
   View,
   Alert,
@@ -283,11 +283,7 @@ class ProviderProfileScreen extends Component {
             [
               <View style={styles.exitZoomView}>
                 <TouchableOpacity onPress={() => this.setModalForImageVisible(false)}>
-                  <Icon
-                    style={{ ...styleIconButton, backgroundColor: 'transparent' }}
-                    size={30}
-                    name="remove"
-                  />
+                  <NBIcon style={styles.closeImgBtn} name="md-close" />
                 </TouchableOpacity>
               </View>,
               <View style={{ backgroundColor: 'black' }}>
@@ -451,9 +447,11 @@ const styles = {
     top: 20,
     left: 20,
   },
-  styleIconButton: {
+  closeImgBtn: {
     color: 'white', // '#d64635',
     justifyContent: 'flex-end',
+    backgroundColor: 'transparent',
+    fontSize: 35,
   },
   calendar: {},
   infoContainer: {
