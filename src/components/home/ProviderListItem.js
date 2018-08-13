@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import FastImage from 'react-native-fast-image';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { Icon } from 'native-base';
 import { primaryFont } from '../../theme';
 import { updateProfile, fetchProfile } from '../../actions/user.actions';
 
@@ -71,9 +71,8 @@ class ProviderListItem extends Component {
               }}
             >
               <Icon
-                size={30}
-                name={this.state.favorites ? 'heart' : 'heart-o'}
-                style={{ color: 'red' }}
+                name={this.state.favorites ? 'ios-heart' : 'ios-heart-outline'}
+                style={{ color: 'red', fontWeight: 100, fontSize: 26 }}
               />
             </TouchableOpacity>
             <Text style={[styles.artistTitle, { marginRight: 5 }]}>
