@@ -165,6 +165,7 @@ android {
 }
 
 dependencies {
+    compile project(':lottie-react-native')
     implementation project(':react-native-keep-awake')
     implementation project(':react-native-linear-gradient')
     implementation project(':react-native-orientation')
