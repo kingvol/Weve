@@ -3,6 +3,10 @@ import { TouchableWithoutFeedback, Platform } from 'react-native';
 import LottieView from 'lottie-react-native';
 
 class HeartAnimation extends Component {
+  state = {
+    isPlaying: false,
+  };
+
   componentDidMount() {
     const { filled } = this.props;
     if (filled) {
@@ -10,13 +14,32 @@ class HeartAnimation extends Component {
     }
   }
 
-  onAnimationPress = () => {
-    if (this.props.filled) {
-      this.fillOut();
-    } else {
-      this.fillIn();
+  componentWillReceiveProps = (nextProps) => {
+    if (nextProps.filled !== this.props.filled) {
+      if (nextProps.filled && !this.state.isPlaying) {
+        this.animation.play(25, 50);
+      } else {
+        this.fillOut();
+      }
     }
+  };
+
+  onAnimationPress = () => {
+    this.setState({ isPlaying: true }, () => {
+      if (this.props.filled) {
+        this.fillOut();
+      } else {
+        this.fillIn();
+      }
+    });
+    this.startTimeout();
     this.props.onAnimationPress();
+  };
+
+  startTimeout = () => {
+    setTimeout(() => {
+      this.setState({ isPlaying: false });
+    }, 1000);
   };
 
   fillIn = () => {
