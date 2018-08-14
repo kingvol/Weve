@@ -5,7 +5,6 @@ import FastImage from 'react-native-fast-image';
 import { Icon } from 'native-base';
 import { primaryFont } from '../../theme';
 import { updateProfile, fetchProfile } from '../../actions/user.actions';
-import HeartAnimation from '../../animations/Heart.animation';
 
 const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png';
 
@@ -38,6 +37,7 @@ class ProviderListItem extends Component {
         favoriteProviders: [...favoriteProviders, this.props.provider._id],
       });
     }
+    this.setState({ favorites: !this.state.favorites });
   };
 
   render() {
@@ -67,10 +67,20 @@ class ProviderListItem extends Component {
               alignItems: 'center',
             }}
           >
-            <HeartAnimation
-              onAnimationPress={this.onFavoriteIconPress}
-              filled={this.state.favorites}
-            />
+            <TouchableOpacity
+              onPress={this.onFavoriteIconPress}
+              style={{
+                flex: 0,
+                alignSelf: 'flex-start',
+                position: 'absolute',
+                marginLeft: itemWidth + 10,
+              }}
+            >
+              <Icon
+                name={this.state.favorites ? 'ios-heart' : 'ios-heart-outline'}
+                style={{ color: 'red', fontWeight: 100, fontSize: 26 }}
+              />
+            </TouchableOpacity>
             <Text style={[styles.artistTitle, { marginRight: 5 }]}>
               {`${firstName} ${lastName || ''}`}
             </Text>
