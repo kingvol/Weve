@@ -7,7 +7,7 @@ import {
   KeyboardAvoidingView,
   Dimensions,
 } from 'react-native';
-import { CardItem, Container, Form, Icon, Item, Input, Label, Title } from 'native-base';
+import { CardItem, Container, Icon, Item, Input, Label, Title } from 'native-base';
 import I18n from '../../locales';
 import { primaryColor, contrastColor, primaryFont } from '../../theme';
 import images from '../../images';
