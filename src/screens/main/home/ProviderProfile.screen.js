@@ -334,7 +334,11 @@ class ProviderProfileScreen extends Component {
                       </TouchableOpacity>
                     </View>
                   ) : (
-                    <FastImage source={{ uri: item }} style={styleImage} />
+                    <FastImage
+                      source={{ uri: item }}
+                      style={styles.image}
+                      resizeMode={FastImage.resizeMode.contain}
+                    />
                   )}
                 </TouchableWithoutFeedback>
               ))}
@@ -423,8 +427,9 @@ const styles = {
     marginTop: 10,
   },
   styleImage: {
-    height: ITEM_WIDTH / 1.5,
-    width: ITEM_WIDTH,
+    // height: ITEM_WIDTH,
+    resizeMode: 'contain',
+    // width: ITEM_WIDTH,
   },
   styleIconImage: {
     flex: 0,
