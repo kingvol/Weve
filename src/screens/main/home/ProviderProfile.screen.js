@@ -379,8 +379,8 @@ class ProviderProfileScreen extends Component {
                     adjustsFontSizeToFit
                     minimumFontScale={0.5}
                     style={{
-                      fontSize: 1.2 * ITEM_WIDTH / nameWithRegion.length,
-                      marginTop: 10,
+                      fontSize: 26,
+                      margin: 15,
                     }}
                   >
                     {nameWithRegion}
