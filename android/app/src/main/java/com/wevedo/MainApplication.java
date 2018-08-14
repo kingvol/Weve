@@ -4,7 +4,6 @@ import android.app.Application;
 import android.support.annotation.NonNull;
 
 import com.facebook.react.ReactApplication;
-import com.airbnb.android.react.lottie.LottiePackage;
 import com.corbt.keepawake.KCKeepAwakePackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.github.yamill.orientation.OrientationPackage;
@@ -43,7 +42,6 @@ public class MainApplication extends NavigationApplication  {
   public List<ReactPackage> createAdditionalReactPackages() {
     return Arrays.<ReactPackage>asList(
     new MainReactPackage(),
-            new LottiePackage(),
     new KCKeepAwakePackage(),
     new LinearGradientPackage(),
     new OrientationPackage(), 
