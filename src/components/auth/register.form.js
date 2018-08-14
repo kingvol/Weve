@@ -339,7 +339,7 @@ class SignupForm extends Component {
                 <FieldInput
                   name="fullName"
                   color={contrastColor}
-                  placeholder={I18n.t('common.fullName')}
+                  placeholder={I18n.t(this.state.isProvider ? 'common.businessName' : 'common.fullName')}
                   errorColor={contrastColor}
                   input={{ maxLength: 50 }}
                   onChangeText={text => this.onFieldChange('fullName', text)}
