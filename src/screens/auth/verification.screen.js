@@ -13,6 +13,7 @@ import PhoneInput from 'react-native-phone-input';
 import I18n from '../../locales';
 import { contrastColor, primaryFont } from '../../theme';
 import { Button, Text, FieldInput, Logo } from '../../components/common';
+import { startSingleScreenApp } from '../../../index';
 
 import APIs from '../../api';
 import vars from '../../env/vars';
@@ -77,13 +78,17 @@ class VerificationScreen extends Component {
   };
 
   onBackPress = () => {
-    this.props.navigator.resetTo({
-      screen: 'wevedo.loginScreen',
-      navigatorStyle: {
-        navBarHidden: true,
-        screenBackgroundColor: 'orange',
-      },
-    });
+    if (Platform.OS === 'android') {
+      startSingleScreenApp();
+    } else {
+      this.props.navigator.resetTo({
+        screen: 'wevedo.loginScreen',
+        navigatorStyle: {
+          navBarHidden: true,
+          screenBackgroundColor: 'orange',
+        },
+      });
+    }
   };
 
   onTextChange = (key, value) => {
