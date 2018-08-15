@@ -9,6 +9,7 @@ import { Icon } from 'native-base';
 import I18n from 'react-native-i18n';
 import { Button, Container, FieldInput, Text, Logo } from '../../components/common';
 import { white } from '../../theme/colors';
+import { startSingleScreenApp } from '../../../index';
 import APIs from '../../api';
 
 const RESET_TOKEN_LENGTH = 4;
@@ -26,7 +27,17 @@ class ForgotPassword extends Component {
   };
 
   onBackPress = () => {
-    this.props.navigator.pop();
+    if (Platform.OS === 'android') {
+      startSingleScreenApp();
+    } else {
+      this.props.navigator.resetTo({
+        screen: 'wevedo.loginScreen',
+        navigatorStyle: {
+          navBarHidden: true,
+          screenBackgroundColor: 'orange',
+        },
+      });
+    }
   };
 
   onTextChange = (key, value) => {
