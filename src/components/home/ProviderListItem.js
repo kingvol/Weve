@@ -1,14 +1,45 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, StyleSheet, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux';
 import FastImage from 'react-native-fast-image';
+import { Icon } from 'native-base';
 import { primaryFont } from '../../theme';
+import { updateProfile, fetchProfile } from '../../actions/user.actions';
 
 const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png';
 
 class ProviderListItem extends Component {
+  state = {
+    favorites: !!this.props.user.profile.favoriteProviders.includes(this.props.provider._id),
+  };
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      favorites: !!nextProps.user.profile.favoriteProviders.includes(this.props.provider._id),
+    });
+  }
+
   onItemPress = () => {
     this.props.onPress(this.props.provider);
   };
+
+  onFavoriteIconPress = () => {
+    const { favoriteProviders } = this.props.user.profile;
+    const index = favoriteProviders.indexOf(this.props.provider._id);
+    const favoriteArray = [...favoriteProviders];
+    if (index > -1) {
+      favoriteArray.splice(index, 1);
+      this.props.updateProfile({
+        favoriteProviders: favoriteArray,
+      });
+    } else {
+      this.props.updateProfile({
+        favoriteProviders: [...favoriteProviders, this.props.provider._id],
+      });
+    }
+    this.setState({ favorites: !this.state.favorites });
+  };
+
   render() {
     const { firstName, lastName, profileImageURL } = this.props.provider;
     const { itemWidth } = this.props;
@@ -27,8 +58,32 @@ class ProviderListItem extends Component {
             }}
             source={{ uri: profileImageURL || defaultProfile }}
           />
-          <View style={{ margin: 10, justifyContent: 'center' }}>
-            <Text style={styles.artistTitle}>{`${firstName} ${lastName || ''}`}</Text>
+          <View
+            style={{
+              margin: 10,
+              flexDirection: 'row',
+              flex: 1,
+              flexWrap: 'wrap',
+              alignItems: 'center',
+            }}
+          >
+            <TouchableOpacity
+              onPress={this.onFavoriteIconPress}
+              style={{
+                flex: 0,
+                alignSelf: 'flex-start',
+                position: 'absolute',
+                marginLeft: itemWidth + 10,
+              }}
+            >
+              <Icon
+                name={this.state.favorites ? 'ios-heart' : 'ios-heart-outline'}
+                style={{ color: 'red', fontWeight: 100, fontSize: 26 }}
+              />
+            </TouchableOpacity>
+            <Text style={[styles.artistTitle, { marginRight: 5 }]}>
+              {`${firstName} ${lastName || ''}`}
+            </Text>
           </View>
         </View>
       </TouchableWithoutFeedback>
@@ -52,7 +107,12 @@ const styles = StyleSheet.create({
   artistTitle: {
     ...primaryFont,
     color: 'red',
+    textAlignVertical: 'center',
   },
 });
 
-export default ProviderListItem;
+const mapStateToProps = state => ({
+  user: state.user,
+});
+
+export default connect(mapStateToProps, { updateProfile, fetchProfile })(ProviderListItem);

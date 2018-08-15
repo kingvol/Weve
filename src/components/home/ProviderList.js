@@ -21,7 +21,7 @@ import I18n from '../../locales';
 
 import { UIActions } from '../../actions';
 
-const { displayModeChanged } = UIActions;
+const { displayModeChanged, shortListChanged } = UIActions;
 
 const { ProviderApi } = APIs;
 const api = new ProviderApi();
@@ -132,7 +132,12 @@ class ProviderList extends PureComponent {
   render() {
     const { containerStyle, buttonsRow, buttonView } = styles;
 
-    const data = this.state.providers ? [...this.state.providers, { _id: 'button' }] : null;
+    const data = this.state.providers
+      ? !this.props.shortlisted
+        ? [...this.state.providers, { _id: 'button' }]
+        : this.state.providers.filter(element =>
+          this.props.profile.favoriteProviders.includes(element._id))
+      : null;
 
     return !this.state.isLoading ? (
       <View style={containerStyle}>
@@ -224,6 +229,7 @@ class ProviderList extends PureComponent {
           </View>
         </View>
         <FlatList
+          extraData={this.props.shortlisted}
           data={data}
           keyExtractor={this._keyExtractor}
           renderItem={this.props.grid ? this._renderGridItem : this._renderItem}
@@ -234,7 +240,7 @@ class ProviderList extends PureComponent {
       </View>
     ) : (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <ActivityIndicator />
+        <ActivityIndicator size="large" color="#d64635" />
       </View>
     );
   }
@@ -243,9 +249,10 @@ class ProviderList extends PureComponent {
 const mapStateToProps = state => ({
   profile: state.user.profile,
   grid: state.ui.grid,
+  shortlisted: state.ui.shortlisted,
 });
 
-export default connect(mapStateToProps, { displayModeChanged })(ProviderList);
+export default connect(mapStateToProps, { displayModeChanged, shortListChanged })(ProviderList);
 
 const styles = {
   containerStyle: { flex: 1 },

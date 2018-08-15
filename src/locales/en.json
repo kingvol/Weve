@@ -55,7 +55,7 @@
   "categories": {
     "categories": "Categories",
     "transport": "Transport",
-    "photo": "Photo",
+    "photo": "Media",
     "venue": "Venue",
     "makeup": "Beauty",
     "entertainment": "Entertainment",
@@ -142,6 +142,7 @@
     "password": "Password",
     "loading": "Loading...",
     "fullName": "Full name",
+    "businessName": "Business name",
     "continue": "Continue",
     "category": "Category",
     "share": "Share",

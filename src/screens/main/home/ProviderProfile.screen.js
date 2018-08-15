@@ -1,6 +1,6 @@
 /* eslint-disable no-confusing-arrow */
 import React, { Component } from 'react';
-import { Content, Tab, Tabs } from 'native-base';
+import { Content, Tab, Tabs, Icon as NBIcon } from 'native-base';
 import {
   View,
   Alert,
@@ -39,8 +39,6 @@ const calendarTheme = {
 const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png';
 const ITEM_WIDTH = Dimensions.get('window').width;
 const ITEM_HEIGHT = Dimensions.get('window').height;
-
-// const isPortrait = () => ITEM_HEIGHT >= ITEM_WIDTH;
 
 class ProviderProfileScreen extends Component {
   constructor(props) {
@@ -264,7 +262,7 @@ class ProviderProfileScreen extends Component {
                   Platform.OS === 'ios'
                     ? require('../../../images/WevedoLogoalpha.jpg') // eslint-disable-line global-require
                     : 'http://wevedo.com/img/logo.png'
-                } 
+                }
                 title={
                   provider.fullName
                     ? `${provider.fullName}`
@@ -282,28 +280,29 @@ class ProviderProfileScreen extends Component {
               />
             </Container>
           ) : (
-            <View style={{ backgroundColor: 'black' }}>
-              <TouchableOpacity
-                style={Platform.OS === 'ios' ? styleIosMargin : {}}
-                onPress={() => this.setModalForImageVisible(false)}
-              >
-                <Icon style={styleIconButton} size={30} name="remove" />
-              </TouchableOpacity>
-              <ImageZoom
-                cropWidth={ITEM_WIDTH}
-                cropHeight={ITEM_HEIGHT}
-                imageWidth={ITEM_WIDTH}
-                imageHeight={ITEM_HEIGHT}
-                style={{ backgroundColor: 'black' }}
-              >
-                <FastImage
-                  style={styleImageFullScreen}
-                  resizeMode={FastImage.resizeMode.contain}
-                  source={{ uri: this.state.fullScreenImageUrl }}
-                  priority={FastImage.priority.high}
-                />
-              </ImageZoom>
-            </View>
+            [
+              <View style={styles.exitZoomView}>
+                <TouchableOpacity onPress={() => this.setModalForImageVisible(false)}>
+                  <NBIcon style={styles.closeImgBtn} name="md-close" />
+                </TouchableOpacity>
+              </View>,
+              <View style={{ backgroundColor: 'black' }}>
+                <ImageZoom
+                  cropWidth={ITEM_WIDTH}
+                  cropHeight={ITEM_HEIGHT}
+                  imageWidth={ITEM_WIDTH}
+                  imageHeight={ITEM_HEIGHT}
+                  style={{ backgroundColor: 'black' }}
+                >
+                  <FastImage
+                    style={styleImageFullScreen}
+                    resizeMode={FastImage.resizeMode.contain}
+                    source={{ uri: this.state.fullScreenImageUrl }}
+                    priority={FastImage.priority.high}
+                  />
+                </ImageZoom>
+              </View>,
+            ]
           )}
         </Modal>
         <View style={{ minHeight: 500 }}>
@@ -335,7 +334,11 @@ class ProviderProfileScreen extends Component {
                       </TouchableOpacity>
                     </View>
                   ) : (
-                    <FastImage source={{ uri: item }} style={styleImage} />
+                    <FastImage
+                      source={{ uri: item }}
+                      style={styles.image}
+                      resizeMode={FastImage.resizeMode.contain}
+                    />
                   )}
                 </TouchableWithoutFeedback>
               ))}
@@ -377,11 +380,11 @@ class ProviderProfileScreen extends Component {
               >
                 <View style={styles.infoContainer}>
                   <Text
-                    adjustsFontSizeToFit
+                    //  adjustsFontSizeToFit
                     minimumFontScale={0.5}
                     style={{
-                      fontSize: 1.2 * ITEM_WIDTH / nameWithRegion.length,
-                      marginTop: 10,
+                      fontSize: Platform.OS === 'ios' ? 16 : 14,
+                      margin: 15,
                     }}
                   >
                     {nameWithRegion}
@@ -424,8 +427,9 @@ const styles = {
     marginTop: 10,
   },
   styleImage: {
-    height: ITEM_WIDTH / 1.5,
-    width: ITEM_WIDTH,
+    // height: ITEM_WIDTH,
+    resizeMode: 'contain',
+    // width: ITEM_WIDTH,
   },
   styleIconImage: {
     flex: 0,
@@ -441,15 +445,18 @@ const styles = {
     justifyContent: 'center',
     marginTop: 20,
   },
-  styleIosMargin: { marginTop: 20 },
-  styleIconButton: {
-    color: '#d64635',
-    backgroundColor: 'black',
-    paddingTop: 0.8,
-    paddingBottom: 0.8,
-    paddingLeft: 3.3,
-    paddingRight: 3.3,
+  exitZoomView: {
+    position: 'absolute',
+    backgroundColor: 'transparent',
+    zIndex: 1,
+    top: 20,
+    left: 20,
+  },
+  closeImgBtn: {
+    color: 'white', // '#d64635',
     justifyContent: 'flex-end',
+    backgroundColor: 'transparent',
+    fontSize: 35,
   },
   calendar: {},
   infoContainer: {

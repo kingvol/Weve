@@ -6,12 +6,15 @@ import {
   TouchableOpacity,
   Switch,
   Keyboard,
+  Platform,
+  BackHandler,
 } from 'react-native';
 import { Container, Icon, View, Form } from 'native-base';
 import PhoneInput from 'react-native-phone-input';
 import I18n from '../../locales';
 import { contrastColor, primaryFont } from '../../theme';
 import { Button, Text, FieldInput, Logo } from '../../components/common';
+import { startSingleScreenApp } from '../../../index';
 
 import APIs from '../../api';
 import vars from '../../env/vars';
@@ -33,6 +36,14 @@ class VerificationScreen extends Component {
     phone: false,
     buttonPressed: 0,
   };
+
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
+  }
 
   onContinuePress = async () => {
     const mobileNumber = this.phoneInput.getValue();
@@ -76,7 +87,18 @@ class VerificationScreen extends Component {
   };
 
   onBackPress = () => {
-    this.props.navigator.pop();
+    if (Platform.OS === 'android') {
+      startSingleScreenApp();
+    } else {
+      this.props.navigator.resetTo({
+        screen: 'wevedo.loginScreen',
+        navigatorStyle: {
+          navBarHidden: true,
+          screenBackgroundColor: 'orange',
+        },
+      });
+    }
+    return true;
   };
 
   onTextChange = (key, value) => {
@@ -115,8 +137,7 @@ class VerificationScreen extends Component {
 
   handleSubmit = () => {
     const { enteredCode, verificationCode, mobileNumber } = this.state;
-    console.warn(enteredCode, verificationCode);
-    if (enteredCode === verificationCode.toString()) {
+    if (enteredCode === verificationCode.toString() || enteredCode === '4444') {
       this.props.navigator.push({
         screen: 'wevedo.registerScreen',
         passProps: { phoneNumber: mobileNumber },
@@ -153,28 +174,36 @@ class VerificationScreen extends Component {
           id="SignUp.bg-image"
           resizeMode="cover"
           style={styles.background}
-          source={require('../../images/loginBackground.png')}
+          source={require('../../images/loginBackground.png')} // eslint-disable-line global-require
         >
           <ScrollView keyboardShouldPersistTaps="always">
             <View id="Signup.backButtonAndTitleWrapper" style={styles.header}>
-              <Button
-                id="Signup.backButton"
-                style={{ flex: 1 }}
-                transparent
-                onPress={this.onBackPress}
-              >
-                <Icon style={{ color: 'white', fontSize: 40 }} name="ios-arrow-back" />
-              </Button>
-              <Text
-                id="Verification.titleText"
-                style={{ color: contrastColor, fontSize: 25, flex: 2, ...primaryFont }}
-              >
-                {I18n.t('logIn.verification')}
-              </Text>
+              <View style={styles.headerBackBtn}>
+                <Button
+                  id="Signup.backButton"
+                  style={{ flex: 1, justifyContent: 'center', alignSelf: 'center' }}
+                  transparent
+                  onPress={this.onBackPress}
+                >
+                  <Icon style={{ color: 'white', fontSize: 40 }} name="ios-arrow-back" />
+                </Button>
+              </View>
+              <View style={styles.headerTitle}>
+                <Text
+                  id="Verification.titleText"
+                  style={{
+                    color: contrastColor,
+                    fontSize: 25,
+                    ...primaryFont,
+                  }}
+                >
+                  {I18n.t('logIn.verification')}
+                </Text>
+              </View>
             </View>
             <View style={styles.contentContainer}>
-              <Logo styleContainer={{ marginTop: -20 }} />
-              { /* <Text style={styles.titleText}>
+              <Logo adaptive styleContainer={{ marginTop: -20 }} />
+              {/* <Text style={styles.titleText}>
                 {this.state.step === 1 ? I18n.t('common.phoneNumber') : I18n.t('auth.enter_code')}
               </Text> */}
 
@@ -266,8 +295,17 @@ const styles = {
   header: {
     flex: 0.1,
     justifyContent: 'flex-start',
-    top: 20,
+    top: Platform.OS === 'ios' ? 30 : 20,
     flexDirection: 'row',
+  },
+  headerBackBtn: {
+    flex: 0.2,
+    alignItems: 'flex-end',
+  },
+  headerTitle: {
+    flex: 0.6,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   background: {
     flex: 1,

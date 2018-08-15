@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle, camelcase */
 import React, { Component } from 'react';
-import { Alert, Keyboard, View, Dimensions, TextInput, Switch, Platform } from 'react-native';
+import { Alert, Keyboard, View, Dimensions, TextInput, Switch, Platform, ActivityIndicator } from 'react-native';
 import * as Progress from 'react-native-progress';
 import Upload from 'react-native-background-upload';
 import _ from 'lodash';
@@ -748,7 +748,7 @@ class EditProfileScreen extends Component {
     const { checkBoxText, categoryText, styleDescription } = styles;
     const { isProvider } = this.props.user.profile;
 
-    return (
+    return !this.state.loading ? (
       <Container id="EditProfile.container" style={{ backgroundColor }}>
         <SpinnerOverlay
           visible={this.state.imageUploading}
@@ -1088,6 +1088,10 @@ class EditProfileScreen extends Component {
           )}
         </Content>
       </Container>
+    ) : (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <ActivityIndicator size="large" color="#d64635" />
+      </View>
     );
   }
 }

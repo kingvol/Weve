@@ -1,7 +1,8 @@
-import { DISPLAY_MODE_CHANGED } from '../actions/actionTypes';
+import { DISPLAY_MODE_CHANGED, SHORT_LIST_CHANGED } from '../actions/actionTypes';
 
 const initialState = {
   grid: false,
+  shortlisted: false,
 };
 
 export default (state = initialState, action) => {
@@ -10,6 +11,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         grid: !state.grid,
+      };
+
+    case SHORT_LIST_CHANGED:
+      return {
+        ...state,
+        shortlisted: !state.shortlisted,
       };
 
     default:
