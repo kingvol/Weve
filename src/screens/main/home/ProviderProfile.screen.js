@@ -383,7 +383,7 @@ class ProviderProfileScreen extends Component {
                     //  adjustsFontSizeToFit
                     minimumFontScale={0.5}
                     style={{
-                      fontSize: 18,
+                      fontSize: Platform.OS === 'ios' ? 16 : 14,
                       margin: 15,
                     }}
                   >
