@@ -3,7 +3,15 @@
  */
 /* eslint-disable global-require */
 import React, { Component } from 'react';
-import { Alert, ImageBackground, StyleSheet, View, ScrollView, Platform } from 'react-native';
+import {
+  Alert,
+  ImageBackground,
+  StyleSheet,
+  View,
+  ScrollView,
+  Platform,
+  BackHandler,
+} from 'react-native';
 import * as Keychain from 'react-native-keychain';
 import { Icon } from 'native-base';
 import I18n from 'react-native-i18n';
@@ -26,6 +34,14 @@ class ForgotPassword extends Component {
     resetToken: '',
   };
 
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
+  }
+
   onBackPress = () => {
     if (Platform.OS === 'android') {
       startSingleScreenApp();
@@ -38,6 +54,7 @@ class ForgotPassword extends Component {
         },
       });
     }
+    return true;
   };
 
   onTextChange = (key, value) => {
