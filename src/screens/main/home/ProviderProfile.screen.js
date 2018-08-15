@@ -380,10 +380,10 @@ class ProviderProfileScreen extends Component {
               >
                 <View style={styles.infoContainer}>
                   <Text
-                    adjustsFontSizeToFit
+                    //  adjustsFontSizeToFit
                     minimumFontScale={0.5}
                     style={{
-                      fontSize: 26,
+                      fontSize: 18,
                       margin: 15,
                     }}
                   >
