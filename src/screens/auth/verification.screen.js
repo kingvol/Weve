@@ -7,6 +7,7 @@ import {
   Switch,
   Keyboard,
   Platform,
+  BackHandler,
 } from 'react-native';
 import { Container, Icon, View, Form } from 'native-base';
 import PhoneInput from 'react-native-phone-input';
@@ -35,6 +36,14 @@ class VerificationScreen extends Component {
     phone: false,
     buttonPressed: 0,
   };
+
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
+  }
 
   onContinuePress = async () => {
     const mobileNumber = this.phoneInput.getValue();
@@ -89,6 +98,7 @@ class VerificationScreen extends Component {
         },
       });
     }
+    return true;
   };
 
   onTextChange = (key, value) => {
