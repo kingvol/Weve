@@ -5,11 +5,11 @@
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<true/>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>$(PRODUCT_NAME) would like access to your photo gallery</string>
+	<string>To continue with your profile image or video, please allow $(PRODUCT_NAME) to access your Photos</string>
 	<key>NSCameraUsageDescription</key>
-	<string>$(PRODUCT_NAME) would like to use your camera</string>
+	<string>To continue with your profile image or video, please allow $(PRODUCT_NAME) to access your Camera</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>$(PRODUCT_NAME) would like to save photos to your photo gallery</string>
+	<string>To continue with your profile image or video, please allow $(PRODUCT_NAME) to access your Photos</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>$(PRODUCT_NAME) would like to your microphone (for videos)</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
