@@ -9,7 +9,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>To continue with your profile image or video, please allow Wevedo to access your Camera</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>To continue with your profile image or video, please allow wevedo to access your Photos</string>
+	<string>To continue with your profile image or video, please allow Wevedo to access your Photos</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Wevedo would like to your microphone (for videos)</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
