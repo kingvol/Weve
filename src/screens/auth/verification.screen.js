@@ -197,7 +197,7 @@ class VerificationScreen extends Component {
                     ...primaryFont,
                   }}
                 >
-                  {I18n.t('logIn.verification')}
+                  {I18n.t('common.phoneNumber')}
                 </Text>
               </View>
             </View>
