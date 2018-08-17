@@ -1,14 +1,27 @@
 import React, { Component } from 'react';
-import { FlatList, TouchableOpacity, Text, View } from 'react-native';
+import {
+  FlatList,
+  TouchableOpacity,
+  Text,
+  View,
+  Modal,
+  ImageBackground,
+  Animated,
+  Easing,
+} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { connect } from 'react-redux';
 import { Content } from 'native-base';
 
+import { Button } from '../../components/common';
 import I18n from '../../locales';
 import images from '../../images';
 import { primaryFont, backgroundColor } from '../../theme';
 import { fetchProfile } from '../../actions/user.actions';
+import { UIActions } from '../../actions';
 import startPushService from '../../services/PushService';
+
+const { exhibitionChanged } = UIActions;
 
 const categories = [
   {
@@ -73,10 +86,22 @@ for (let i = 0; i <= categories.length; i += 3) {
 }
 
 class HomeTab extends Component {
+  constructor() {
+    super();
+    this.animatedValue1 = new Animated.Value(0);
+    this.animatedValue2 = new Animated.Value(0);
+    this.animatedValue3 = new Animated.Value(0);
+  }
+
   componentDidMount() {
     startPushService(this.props.navigator);
     this.props.fetchProfile('me');
+    this.animate();
   }
+
+  onExhibitionChange = () => {
+    this.props.exhibitionChanged();
+  };
 
   onCategoryPress = (category) => {
     this.props.navigator.push({
@@ -90,6 +115,24 @@ class HomeTab extends Component {
         navBarTextFontFamily: primaryFont,
       },
     });
+  };
+
+  animate = () => {
+    this.animatedValue1.setValue(0);
+    this.animatedValue2.setValue(0);
+    this.animatedValue3.setValue(0);
+    const createAnimation = (value, duration, easing, delay = 0) =>
+      Animated.timing(value, {
+        toValue: 1,
+        duration,
+        easing,
+        delay,
+      });
+    Animated.parallel([
+      createAnimation(this.animatedValue1, 2000, Easing.ease),
+      createAnimation(this.animatedValue2, 1000, Easing.ease, 1000),
+      createAnimation(this.animatedValue3, 1000, Easing.ease, 2000),
+    ]).start();
   };
 
   renderItem = ({ item }) => (
@@ -117,8 +160,51 @@ class HomeTab extends Component {
   );
 
   render() {
+    const { modalBackground, modalContainer, modalButton } = styles;
+    const scaleText = this.animatedValue1.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0.5, 2],
+    });
+    const spinText = this.animatedValue2.interpolate({
+      inputRange: [0, 1],
+      outputRange: ['0deg', '720deg'],
+    });
+    const introButton = this.animatedValue3.interpolate({
+      inputRange: [0, 1],
+      outputRange: [-100, 400],
+    });
     return (
       <Content style={{ flex: 1, backgroundColor }} contentContainerStyle={{ flexGrow: 1 }}>
+        <Modal
+          transparent={false}
+          visible={this.props.exhibition && !this.props.user.profile.isProvider}
+          onRequestClose={() => this.onExhibitionChange()}
+        >
+          <ImageBackground resizeMode="cover" style={modalBackground} source={images.backGround}>
+            <View style={modalContainer}>
+              <Animated.View style={{ transform: [{ scale: scaleText }] }}>
+                <TouchableOpacity onPress={this.animate}>
+                  <Text style={{ color: 'white' }}>YOU’RE A WINNER!</Text>
+                </TouchableOpacity>
+              </Animated.View>
+              <Animated.View style={{ marginTop: 20, transform: [{ rotate: spinText }] }}>
+                <TouchableOpacity onPress={this.animate}>
+                  <View>
+                    <Text style={{ fontSize: 20, textAlign: 'center' }}>Ticket number : C15</Text>
+                    <Text style={{ fontSize: 18, textAlign: 'center' }}>
+                      Please come to the Wevedo stand (B52) {'\n'} to collect your prize.
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </Animated.View>
+              <Animated.View style={{ top: introButton, position: 'absolute' }}>
+                <Button style={modalButton} block onPress={this.onExhibitionChange}>
+                  <Text style={{ color: 'red', fontSize: 20 }}>OK</Text>
+                </Button>
+              </Animated.View>
+            </View>
+          </ImageBackground>
+        </Modal>
         <View style={{ flex: 1, minHeight: 150 }}>
           <FastImage
             source={images.category_hero}
@@ -143,8 +229,34 @@ class HomeTab extends Component {
   }
 }
 
+const styles = {
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalBackground: {
+    flex: 1,
+    height: null,
+    width: null,
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    zIndex: -1,
+  },
+  modalButton: {
+    paddingLeft: 35,
+    paddingRight: 35,
+    backgroundColor: '#f3c200',
+    height: 40,
+  },
+};
+
 const mapStateToProps = state => ({
   user: state.user,
+  exhibition: state.ui.exhibition,
 });
 
-export default connect(mapStateToProps, { fetchProfile })(HomeTab);
+export default connect(mapStateToProps, { fetchProfile, exhibitionChanged })(HomeTab);
