@@ -132,9 +132,12 @@ class LoginForm extends Component {
               {I18n.t('logIn.account_login')}
             </Title>
           </CardItem>
-          <Logo adaptive={false} styleContainer={{ marginBottom: screenHeight > 550 ? 30 : 10 }} />
+          <Logo adaptive={false} styleContainer={{ marginBottom: screenHeight > 1280 ? 30 : 20 }} />
           <View id="LoginPage.form-container" style={form}>
-            <KeyboardAvoidingView behavior="padding" style={{ flex: 1.5 }}>
+            <KeyboardAvoidingView
+              behavior="padding"
+              style={{ flex: screenHeight > 1280 ? 1.5 : 2 }}
+            >
               <View style={itemStyle}>
                 <Item
                   error={this.state.phoneNumberError}
@@ -213,7 +216,7 @@ class LoginForm extends Component {
                 style={{
                   flex: error ? 1 : 2,
                   marginTop: 5,
-                  marginBottom: 5,
+                  marginBottom: error ? 0 : 5,
                   justifyContent: 'flex-end',
                 }}
                 block
@@ -232,7 +235,7 @@ class LoginForm extends Component {
               <Button
                 id="LoginPage.loginButton"
                 block
-                style={Object.assign(loginButton, { flex: error ? 1.2 : 1 })}
+                style={Object.assign(loginButton, { flex: error ? 1.2 : 1, marginTop: error ? 10 : 20 })}
                 onPress={this.handleSubmit}
                 disabled={disabled}
                 spinner={isLoading}
@@ -335,7 +338,6 @@ const styles = {
     ...primaryFont,
   },
   loginButton: {
-    marginTop: 20,
     marginLeft: 20,
     marginRight: 20,
     backgroundColor: '#f3c200',
@@ -371,6 +373,7 @@ const styles = {
   },
   errorContainer: {
     flex: 1,
+    marginBottom: 10,
   },
   errorText: {
     fontSize: 10,
