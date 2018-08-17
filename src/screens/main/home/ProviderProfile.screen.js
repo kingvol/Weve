@@ -314,8 +314,8 @@ class ProviderProfileScreen extends Component {
               autoplayTimeout={5}
               dot={<View style={[{ backgroundColor: '#c4c4c4' }, dotsStyle]} />}
               activeDot={<View style={[{ backgroundColor: '#d64635' }, dotsStyle]} />}
-              nextButton={<Text style={{ color: '#d64635', fontSize: 35 }}>›</Text>}
-              prevButton={<Text style={{ color: '#d64635', fontSize: 35 }}>‹</Text>}
+              nextButton={<Text style={{ color: '#d64635', fontSize: 55 }}>›</Text>}
+              prevButton={<Text style={{ color: '#d64635', fontSize: 55 }}>‹</Text>}
             >
               {images.map((item, key) => (
                 <TouchableWithoutFeedback
