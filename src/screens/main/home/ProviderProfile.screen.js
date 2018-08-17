@@ -281,12 +281,12 @@ class ProviderProfileScreen extends Component {
             </Container>
           ) : (
             [
-              <View style={styles.exitZoomView}>
+              <View style={styles.exitZoomView} key={Math.random()}>
                 <TouchableOpacity onPress={() => this.setModalForImageVisible(false)}>
                   <NBIcon style={styles.closeImgBtn} name="md-close" />
                 </TouchableOpacity>
               </View>,
-              <View style={{ backgroundColor: 'black' }}>
+              <View style={{ backgroundColor: 'black' }} key={Math.random()}>
                 <ImageZoom
                   cropWidth={ITEM_WIDTH}
                   cropHeight={ITEM_HEIGHT}
