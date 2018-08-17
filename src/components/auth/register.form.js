@@ -273,6 +273,15 @@ class SignupForm extends Component {
       registerButtonText,
     } = styles;
 
+    const choosenCategoriesArray = this.state.categories.filter(item => this.state.values.category.includes(item._id));
+    const firstCategory = choosenCategoriesArray[0];
+    const firstCategoryName = (firstCategory
+      ? choosenCategoriesArray.length > 1
+        ? `${firstCategory.name}..`
+        : firstCategory.name
+      : '');
+
+
     return (
       <ScrollView id="SignUp.content" contentContainerStyle={{ justifyContent: 'center' }}>
         <Modal
@@ -383,6 +392,7 @@ class SignupForm extends Component {
                     alignItems: 'center',
                     borderColor: 'white',
                     borderBottomWidth: 1,
+                    justifyContent: 'space-between',
                   }}
                 >
                   <Text style={{ flex: 3, color: 'white' }}>
@@ -423,10 +433,10 @@ class SignupForm extends Component {
                       closeable
                     />
                   </View>
-                  <View style={{ flex: 3 }}>
+                  <View style={{ flex: 3, alignSelf: 'flex-end' }}>
                     <Picker
                       mode="dropdown"
-                      style={{ color: 'white', flex: 1, alignItems: 'flex-end' }}
+                      style={{ color: 'white', flex: 1 }}
                       placeholder={I18n.t('logIn.select_category')}
                       selectedValue={this.state.values.regionName}
                       onValueChange={this.onRegionSelect}
@@ -443,84 +453,83 @@ class SignupForm extends Component {
 
                 {this.state.isProvider &&
                   this.state.step === 1 && (
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        flex: 1,
-                        justifyContent: 'space-between',
-                      }}
-                    >
-                      <View>
-                        <Modal
-                          animationType="fade"
-                          transparent={false}
-                          visible={this.state.modalForCategoryVisible}
-                          onRequestClose={() =>
-                            this.setModalForCategoryVisible(!this.state.modalForCategoryVisible)
-                          }
-                        >
-                          <View style={{ margin: 22 }}>
-                            <View>
-                              <View style={{ flexDirection: 'row' }}>
-                                <View style={{ flex: 1 }}>
-                                  <MultiSelect
-                                    // hideTags
-                                    items={this.state.categories}
-                                    uniqueKey="_id"
-                                    ref={(component) => {
-                                      this.multiSelect = component;
-                                    }}
-                                    onSelectedItemsChange={this.onCategorySelect}
-                                    selectedItems={this.state.values.category}
-                                    selectText={I18n.t('common.category')}
-                                    searchInputPlaceholderText={`${I18n.t('common.category')}...`}
-                                    fontSize={16}
-                                    tagRemoveIconColor="#d64635"
-                                    tagBorderColor="#f3c200"
-                                    tagTextColor="grey"
-                                    itemTextColor="#000"
-                                    displayKey="name"
-                                    autoFocusInput={false}
-                                    submitButtonColor="#f3c200"
-                                    submitButtonText={I18n.t('common.ok')}
-                                    hideSubmitButton
-                                  />
-                                </View>
+                    <View>
+                      <Modal
+                        animationType="fade"
+                        transparent={false}
+                        visible={this.state.modalForCategoryVisible}
+                        onRequestClose={() =>
+                          this.setModalForCategoryVisible(!this.state.modalForCategoryVisible)
+                        }
+                      >
+                        <View style={{ margin: 22 }}>
+                          <View>
+                            <View style={{ flexDirection: 'row' }}>
+                              <View style={{ flex: 1 }}>
+                                <MultiSelect
+                                  // hideTags
+                                  items={this.state.categories}
+                                  uniqueKey="_id"
+                                  ref={(component) => {
+                                    this.multiSelect = component;
+                                  }}
+                                  onSelectedItemsChange={this.onCategorySelect}
+                                  selectedItems={this.state.values.category}
+                                  selectText={I18n.t('common.category')}
+                                  searchInputPlaceholderText={`${I18n.t('common.category')}...`}
+                                  fontSize={16}
+                                  tagRemoveIconColor="#d64635"
+                                  tagBorderColor="#f3c200"
+                                  tagTextColor="grey"
+                                  itemTextColor="#000"
+                                  displayKey="name"
+                                  autoFocusInput={false}
+                                  submitButtonColor="#f3c200"
+                                  submitButtonText={I18n.t('common.ok')}
+                                  hideSubmitButton
+                                />
                               </View>
-                              <Button
-                                id="CategoryForProfile.subbmitButton"
-                                block
-                                success
-                                onPress={() =>
-                                  this.setModalForCategoryVisible(!this.state.modalForCategoryVisible)
-                                }
-                              >
-                                {I18n.t('common.ok')}
-                              </Button>
                             </View>
+                            <Button
+                              id="CategoryForProfile.subbmitButton"
+                              block
+                              success
+                              onPress={() =>
+                                this.setModalForCategoryVisible(!this.state.modalForCategoryVisible)
+                              }
+                            >
+                              {I18n.t('common.ok')}
+                            </Button>
                           </View>
-                        </Modal>
-                        <TouchableOpacity
-                          style={{ flexDirection: 'row', flex: 1, marginBottom: 10, marginTop: 8 }}
-                          onPress={() => this.setModalForCategoryVisible(true)}
-                        >
-                          <Text style={{ color: 'white' }}>
-                            {`${I18n.t('common.category')}...`}
-                          </Text>
-                          <Icon
-                            style={{
-                              marginLeft: 4,
+                        </View>
+                      </Modal>
+                      <View style={{ flexDirection: 'row', flex: 1, marginBottom: 10, marginTop: 8 }}>
+                        <Text style={{ color: 'white', alignSelf: 'flex-start', flex: 4.5 }}>
+                          {I18n.t('common.category')}
+                        </Text>
+                        <View style={{ alignSelf: 'flex-start', flex: 3 }}>
+                          <TouchableOpacity
+                            style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-between' }}
+                            onPress={() => this.setModalForCategoryVisible(true)}
+                          >
+                            <Text style={{ color: 'white', alignSelf: 'flex-start' }}>
+                              {firstCategoryName}
+                            </Text>
+                            <Icon
+                              style={{
                               color: '#5c251c',
-                              alignSelf: 'center',
-                              marginTop: -3,
-                              marginRight: 4,
-                            }}
-                            size={1}
-                            name="md-arrow-dropdown"
-                          />
-                        </TouchableOpacity>
+                              alignSelf: 'flex-start',
+                              textAlignVertical: 'bottom',
+                              fontSize: 20,
+                              }}
+                              name="md-arrow-dropdown"
+                            />
+                          </TouchableOpacity>
+                        </View>
                       </View>
                     </View>
+
+
                   )}
               </View>
             )}
