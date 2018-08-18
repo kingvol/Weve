@@ -1,19 +1,12 @@
 import React, { Component } from 'react';
-import {
-  FlatList,
-  TouchableOpacity,
-  Text,
-  View,
-  Modal,
-  ImageBackground,
-  Animated,
-  Easing,
-} from 'react-native';
+import { FlatList, TouchableOpacity, Text, View, Modal, Animated, Easing } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { connect } from 'react-redux';
 import { Content } from 'native-base';
+import LottieView from 'lottie-react-native';
 
 import { Button } from '../../components/common';
+import * as presentAnimation from '../../components/common/presentAnimation.json';
 import I18n from '../../locales';
 import images from '../../images';
 import { primaryFont, backgroundColor } from '../../theme';
@@ -96,10 +89,12 @@ class HomeTab extends Component {
   componentDidMount() {
     startPushService(this.props.navigator);
     this.props.fetchProfile('me');
+    this.animation.play();
     this.animate();
   }
 
   onExhibitionChange = () => {
+    this.animation.reset();
     this.props.exhibitionChanged();
   };
 
@@ -115,6 +110,10 @@ class HomeTab extends Component {
         navBarTextFontFamily: primaryFont,
       },
     });
+  };
+
+  setLottieRef = (animation) => {
+    this.animation = animation;
   };
 
   animate = () => {
@@ -182,7 +181,13 @@ class HomeTab extends Component {
         >
           <View style={modalContainer}>
             <View elevation={5} style={modalBackground}>
-              <Animated.View style={{ marginTop: -50, transform: [{ scale: scaleText }] }}>
+              <LottieView
+                ref={this.setLottieRef}
+                style={{ width: 100, height: 100 }}
+                source={presentAnimation}
+                autoPlay={this.props.exhibition}
+              />
+              <Animated.View style={{ transform: [{ scale: scaleText }] }}>
                 <TouchableOpacity onPress={this.animate}>
                   <Text style={{ color: 'red' }}>YOU’RE A WINNER!</Text>
                 </TouchableOpacity>
@@ -235,7 +240,6 @@ const styles = {
     alignItems: 'center',
   },
   modalBackground: {
-    justifyContent: 'center',
     alignItems: 'center',
     width: 300,
     height: 300,
