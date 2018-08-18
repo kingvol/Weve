@@ -89,12 +89,10 @@ class HomeTab extends Component {
   componentDidMount() {
     startPushService(this.props.navigator);
     this.props.fetchProfile('me');
-    this.animation.play();
     this.animate();
   }
 
   onExhibitionChange = () => {
-    this.animation.reset();
     this.props.exhibitionChanged();
   };
 
@@ -110,10 +108,6 @@ class HomeTab extends Component {
         navBarTextFontFamily: primaryFont,
       },
     });
-  };
-
-  setLottieRef = (animation) => {
-    this.animation = animation;
   };
 
   animate = () => {
@@ -176,17 +170,12 @@ class HomeTab extends Component {
       <Content style={{ flex: 1, backgroundColor }} contentContainerStyle={{ flexGrow: 1 }}>
         <Modal
           transparent
-          visible={!this.props.exhibition && !this.props.user.profile.isProvider}
+          visible={this.props.exhibition && !this.props.user.profile.isProvider}
           onRequestClose={() => this.onExhibitionChange()}
         >
           <View style={modalContainer}>
             <View elevation={5} style={modalBackground}>
-              <LottieView
-                ref={this.setLottieRef}
-                style={{ width: 100, height: 100 }}
-                source={presentAnimation}
-                autoPlay={this.props.exhibition}
-              />
+              <LottieView style={{ width: 100, height: 100 }} source={presentAnimation} autoPlay />
               <Animated.View style={{ transform: [{ scale: scaleText }] }}>
                 <TouchableOpacity onPress={this.animate}>
                   <Text style={{ color: 'red' }}>YOU’RE A WINNER!</Text>
