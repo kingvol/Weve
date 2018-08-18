@@ -61,6 +61,7 @@
 		C15A947D7F9CCC8DF13A2255 /* libPods-wevedo_appTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F8682C9F3B52752012152ADA /* libPods-wevedo_appTests.a */; };
 		C2A98FC0F7C94493950F1BA2 /* Avenir-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6BBE7AEE098F4C41AFEC706B /* Avenir-Medium.ttf */; };
 		CAD3426A66674B70B44A1F6E /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 241C2ED1843841BAA9288FFF /* EvilIcons.ttf */; };
+		D038F63C21282CAA0033DDDF /* libLottie.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D038F63B21282C9A0033DDDF /* libLottie.a */; };
 		D045524A20695BED0021B2F7 /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D045524720695BBA0021B2F7 /* libRNImagePicker.a */; };
 		D0591B4E207D506B00A51D42 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D0591B46207D503600A51D42 /* libRNDeviceInfo.a */; };
 		D070B53C205C38A30012BE8E /* libRNI18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D070B538205C38730012BE8E /* libRNI18n.a */; };
@@ -320,6 +321,34 @@
 			proxyType = 2;
 			remoteGlobalIDString = 358F4ED71D1E81A9004DF814;
 			remoteInfo = RCTBlob;
+		};
+		D038F63421282C9A0033DDDF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D038F62D21282C9A0033DDDF /* Lottie.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 62CA59B81E3C173B002D7188;
+			remoteInfo = Lottie_iOS;
+		};
+		D038F63621282C9A0033DDDF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D038F62D21282C9A0033DDDF /* Lottie.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FAE1F7E61E428CBE002E0974;
+			remoteInfo = Lottie_macOS;
+		};
+		D038F63821282C9A0033DDDF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D038F62D21282C9A0033DDDF /* Lottie.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8C5379761FB471D100C1BC65;
+			remoteInfo = Lottie_tvOS;
+		};
+		D038F63A21282C9A0033DDDF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D038F62D21282C9A0033DDDF /* Lottie.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 84FE12EF1E4C1485009B157C;
+			remoteInfo = LottieLibraryIOS;
 		};
 		D045524620695BBA0021B2F7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -633,6 +662,7 @@
 		BDD54BD622804F7FA64AC77A /* libAppCenterReactNativeAnalytics.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAppCenterReactNativeAnalytics.a; sourceTree = "<group>"; };
 		C7DCB153CCBA0FBCD2336F6D /* Pods-wevedo_app-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wevedo_app-tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-wevedo_app-tvOS/Pods-wevedo_app-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		C95A0BF40EDB48C2B309E543 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
+		D038F62D21282C9A0033DDDF /* Lottie.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Lottie.xcodeproj; path = "../node_modules/lottie-ios/Lottie.xcodeproj"; sourceTree = "<group>"; };
 		D045521720695BBA0021B2F7 /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
 		D0591B17207D503600A51D42 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/ios/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
 		D070B509205C38730012BE8E /* RNI18n.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNI18n.xcodeproj; path = "../node_modules/react-native-i18n/ios/RNI18n.xcodeproj"; sourceTree = "<group>"; };
@@ -690,6 +720,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D038F63C21282CAA0033DDDF /* libLottie.a in Frameworks */,
 				D0D3A9B0210A1D3700B488BD /* libRCTVideo.a in Frameworks */,
 				D0EC988321050278004CA029 /* libBVLinearGradient.a in Frameworks */,
 				D0EC98792105024C004CA029 /* libRCTOrientation.a in Frameworks */,
@@ -964,6 +995,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				D038F62D21282C9A0033DDDF /* Lottie.xcodeproj */,
 				D0D3A9A7210A1D2A00B488BD /* RCTVideo.xcodeproj */,
 				D0EC987A21050270004CA029 /* BVLinearGradient.xcodeproj */,
 				D0EC98732105023F004CA029 /* RCTOrientation.xcodeproj */,
@@ -1060,6 +1092,17 @@
 				E41BDFFDEB79DA41B2A17F5F /* Pods-wevedo_appTests.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		D038F62E21282C9A0033DDDF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D038F63521282C9A0033DDDF /* Lottie.framework */,
+				D038F63721282C9A0033DDDF /* Lottie.framework */,
+				D038F63921282C9A0033DDDF /* Lottie.framework */,
+				D038F63B21282C9A0033DDDF /* libLottie.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		D045521820695BBA0021B2F7 /* Products */ = {
@@ -1403,6 +1446,10 @@
 					ProjectRef = D0EC986C21050203004CA029 /* KCKeepAwake.xcodeproj */;
 				},
 				{
+					ProductGroup = D038F62E21282C9A0033DDDF /* Products */;
+					ProjectRef = D038F62D21282C9A0033DDDF /* Lottie.xcodeproj */;
+				},
+				{
 					ProductGroup = 00C302A81ABCB8CE00DB3ED1 /* Products */;
 					ProjectRef = 00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */;
 				},
@@ -1715,6 +1762,34 @@
 			fileType = archive.ar;
 			path = libRCTBlob.a;
 			remoteRef = ADBDB9261DFEBF0700ED6528 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D038F63521282C9A0033DDDF /* Lottie.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Lottie.framework;
+			remoteRef = D038F63421282C9A0033DDDF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D038F63721282C9A0033DDDF /* Lottie.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Lottie.framework;
+			remoteRef = D038F63621282C9A0033DDDF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D038F63921282C9A0033DDDF /* Lottie.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Lottie.framework;
+			remoteRef = D038F63821282C9A0033DDDF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D038F63B21282C9A0033DDDF /* libLottie.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLottie.a;
+			remoteRef = D038F63A21282C9A0033DDDF /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		D045524720695BBA0021B2F7 /* libRNImagePicker.a */ = {
