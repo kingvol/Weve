@@ -171,26 +171,25 @@ class HomeTab extends Component {
     });
     const introButton = this.animatedValue3.interpolate({
       inputRange: [0, 1],
-      outputRange: [-100, 400],
+      outputRange: [-100, 230],
     });
     return (
       <Content style={{ flex: 1, backgroundColor }} contentContainerStyle={{ flexGrow: 1 }}>
         <Modal
-          transparent={false}
-          visible={this.props.exhibition && !this.props.user.profile.isProvider}
+          transparent
+          visible={!this.props.exhibition && !this.props.user.profile.isProvider}
           onRequestClose={() => this.onExhibitionChange()}
         >
-          <ImageBackground resizeMode="cover" style={modalBackground} source={images.backGround}>
-            <View style={modalContainer}>
-              <Animated.View style={{ transform: [{ scale: scaleText }] }}>
+          <View style={modalContainer}>
+            <View elevation={5} style={modalBackground}>
+              <Animated.View style={{ marginTop: -50, transform: [{ scale: scaleText }] }}>
                 <TouchableOpacity onPress={this.animate}>
-                  <Text style={{ color: 'white' }}>YOU’RE A WINNER!</Text>
+                  <Text style={{ color: 'red' }}>YOU’RE A WINNER!</Text>
                 </TouchableOpacity>
               </Animated.View>
               <Animated.View style={{ marginTop: 20, transform: [{ rotate: spinText }] }}>
                 <TouchableOpacity onPress={this.animate}>
                   <View>
-                    <Text style={{ fontSize: 20, textAlign: 'center' }}>Ticket number : C15</Text>
                     <Text style={{ fontSize: 18, textAlign: 'center' }}>
                       Please come to the Wevedo stand (B52) {'\n'} to collect your prize.
                     </Text>
@@ -199,11 +198,11 @@ class HomeTab extends Component {
               </Animated.View>
               <Animated.View style={{ top: introButton, position: 'absolute' }}>
                 <Button style={modalButton} block onPress={this.onExhibitionChange}>
-                  <Text style={{ color: 'red', fontSize: 20 }}>OK</Text>
+                  <Text style={{ color: 'yellow', fontSize: 20 }}>Ticket number : C15</Text>
                 </Button>
               </Animated.View>
             </View>
-          </ImageBackground>
+          </View>
         </Modal>
         <View style={{ flex: 1, minHeight: 150 }}>
           <FastImage
@@ -236,20 +235,23 @@ const styles = {
     alignItems: 'center',
   },
   modalBackground: {
-    flex: 1,
-    height: null,
-    width: null,
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    zIndex: -1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 300,
+    height: 300,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    shadowColor: 'black',
+    shadowOffset: {
+      width: 1,
+      height: 3,
+    },
+    shadowRadius: 5,
+    shadowOpacity: 1.0,
   },
   modalButton: {
     paddingLeft: 35,
     paddingRight: 35,
-    backgroundColor: '#f3c200',
     height: 40,
   },
 };
