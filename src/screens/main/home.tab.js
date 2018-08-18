@@ -160,11 +160,11 @@ class HomeTab extends Component {
     });
     const spinText = this.animatedValue2.interpolate({
       inputRange: [0, 1],
-      outputRange: ['0deg', '720deg'],
+      outputRange: [0.5, 1],
     });
     const introButton = this.animatedValue3.interpolate({
       inputRange: [0, 1],
-      outputRange: [-100, 230],
+      outputRange: [-100, 240],
     });
     return (
       <Content style={{ flex: 1, backgroundColor }} contentContainerStyle={{ flexGrow: 1 }}>
@@ -181,9 +181,12 @@ class HomeTab extends Component {
                   <Text style={{ color: 'red' }}>YOU’RE A WINNER!</Text>
                 </TouchableOpacity>
               </Animated.View>
-              <Animated.View style={{ marginTop: 20, transform: [{ rotate: spinText }] }}>
+              <Animated.View style={{ marginTop: 15, transform: [{ scale: spinText }] }}>
                 <TouchableOpacity onPress={this.animate}>
                   <View>
+                    <Text style={{ fontSize: 20, textAlign: 'center', fontWeight: 'bold' }}>
+                      Ticket number : C15
+                    </Text>
                     <Text style={{ fontSize: 18, textAlign: 'center' }}>
                       Please come to the Wevedo stand (B52) {'\n'} to collect your prize.
                     </Text>
@@ -192,7 +195,7 @@ class HomeTab extends Component {
               </Animated.View>
               <Animated.View style={{ top: introButton, position: 'absolute' }}>
                 <Button style={modalButton} block onPress={this.onExhibitionChange}>
-                  <Text style={{ color: 'yellow', fontSize: 20 }}>Ticket number : C15</Text>
+                  <Text style={{ color: 'yellow', fontSize: 20 }}>Ok</Text>
                 </Button>
               </Animated.View>
             </View>
@@ -227,6 +230,7 @@ const styles = {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'rgba(52, 52, 52, 0.5)',
   },
   modalBackground: {
     alignItems: 'center',
