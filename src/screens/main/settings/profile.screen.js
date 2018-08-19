@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Text } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import FastImage from 'react-native-fast-image';
 import { connect } from 'react-redux';
@@ -12,6 +13,7 @@ import {
   Col,
   ProfileField,
   ProfileFieldForCountry,
+  Button,
 } from '../../../components/common';
 import { backgroundColor, primaryFont } from '../../../theme';
 import { UserActions } from '../../../actions';
@@ -121,6 +123,15 @@ class ProfileScreen extends Component {
               subTitle={regionName || ''}
             />
           </Grid>
+          {this.props.profile.countryCode === 'GB' && (
+            <Button
+              style={{ marginTop: 30, marginLeft: 50, marginRight: 50 }}
+              // onPress={this.onFormSubmit}
+              // loading={this.props.user.loading}
+            >
+              <Text style={{ color: 'white' }}>Redeem ticket C15</Text>
+            </Button>
+          )}
         </Content>
       </Container>
     );
