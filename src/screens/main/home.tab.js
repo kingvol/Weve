@@ -6,7 +6,7 @@ import { Content } from 'native-base';
 import LottieView from 'lottie-react-native';
 
 import { Button } from '../../components/common';
-import * as presentAnimation from '../../components/common/presentAnimation.json';
+import * as presentAnimation from '../../animations/presentAnimation.json';
 import I18n from '../../locales';
 import images from '../../images';
 import { primaryFont, backgroundColor } from '../../theme';
@@ -89,7 +89,7 @@ class HomeTab extends Component {
   componentDidMount() {
     startPushService(this.props.navigator);
     this.props.fetchProfile('me');
-    this.animate();
+    if (this.props.exhibition && !this.props.user.profile.isProvider) this.animate();
   }
 
   onExhibitionChange = () => {
@@ -171,7 +171,7 @@ class HomeTab extends Component {
         <Modal
           transparent
           visible={this.props.exhibition && !this.props.user.profile.isProvider}
-          onRequestClose={() => this.onExhibitionChange()}
+          onRequestClose={this.onExhibitionChange}
         >
           <View style={modalContainer}>
             <View elevation={5} style={modalBackground}>
