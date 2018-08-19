@@ -195,7 +195,7 @@ class HomeTab extends Component {
               </Animated.View>
               <Animated.View style={{ top: introButton, position: 'absolute' }}>
                 <Button style={modalButton} block onPress={this.onExhibitionChange}>
-                  <Text style={{ color: 'yellow', fontSize: 20 }}>Ok</Text>
+                  <Text style={{ color: 'yellow', fontSize: 20 }}>OK</Text>
                 </Button>
               </Animated.View>
             </View>
