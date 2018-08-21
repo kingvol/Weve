@@ -79,6 +79,9 @@ class LoginForm extends Component {
   }
 
   numberPhoneCheck = (phone) => {
+    if (phone.match(/^00/)) {
+      phone = phone.replace(/^00/, '+');
+    }
     if (phone.match(/[*+*][0-9]*[*+*]/) !== null) {
       if (phone.match(/\+$/)) {
         phone = phone.replace(/\+$/, '');
@@ -235,7 +238,10 @@ class LoginForm extends Component {
               <Button
                 id="LoginPage.loginButton"
                 block
-                style={Object.assign(loginButton, { flex: error ? 1.2 : 1, marginTop: error ? 10 : 20 })}
+                style={Object.assign(loginButton, {
+                  flex: error ? 1.2 : 1,
+                  marginTop: error ? 10 : 20,
+                })}
                 onPress={this.handleSubmit}
                 disabled={disabled}
                 spinner={isLoading}

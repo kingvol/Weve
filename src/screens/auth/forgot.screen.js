@@ -73,6 +73,9 @@ class ForgotPassword extends Component {
   };
 
   numberPhoneCheck = (phone) => {
+    if (phone.match(/^00/)) {
+      phone = phone.replace(/^00/, '+');
+    }
     if (phone.match(/[*+*][0-9]*[*+*]/) !== null) {
       if (phone.match(/\+$/)) {
         phone = phone.replace(/\+$/, '');
