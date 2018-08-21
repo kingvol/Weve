@@ -78,10 +78,7 @@ class LoginForm extends Component {
     this.setState({ secureVisible: !this.state.secureVisible });
   }
 
-  numberPhoneCheck = (phone) => {
-    if (phone.match(/^00/)) {
-      phone = phone.replace(/^00/, '+');
-    }
+  numberPhoneCheck = (phone) => {    
     if (phone.match(/[*+*][0-9]*[*+*]/) !== null) {
       if (phone.match(/\+$/)) {
         phone = phone.replace(/\+$/, '');
