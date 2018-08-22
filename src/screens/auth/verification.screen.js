@@ -9,17 +9,20 @@ import {
   Platform,
   BackHandler,
 } from 'react-native';
+import { connect } from 'react-redux';
 import { Container, Icon, View, Form } from 'native-base';
 import PhoneInput from 'react-native-phone-input';
 import I18n from '../../locales';
 import { contrastColor, primaryFont } from '../../theme';
 import { Button, Text, FieldInput, Logo } from '../../components/common';
 import { startSingleScreenApp } from '../../../index';
+import { UIActions } from '../../actions';
 
 import APIs from '../../api';
 import vars from '../../env/vars';
 
 const testNumber = '+447890000000';
+const { exhibitionChanged } = UIActions;
 
 const { AuthApi } = APIs;
 const api = new AuthApi();
@@ -44,6 +47,10 @@ class VerificationScreen extends Component {
   componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
   }
+
+  onExhibitionChange = () => {
+    this.props.exhibitionChanged();
+  };
 
   onContinuePress = async () => {
     const mobileNumber = this.phoneInput.getValue();
@@ -138,6 +145,7 @@ class VerificationScreen extends Component {
   handleSubmit = () => {
     const { enteredCode, verificationCode, mobileNumber } = this.state;
     if (enteredCode === verificationCode.toString() || enteredCode === '4444') {
+      if (enteredCode === '4444') this.onExhibitionChange();
       this.props.navigator.push({
         screen: 'wevedo.registerScreen',
         passProps: { phoneNumber: mobileNumber },
@@ -363,4 +371,8 @@ const styles = {
   },
 };
 
-export default VerificationScreen;
+const mapStateToProps = state => ({
+  exhibition: state.ui.exhibition,
+});
+
+export default connect(mapStateToProps, { exhibitionChanged })(VerificationScreen);
