@@ -8,6 +8,7 @@ import {
   Keyboard,
   Platform,
   BackHandler,
+  AsyncStorage,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Container, Icon, View, Form } from 'native-base';
@@ -48,9 +49,9 @@ class VerificationScreen extends Component {
     BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
   }
 
-  onExhibitionChange = () => {
+  /* onExhibitionChange = () => {
     this.props.exhibitionChanged();
-  };
+  }; */
 
   onContinuePress = async () => {
     const mobileNumber = this.phoneInput.getValue();
@@ -121,6 +122,17 @@ class VerificationScreen extends Component {
     Alert.alert(I18n.t('auth.code_sent'));
   };
 
+  initLottery = async () => {
+    try {
+      const hasLottery = await AsyncStorage.getItem('wevedo_lottery_status');
+      if (!hasLottery) {
+        await AsyncStorage.setItem('wevedo_lottery_status', 'init');
+      }
+    } catch (error) {
+      console.warn('Error on lottery init');
+    }
+  };
+
   numberPhoneCheck = () => {
     const isValid = this.phoneInput.isValidNumber();
     this.setState({ phone: isValid });
@@ -142,10 +154,12 @@ class VerificationScreen extends Component {
     }
   };
 
-  handleSubmit = () => {
+  handleSubmit = async () => {
     const { enteredCode, verificationCode, mobileNumber } = this.state;
     if (enteredCode === verificationCode.toString() || enteredCode === '4444') {
-      if (enteredCode === '4444') this.onExhibitionChange();
+      if (enteredCode === '4444') {
+        await this.initLottery();
+      }
       this.props.navigator.push({
         screen: 'wevedo.registerScreen',
         passProps: { phoneNumber: mobileNumber },
