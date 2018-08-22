@@ -14,34 +14,57 @@ export default class UserApi extends Api {
   fetchProfile = async (_id) => {
     try {
       const response = await this.getOne(_id);
-      if (response.message || response.error) { // check for error
+      if (response.message || response.error) {
+        // check for error
         return Promise.reject(response);
       }
       return response;
-    } catch ({ message }) { throw Error(message); }
-  }
+    } catch ({ message }) {
+      throw Error(message);
+    }
+  };
 
   updateProfile = async (body) => {
     try {
       const response = await this.update('me', body);
-      if (response.message || response.error) { // check for error
+      if (response.message || response.error) {
+        // check for error
         return Promise.reject(response);
       }
       const user = await this.getOne('me');
-      if (user.message || user.error) { // check for error
+      if (user.message || user.error) {
+        // check for error
         return Promise.reject(user);
       }
       return user;
-    } catch ({ message }) { throw Error(message); }
-  }
+    } catch ({ message }) {
+      throw Error(message);
+    }
+  };
 
   changePassword = async (body) => {
     try {
       const response = await this.update('me', body);
-      if (response.message || response.error) { // check for error
+      if (response.message || response.error) {
+        // check for error
         return Promise.reject(response);
       }
       return response;
-    } catch ({ message }) { throw Error(message); }
-  }
+    } catch ({ message }) {
+      throw Error(message);
+    }
+  };
+
+  getLotteryTicket = async () => {
+    try {
+      const response = await this.request('api/lottery/getTicket');
+      if (response.message || response.error) {
+        // check for error
+        return Promise.reject(response);
+      }
+      return response;
+    } catch ({ message }) {
+      throw Error(message);
+    }
+  };
 }
