@@ -213,40 +213,43 @@ class HomeTab extends Component {
     });
     return (
       <Content style={{ flex: 1, backgroundColor }} contentContainerStyle={{ flexGrow: 1 }}>
-        <Modal
-          transparent
-          visible={this.state.showLotteryModal}
-          onRequestClose={this.closeLotteryModal}
-        >
-          <View style={modalContainer}>
-            <View elevation={5} style={modalBackground}>
-              <LottieView style={{ width: 100, height: 100 }} source={presentAnimation} autoPlay />
-              <Animated.View style={{ transform: [{ scale: scaleText }] }}>
-                <TouchableOpacity onPress={this.animateLotteryModal}>
-                  <Text style={{ color: 'red' }}>YOU’RE A WINNER!</Text>
-                </TouchableOpacity>
-              </Animated.View>
-              <Animated.View style={{ marginTop: 15, transform: [{ scale: spinText }] }}>
-                <TouchableOpacity onPress={this.animateLotteryModal}>
-                  <View>
-                    <Text style={{ fontSize: 20, textAlign: 'center', fontWeight: 'bold' }}>
-                      Ticket number : {this.state.lotteryCategory === '1' ? 'A' : 'B'}
-                      {this.state.lotteryTicket}
-                    </Text>
-                    <Text style={{ fontSize: 18, textAlign: 'center' }}>
-                      Please come to the Wevedo stand (B52) {'\n'} to collect your prize.
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              </Animated.View>
-              <Animated.View style={{ top: introButton, position: 'absolute' }}>
-                <Button style={modalButton} block onPress={this.closeLotteryModal}>
-                  <Text style={{ color: 'yellow', fontSize: 20 }}>OK</Text>
-                </Button>
-              </Animated.View>
+        {this.state.showLotteryModal ? (
+          <Modal transparent visible onRequestClose={this.closeLotteryModal}>
+            <View style={modalContainer}>
+              <View elevation={5} style={modalBackground}>
+                <LottieView
+                  style={{ width: 100, height: 100 }}
+                  source={presentAnimation}
+                  autoPlay
+                  loop
+                />
+                <Animated.View style={{ transform: [{ scale: scaleText }] }}>
+                  <TouchableOpacity onPress={this.animateLotteryModal}>
+                    <Text style={{ color: 'red' }}>YOU’RE A WINNER!</Text>
+                  </TouchableOpacity>
+                </Animated.View>
+                <Animated.View style={{ marginTop: 15, transform: [{ scale: spinText }] }}>
+                  <TouchableOpacity onPress={this.animateLotteryModal}>
+                    <View>
+                      <Text style={{ fontSize: 20, textAlign: 'center', fontWeight: 'bold' }}>
+                        Ticket number : {this.state.lotteryCategory === '1' ? 'A' : 'B'}
+                        {this.state.lotteryTicket}
+                      </Text>
+                      <Text style={{ fontSize: 18, textAlign: 'center' }}>
+                        Please come to the Wevedo stand (B52) {'\n'} to collect your prize.
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </Animated.View>
+                <Animated.View style={{ top: introButton, position: 'absolute' }}>
+                  <Button style={modalButton} block onPress={this.closeLotteryModal}>
+                    <Text style={{ color: 'yellow', fontSize: 20 }}>OK</Text>
+                  </Button>
+                </Animated.View>
+              </View>
             </View>
-          </View>
-        </Modal>
+          </Modal>
+        ) : null}
         <View style={{ flex: 1, minHeight: 150 }}>
           <FastImage
             source={images.category_hero}
