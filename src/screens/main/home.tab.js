@@ -221,7 +221,6 @@ class HomeTab extends Component {
                   style={{ width: 100, height: 100 }}
                   source={presentAnimation}
                   autoPlay
-                  loop
                 />
                 <Animated.View style={{ transform: [{ scale: scaleText }] }}>
                   <TouchableOpacity onPress={this.animateLotteryModal}>
