@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text } from 'react-native';
+import { Text, AsyncStorage } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import FastImage from 'react-native-fast-image';
 import { connect } from 'react-redux';
@@ -27,8 +27,15 @@ class ProfileScreen extends Component {
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
 
+  state = {
+    showRedeemBtn: false,
+    lotteryTicket: null,
+    lotteryCategory: null,
+  };
+
   componentDidMount() {
     this.props.fetchProfile('me');
+    this.checkLotteryStatus();
     this.setEditButton();
   }
 
@@ -56,6 +63,15 @@ class ProfileScreen extends Component {
     });
   };
 
+  onReddemPress = async () => {
+    try {
+      await AsyncStorage.setItem('wevedo_lottery_status', 'done');
+      this.setState({ showRedeemBtn: false });
+    } catch (error) {
+      console.warn('Cant update lottery status :(');
+    }
+  };
+
   setEditButton = () => {
     Promise.all([Icon.getImageSource('pencil', 22, '#ffffff')]).then((sources) => {
       this.props.navigator.setButtons({
@@ -69,6 +85,23 @@ class ProfileScreen extends Component {
         animated: true,
       });
     });
+  };
+
+  checkLotteryStatus = async () => {
+    try {
+      const status = await AsyncStorage.getItem('wevedo_lottery_status');
+      if (status === 'pending') {
+        const lotteryTicket = await AsyncStorage.getItem('wevedo_lottery_ticket');
+        const lotteryCategory = await AsyncStorage.getItem('wevedo_lottery_category');
+        this.setState({
+          showRedeemBtn: true,
+          lotteryTicket,
+          lotteryCategory,
+        });
+      }
+    } catch (error) {
+      console.warn("Can't get a lottery status (for redeem btn)");
+    }
   };
 
   renderProfileImageName = (fullName, firstName, lastName) => (
@@ -123,15 +156,17 @@ class ProfileScreen extends Component {
               subTitle={regionName || ''}
             />
           </Grid>
-          {this.props.profile.countryCode === 'GB' && (
+          {this.props.profile.countryCode === 'GB' && this.state.showRedeemBtn ? (
             <Button
               style={{ marginTop: 30, marginLeft: 50, marginRight: 50 }}
-              // onPress={this.onFormSubmit}
-              // loading={this.props.user.loading}
+              onPress={this.onReddemPress}
             >
-              <Text style={{ color: 'white' }}>Redeem ticket C15</Text>
+              <Text style={{ color: 'white' }}>
+                Redeem ticket {this.state.lotteryCategory === '1' ? 'A' : 'B'}
+                {this.state.lotteryTicket}
+              </Text>
             </Button>
-          )}
+          ) : null}
         </Content>
       </Container>
     );
