@@ -7,6 +7,7 @@ import {
   KeyboardAvoidingView,
   Dimensions,
   Keyboard,
+  ActivityIndicator,
 } from 'react-native';
 import { CardItem, Container, Icon, Item, Input, Label, Title } from 'native-base';
 import PhoneInput from 'react-native-phone-input';
@@ -44,10 +45,11 @@ class LoginForm extends Component {
       phoneNumberError: false,
       placeholder: '********',
       countryCode,
+      loading: true,
     };
   }
 
-  async componentDidMount() {
+  async componentWillMount() {
     await fetch(ipUrl)
       .then(response => response.json())
       .then((responseJson) => {
@@ -55,9 +57,9 @@ class LoginForm extends Component {
           countryCode: countries.includes(responseJson.country_code)
             ? responseJson.country_code
             : countries.includes(userLocaleCountryCode) ? userLocaleCountryCode : 'GB',
+          loading: false,
         });
       });
-    this.forceUpdate();
   }
 
   onForgotPress = () => {
@@ -165,24 +167,22 @@ class LoginForm extends Component {
               style={{ flex: screenHeight > 1280 ? 1.5 : 2 }}
             >
               <View style={itemStyle}>
-                <Label style={label}>
-                  {/* {I18n.t('common.phone')} */}
-                  {this.state.countryCode.toLowerCase()}
-                </Label>
+                <Label style={label}> {I18n.t('common.phone')} </Label>
                 <Item
                   error={this.state.phoneNumberError}
                   id="LoginPage.phoneNumberInput"
                   style={item}
                 >
-                  <PhoneInput
-                    ref={this.setPhoneRef}
-                    initialCountry={this.state.countryCode.toLowerCase()}
-                    allowZeroAfterCountryCode={false}
-                    onChangePhoneNumber={this.numberPhoneCheck}
-                    style={{ flex: 1 }}
-                    // value={this.state.phoneNumber}
-                    textStyle={inputPhone}
-                  />
+                  {this.state.loading ? (<ActivityIndicator size="large" color="#d64635" />) : (
+                    <PhoneInput
+                      ref={this.setPhoneRef}
+                      initialCountry={this.state.countryCode.toLowerCase()}
+                      allowZeroAfterCountryCode={false}
+                      onChangePhoneNumber={this.numberPhoneCheck}
+                      style={{ flex: 1 }}
+                      value={this.state.phoneNumber}
+                      textStyle={inputPhone}
+                    />)}
                   {this.state.phoneNumberError && (
                     <Icon name="close-circle" style={{ color: 'red' }} />
                   )}
