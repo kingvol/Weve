@@ -35,15 +35,10 @@ class VerificationScreen extends Component {
     switchValue: true,
     phone: false,
     buttonPressed: 0,
-    phoneNumber: '',
   };
 
   componentDidMount() {
     BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
-  }
-
-  componentWillReceiveProps() {
-    this.setState({ phoneNumber: this.phoneInput.getValue() });
   }
 
   componentWillUnmount() {
@@ -119,38 +114,7 @@ class VerificationScreen extends Component {
     Alert.alert(I18n.t('auth.code_sent'));
   };
 
-  onChangePhone = (phone) => {
-    // let phone = this.phoneInput.getValue();
-    if (phone.match(/^00/)) {
-      phone = phone.replace(/^00/, '+');
-    }
-    if (phone.match(/[*+*][0-9]*[*+*]/) !== null) {
-      if (phone.match(/\+$/)) {
-        phone = phone.replace(/\+$/, '');
-      } else {
-        phone = phone.replace(/[+]/, '');
-      }
-    } else if (phone.match(/[0-9]*[*+*]/) !== null) {
-      phone = phone.replace(/[^\d+]/g, '');
-    }
-    this.setState({ phoneNumber: phone });
-  }
-
   numberPhoneCheck = () => {
-    // let phone = this.phoneInput.getValue();
-    // if (phone.match(/^00/)) {
-    //   phone = phone.replace(/^00/, '+');
-    // }
-    // if (phone.match(/[*+*][0-9]*[*+*]/) !== null) {
-    //   if (phone.match(/\+$/)) {
-    //     phone = phone.replace(/\+$/, '');
-    //   } else {
-    //     phone = phone.replace(/[+]/, '');
-    //   }
-    // } else if (phone.match(/[0-9]*[*+*]/) !== null) {
-    //   phone = phone.replace(/[^\d+]/g, '');
-    // }
-    // this.setState({ phoneNumber: 'sdsds' });
     const isValid = this.phoneInput.isValidNumber();
     this.setState({ phone: isValid });
     if (isValid) Keyboard.dismiss();
@@ -245,19 +209,16 @@ class VerificationScreen extends Component {
 
               <Form>
                 {this.state.step === 1 ? (
-                  <View style={styles.inputConteiner}>
+                  <View style={styles.inputContainer}>
                     <PhoneInput
                       ref={(ref) => {
                         this.phoneInput = ref;
                       }}
                       initialCountry="gb"
                       allowZeroAfterCountryCode={false}
-                      onChangeText={(text) => {
-                        this.onChangePhone(text);
-                      }}
                       onChangePhoneNumber={this.numberPhoneCheck}
                       style={styles.input}
-                      value={this.state.phoneNumber}
+                      // value={this.state.phoneNumber}
                       textStyle={styles.inputTextStyle}
                     />
                     {!this.state.phone && (

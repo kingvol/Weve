@@ -6,14 +6,30 @@ import {
   Platform,
   KeyboardAvoidingView,
   Dimensions,
+  Keyboard,
 } from 'react-native';
 import { CardItem, Container, Icon, Item, Input, Label, Title } from 'native-base';
+import PhoneInput from 'react-native-phone-input';
+import DeviceInfo from 'react-native-device-info';
 import I18n from '../../locales';
 import { primaryColor, contrastColor, primaryFont } from '../../theme';
 import images from '../../images';
 import { Button, Center, Text, Logo } from '../../components/common';
+import config from '../../../config';
+import countries from '../../countryLib/countries';
 
 const screenHeight = Dimensions.get('window').height;
+const { ipUrl } = config;
+const userLocaleCountryCode = DeviceInfo.getDeviceCountry();
+const countryCode = countries.includes(userLocaleCountryCode) ? userLocaleCountryCode : 'GB';
+// let countryCode;
+// fetch(ipUrl)
+//   .then(response => response.json())
+//   .then((responseJson) => {
+//     countryCode = countries.includes(responseJson.country_code)
+//       ? responseJson.country_code
+//       : countries.includes(userLocaleCountryCode) ? userLocaleCountryCode : 'GB';
+//   });
 
 class LoginForm extends Component {
   constructor() {
@@ -25,9 +41,23 @@ class LoginForm extends Component {
       password: '',
       passwordLabel: '',
       passwordError: false,
-      phoneNumberLabel: `${I18n.t('common.example')}: +44...`,
       phoneNumberError: false,
+      placeholder: '********',
+      countryCode,
     };
+  }
+
+  async componentDidMount() {
+    await fetch(ipUrl)
+      .then(response => response.json())
+      .then((responseJson) => {
+        this.setState({
+          countryCode: countries.includes(responseJson.country_code)
+            ? responseJson.country_code
+            : countries.includes(userLocaleCountryCode) ? userLocaleCountryCode : 'GB',
+        });
+      });
+    this.forceUpdate();
   }
 
   onForgotPress = () => {
@@ -45,21 +75,15 @@ class LoginForm extends Component {
             [`${key}Error`]: true,
             [`${key}Label`]: I18n.t('validations.required'),
           };
-        case key === 'password'
-          ? value.length < 8
-          : !/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im.test(value) ||
-              value.charAt(0) !== '+':
+        case value.length < 8:
           return {
             [`${key}Error`]: false,
-            [`${key}Label`]: key === 'phoneNumber' ? `${I18n.t('common.example')}: +44...` : '',
+            [`${key}Label`]: '',
           };
         default:
           return {
             [`${key}Error`]: true,
-            [`${key}Label`]:
-                key === 'password'
-                  ? I18n.t('validations.password_length')
-                  : I18n.t('validations.phone_invalid'),
+            [`${key}Label`]: I18n.t('validations.password_length'),
           };
       }
     })());
@@ -74,25 +98,23 @@ class LoginForm extends Component {
     }
   }
 
+  onFocus = () => {
+    this.setState({ placeholder: '' });
+  };
+
+  setPhoneRef = (ref) => {
+    this.phoneInput = ref;
+  };
+
+  numberPhoneCheck = () => {
+    const isValid = this.phoneInput.isValidNumber();
+    this.setState({ phoneNumberError: !isValid, phoneNumber: this.phoneInput.getValue() });
+    if (isValid) Keyboard.dismiss();
+  };
+
   switchSecure() {
     this.setState({ secureVisible: !this.state.secureVisible });
   }
-
-  numberPhoneCheck = (phone) => {
-    if (phone.match(/^00/)) {
-      phone = phone.replace(/^00/, '+');
-    }
-    if (phone.match(/[*+*][0-9]*[*+*]/) !== null) {
-      if (phone.match(/\+$/)) {
-        phone = phone.replace(/\+$/, '');
-      } else {
-        phone = phone.replace(/[+]/, '');
-      }
-    } else if (phone.match(/[0-9]*[*+*]/) !== null) {
-      phone = phone.replace(/[^\d+]/g, '');
-    }
-    this.onFieldChange('phoneNumber', phone.replace(/[^\d+]/g, ''));
-  };
 
   handleSubmit = () => {
     const { phoneNumber, password } = this.state;
@@ -111,6 +133,7 @@ class LoginForm extends Component {
       item,
       label,
       input,
+      inputPhone,
       textForgot,
       loginButton,
       loginButtonText,
@@ -142,66 +165,75 @@ class LoginForm extends Component {
               style={{ flex: screenHeight > 1280 ? 1.5 : 2 }}
             >
               <View style={itemStyle}>
+                <Label style={label}>
+                  {/* {I18n.t('common.phone')} */}
+                  {this.state.countryCode.toLowerCase()}
+                </Label>
                 <Item
                   error={this.state.phoneNumberError}
                   id="LoginPage.phoneNumberInput"
-                  floatingLabel
                   style={item}
                 >
-                  <Label style={label}>{I18n.t('common.phone')}</Label>
-                  <Input
-                    style={input}
-                    autoCapitalize="none"
-                    keyboardType="phone-pad"
-                    autoCorrect={false}
-                    value={this.state.phoneNumber}
-                    onChangeText={text => this.numberPhoneCheck(text)}
-                    onBlur={() => this.onBlur('phoneNumber', this.state.phoneNumber)}
+                  <PhoneInput
+                    ref={this.setPhoneRef}
+                    initialCountry={this.state.countryCode.toLowerCase()}
+                    allowZeroAfterCountryCode={false}
+                    onChangePhoneNumber={this.numberPhoneCheck}
+                    style={{ flex: 1 }}
+                    // value={this.state.phoneNumber}
+                    textStyle={inputPhone}
                   />
                   {this.state.phoneNumberError && (
                     <Icon name="close-circle" style={{ color: 'red' }} />
                   )}
                 </Item>
-                <View />
+                {this.state.phoneNumberError && (
+                  <Text style={errorText}>
+                    {/* {this.state.phoneNumberLabel} */}
+                    {I18n.t('validations.phone_invalid')}
+                  </Text>
+                )}
               </View>
-              <Text style={errorText}>{this.state.phoneNumberLabel}</Text>
               <View style={itemStyle}>
-                <Item
-                  error={this.state.passwordError}
-                  id="LoginPage.passwordInput"
-                  floatingLabel
-                  style={itemPassword}
-                >
-                  <Label style={label}>{I18n.t('common.password')}</Label>
-                  <Input
-                    style={input}
-                    value={this.state.password}
-                    onChangeText={text => this.onFieldChange('password', text)}
-                    // onFocus={this.onFocus('password', this.state.password)}
-                    onBlur={() => this.onBlur('password', this.state.password)}
-                    secureTextEntry={secure}
-                  />
-                  {this.state.passwordError && (
-                    <Icon name="close-circle" style={{ color: 'red' }} />
-                  )}
-                </Item>
-                <View
-                  style={{
-                    alignSelf: 'flex-end',
-                    bottom: 2,
-                    flex: 0,
-                  }}
-                >
-                  <TouchableOpacity onPress={this.switchSecure}>
-                    <Icon
-                      style={{ color: 'white' }}
-                      size={24}
-                      name={secure ? 'md-eye-off' : 'eye'}
+                <Label style={label}>{I18n.t('common.password')}</Label>
+                <View style={{ flexDirection: 'row', flex: 1 }}>
+                  <Item
+                    error={this.state.passwordError}
+                    id="LoginPage.passwordInput"
+                    style={itemPassword}
+                  >
+                    <Input
+                      style={input}
+                      value={this.state.password}
+                      placeholder={this.state.placeholder}
+                      placeholderTextColor="white"
+                      onChangeText={text => this.onFieldChange('password', text)}
+                      onFocus={this.onFocus}
+                      onBlur={() => this.onBlur('password', this.state.password)}
+                      secureTextEntry={secure}
                     />
-                  </TouchableOpacity>
+                    {this.state.passwordError && (
+                      <Icon name="close-circle" style={{ color: 'red' }} />
+                    )}
+                  </Item>
+                  <View
+                    style={{
+                      alignSelf: 'flex-end',
+                      bottom: 2,
+                      flex: 0,
+                    }}
+                  >
+                    <TouchableOpacity onPress={this.switchSecure}>
+                      <Icon
+                        style={{ color: 'white' }}
+                        size={24}
+                        name={secure ? 'md-eye-off' : 'eye'}
+                      />
+                    </TouchableOpacity>
+                  </View>
                 </View>
+                <Text style={errorText}>{this.state.passwordLabel}</Text>
               </View>
-              <Text style={errorText}>{this.state.passwordLabel}</Text>
             </KeyboardAvoidingView>
             <View style={{ flex: 2, justifyContent: 'space-between' }}>
               {error && (
@@ -303,7 +335,7 @@ const styles = {
     flex: 2,
     justifyContent: 'space-between',
     backgroundColor: 'rgba(0,0,0,0.5)',
-    paddingTop: screenHeight > 550 ? 25 : 0,
+    paddingTop: screenHeight > 550 ? 10 : 0,
     marginLeft: 15,
     marginRight: 15,
     marginBottom: 15,
@@ -316,7 +348,7 @@ const styles = {
     paddingBottom: 3,
   },
   itemStyle: {
-    flexDirection: 'row',
+    flex: 1,
     marginTop: 4,
     marginLeft: 10,
     marginRight: 10,
@@ -328,15 +360,20 @@ const styles = {
     paddingBottom: 3,
   },
   label: {
-    flex: 1,
     textAlign: 'left',
-    color: contrastColor,
+    color: '#c2a2a2',
     ...primaryFont,
   },
   input: {
     flex: 1,
     color: contrastColor,
     paddingBottom: 5,
+    ...primaryFont,
+  },
+  inputPhone: {
+    flex: 1,
+    color: contrastColor,
+    fontSize: 17,
     ...primaryFont,
   },
   textForgot: {
