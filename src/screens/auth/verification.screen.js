@@ -117,8 +117,8 @@ class VerificationScreen extends Component {
 
   initLottery = async () => {
     try {
-      const hasLottery = await AsyncStorage.getItem('wevedo_lottery_status');
-      if (!hasLottery) {
+      const lotteryStatus = await AsyncStorage.getItem('wevedo_lottery_status');
+      if (!lotteryStatus || lotteryStatus === 'done') {
         await AsyncStorage.setItem('wevedo_lottery_status', 'init');
       }
     } catch (error) {
