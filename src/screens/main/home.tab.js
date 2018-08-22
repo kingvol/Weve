@@ -1,5 +1,14 @@
 import React, { Component } from 'react';
-import { FlatList, TouchableOpacity, Text, View, Modal, Animated, Easing } from 'react-native';
+import {
+  FlatList,
+  TouchableOpacity,
+  Text,
+  View,
+  Modal,
+  Animated,
+  Easing,
+  AsyncStorage,
+} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { connect } from 'react-redux';
 import { Content } from 'native-base';
@@ -11,10 +20,11 @@ import I18n from '../../locales';
 import images from '../../images';
 import { primaryFont, backgroundColor } from '../../theme';
 import { fetchProfile } from '../../actions/user.actions';
-import { UIActions } from '../../actions';
 import startPushService from '../../services/PushService';
+import APIs from '../../api';
 
-const { exhibitionChanged } = UIActions;
+const { UserApi } = APIs;
+const api = new UserApi();
 
 const categories = [
   {
@@ -86,15 +96,17 @@ class HomeTab extends Component {
     this.animatedValue3 = new Animated.Value(0);
   }
 
+  state = {
+    showLotteryModal: false,
+    lotteryTicket: null,
+    lotteryCategory: null,
+  };
+
   componentDidMount() {
     startPushService(this.props.navigator);
     this.props.fetchProfile('me');
-    if (this.props.exhibition && !this.props.user.profile.isProvider) this.animate();
+    this.checkLotteryStatus();
   }
-
-  onExhibitionChange = () => {
-    this.props.exhibitionChanged();
-  };
 
   onCategoryPress = (category) => {
     this.props.navigator.push({
@@ -110,7 +122,7 @@ class HomeTab extends Component {
     });
   };
 
-  animate = () => {
+  animateLotteryModal = () => {
     this.animatedValue1.setValue(0);
     this.animatedValue2.setValue(0);
     this.animatedValue3.setValue(0);
@@ -126,6 +138,39 @@ class HomeTab extends Component {
       createAnimation(this.animatedValue2, 1000, Easing.ease, 1000),
       createAnimation(this.animatedValue3, 1000, Easing.ease, 2000),
     ]).start();
+  };
+
+  closeLotteryModal = () => {
+    this.setState({ showLotteryModal: false });
+  };
+
+  checkLotteryStatus = async () => {
+    try {
+      const status = await AsyncStorage.getItem('wevedo_lottery_status');
+      if (status === 'init') {
+        const response = await api.getLotteryTicket();
+        if (response.status === 'ok') {
+          await AsyncStorage.setItem('wevedo_lottery_ticket', response.ticket.toString());
+          await AsyncStorage.setItem('wevedo_lottery_category', response.category.toString());
+          await AsyncStorage.setItem('wevedo_lottery_status', 'pending');
+          this.setState(
+            {
+              showLotteryModal: true,
+              lotteryTicket: response.ticket.toString(),
+              lotteryCategory: response.category.toString(),
+            },
+            () => {
+              this.animateLotteryModal();
+            },
+          );
+        } else {
+          throw new Error();
+        }
+      }
+    } catch ({ message }) {
+      console.warn('Lottery request failed: ', message);
+      await AsyncStorage.removeItem('wevedo_lottery_status');
+    }
   };
 
   renderItem = ({ item }) => (
@@ -168,39 +213,42 @@ class HomeTab extends Component {
     });
     return (
       <Content style={{ flex: 1, backgroundColor }} contentContainerStyle={{ flexGrow: 1 }}>
-        <Modal
-          transparent
-          visible={this.props.exhibition && !this.props.user.profile.isProvider}
-          onRequestClose={this.onExhibitionChange}
-        >
-          <View style={modalContainer}>
-            <View elevation={5} style={modalBackground}>
-              <LottieView style={{ width: 100, height: 100 }} source={presentAnimation} autoPlay />
-              <Animated.View style={{ transform: [{ scale: scaleText }] }}>
-                <TouchableOpacity onPress={this.animate}>
-                  <Text style={{ color: 'red' }}>YOU’RE A WINNER!</Text>
-                </TouchableOpacity>
-              </Animated.View>
-              <Animated.View style={{ marginTop: 15, transform: [{ scale: spinText }] }}>
-                <TouchableOpacity onPress={this.animate}>
-                  <View>
-                    <Text style={{ fontSize: 20, textAlign: 'center', fontWeight: 'bold' }}>
-                      Ticket number : C15
-                    </Text>
-                    <Text style={{ fontSize: 18, textAlign: 'center' }}>
-                      Please come to the Wevedo stand (B52) {'\n'} to collect your prize.
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              </Animated.View>
-              <Animated.View style={{ top: introButton, position: 'absolute' }}>
-                <Button style={modalButton} block onPress={this.onExhibitionChange}>
-                  <Text style={{ color: 'yellow', fontSize: 20 }}>OK</Text>
-                </Button>
-              </Animated.View>
+        {this.state.showLotteryModal ? (
+          <Modal transparent visible onRequestClose={this.closeLotteryModal}>
+            <View style={modalContainer}>
+              <View elevation={5} style={modalBackground}>
+                <LottieView
+                  style={{ width: 100, height: 100 }}
+                  source={presentAnimation}
+                  autoPlay
+                />
+                <Animated.View style={{ transform: [{ scale: scaleText }] }}>
+                  <TouchableOpacity onPress={this.animateLotteryModal}>
+                    <Text style={{ color: 'red' }}>YOU’RE A WINNER!</Text>
+                  </TouchableOpacity>
+                </Animated.View>
+                <Animated.View style={{ marginTop: 15, transform: [{ scale: spinText }] }}>
+                  <TouchableOpacity onPress={this.animateLotteryModal}>
+                    <View>
+                      <Text style={{ fontSize: 20, textAlign: 'center', fontWeight: 'bold' }}>
+                        Ticket number : {this.state.lotteryCategory === '1' ? 'A' : 'B'}
+                        {this.state.lotteryTicket}
+                      </Text>
+                      <Text style={{ fontSize: 18, textAlign: 'center' }}>
+                        Please come to the Wevedo stand (B52) {'\n'} to collect your prize.
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </Animated.View>
+                <Animated.View style={{ top: introButton, position: 'absolute' }}>
+                  <Button style={modalButton} block onPress={this.closeLotteryModal}>
+                    <Text style={{ color: 'yellow', fontSize: 20 }}>OK</Text>
+                  </Button>
+                </Animated.View>
+              </View>
             </View>
-          </View>
-        </Modal>
+          </Modal>
+        ) : null}
         <View style={{ flex: 1, minHeight: 150 }}>
           <FastImage
             source={images.category_hero}
@@ -255,7 +303,6 @@ const styles = {
 
 const mapStateToProps = state => ({
   user: state.user,
-  exhibition: state.ui.exhibition,
 });
 
-export default connect(mapStateToProps, { fetchProfile, exhibitionChanged })(HomeTab);
+export default connect(mapStateToProps, { fetchProfile })(HomeTab);
