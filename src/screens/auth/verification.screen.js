@@ -10,20 +10,17 @@ import {
   BackHandler,
   AsyncStorage,
 } from 'react-native';
-import { connect } from 'react-redux';
 import { Container, Icon, View, Form } from 'native-base';
 import PhoneInput from 'react-native-phone-input';
 import I18n from '../../locales';
 import { contrastColor, primaryFont } from '../../theme';
 import { Button, Text, FieldInput, Logo } from '../../components/common';
 import { startSingleScreenApp } from '../../../index';
-import { UIActions } from '../../actions';
 
 import APIs from '../../api';
 import vars from '../../env/vars';
 
 const testNumber = '+447890000000';
-const { exhibitionChanged } = UIActions;
 
 const { AuthApi } = APIs;
 const api = new AuthApi();
@@ -48,10 +45,6 @@ class VerificationScreen extends Component {
   componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
   }
-
-  /* onExhibitionChange = () => {
-    this.props.exhibitionChanged();
-  }; */
 
   onContinuePress = async () => {
     const mobileNumber = this.phoneInput.getValue();
@@ -385,8 +378,4 @@ const styles = {
   },
 };
 
-const mapStateToProps = state => ({
-  exhibition: state.ui.exhibition,
-});
-
-export default connect(mapStateToProps, { exhibitionChanged })(VerificationScreen);
+export default VerificationScreen;

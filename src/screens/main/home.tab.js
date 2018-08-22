@@ -14,8 +14,6 @@ import { fetchProfile } from '../../actions/user.actions';
 import { UIActions } from '../../actions';
 import startPushService from '../../services/PushService';
 
-const { exhibitionChanged } = UIActions;
-
 const categories = [
   {
     route: 'Photo',
@@ -86,15 +84,14 @@ class HomeTab extends Component {
     this.animatedValue3 = new Animated.Value(0);
   }
 
+  state = {
+    showLotteryModal: false,
+  };
+
   componentDidMount() {
     startPushService(this.props.navigator);
     this.props.fetchProfile('me');
-    if (this.props.exhibition && !this.props.user.profile.isProvider) this.animate();
   }
-
-  onExhibitionChange = () => {
-    this.props.exhibitionChanged();
-  };
 
   onCategoryPress = (category) => {
     this.props.navigator.push({
@@ -126,6 +123,10 @@ class HomeTab extends Component {
       createAnimation(this.animatedValue2, 1000, Easing.ease, 1000),
       createAnimation(this.animatedValue3, 1000, Easing.ease, 2000),
     ]).start();
+  };
+
+  closeLotteryModal = () => {
+    this.setState({ showLotteryModal: false });
   };
 
   renderItem = ({ item }) => (
@@ -170,8 +171,8 @@ class HomeTab extends Component {
       <Content style={{ flex: 1, backgroundColor }} contentContainerStyle={{ flexGrow: 1 }}>
         <Modal
           transparent
-          visible={this.props.exhibition && !this.props.user.profile.isProvider}
-          onRequestClose={this.onExhibitionChange}
+          visible={this.state.showLotteryModal}
+          onRequestClose={this.closeLotteryModal}
         >
           <View style={modalContainer}>
             <View elevation={5} style={modalBackground}>
@@ -194,7 +195,7 @@ class HomeTab extends Component {
                 </TouchableOpacity>
               </Animated.View>
               <Animated.View style={{ top: introButton, position: 'absolute' }}>
-                <Button style={modalButton} block onPress={this.onExhibitionChange}>
+                <Button style={modalButton} block onPress={this.closeLotteryModal}>
                   <Text style={{ color: 'yellow', fontSize: 20 }}>OK</Text>
                 </Button>
               </Animated.View>
@@ -255,7 +256,6 @@ const styles = {
 
 const mapStateToProps = state => ({
   user: state.user,
-  exhibition: state.ui.exhibition,
 });
 
-export default connect(mapStateToProps, { fetchProfile, exhibitionChanged })(HomeTab);
+export default connect(mapStateToProps, { fetchProfile })(HomeTab);
