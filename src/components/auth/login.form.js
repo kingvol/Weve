@@ -9,6 +9,7 @@ import {
   Keyboard,
   ActivityIndicator,
 } from 'react-native';
+import { connect } from 'react-redux';
 import { CardItem, Container, Icon, Item, Input, Label, Title } from 'native-base';
 import PhoneInput from 'react-native-phone-input';
 import DeviceInfo from 'react-native-device-info';
@@ -18,19 +19,14 @@ import images from '../../images';
 import { Button, Center, Text, Logo } from '../../components/common';
 import config from '../../../config';
 import countries from '../../countryLib/countries';
+import { UIActions } from '../../actions';
+
+const { countryCodeChanged } = UIActions;
 
 const screenHeight = Dimensions.get('window').height;
 const { ipUrl } = config;
 const userLocaleCountryCode = DeviceInfo.getDeviceCountry();
 const countryCode = countries.includes(userLocaleCountryCode) ? userLocaleCountryCode : 'GB';
-// let countryCode;
-// fetch(ipUrl)
-//   .then(response => response.json())
-//   .then((responseJson) => {
-//     countryCode = countries.includes(responseJson.country_code)
-//       ? responseJson.country_code
-//       : countries.includes(userLocaleCountryCode) ? userLocaleCountryCode : 'GB';
-//   });
 
 class LoginForm extends Component {
   constructor() {
@@ -44,8 +40,7 @@ class LoginForm extends Component {
       passwordError: false,
       phoneNumberError: false,
       placeholder: '********',
-      countryCode,
-      loading: true,
+      loadingCountryIP: true,
     };
   }
 
@@ -53,13 +48,27 @@ class LoginForm extends Component {
     await fetch(ipUrl)
       .then(response => response.json())
       .then((responseJson) => {
+        const cc = countries.includes(responseJson.country_code)
+          ? responseJson.country_code
+          : countries.includes(userLocaleCountryCode) ? userLocaleCountryCode : 'GB';
+        this.onCountryCodeChange(cc);
         this.setState({
-          countryCode: countries.includes(responseJson.country_code)
-            ? responseJson.country_code
-            : countries.includes(userLocaleCountryCode) ? userLocaleCountryCode : 'GB',
-          loading: false,
+          loadingCountryIP: false,
+        });
+      })
+      .catch(() => {
+        this.setState({
+          loadingCountryIP: false,
         });
       });
+  }
+
+  componentDidMount() {
+    this.onCountryCodeChange(countryCode);
+  }
+
+  onCountryCodeChange = (code) => {
+    this.props.countryCodeChanged(code);
   }
 
   onForgotPress = () => {
@@ -120,6 +129,7 @@ class LoginForm extends Component {
 
   handleSubmit = () => {
     const { phoneNumber, password } = this.state;
+    this.onCountryCodeChange(this.phoneInput.getISOCode());
     this.props.onSubmitPress(phoneNumber, password);
   };
 
@@ -164,7 +174,7 @@ class LoginForm extends Component {
           <View id="LoginPage.form-container" style={form}>
             <KeyboardAvoidingView
               behavior="padding"
-              style={{ flex: screenHeight > 1280 ? 1.5 : 2 }}
+              style={{ flex: screenHeight > 600 ? 1.5 : 2 }}
             >
               <View style={itemStyle}>
                 <Label style={label}> {I18n.t('common.phone')} </Label>
@@ -173,14 +183,14 @@ class LoginForm extends Component {
                   id="LoginPage.phoneNumberInput"
                   style={item}
                 >
-                  {this.state.loading ? (<ActivityIndicator size="large" color="#d64635" />) : (
+                  {this.state.loadingCountryIP ?
+                  (<ActivityIndicator size="large" color="#d64635" />) : (
                     <PhoneInput
                       ref={this.setPhoneRef}
-                      initialCountry={this.state.countryCode.toLowerCase()}
+                      initialCountry={this.props.countryCode.toLowerCase()}
                       allowZeroAfterCountryCode={false}
                       onChangePhoneNumber={this.numberPhoneCheck}
                       style={{ flex: 1 }}
-                      value={this.state.phoneNumber}
                       textStyle={inputPhone}
                     />)}
                   {this.state.phoneNumberError && (
@@ -189,7 +199,6 @@ class LoginForm extends Component {
                 </Item>
                 {this.state.phoneNumberError && (
                   <Text style={errorText}>
-                    {/* {this.state.phoneNumberLabel} */}
                     {I18n.t('validations.phone_invalid')}
                   </Text>
                 )}
@@ -345,7 +354,7 @@ const styles = {
     flex: 1,
     marginTop: 4,
     marginRight: 34,
-    paddingBottom: 3,
+    marginBottom: 3,
   },
   itemStyle: {
     flex: 1,
@@ -427,4 +436,8 @@ const styles = {
   },
 };
 
-export default LoginForm;
+const mapStateToProps = state => ({
+  countryCode: state.ui.countryCode,
+});
+
+export default connect(mapStateToProps, { countryCodeChanged })(LoginForm);
