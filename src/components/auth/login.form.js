@@ -4,6 +4,7 @@ import {
   TouchableOpacity,
   View,
   Platform,
+  ScrollView,
   KeyboardAvoidingView,
   Dimensions,
   Keyboard,
@@ -69,7 +70,7 @@ class LoginForm extends Component {
 
   onCountryCodeChange = (code) => {
     this.props.countryCodeChanged(code);
-  }
+  };
 
   onForgotPress = () => {
     this.props.onForgotPress();
@@ -163,150 +164,155 @@ class LoginForm extends Component {
     const secure = !this.state.secureVisible;
 
     return (
-      <Container containerStyle={containerStyle} id="LoginPage.main-content">
-        <ImageBackground resizeMode="cover" style={background} source={images.backGround}>
-          <CardItem style={header} id="LoginPage.logo-container">
-            <Title style={headerText} id="LoginPage.accountLoginText">
-              {I18n.t('logIn.account_login')}
-            </Title>
-          </CardItem>
-          <Logo adaptive={false} styleContainer={{ marginBottom: screenHeight > 1280 ? 30 : 20 }} />
-          <View id="LoginPage.form-container" style={form}>
-            <KeyboardAvoidingView
-              behavior="padding"
-              style={{ flex: screenHeight > 600 ? 1.5 : 2 }}
-            >
-              <View style={itemStyle}>
-                <Label style={label}> {I18n.t('common.phone')} </Label>
-                <Item
-                  error={this.state.phoneNumberError}
-                  id="LoginPage.phoneNumberInput"
-                  style={item}
-                >
-                  {this.state.loadingCountryIP ?
-                  (<ActivityIndicator size="large" color="#d64635" />) : (
-                    <PhoneInput
-                      ref={this.setPhoneRef}
-                      initialCountry={this.props.countryCode.toLowerCase()}
-                      allowZeroAfterCountryCode={false}
-                      onChangePhoneNumber={this.numberPhoneCheck}
-                      style={{ flex: 1 }}
-                      textStyle={inputPhone}
-                    />)}
-                  {this.state.phoneNumberError && (
-                    <Icon name="close-circle" style={{ color: 'red' }} />
-                  )}
-                </Item>
-                {this.state.phoneNumberError && (
-                  <Text style={errorText}>
-                    {I18n.t('validations.phone_invalid')}
-                  </Text>
-                )}
-              </View>
-              <View style={itemStyle}>
-                <Label style={label}>{I18n.t('common.password')}</Label>
-                <View style={{ flexDirection: 'row', flex: 1 }}>
+      <ScrollView>
+        <Container containerStyle={containerStyle} id="LoginPage.main-content">
+          <ImageBackground resizeMode="cover" style={background} source={images.backGround}>
+            <CardItem style={header} id="LoginPage.logo-container">
+              <Title style={headerText} id="LoginPage.accountLoginText">
+                {I18n.t('logIn.account_login')}
+              </Title>
+            </CardItem>
+            <Logo
+              adaptive={false}
+              styleContainer={{ marginBottom: screenHeight > 1280 ? 30 : 20 }}
+            />
+            <View id="LoginPage.form-container" style={form}>
+              <KeyboardAvoidingView
+                behavior="padding"
+                style={{ flex: screenHeight > 600 ? 1.5 : 2 }}
+              >
+                <View style={itemStyle}>
+                  <Label style={label}> {I18n.t('common.phone')} </Label>
                   <Item
-                    error={this.state.passwordError}
-                    id="LoginPage.passwordInput"
-                    style={itemPassword}
+                    error={this.state.phoneNumberError}
+                    id="LoginPage.phoneNumberInput"
+                    style={item}
                   >
-                    <Input
-                      style={input}
-                      value={this.state.password}
-                      placeholder={this.state.placeholder}
-                      placeholderTextColor="white"
-                      onChangeText={text => this.onFieldChange('password', text)}
-                      onFocus={this.onFocus}
-                      onBlur={() => this.onBlur('password', this.state.password)}
-                      secureTextEntry={secure}
-                    />
-                    {this.state.passwordError && (
+                    {this.state.loadingCountryIP ? (
+                      <ActivityIndicator size="large" color="#d64635" />
+                    ) : (
+                      <PhoneInput
+                        ref={this.setPhoneRef}
+                        initialCountry={this.props.countryCode.toLowerCase()}
+                        allowZeroAfterCountryCode={false}
+                        onChangePhoneNumber={this.numberPhoneCheck}
+                        style={{ flex: 1 }}
+                        textStyle={inputPhone}
+                      />
+                    )}
+                    {this.state.phoneNumberError && (
                       <Icon name="close-circle" style={{ color: 'red' }} />
                     )}
                   </Item>
-                  <View
-                    style={{
-                      alignSelf: 'flex-end',
-                      bottom: 2,
-                      flex: 0,
-                    }}
-                  >
-                    <TouchableOpacity onPress={this.switchSecure}>
-                      <Icon
-                        style={{ color: 'white' }}
-                        size={24}
-                        name={secure ? 'md-eye-off' : 'eye'}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                </View>
-                <Text style={errorText}>{this.state.passwordLabel}</Text>
-              </View>
-            </KeyboardAvoidingView>
-            <View style={{ flex: 2, justifyContent: 'space-between' }}>
-              {error && (
-                <View style={styles.errorContainer}>
-                  <Text
-                    id="LoginPage.errorText"
-                    style={{ color: contrastColor, textAlign: 'center' }}
-                  >
-                    {I18n.t(`backend.${error}`, { defaults: [{ scope: 'chat.error' }] })}
-                  </Text>
-                </View>
-              )}
-              <Button
-                id="LoginPage.forgotPasswordButton"
-                style={{
-                  flex: error ? 1 : 2,
-                  marginTop: 5,
-                  marginBottom: error ? 0 : 5,
-                  justifyContent: 'flex-end',
-                }}
-                block
-                transparent
-                onPress={this.onForgotPress}
-              >
-                <Text
-                  style={Object.assign(
-                    { textAlignVertical: error ? 'center' : 'bottom' },
-                    textForgot,
+                  {this.state.phoneNumberError && (
+                    <Text style={errorText}>{I18n.t('validations.phone_invalid')}</Text>
                   )}
+                </View>
+                <View style={itemStyle}>
+                  <Label style={label}>{I18n.t('common.password')}</Label>
+                  <View style={{ flexDirection: 'row', flex: 1 }}>
+                    <Item
+                      error={this.state.passwordError}
+                      id="LoginPage.passwordInput"
+                      style={itemPassword}
+                    >
+                      <Input
+                        style={input}
+                        value={this.state.password}
+                        placeholder={this.state.placeholder}
+                        placeholderTextColor="white"
+                        onChangeText={text => this.onFieldChange('password', text)}
+                        onFocus={this.onFocus}
+                        onBlur={() => this.onBlur('password', this.state.password)}
+                        secureTextEntry={secure}
+                      />
+                      {this.state.passwordError && (
+                        <Icon name="close-circle" style={{ color: 'red' }} />
+                      )}
+                    </Item>
+                    <View
+                      style={{
+                        alignSelf: 'flex-end',
+                        bottom: 2,
+                        flex: 0,
+                      }}
+                    >
+                      <TouchableOpacity onPress={this.switchSecure}>
+                        <Icon
+                          style={{ color: 'white' }}
+                          size={24}
+                          name={secure ? 'md-eye-off' : 'eye'}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                  <Text style={errorText}>{this.state.passwordLabel}</Text>
+                </View>
+              </KeyboardAvoidingView>
+              <View style={{ flex: 2, justifyContent: 'space-between' }}>
+                {error && (
+                  <View style={styles.errorContainer}>
+                    <Text
+                      id="LoginPage.errorText"
+                      style={{ color: contrastColor, textAlign: 'center' }}
+                    >
+                      {I18n.t(`backend.${error}`, { defaults: [{ scope: 'chat.error' }] })}
+                    </Text>
+                  </View>
+                )}
+                <Button
+                  id="LoginPage.forgotPasswordButton"
+                  style={{
+                    flex: error ? 1 : 2,
+                    marginTop: 5,
+                    marginBottom: error ? 0 : 5,
+                    justifyContent: 'flex-end',
+                  }}
+                  block
+                  transparent
+                  onPress={this.onForgotPress}
                 >
-                  {I18n.t('logIn.forgot_your_password').toUpperCase()}
-                </Text>
-              </Button>
-              <Button
-                id="LoginPage.loginButton"
-                block
-                style={Object.assign(loginButton, {
-                  flex: error ? 1.2 : 1,
-                  marginTop: error ? 10 : 20,
-                })}
-                onPress={this.handleSubmit}
-                disabled={disabled}
-                spinner={isLoading}
-              >
-                <Text style={loginButtonText}>{I18n.t('logIn.log_in')}</Text>
-              </Button>
-              <Center id="LoginPage.dontHaveAnAccountContainer" style={OR}>
-                <View style={or} />
-                <Text style={orText}>{I18n.t('logIn.or')}</Text>
-                <View style={or} />
-              </Center>
-              <Button
-                id="LoginPage.signUpButton"
-                style={register}
-                block
-                transparent
-                onPress={this.props.onRegisterPress}
-              >
-                <Text style={textRegister}>{I18n.t('logIn.register').toUpperCase()}</Text>
-              </Button>
+                  <Text
+                    style={Object.assign(
+                      { textAlignVertical: error ? 'center' : 'bottom' },
+                      textForgot,
+                    )}
+                  >
+                    {I18n.t('logIn.forgot_your_password').toUpperCase()}
+                  </Text>
+                </Button>
+                <Button
+                  id="LoginPage.loginButton"
+                  block
+                  style={Object.assign(loginButton, {
+                    flex: error ? 1.2 : 1,
+                    marginTop: error ? 10 : 20,
+                  })}
+                  onPress={this.handleSubmit}
+                  disabled={disabled}
+                  spinner={isLoading}
+                >
+                  <Text style={loginButtonText}>{I18n.t('logIn.log_in')}</Text>
+                </Button>
+                <Center id="LoginPage.dontHaveAnAccountContainer" style={OR}>
+                  <View style={or} />
+                  <Text style={orText}>{I18n.t('logIn.or')}</Text>
+                  <View style={or} />
+                </Center>
+                <Button
+                  id="LoginPage.signUpButton"
+                  style={register}
+                  block
+                  transparent
+                  onPress={this.props.onRegisterPress}
+                >
+                  <Text style={textRegister}>{I18n.t('logIn.register').toUpperCase()}</Text>
+                </Button>
+              </View>
             </View>
-          </View>
-        </ImageBackground>
-      </Container>
+          </ImageBackground>
+        </Container>
+      </ScrollView>
     );
   }
 }
