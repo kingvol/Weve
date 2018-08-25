@@ -60,13 +60,13 @@ class EditProfileScreen extends Component {
         phoneNumber: this.props.user.profile.phoneNumber || '',
         profileImageURL: this.props.user.profile.profileImageURL || undefined,
         profileVideoURL: this.props.user.profile.profileVideoURL || '',
-        providerImages: {
+        providerImages: user.profile.providerImages ? {
           0: user.profile.providerImages[0] || undefined,
           1: user.profile.providerImages[1] || undefined,
           2: user.profile.providerImages[2] || undefined,
           3: user.profile.providerImages[3] || undefined,
           4: user.profile.providerImages[4] || undefined,
-        },
+        } : undefined,
         countryCode,
         regionName,
         isProvider: this.props.user.profile.isProvider,

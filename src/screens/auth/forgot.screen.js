@@ -89,7 +89,10 @@ class ForgotPassword extends Component {
   numberPhoneCheck = () => {
     const isValid = this.phoneInput.isValidNumber();
     this.setState({ phone: this.phoneInput.getValue() });
-    if (isValid) { this.onCountryCodeChange(this.phoneInput.getISOCode()); Keyboard.dismiss(); }
+    if (isValid) {
+      this.onCountryCodeChange(this.phoneInput.getISOCode());
+      Keyboard.dismiss();
+    }
   };
 
   requestResetToken = async () => {
@@ -184,7 +187,7 @@ class ForgotPassword extends Component {
             </View>
           </View>
         ) : (
-          <View id="ForgotPassword.formWrapper" style={styles.formWrapper}>
+          <View id="ForgotPassword.resetCode" style={styles.formWrapper}>
             <Text style={styles.codeText}>
               {I18n.t('resetPassword.verification_code_send')} {this.state.phone}
             </Text>
