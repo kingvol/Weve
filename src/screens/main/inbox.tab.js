@@ -59,6 +59,10 @@ class InboxTab extends Component {
         navBarTextColor: 'white',
         navBarButtonColor: 'white',
         navBarTextFontFamily: primaryFont,
+        // contextualMenuStatusBarColor: '#d64635',
+        contextualMenuBackgroundColor: '#d64635',
+        contextualMenuButtonsColor: 'white',
+        contextualMenuTextFontFamily: primaryFont,
       },
     });
   };
