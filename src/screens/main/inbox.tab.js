@@ -19,15 +19,17 @@ class InboxTab extends Component {
   };
 
   componentDidMount() {
-    this.props.fetchRooms();
-    this.startRoomPolling();
+    if (this.props.chat.error === null) {
+      this.props.fetchRooms();
+      this.startRoomPolling();
+    }
   }
 
   componentWillReceiveProps({ chat, user }) {
     let unreadDialogs = 0;
     const { isProvider } = user.profile;
 
-    if (chat.rooms.length) {
+    if (chat.rooms.length && this.props.chat.error === null) {
       chat.rooms.forEach((room) => {
         if (
           (isProvider && room.unreadByProvider.length) ||
