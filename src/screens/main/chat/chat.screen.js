@@ -19,6 +19,10 @@ import { updateProfile } from '../../../actions/user.actions';
 import Analytics from '../../../services/AnalyticsService';
 
 const REPORT_ACTION = I18n.t('report.name');
+const BLOCK_ACTION = I18n.t('report.block');
+const UNBLOCK_ACTION = I18n.t('report.unblock');
+const CANCEL_ACTION = I18n.t('menu.homeTab.booking.cancel');
+
 const { ChatApi } = APIs;
 const api = new ChatApi();
 
@@ -160,7 +164,7 @@ class Chat extends Component {
     if (Platform.OS === 'ios') {
       ActionSheetIOS.showActionSheetWithOptions(
         {
-          options: ['Cancel', isUserBlocked ? 'Unblock user' : 'Block user', REPORT_ACTION],
+          options: [CANCEL_ACTION, isUserBlocked ? UNBLOCK_ACTION : BLOCK_ACTION, REPORT_ACTION],
           cancelButtonIndex: 0,
           blockingButtonIndex: 1,
           reportingButtonIdex: 2,
@@ -176,7 +180,7 @@ class Chat extends Component {
     } else {
       this.props.navigator.showContextualMenu({
         rightButtons: [
-          { title: isUserBlocked ? 'Unblock user' : 'Block user' },
+          { title: isUserBlocked ? UNBLOCK_ACTION : BLOCK_ACTION },
           { title: REPORT_ACTION },
         ],
         onButtonPressed: index =>

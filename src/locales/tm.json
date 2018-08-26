@@ -197,6 +197,8 @@
   "report": {
     "name": "Arz etmek",
     "subject": "Ulanyjyny arz etmek",
-    "body": "Şu agzany arz etmek isleýärin:"
+    "body": "Şu agzany arz etmek isleýärin:",
+    "block": "Bloke et",
+    "unblock": "Blokeden kaldır"
   }
 }
