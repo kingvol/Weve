@@ -13,6 +13,7 @@ import FastImage from 'react-native-fast-image';
 import { connect } from 'react-redux';
 import { Content } from 'native-base';
 import LottieView from 'lottie-react-native';
+import OneSignal from 'react-native-onesignal';
 
 import { Button } from '../../components/common';
 import * as presentAnimation from '../../animations/presentAnimation.json';
@@ -101,6 +102,10 @@ class HomeTab extends Component {
     lotteryTicket: null,
     lotteryCategory: null,
   };
+
+  componentWillMount() {
+    OneSignal.init('32572554-6b4f-4d8c-be27-89aa4aefce30');
+  }
 
   componentDidMount() {
     startPushService(this.props.navigator);

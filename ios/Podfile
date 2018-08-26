@@ -38,6 +38,8 @@ target 'wevedo_app' do
 
   pod 'lottie-react-native', :path => '../node_modules/lottie-react-native'
 
+  pod 'react-native-onesignal', :path => '../node_modules/react-native-onesignal'
+
   target 'wevedo_appTests' do
     inherit! :search_paths
     # Pods for testing
