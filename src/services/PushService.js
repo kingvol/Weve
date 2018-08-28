@@ -35,6 +35,8 @@ export default class PushService {
   };
 
   onIds = (device) => {
+    // We need to send userId to the server here
+
     console.warn('Device info: ', device);
   };
 }
