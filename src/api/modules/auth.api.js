@@ -1,6 +1,5 @@
 import { Platform } from 'react-native';
 import Api from '../api.base';
-import getDeviceToken from '../../utils/getDeviceToken';
 
 /**
  * @name Class AuthApi
@@ -9,19 +8,10 @@ import getDeviceToken from '../../utils/getDeviceToken';
 
 export default class AuthApi extends Api {
   loginUserByEmail = async (creds) => {
-    let deviceToken;
-
-    try {
-      deviceToken = await getDeviceToken();
-      console.warn(deviceToken);
-    } catch ({ message }) {
-      console.warn('Error while getting token: ', message);
-    }
-
     try {
       const response = await this.request('api/login', {
         method: 'POST',
-        body: JSON.stringify(Object.assign(creds, { deviceToken, deviceOS: Platform.OS })),
+        body: JSON.stringify(Object.assign(creds, { deviceOS: Platform.OS })),
       });
       if (response.message || response.error) {
         return Promise.reject(response);
@@ -33,18 +23,10 @@ export default class AuthApi extends Api {
   };
 
   signupUserByEmail = async (data) => {
-    let deviceToken;
-
-    try {
-      deviceToken = await getDeviceToken();
-    } catch ({ message }) {
-      console.warn('Error while getting token: ', message);
-    }
-
     try {
       const response = await this.request('api/register', {
         method: 'POST',
-        body: JSON.stringify(Object.assign(data, { deviceToken, deviceOS: Platform.OS })),
+        body: JSON.stringify(Object.assign(data, { deviceOS: Platform.OS })),
       });
       if (response.message || response.error) {
         // check for error
