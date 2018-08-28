@@ -1,4 +1,5 @@
 import FCM from 'react-native-fcm';
+import OneSignal from 'react-native-onesignal';
 import { Platform } from 'react-native';
 import Api from '../api.base';
 
@@ -8,39 +9,40 @@ import Api from '../api.base';
  */
 export default class AuthApi extends Api {
   loginUserByEmail = async (creds) => {
-    let deviceToken = '';
-    try {
-      await FCM.requestPermissions();
-      const token = await FCM.getFCMToken();
-      deviceToken = token;
-    } catch (error) {
-      console.warn(error);
-    }
+    await OneSignal.init('32572554-6b4f-4d8c-be27-89aa4aefce30', {
+      kOSSettingsKeyAutoPrompt: true,
+    });
+    // const deviceToken =
+    //   'cUAz3euP93c:APA91bFrliwb3Sgyv_PuwYVdgPz-k41pbKHirSi5ii3HdxtPn-6vrAJVZHgpa3E4pz8nqUIMQc251Ub-F5EXXALy-iasZWCW1oop4T58Yr-pz0JQreL4ebI5dc4H71ahLQqH2DeXmQk3';
+    await OneSignal.getPermissionSubscriptionState(async (status) => {
+      const deviceToken = status.pushToken;
 
-    try {
-      const response = await this.request('api/login', {
-        method: 'POST',
-        body: JSON.stringify(Object.assign(creds, { deviceToken, deviceOS: Platform.OS })),
-      });
-      if (response.message || response.error) {
-        // check for error
-        return Promise.reject(response);
+      try {
+        const response = this.request('api/login', {
+          method: 'POST',
+          body: JSON.stringify(Object.assign(creds, { deviceToken, deviceOS: Platform.OS })),
+        });
+        if (response.message || response.error) {
+          // check for error
+          return Promise.reject(response);
+        }
+        return response;
+      } catch ({ message }) {
+        throw Error(message);
       }
-      return response;
-    } catch ({ message }) {
-      throw Error(message);
-    }
+    });
   };
 
   signupUserByEmail = async (data) => {
-    let deviceToken = '';
-    try {
-      await FCM.requestPermissions();
-      const token = await FCM.getFCMToken();
-      deviceToken = token;
-    } catch (error) {
-      console.warn(error);
-    }
+    const deviceToken =
+      'cUAz3euP93c:APA91bFrliwb3Sgyv_PuwYVdgPz-k41pbKHirSi5ii3HdxtPn-6vrAJVZHgpa3E4pz8nqUIMQc251Ub-F5EXXALy-iasZWCW1oop4T58Yr-pz0JQreL4ebI5dc4H71ahLQqH2DeXmQk3';
+    // try {
+    //   await FCM.requestPermissions();
+    //   const token = await FCM.getFCMToken();
+    //   deviceToken = token;
+    // } catch (error) {
+    //   console.warn(error);
+    // }
 
     try {
       const response = await this.request('api/register', {
@@ -82,8 +84,10 @@ export default class AuthApi extends Api {
         return Promise.reject(response);
       }
       return response;
-    } catch ({ message }) { throw Error(message); }
-  }
+    } catch ({ message }) {
+      throw Error(message);
+    }
+  };
 
   requestVerification = async (number) => {
     try {
@@ -92,8 +96,10 @@ export default class AuthApi extends Api {
         return Promise.reject(response);
       }
       return response;
-    } catch ({ message }) { throw Error(message); }
-  }
+    } catch ({ message }) {
+      throw Error(message);
+    }
+  };
 
   resetPasswordRequest = async (phoneNumber, resetPassword) => {
     try {

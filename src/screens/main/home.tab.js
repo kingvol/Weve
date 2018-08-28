@@ -104,7 +104,21 @@ class HomeTab extends Component {
   };
 
   componentWillMount() {
-    OneSignal.init('32572554-6b4f-4d8c-be27-89aa4aefce30');
+    OneSignal.init('32572554-6b4f-4d8c-be27-89aa4aefce30', { kOSSettingsKeyAutoPrompt: true });
+    // OneSignal.setSubscription(true);
+    // OneSignal.configure();
+    // OneSignal.requestPermissions({
+    //   // only for ios
+    //   alert: true,
+    //   badge: true,
+    //   sound: true,
+    // });
+    // const arr = [];
+    const { getPermissionSubscriptionState } = OneSignal;
+    const arr = getPermissionSubscriptionState(async a => a);
+    console.log(arr);
+    
+    // OneSignal.getPermissionSubscriptionState(status => console.log(status.pushToken));
   }
 
   componentDidMount() {
