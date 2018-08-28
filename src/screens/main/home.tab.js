@@ -13,7 +13,6 @@ import FastImage from 'react-native-fast-image';
 import { connect } from 'react-redux';
 import { Content } from 'native-base';
 import LottieView from 'lottie-react-native';
-import OneSignal from 'react-native-onesignal';
 
 import { Button } from '../../components/common';
 import * as presentAnimation from '../../animations/presentAnimation.json';
@@ -21,7 +20,7 @@ import I18n from '../../locales';
 import images from '../../images';
 import { primaryFont, backgroundColor } from '../../theme';
 import { fetchProfile } from '../../actions/user.actions';
-import startPushService from '../../services/PushService';
+import PushService from '../../services/PushService';
 import APIs from '../../api';
 
 const { UserApi } = APIs;
@@ -104,25 +103,12 @@ class HomeTab extends Component {
   };
 
   componentWillMount() {
-    OneSignal.init('32572554-6b4f-4d8c-be27-89aa4aefce30', { kOSSettingsKeyAutoPrompt: true });
-    // OneSignal.setSubscription(true);
-    // OneSignal.configure();
-    // OneSignal.requestPermissions({
-    //   // only for ios
-    //   alert: true,
-    //   badge: true,
-    //   sound: true,
-    // });
-    // const arr = [];
-    const { getPermissionSubscriptionState } = OneSignal;
-    const arr = getPermissionSubscriptionState(async a => a);
-    console.log(arr);
-    
-    // OneSignal.getPermissionSubscriptionState(status => console.log(status.pushToken));
+    const pushService = new PushService(this.props.navigator);
+    pushService.init();
+    pushService.enableListeners();
   }
 
   componentDidMount() {
-    startPushService(this.props.navigator);
     this.props.fetchProfile('me');
     this.checkLotteryStatus();
   }

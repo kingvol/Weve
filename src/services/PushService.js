@@ -1,4 +1,45 @@
-import FCM, { FCMEvent } from 'react-native-fcm';
+import OneSignal from 'react-native-onesignal';
+import config from '../../config';
+
+export default class PushService {
+  constructor(navigator) {
+    this.navigator = navigator;
+  }
+
+  init = () => {
+    OneSignal.init(config.onesignal.appId, { kOSSettingsKeyAutoPrompt: true });
+    OneSignal.setSubscription(true);
+    OneSignal.configure();
+    OneSignal.requestPermissions({
+      alert: true,
+      badge: true,
+      sound: true,
+    });
+  };
+
+  enableListeners = () => {
+    OneSignal.addEventListener('received', this.onReceived);
+    OneSignal.addEventListener('opened', this.onOpened);
+    OneSignal.addEventListener('ids', this.onIds);
+  };
+
+  onReceived = (notification) => {
+    console.warn('Notification received: ', notification);
+  };
+
+  onOpened = (openResult) => {
+    console.warn('Message: ', openResult.notification.payload.body);
+    console.warn('Data: ', openResult.notification.payload.additionalData);
+    console.warn('isActive: ', openResult.notification.isAppInFocus);
+    console.warn('openResult: ', openResult);
+  };
+
+  onIds = (device) => {
+    console.warn('Device info: ', device);
+  };
+}
+
+/* import FCM, { FCMEvent } from 'react-native-fcm';
 import { Platform } from 'react-native';
 import { orderBy } from 'lodash';
 import OneSignal from 'react-native-onesignal';
@@ -59,5 +100,4 @@ const startPushService = (navigator) => {
     }
   });
 };
-
-export default startPushService;
+*/
