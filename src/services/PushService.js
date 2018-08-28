@@ -1,5 +1,9 @@
 import OneSignal from 'react-native-onesignal';
 import config from '../../config';
+import APIs from '../api';
+
+const { UserApi } = APIs;
+const api = new UserApi();
 
 export default class PushService {
   constructor(navigator) {
@@ -34,10 +38,14 @@ export default class PushService {
     console.warn('openResult: ', openResult);
   };
 
-  onIds = (device) => {
-    // We need to send userId to the server here
-
-    console.warn('Device info: ', device);
+  onIds = async (device) => {
+    try {
+      await api.updateProfile({
+        notificationId: device.userId,
+      });
+    } catch ({ message }) {
+      console.warn("Can't send a token to server", message);
+    }
   };
 }
 
