@@ -13,17 +13,12 @@ class ProviderListItem extends Component {
     favorites: !!this.props.user.profile.favoriteProviders.includes(this.props.provider._id),
   };
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      favorites: !!nextProps.user.profile.favoriteProviders.includes(this.props.provider._id),
-    });
-  }
-
   onItemPress = () => {
     this.props.onPress(this.props.provider);
   };
 
   onFavoriteIconPress = () => {
+    this.setState({ favorites: !this.state.favorites });
     const { favoriteProviders } = this.props.user.profile;
     const index = favoriteProviders.indexOf(this.props.provider._id);
     const favoriteArray = [...favoriteProviders];
@@ -37,7 +32,6 @@ class ProviderListItem extends Component {
         favoriteProviders: [...favoriteProviders, this.props.provider._id],
       });
     }
-    this.setState({ favorites: !this.state.favorites });
   };
 
   render() {
