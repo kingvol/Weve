@@ -24,6 +24,7 @@ class ProviderGridItem extends Component {
   };
 
   onFavoriteIconPress = () => {
+    this.setState({ favorites: !this.state.favorites });
     const { favoriteProviders } = this.props.user.profile;
     const index = favoriteProviders.indexOf(this.props.provider._id);
     const favoriteArray = [...favoriteProviders];
@@ -37,7 +38,6 @@ class ProviderGridItem extends Component {
         favoriteProviders: [...favoriteProviders, this.props.provider._id],
       });
     }
-    this.setState({ favorites: !this.state.favorites });
   };
 
   render() {
