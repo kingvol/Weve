@@ -45,24 +45,30 @@ class LoginForm extends Component {
     };
   }
 
-  async componentWillMount() {
+  componentWillMount() {
     if (this.props.countryCode === '') {
-      await fetch(ipUrl)
-        .then(response => response.json())
+      const p = Promise.race([
+        fetch(ipUrl),
+        new Promise(((resolve, reject) => {
+          setTimeout(() => reject(new Error('request timeout')), 2000);
+        })),
+      ]);
+      p.then(response => response.json())
         .then((responseJson) => {
           const cc = countries.includes(responseJson.country_code)
             ? responseJson.country_code
-            : countries.includes(userLocaleCountryCode) ? userLocaleCountryCode : 'GB';
+            : countryCode;
           this.onCountryCodeChange(cc);
           this.setState({
             loadingCountryIP: false,
           });
-        })
-        .catch(() => {
-          this.setState({
-            loadingCountryIP: false,
-          });
         });
+      p.catch(() => {
+        this.onCountryCodeChange(countryCode);
+        this.setState({
+          loadingCountryIP: false,
+        });
+      });
     } else {
       this.setState({
         loadingCountryIP: false,
