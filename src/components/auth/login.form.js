@@ -64,7 +64,7 @@ class LoginForm extends Component {
           });
         });
       p.catch(() => {
-        this.onCountryCodeChange(countryCode);
+        this.onCountryCodeChange(countryCode === 'US' ? 'GB' : countryCode);
         this.setState({
           loadingCountryIP: false,
         });
