@@ -7,7 +7,7 @@ import {
 const initialState = {
   grid: false,
   shortlisted: false,
-  countryCode: 'gb',
+  countryCode: '',
 };
 
 export default (state = initialState, action) => {
