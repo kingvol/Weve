@@ -52,11 +52,11 @@ class ProviderProfileScreen extends Component {
   }
 
   componentDidMount() {
-    const { _id } = this.props.user.profile;
+    const { _id, isProvider } = this.props.user.profile;
 
     Analytics.trackEvent('Provider profile view', { _id });
 
-    if (_id !== this.props.provider._id) {
+    if (_id !== this.props.provider._id && !isProvider) {
       Promise.all([
         Icon.getImageSource('comments-o', 20, '#ffffff'),
         Icon.getImageSource('phone', 20, '#ffffff'),
