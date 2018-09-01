@@ -7,4 +7,7 @@ export default {
     apiSecret: '8Q03lPaNnsQ3vNbwlypnGKdDwO0',
     cloud: 'wevedo',
   },
+  onesignal: {
+    appId: '991cf64c-0db1-4d93-82b7-a035cb23027b',
+  },
 };

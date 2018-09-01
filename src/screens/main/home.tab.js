@@ -20,7 +20,7 @@ import I18n from '../../locales';
 import images from '../../images';
 import { primaryFont, backgroundColor } from '../../theme';
 import { fetchProfile } from '../../actions/user.actions';
-import startPushService from '../../services/PushService';
+import PushService from '../../services/PushService';
 import APIs from '../../api';
 
 const { UserApi } = APIs;
@@ -102,8 +102,13 @@ class HomeTab extends Component {
     lotteryCategory: null,
   };
 
+  componentWillMount() {
+    const pushService = new PushService(this.props.navigator);
+    pushService.init();
+    pushService.enableListeners();
+  }
+
   componentDidMount() {
-    startPushService(this.props.navigator);
     this.props.fetchProfile('me');
     this.checkLotteryStatus();
   }

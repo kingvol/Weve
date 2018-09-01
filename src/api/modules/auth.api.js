@@ -1,4 +1,3 @@
-import FCM from 'react-native-fcm';
 import { Platform } from 'react-native';
 import Api from '../api.base';
 
@@ -6,24 +5,15 @@ import Api from '../api.base';
  * @name Class AuthApi
  * @extends Api
  */
+
 export default class AuthApi extends Api {
   loginUserByEmail = async (creds) => {
-    let deviceToken = '';
-    try {
-      await FCM.requestPermissions();
-      const token = await FCM.getFCMToken();
-      deviceToken = token;
-    } catch (error) {
-      console.warn(error);
-    }
-
     try {
       const response = await this.request('api/login', {
         method: 'POST',
-        body: JSON.stringify(Object.assign(creds, { deviceToken, deviceOS: Platform.OS })),
+        body: JSON.stringify(Object.assign(creds, { deviceOS: Platform.OS })),
       });
       if (response.message || response.error) {
-        // check for error
         return Promise.reject(response);
       }
       return response;
@@ -33,19 +23,10 @@ export default class AuthApi extends Api {
   };
 
   signupUserByEmail = async (data) => {
-    let deviceToken = '';
-    try {
-      await FCM.requestPermissions();
-      const token = await FCM.getFCMToken();
-      deviceToken = token;
-    } catch (error) {
-      console.warn(error);
-    }
-
     try {
       const response = await this.request('api/register', {
         method: 'POST',
-        body: JSON.stringify(Object.assign(data, { deviceToken, deviceOS: Platform.OS })),
+        body: JSON.stringify(Object.assign(data, { deviceOS: Platform.OS })),
       });
       if (response.message || response.error) {
         // check for error
@@ -82,8 +63,10 @@ export default class AuthApi extends Api {
         return Promise.reject(response);
       }
       return response;
-    } catch ({ message }) { throw Error(message); }
-  }
+    } catch ({ message }) {
+      throw Error(message);
+    }
+  };
 
   requestVerification = async (number) => {
     try {
@@ -92,8 +75,10 @@ export default class AuthApi extends Api {
         return Promise.reject(response);
       }
       return response;
-    } catch ({ message }) { throw Error(message); }
-  }
+    } catch ({ message }) {
+      throw Error(message);
+    }
+  };
 
   resetPasswordRequest = async (phoneNumber, resetPassword) => {
     try {

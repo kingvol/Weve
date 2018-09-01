@@ -1,59 +1,54 @@
-import FCM, { FCMEvent } from 'react-native-fcm';
-import { Platform } from 'react-native';
-import { orderBy } from 'lodash';
-import { primaryFont } from '../theme';
-import I18n from 'react-native-i18n';
-
+import OneSignal from 'react-native-onesignal';
+import config from '../../config';
 import APIs from '../api';
-const { ChatApi } = APIs;
-const api = new ChatApi();
 
-const appIntent = 'android.intent.action.MAIN';
+const { UserApi } = APIs;
+const api = new UserApi();
 
-const startPushService = (navigator) => {
-  FCM.requestPermissions();
+export default class PushService {
+  constructor(navigator) {
+    this.navigator = navigator;
+  }
 
-  FCM.on(FCMEvent.Notification, async (notification) => { 
-    if (notification.fcm.action && notification.collapse_key && Platform.OS === 'android') {
-      const rooms = await api.fetchRooms();
-      let list = rooms.filter(room => room.messages.length); 
-      list = orderBy(list, 'lastMessageTime', 'desc');
-      const targetRoom = list[0];
+  init = () => {
+    OneSignal.init(config.onesignal.appId, {
+      kOSSettingsKeyAutoPrompt: true,
+      kOSSettingsKeyInFocusDisplayOption: 0,
+    });
+    OneSignal.setSubscription(true);
+    OneSignal.configure();
+    OneSignal.inFocusDisplaying(0);
+    OneSignal.requestPermissions({
+      alert: true,
+      badge: true,
+      sound: true,
+    });
+  };
 
-      if (targetRoom) {
-        navigator.push({
-          screen: 'wevedo.ChatScreen',
-          title: I18n.t('menu.inbox'),
-          passProps: { roomId: targetRoom._id, from: 'inbox' },
-          navigatorStyle: {
-            navBarBackgroundColor: '#d64635',
-            navBarTextColor: 'white',
-            navBarButtonColor: 'white',
-            navBarTextFontFamily: primaryFont,
-          },
-        });
-      }
-    };
+  enableListeners = () => {
+    OneSignal.addEventListener('received', this.onReceived);
+    OneSignal.addEventListener('opened', this.onOpened);
+    OneSignal.addEventListener('ids', this.onIds);
+  };
 
+  onReceived = (notification) => {
+    console.warn('Notification received: ', notification);
+  };
+
+  onOpened = (openResult) => {
+    console.warn('Message: ', openResult.notification.payload.body);
+    console.warn('Data: ', openResult.notification.payload.additionalData);
+    console.warn('isActive: ', openResult.notification.isAppInFocus);
+    console.warn('openResult: ', openResult);
+  };
+
+  onIds = async (device) => {
     try {
-      if (Platform.OS === 'ios') {
-        const { title, body, group } = JSON.parse(notification.notification);
-
-        FCM.presentLocalNotification({
-          id: body,
-          title,
-          body,
-          ticker: body,
-          wake_screen: true,
-          priority: "high",
-          notification: notification.notification,
-        });
-      }
-    } catch (err) {
-      console.warn(err)
+      await api.updateProfile({
+        notificationId: device.userId,
+      });
+    } catch ({ message }) {
+      console.warn("Can't send a token to server", message);
     }
-  })
-
+  };
 }
-
-export default startPushService;
