@@ -21,7 +21,7 @@ class InboxTab extends Component {
   componentDidMount() {
     if (this.props.chat.error === null) {
       this.props.fetchRooms();
-      // this.startRoomPolling();
+      this.startRoomPolling();
     }
   }
 

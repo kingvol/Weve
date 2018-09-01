@@ -8,6 +8,6 @@ export default {
     cloud: 'wevedo',
   },
   onesignal: {
-    appId: '33b3168f-e905-4880-9557-cdffac06daa8', // '32572554-6b4f-4d8c-be27-89aa4aefce30',
+    appId: '991cf64c-0db1-4d93-82b7-a035cb23027b',
   },
 };
