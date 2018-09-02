@@ -134,6 +134,8 @@ android {
             abiFilters "armeabi-v7a", "x86"
         }
         multiDexEnabled true
+        manifestPlaceholders = [onesignal_app_id: "991cf64c-0db1-4d93-82b7-a035cb23027b",
+                                onesignal_google_project_number: "REMOTE"]
     }
     signingConfigs {
         release {
