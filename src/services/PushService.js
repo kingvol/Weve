@@ -1,6 +1,7 @@
 import OneSignal from 'react-native-onesignal';
 import config from '../../config';
 import APIs from '../api';
+import { Platform } from 'react-native';
 
 const { UserApi } = APIs;
 const api = new UserApi();
@@ -11,12 +12,15 @@ export default class PushService {
   }
 
   init = () => {
-    OneSignal.init(config.onesignal.appId, {
-      kOSSettingsKeyAutoPrompt: true,
-      kOSSettingsKeyInFocusDisplayOption: 0,
-    });
+    if (Platform.OS === 'ios') {
+      OneSignal.init(config.onesignal.appId, {
+        kOSSettingsKeyAutoPrompt: true,
+        kOSSettingsKeyInFocusDisplayOption: 0,
+      });
+    } else {
+      OneSignal.configure();
+    }
     OneSignal.setSubscription(true);
-    OneSignal.configure();
     OneSignal.inFocusDisplaying(0);
     OneSignal.requestPermissions({
       alert: true,
