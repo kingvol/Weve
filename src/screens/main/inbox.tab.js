@@ -19,8 +19,10 @@ class InboxTab extends Component {
   };
 
   componentDidMount() {
-    this.props.fetchRooms();
-    this.startRoomPolling();
+    setTimeout(() => {
+      this.props.fetchRooms();
+      this.startRoomPolling();
+    }, 5000);
   }
 
   componentWillReceiveProps({ chat, user }) {
