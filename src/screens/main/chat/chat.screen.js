@@ -16,7 +16,6 @@ import ChatView from '../../../components/chat/ChatView';
 import { Center, Container } from '../../../components/common';
 import { fetchRooms } from '../../../actions/chat.actions';
 import { updateProfile } from '../../../actions/user.actions';
-import Analytics from '../../../services/AnalyticsService';
 
 const REPORT_ACTION = I18n.t('report.name');
 const BLOCK_ACTION = I18n.t('report.block');
@@ -68,7 +67,6 @@ class Chat extends Component {
     const { _id } = this.state.room;
     try {
       await api.addMessage(_id, body);
-      Analytics.trackEvent('Chat: message sent', { room: _id, body });
     } catch ({ message }) {
       Alert.alert(I18n.t('chat.error'), message);
     }
