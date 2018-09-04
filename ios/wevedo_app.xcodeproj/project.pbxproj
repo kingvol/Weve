@@ -2527,6 +2527,7 @@
 					"$(PROJECT_DIR)/",
 					"$(PROJECT_DIR)/Frameworks",
 					"$(SRCROOT)/../",
+					"$(SRCROOT)/../node_modules/react-native-onesignal/ios",
 				);
 				"HEADER_SEARCH_PATHS[arch=*]" = "$(inherited)";
 				INFOPLIST_FILE = wevedo_app/Info.plist;
@@ -2564,6 +2565,7 @@
 					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
 					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
 					"$(SRCROOT)/../node_modules/react-native-fcm/ios",
+					"$(SRCROOT)/../node_modules/react-native-onesignal/ios",
 				);
 				INFOPLIST_FILE = wevedo_app/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
