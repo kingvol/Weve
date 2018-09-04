@@ -12,14 +12,7 @@ export default class PushService {
   }
 
   init = () => {
-    if (Platform.OS === 'ios') {
-      OneSignal.init(config.onesignal.appId, {
-        kOSSettingsKeyAutoPrompt: true,
-        kOSSettingsKeyInFocusDisplayOption: 0,
-      });
-    } else {
-      OneSignal.configure();
-    }
+    OneSignal.configure();
     OneSignal.setSubscription(true);
     OneSignal.inFocusDisplaying(0);
     OneSignal.requestPermissions({

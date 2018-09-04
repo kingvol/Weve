@@ -88,6 +88,7 @@
 		F810BD2120872C1E00ECF0A0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F810BD2020872C1E00ECF0A0 /* GoogleService-Info.plist */; };
 		F81767AE20F90E28003A0477 /* libTouchID.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F81767AD20F90DF5003A0477 /* libTouchID.a */; };
 		F82C9C8020FE6871000D659B /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F82C9C7D20FE6861000D659B /* libART.a */; };
+		F85B6936213EAEC500960077 /* libRCTOneSignal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F85B6935213EAD3500960077 /* libRCTOneSignal.a */; };
 		F881820D204F515C0012547F /* libReactNativeNavigation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F881820B204F511A0012547F /* libReactNativeNavigation.a */; };
 		F8AB12E220F7A6EF00998AFA /* libRCTImageResizer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F8AB12E120F7A69800998AFA /* libRCTImageResizer.a */; };
 		F8DF0E0B207F5704007D2631 /* libRNFIRMessaging.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F8DF0E05207F56D5007D2631 /* libRNFIRMessaging.a */; };
@@ -521,6 +522,13 @@
 			remoteGlobalIDString = 323A12871E5F266B004975B8;
 			remoteInfo = "ART-tvOS";
 		};
+		F85B6934213EAD3500960077 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F85B6930213EAD3400960077 /* RCTOneSignal.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3245CDED1BFEE35C00EABF68;
+			remoteInfo = RCTOneSignal;
+		};
 		F881820A204F511A0012547F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F88181E1204F511A0012547F /* ReactNativeNavigation.xcodeproj */;
@@ -715,6 +723,7 @@
 		F810BD2020872C1E00ECF0A0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "wevedo_app/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F81767A820F90DF5003A0477 /* TouchID.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TouchID.xcodeproj; path = "../node_modules/react-native-touch-id/TouchID.xcodeproj"; sourceTree = "<group>"; };
 		F82C9C7720FE6860000D659B /* ART.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ART.xcodeproj; path = "../node_modules/react-native/Libraries/ART/ART.xcodeproj"; sourceTree = "<group>"; };
+		F85B6930213EAD3400960077 /* RCTOneSignal.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTOneSignal.xcodeproj; path = "../node_modules/react-native-onesignal/ios/RCTOneSignal.xcodeproj"; sourceTree = "<group>"; };
 		F8682C9F3B52752012152ADA /* libPods-wevedo_appTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-wevedo_appTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F88181E1204F511A0012547F /* ReactNativeNavigation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeNavigation.xcodeproj; path = "../node_modules/react-native-navigation/ios/ReactNativeNavigation.xcodeproj"; sourceTree = "<group>"; };
 		F8AB12DC20F7A69700998AFA /* RCTImageResizer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTImageResizer.xcodeproj; path = "../node_modules/react-native-image-resizer/ios/RCTImageResizer.xcodeproj"; sourceTree = "<group>"; };
@@ -752,6 +761,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F85B6936213EAEC500960077 /* libRCTOneSignal.a in Frameworks */,
 				D046E41D2128524A00629B5C /* libLottieReactNative.a in Frameworks */,
 				D038F63C21282CAA0033DDDF /* libLottie.a in Frameworks */,
 				D0D3A9B0210A1D3700B488BD /* libRCTVideo.a in Frameworks */,
@@ -1029,6 +1039,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				F85B6930213EAD3400960077 /* RCTOneSignal.xcodeproj */,
 				D046E4172128523D00629B5C /* LottieReactNative.xcodeproj */,
 				D038F62D21282C9A0033DDDF /* Lottie.xcodeproj */,
 				D0D3A9A7210A1D2A00B488BD /* RCTVideo.xcodeproj */,
@@ -1281,6 +1292,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		F85B6931213EAD3400960077 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F85B6935213EAD3500960077 /* libRCTOneSignal.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		F88181E2204F511A0012547F /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1529,6 +1548,10 @@
 				{
 					ProductGroup = 00C302D41ABCB9D200DB3ED1 /* Products */;
 					ProjectRef = 00C302D31ABCB9D200DB3ED1 /* RCTNetwork.xcodeproj */;
+				},
+				{
+					ProductGroup = F85B6931213EAD3400960077 /* Products */;
+					ProjectRef = F85B6930213EAD3400960077 /* RCTOneSignal.xcodeproj */;
 				},
 				{
 					ProductGroup = D0EC98742105023F004CA029 /* Products */;
@@ -2000,6 +2023,13 @@
 			fileType = archive.ar;
 			path = "libART-tvOS.a";
 			remoteRef = F82C9C7E20FE6861000D659B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F85B6935213EAD3500960077 /* libRCTOneSignal.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTOneSignal.a;
+			remoteRef = F85B6934213EAD3500960077 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		F881820B204F511A0012547F /* libReactNativeNavigation.a */ = {
@@ -2527,7 +2557,7 @@
 					"$(PROJECT_DIR)/",
 					"$(PROJECT_DIR)/Frameworks",
 					"$(SRCROOT)/../",
-					"$(SRCROOT)/../node_modules/react-native-onesignal/ios",
+					"$(SRCROOT)/../node_modules/react-native-onesignal/ios/**",
 				);
 				"HEADER_SEARCH_PATHS[arch=*]" = "$(inherited)";
 				INFOPLIST_FILE = wevedo_app/Info.plist;
