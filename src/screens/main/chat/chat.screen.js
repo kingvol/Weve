@@ -13,7 +13,6 @@ import I18n from 'react-native-i18n';
 import APIs from '../../../api';
 import config from '../../../../config';
 import ChatView from '../../../components/chat/ChatView';
-import { Center, Container } from '../../../components/common';
 import { fetchRooms } from '../../../actions/chat.actions';
 import { updateProfile } from '../../../actions/user.actions';
 
@@ -67,6 +66,7 @@ class Chat extends Component {
     const { _id } = this.state.room;
     try {
       await api.addMessage(_id, body);
+      setTimeout(this.fetchMessages, 300);
     } catch ({ message }) {
       Alert.alert(I18n.t('chat.error'), message);
     }
@@ -125,7 +125,7 @@ class Chat extends Component {
   };
 
   startMessagePolling = () => {
-    const intervalId = setInterval(this.fetchMessages, 500);
+    const intervalId = setInterval(this.fetchMessages, 3500);
     this.setState({ intervalId });
   };
 
@@ -225,13 +225,7 @@ class Chat extends Component {
         authUser={this.props.user.profile}
         onMessageSend={this.onMessageSend}
       />
-    ) : (
-      <Container>
-        <Center>
-          <ActivityIndicator size="large" color="#d64635" />
-        </Center>
-      </Container>
-    );
+    ) : null;
   }
 }
 

@@ -74,7 +74,7 @@ class InboxTab extends Component {
   startRoomPolling = () => {
     const intervalId = setInterval(() => {
       this.props.fetchRooms();
-    }, 3000);
+    }, 2500);
     this.setState({ intervalId });
   };
 
