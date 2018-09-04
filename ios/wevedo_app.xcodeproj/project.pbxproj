@@ -90,7 +90,6 @@
 		F82C9C8020FE6871000D659B /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F82C9C7D20FE6861000D659B /* libART.a */; };
 		F881820D204F515C0012547F /* libReactNativeNavigation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F881820B204F511A0012547F /* libReactNativeNavigation.a */; };
 		F8AB12E220F7A6EF00998AFA /* libRCTImageResizer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F8AB12E120F7A69800998AFA /* libRCTImageResizer.a */; };
-		F8B27FFD213AC69C004E3000 /* libRCTOneSignal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F8B27FFC213AC679004E3000 /* libRCTOneSignal.a */; };
 		F8DF0E0B207F5704007D2631 /* libRNFIRMessaging.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F8DF0E05207F56D5007D2631 /* libRNFIRMessaging.a */; };
 		F8DF0F16207F64BE007D2631 /* module.modulemap in Frameworks */ = {isa = PBXBuildFile; fileRef = F8DF0EDC207F64BD007D2631 /* module.modulemap */; };
 		F8DF0F17207F64BE007D2631 /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8DF0F0C207F64BD007D2631 /* FirebaseCore.framework */; };
@@ -592,13 +591,6 @@
 			remoteGlobalIDString = 5D72D2E81C16249000E22EC1;
 			remoteInfo = RCTImageResizer;
 		};
-		F8B27FFB213AC679004E3000 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F8B27FF7213AC679004E3000 /* RCTOneSignal.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 3245CDED1BFEE35C00EABF68;
-			remoteInfo = RCTOneSignal;
-		};
 		F8DF0E04207F56D5007D2631 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F8DF0DD7207F56D5007D2631 /* RNFIRMessaging.xcodeproj */;
@@ -726,7 +718,6 @@
 		F8682C9F3B52752012152ADA /* libPods-wevedo_appTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-wevedo_appTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F88181E1204F511A0012547F /* ReactNativeNavigation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeNavigation.xcodeproj; path = "../node_modules/react-native-navigation/ios/ReactNativeNavigation.xcodeproj"; sourceTree = "<group>"; };
 		F8AB12DC20F7A69700998AFA /* RCTImageResizer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTImageResizer.xcodeproj; path = "../node_modules/react-native-image-resizer/ios/RCTImageResizer.xcodeproj"; sourceTree = "<group>"; };
-		F8B27FF7213AC679004E3000 /* RCTOneSignal.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTOneSignal.xcodeproj; path = "../node_modules/react-native-onesignal/ios/RCTOneSignal.xcodeproj"; sourceTree = "<group>"; };
 		F8DF0DD7207F56D5007D2631 /* RNFIRMessaging.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNFIRMessaging.xcodeproj; path = "../node_modules/react-native-fcm/ios/RNFIRMessaging.xcodeproj"; sourceTree = "<group>"; };
 		F8DF0E21207F5C15007D2631 /* wevedo_app.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = wevedo_app.entitlements; path = wevedo_app/wevedo_app.entitlements; sourceTree = "<group>"; };
 		F8DF0EAC207F6170007D2631 /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; name = module.modulemap; path = ../../../../Documents/Firebase/module.modulemap; sourceTree = "<group>"; };
@@ -761,7 +752,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F8B27FFD213AC69C004E3000 /* libRCTOneSignal.a in Frameworks */,
 				D046E41D2128524A00629B5C /* libLottieReactNative.a in Frameworks */,
 				D038F63C21282CAA0033DDDF /* libLottie.a in Frameworks */,
 				D0D3A9B0210A1D3700B488BD /* libRCTVideo.a in Frameworks */,
@@ -1039,7 +1029,6 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				F8B27FF7213AC679004E3000 /* RCTOneSignal.xcodeproj */,
 				D046E4172128523D00629B5C /* LottieReactNative.xcodeproj */,
 				D038F62D21282C9A0033DDDF /* Lottie.xcodeproj */,
 				D0D3A9A7210A1D2A00B488BD /* RCTVideo.xcodeproj */,
@@ -1320,14 +1309,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		F8B27FF8213AC679004E3000 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				F8B27FFC213AC679004E3000 /* libRCTOneSignal.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		F8DF0DD8207F56D5007D2631 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1548,10 +1529,6 @@
 				{
 					ProductGroup = 00C302D41ABCB9D200DB3ED1 /* Products */;
 					ProjectRef = 00C302D31ABCB9D200DB3ED1 /* RCTNetwork.xcodeproj */;
-				},
-				{
-					ProductGroup = F8B27FF8213AC679004E3000 /* Products */;
-					ProjectRef = F8B27FF7213AC679004E3000 /* RCTOneSignal.xcodeproj */;
 				},
 				{
 					ProductGroup = D0EC98742105023F004CA029 /* Products */;
@@ -2093,13 +2070,6 @@
 			fileType = archive.ar;
 			path = libRCTImageResizer.a;
 			remoteRef = F8AB12E020F7A69800998AFA /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		F8B27FFC213AC679004E3000 /* libRCTOneSignal.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRCTOneSignal.a;
-			remoteRef = F8B27FFB213AC679004E3000 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		F8DF0E05207F56D5007D2631 /* libRNFIRMessaging.a */ = {
