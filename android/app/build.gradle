@@ -128,8 +128,8 @@ android {
         applicationId "com.wevedo"
         minSdkVersion _minSdkVersion
         targetSdkVersion _targetSdkVersion        
-        versionCode 103
-        versionName "2.8.0"
+        versionCode 104
+        versionName "2.9.0"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
