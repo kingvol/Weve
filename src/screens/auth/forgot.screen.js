@@ -6,19 +6,25 @@ import React, { Component } from 'react';
 import {
   Alert,
   ImageBackground,
-  StyleSheet,
   View,
   ScrollView,
   Platform,
   BackHandler,
+  Keyboard,
 } from 'react-native';
+import { connect } from 'react-redux';
 import * as Keychain from 'react-native-keychain';
-import { Icon } from 'native-base';
+import { Icon, Item } from 'native-base';
 import I18n from 'react-native-i18n';
+import PhoneInput from 'react-native-phone-input';
 import { Button, Container, FieldInput, Text, Logo } from '../../components/common';
 import { white } from '../../theme/colors';
+import { contrastColor, primaryFont } from '../../theme';
 import { startSingleScreenApp } from '../../../index';
 import APIs from '../../api';
+import { UIActions } from '../../actions';
+
+const { countryCodeChanged } = UIActions;
 
 const RESET_TOKEN_LENGTH = 4;
 
@@ -41,6 +47,10 @@ class ForgotPassword extends Component {
   componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
   }
+
+  onCountryCodeChange = (code) => {
+    this.props.countryCodeChanged(code);
+  };
 
   onBackPress = () => {
     if (Platform.OS === 'android') {
@@ -72,17 +82,17 @@ class ForgotPassword extends Component {
     }
   };
 
-  numberPhoneCheck = (phone) => {
-    if (phone.match(/[*+*][0-9]*[*+*]/) !== null) {
-      if (phone.match(/\+$/)) {
-        phone = phone.replace(/\+$/, '');
-      } else {
-        phone = phone.replace(/[+]/, '');
-      }
-    } else if (phone.match(/[0-9]*[*+*]/) !== null) {
-      phone = phone.replace(/[^\d+]/g, '');
+  setPhoneRef = (ref) => {
+    this.phoneInput = ref;
+  };
+
+  numberPhoneCheck = () => {
+    const isValid = this.phoneInput.isValidNumber();
+    this.setState({ phone: this.phoneInput.getValue() });
+    if (isValid) {
+      this.onCountryCodeChange(this.phoneInput.getISOCode());
+      Keyboard.dismiss();
     }
-    this.onTextChange('phone', phone.replace(/[^\d+]/g, ''));
   };
 
   requestResetToken = async () => {
@@ -136,15 +146,24 @@ class ForgotPassword extends Component {
         {this.state.step === 1 ? (
           <View id="ForgotPassword.formWrapper" style={styles.formWrapper}>
             <View id="ForgotPassword.form" style={styles.form}>
-              <FieldInput
-                color={white}
-                name="phone"
-                placeholder={I18n.t('common.phone')}
-                id="ForgotPassword.phoneInput"
-                onChangeText={text => this.numberPhoneCheck(text)}
-                value={this.state.phone}
-                keyboardType="phone-pad"
-              />
+              <View style={styles.itemStyle}>
+                <Text style={styles.label}> {I18n.t('common.phone')} </Text>
+                <Item
+                  error={this.state.phoneNumberError}
+                  id="LoginPage.phoneNumberInput"
+                  style={styles.item}
+                >
+                  <PhoneInput
+                    id="ForgotPassword.phoneInput"
+                    ref={this.setPhoneRef}
+                    initialCountry={this.props.countryCode.toLowerCase()}
+                    allowZeroAfterCountryCode={false}
+                    onChangePhoneNumber={this.numberPhoneCheck}
+                    style={{ marginBottom: 3 }}
+                    textStyle={styles.inputPhone}
+                  />
+                </Item>
+              </View>
               <FieldInput
                 color={white}
                 name="password"
@@ -168,7 +187,7 @@ class ForgotPassword extends Component {
             </View>
           </View>
         ) : (
-          <View id="ForgotPassword.formWrapper" style={styles.formWrapper}>
+          <View id="ForgotPassword.resetCode" style={styles.formWrapper}>
             <Text style={styles.codeText}>
               {I18n.t('resetPassword.verification_code_send')} {this.state.phone}
             </Text>
@@ -216,7 +235,7 @@ class ForgotPassword extends Component {
   }
 }
 
-const styles = StyleSheet.create({
+const styles = {
   container: {
     flex: 1,
     backgroundColor: '#f3c200',
@@ -268,6 +287,33 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     color: 'white',
   },
+  item: {
+    marginTop: 15,
+    paddingBottom: 3,
+  },
+  itemStyle: {
+    // flex: 1,
+    // marginTop: 4,
+    // marginLeft: 10,
+    // marginRight: 10,
+  },
+  label: {
+    marginLeft: -4,
+    color: contrastColor,
+    ...primaryFont,
+  },
+  inputPhone: {
+    flex: 1,
+    color: contrastColor,
+    textAlignVertical: 'bottom',
+    fontSize: 17,
+    ...primaryFont,
+    marginBottom: -5,
+  },
+};
+
+const mapStateToProps = state => ({
+  countryCode: state.ui.countryCode,
 });
 
-export default ForgotPassword;
+export default connect(mapStateToProps, { countryCodeChanged })(ForgotPassword);

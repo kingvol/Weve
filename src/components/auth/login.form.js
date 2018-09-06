@@ -4,16 +4,30 @@ import {
   TouchableOpacity,
   View,
   Platform,
+  ScrollView,
   KeyboardAvoidingView,
   Dimensions,
+  Keyboard,
+  ActivityIndicator,
 } from 'react-native';
+import { connect } from 'react-redux';
 import { CardItem, Container, Icon, Item, Input, Label, Title } from 'native-base';
+import PhoneInput from 'react-native-phone-input';
+import DeviceInfo from 'react-native-device-info';
 import I18n from '../../locales';
 import { primaryColor, contrastColor, primaryFont } from '../../theme';
 import images from '../../images';
 import { Button, Center, Text, Logo } from '../../components/common';
+import config from '../../../config';
+import countries from '../../countryLib/countries';
+import { UIActions } from '../../actions';
+
+const { countryCodeChanged } = UIActions;
 
 const screenHeight = Dimensions.get('window').height;
+const { ipUrl } = config;
+const userLocaleCountryCode = DeviceInfo.getDeviceCountry();
+const countryCode = countries.includes(userLocaleCountryCode) ? userLocaleCountryCode : 'GB';
 
 class LoginForm extends Component {
   constructor() {
@@ -25,10 +39,50 @@ class LoginForm extends Component {
       password: '',
       passwordLabel: '',
       passwordError: false,
-      phoneNumberLabel: `${I18n.t('common.example')}: +44...`,
       phoneNumberError: false,
+      placeholder: '********',
+      loadingCountryIP: true,
     };
   }
+
+  componentWillMount() {
+    if (this.props.countryCode === '') {
+      const p = Promise.race([
+        fetch(ipUrl),
+        new Promise(((resolve, reject) => {
+          setTimeout(() => reject(new Error('request timeout')), 2000);
+        })),
+      ]);
+      p.then(response => response.json())
+        .then((responseJson) => {
+          const cc = countries.includes(responseJson.country_code)
+            ? responseJson.country_code
+            : countryCode;
+          this.onCountryCodeChange(cc);
+          this.setState({
+            loadingCountryIP: false,
+          });
+        });
+      p.catch(() => {
+        this.onCountryCodeChange(countryCode === 'US' ? 'GB' : countryCode);
+        this.setState({
+          loadingCountryIP: false,
+        });
+      });
+    } else {
+      this.setState({
+        loadingCountryIP: false,
+      });
+    }
+  }
+
+  componentDidMount() {
+    this.onCountryCodeChange(countryCode);
+  }
+
+  onCountryCodeChange = (code) => {
+    this.props.countryCodeChanged(code);
+  };
 
   onForgotPress = () => {
     this.props.onForgotPress();
@@ -45,21 +99,15 @@ class LoginForm extends Component {
             [`${key}Error`]: true,
             [`${key}Label`]: I18n.t('validations.required'),
           };
-        case key === 'password'
-          ? value.length < 8
-          : !/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im.test(value) ||
-              value.charAt(0) !== '+':
+        case value.length < 8:
           return {
             [`${key}Error`]: false,
-            [`${key}Label`]: key === 'phoneNumber' ? `${I18n.t('common.example')}: +44...` : '',
+            [`${key}Label`]: '',
           };
         default:
           return {
             [`${key}Error`]: true,
-            [`${key}Label`]:
-                key === 'password'
-                  ? I18n.t('validations.password_length')
-                  : I18n.t('validations.phone_invalid'),
+            [`${key}Label`]: I18n.t('validations.password_length'),
           };
       }
     })());
@@ -74,25 +122,27 @@ class LoginForm extends Component {
     }
   }
 
+  onFocus = () => {
+    this.setState({ placeholder: '' });
+  };
+
+  setPhoneRef = (ref) => {
+    this.phoneInput = ref;
+  };
+
+  numberPhoneCheck = () => {
+    const isValid = this.phoneInput.isValidNumber();
+    this.setState({ phoneNumberError: !isValid, phoneNumber: this.phoneInput.getValue() });
+    if (isValid) Keyboard.dismiss();
+  };
+
   switchSecure() {
     this.setState({ secureVisible: !this.state.secureVisible });
   }
 
-  numberPhoneCheck = (phone) => {
-    if (phone.match(/[*+*][0-9]*[*+*]/) !== null) {
-      if (phone.match(/\+$/)) {
-        phone = phone.replace(/\+$/, '');
-      } else {
-        phone = phone.replace(/[+]/, '');
-      }
-    } else if (phone.match(/[0-9]*[*+*]/) !== null) {
-      phone = phone.replace(/[^\d+]/g, '');
-    }
-    this.onFieldChange('phoneNumber', phone.replace(/[^\d+]/g, ''));
-  };
-
   handleSubmit = () => {
     const { phoneNumber, password } = this.state;
+    this.onCountryCodeChange(this.phoneInput.getISOCode());
     this.props.onSubmitPress(phoneNumber, password);
   };
 
@@ -108,6 +158,7 @@ class LoginForm extends Component {
       item,
       label,
       input,
+      inputPhone,
       textForgot,
       loginButton,
       loginButtonText,
@@ -125,138 +176,155 @@ class LoginForm extends Component {
     const secure = !this.state.secureVisible;
 
     return (
-      <Container containerStyle={containerStyle} id="LoginPage.main-content">
-        <ImageBackground resizeMode="cover" style={background} source={images.backGround}>
-          <CardItem style={header} id="LoginPage.logo-container">
-            <Title style={headerText} id="LoginPage.accountLoginText">
-              {I18n.t('logIn.account_login')}
-            </Title>
-          </CardItem>
-          <Logo adaptive={false} styleContainer={{ marginBottom: screenHeight > 550 ? 30 : 10 }} />
-          <View id="LoginPage.form-container" style={form}>
-            <KeyboardAvoidingView behavior="padding" style={{ flex: 1.5 }}>
-              <View style={itemStyle}>
-                <Item
-                  error={this.state.phoneNumberError}
-                  id="LoginPage.phoneNumberInput"
-                  floatingLabel
-                  style={item}
-                >
-                  <Label style={label}>{I18n.t('common.phone')}</Label>
-                  <Input
-                    style={input}
-                    autoCapitalize="none"
-                    keyboardType="phone-pad"
-                    autoCorrect={false}
-                    value={this.state.phoneNumber}
-                    onChangeText={text => this.numberPhoneCheck(text)}
-                    onBlur={() => this.onBlur('phoneNumber', this.state.phoneNumber)}
-                  />
-                  {this.state.phoneNumberError && (
-                    <Icon name="close-circle" style={{ color: 'red' }} />
-                  )}
-                </Item>
-                <View />
-              </View>
-              <Text style={errorText}>{this.state.phoneNumberLabel}</Text>
-              <View style={itemStyle}>
-                <Item
-                  error={this.state.passwordError}
-                  id="LoginPage.passwordInput"
-                  floatingLabel
-                  style={itemPassword}
-                >
-                  <Label style={label}>{I18n.t('common.password')}</Label>
-                  <Input
-                    style={input}
-                    value={this.state.password}
-                    onChangeText={text => this.onFieldChange('password', text)}
-                    // onFocus={this.onFocus('password', this.state.password)}
-                    onBlur={() => this.onBlur('password', this.state.password)}
-                    secureTextEntry={secure}
-                  />
-                  {this.state.passwordError && (
-                    <Icon name="close-circle" style={{ color: 'red' }} />
-                  )}
-                </Item>
-                <View
-                  style={{
-                    alignSelf: 'flex-end',
-                    bottom: 2,
-                    flex: 0,
-                  }}
-                >
-                  <TouchableOpacity onPress={this.switchSecure}>
-                    <Icon
-                      style={{ color: 'white' }}
-                      size={24}
-                      name={secure ? 'md-eye-off' : 'eye'}
-                    />
-                  </TouchableOpacity>
-                </View>
-              </View>
-              <Text style={errorText}>{this.state.passwordLabel}</Text>
-            </KeyboardAvoidingView>
-            <View style={{ flex: 2, justifyContent: 'space-between' }}>
-              {error && (
-                <View style={styles.errorContainer}>
-                  <Text
-                    id="LoginPage.errorText"
-                    style={{ color: contrastColor, textAlign: 'center' }}
+      <ScrollView>
+        <Container containerStyle={containerStyle} id="LoginPage.main-content">
+          <ImageBackground resizeMode="cover" style={background} source={images.backGround}>
+            <CardItem style={header} id="LoginPage.logo-container">
+              <Title style={headerText} id="LoginPage.accountLoginText">
+                {I18n.t('logIn.account_login')}
+              </Title>
+            </CardItem>
+            <Logo
+              adaptive={false}
+              styleContainer={{ marginBottom: screenHeight > 1280 ? 30 : 20 }}
+            />
+            <View id="LoginPage.form-container" style={form}>
+              <KeyboardAvoidingView
+                behavior="padding"
+                style={{ flex: screenHeight > 600 ? 1.5 : 2 }}
+              >
+                <View style={itemStyle}>
+                  <Label style={label}> {I18n.t('common.phone')} </Label>
+                  <Item
+                    error={this.state.phoneNumberError}
+                    id="LoginPage.phoneNumberInput"
+                    style={item}
                   >
-                    {I18n.t(`backend.${error}`, { defaults: [{ scope: 'chat.error' }] })}
-                  </Text>
-                </View>
-              )}
-              <Button
-                id="LoginPage.forgotPasswordButton"
-                style={{
-                  flex: error ? 1 : 2,
-                  marginTop: 5,
-                  marginBottom: 5,
-                  justifyContent: 'flex-end',
-                }}
-                block
-                transparent
-                onPress={this.onForgotPress}
-              >
-                <Text
-                  style={Object.assign(
-                    { textAlignVertical: error ? 'center' : 'bottom' },
-                    textForgot,
+                    {this.state.loadingCountryIP ? (
+                      <ActivityIndicator size="large" color="#d64635" />
+                    ) : (
+                      <PhoneInput
+                        ref={this.setPhoneRef}
+                        initialCountry={this.props.countryCode.toLowerCase()}
+                        allowZeroAfterCountryCode={false}
+                        onChangePhoneNumber={this.numberPhoneCheck}
+                        style={{ flex: 1 }}
+                        textStyle={inputPhone}
+                      />
+                    )}
+                    {this.state.phoneNumberError && (
+                      <Icon name="close-circle" style={{ color: 'red' }} />
+                    )}
+                  </Item>
+                  {this.state.phoneNumberError && (
+                    <Text style={errorText}>{I18n.t('validations.phone_invalid')}</Text>
                   )}
+                </View>
+                <View style={itemStyle}>
+                  <Label style={label}>{I18n.t('common.password')}</Label>
+                  <View style={{ flexDirection: 'row', flex: 1 }}>
+                    <Item
+                      error={this.state.passwordError}
+                      id="LoginPage.passwordInput"
+                      style={itemPassword}
+                    >
+                      <Input
+                        style={input}
+                        value={this.state.password}
+                        placeholder={this.state.placeholder}
+                        placeholderTextColor="white"
+                        onChangeText={text => this.onFieldChange('password', text)}
+                        onFocus={this.onFocus}
+                        onBlur={() => this.onBlur('password', this.state.password)}
+                        secureTextEntry={secure}
+                      />
+                      {this.state.passwordError && (
+                        <Icon name="close-circle" style={{ color: 'red' }} />
+                      )}
+                    </Item>
+                    <View
+                      style={{
+                        alignSelf: 'flex-end',
+                        bottom: 2,
+                        flex: 0,
+                      }}
+                    >
+                      <TouchableOpacity onPress={this.switchSecure}>
+                        <Icon
+                          style={{ color: 'white' }}
+                          size={24}
+                          name={secure ? 'md-eye-off' : 'eye'}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                  <Text style={errorText}>{this.state.passwordLabel}</Text>
+                </View>
+              </KeyboardAvoidingView>
+              <View style={{ flex: 2, justifyContent: 'space-between' }}>
+                {error && (
+                  <View style={styles.errorContainer}>
+                    <Text
+                      id="LoginPage.errorText"
+                      style={{ color: contrastColor, textAlign: 'center' }}
+                    >
+                      {I18n.t(`backend.${error}`, { defaults: [{ scope: 'chat.error' }] })}
+                    </Text>
+                  </View>
+                )}
+                <Button
+                  id="LoginPage.forgotPasswordButton"
+                  style={{
+                    flex: error ? 1 : 2,
+                    marginTop: 5,
+                    marginBottom: error ? 0 : 5,
+                    justifyContent: 'flex-end',
+                  }}
+                  block
+                  transparent
+                  onPress={this.onForgotPress}
                 >
-                  {I18n.t('logIn.forgot_your_password').toUpperCase()}
-                </Text>
-              </Button>
-              <Button
-                id="LoginPage.loginButton"
-                block
-                style={Object.assign(loginButton, { flex: error ? 1.2 : 1 })}
-                onPress={this.handleSubmit}
-                disabled={disabled}
-                spinner={isLoading}
-              >
-                <Text style={loginButtonText}>{I18n.t('logIn.log_in')}</Text>
-              </Button>
-              <Center id="LoginPage.dontHaveAnAccountContainer" style={OR}>
-                <View style={or} />
-                <Text style={orText}>{I18n.t('logIn.or')}</Text>
-                <View style={or} />
-              </Center>
-              <Button
-                id="LoginPage.signUpButton"
-                style={register}
-                block
-                transparent
-                onPress={this.props.onRegisterPress}
-              >
-                <Text style={textRegister}>{I18n.t('logIn.register').toUpperCase()}</Text>
-              </Button>
+                  <Text
+                    style={Object.assign(
+                      { textAlignVertical: error ? 'center' : 'bottom' },
+                      textForgot,
+                    )}
+                  >
+                    {I18n.t('logIn.forgot_your_password').toUpperCase()}
+                  </Text>
+                </Button>
+                <Button
+                  id="LoginPage.loginButton"
+                  block
+                  style={Object.assign(loginButton, {
+                    flex: error ? 1.2 : 1,
+                    marginTop: error ? 10 : 20,
+                  })}
+                  onPress={this.handleSubmit}
+                  disabled={disabled}
+                  spinner={isLoading}
+                >
+                  <Text style={loginButtonText}>{I18n.t('logIn.log_in')}</Text>
+                </Button>
+                <Center id="LoginPage.dontHaveAnAccountContainer" style={OR}>
+                  <View style={or} />
+                  <Text style={orText}>{I18n.t('logIn.or')}</Text>
+                  <View style={or} />
+                </Center>
+                <Button
+                  id="LoginPage.signUpButton"
+                  style={register}
+                  block
+                  transparent
+                  onPress={this.props.onRegisterPress}
+                >
+                  <Text style={textRegister}>{I18n.t('logIn.register').toUpperCase()}</Text>
+                </Button>
+              </View>
             </View>
-          </View>
-        </ImageBackground>
-      </Container>
+          </ImageBackground>
+        </Container>
+      </ScrollView>
     );
   }
 }
@@ -294,7 +362,7 @@ const styles = {
     flex: 2,
     justifyContent: 'space-between',
     backgroundColor: 'rgba(0,0,0,0.5)',
-    paddingTop: screenHeight > 550 ? 25 : 0,
+    paddingTop: screenHeight > 550 ? 10 : 0,
     marginLeft: 15,
     marginRight: 15,
     marginBottom: 15,
@@ -304,10 +372,10 @@ const styles = {
     flex: 1,
     marginTop: 4,
     marginRight: 34,
-    paddingBottom: 3,
+    marginBottom: 3,
   },
   itemStyle: {
-    flexDirection: 'row',
+    flex: 1,
     marginTop: 4,
     marginLeft: 10,
     marginRight: 10,
@@ -319,9 +387,8 @@ const styles = {
     paddingBottom: 3,
   },
   label: {
-    flex: 1,
     textAlign: 'left',
-    color: contrastColor,
+    color: '#c2a2a2',
     ...primaryFont,
   },
   input: {
@@ -330,12 +397,17 @@ const styles = {
     paddingBottom: 5,
     ...primaryFont,
   },
+  inputPhone: {
+    flex: 1,
+    color: contrastColor,
+    fontSize: 17,
+    ...primaryFont,
+  },
   textForgot: {
     color: contrastColor,
     ...primaryFont,
   },
   loginButton: {
-    marginTop: 20,
     marginLeft: 20,
     marginRight: 20,
     backgroundColor: '#f3c200',
@@ -371,6 +443,7 @@ const styles = {
   },
   errorContainer: {
     flex: 1,
+    marginBottom: 10,
   },
   errorText: {
     fontSize: 10,
@@ -381,4 +454,8 @@ const styles = {
   },
 };
 
-export default LoginForm;
+const mapStateToProps = state => ({
+  countryCode: state.ui.countryCode,
+});
+
+export default connect(mapStateToProps, { countryCodeChanged })(LoginForm);

@@ -13,12 +13,14 @@ import I18n from 'react-native-i18n';
 import APIs from '../../../api';
 import config from '../../../../config';
 import ChatView from '../../../components/chat/ChatView';
-import { Center, Container } from '../../../components/common';
 import { fetchRooms } from '../../../actions/chat.actions';
 import { updateProfile } from '../../../actions/user.actions';
-import Analytics from '../../../services/AnalyticsService';
 
 const REPORT_ACTION = I18n.t('report.name');
+const BLOCK_ACTION = I18n.t('report.block');
+const UNBLOCK_ACTION = I18n.t('report.unblock');
+const CANCEL_ACTION = I18n.t('menu.homeTab.booking.cancel');
+
 const { ChatApi } = APIs;
 const api = new ChatApi();
 
@@ -64,7 +66,7 @@ class Chat extends Component {
     const { _id } = this.state.room;
     try {
       await api.addMessage(_id, body);
-      Analytics.trackEvent('Chat: message sent', { room: _id, body });
+      setTimeout(this.fetchMessages, 300);
     } catch ({ message }) {
       Alert.alert(I18n.t('chat.error'), message);
     }
@@ -123,7 +125,7 @@ class Chat extends Component {
   };
 
   startMessagePolling = () => {
-    const intervalId = setInterval(this.fetchMessages, 500);
+    const intervalId = setInterval(this.fetchMessages, 3500);
     this.setState({ intervalId });
   };
 
@@ -160,7 +162,7 @@ class Chat extends Component {
     if (Platform.OS === 'ios') {
       ActionSheetIOS.showActionSheetWithOptions(
         {
-          options: ['Cancel', isUserBlocked ? 'Unblock user' : 'Block user', REPORT_ACTION],
+          options: [CANCEL_ACTION, isUserBlocked ? UNBLOCK_ACTION : BLOCK_ACTION, REPORT_ACTION],
           cancelButtonIndex: 0,
           blockingButtonIndex: 1,
           reportingButtonIdex: 2,
@@ -176,7 +178,7 @@ class Chat extends Component {
     } else {
       this.props.navigator.showContextualMenu({
         rightButtons: [
-          { title: isUserBlocked ? 'Unblock user' : 'Block user' },
+          { title: isUserBlocked ? UNBLOCK_ACTION : BLOCK_ACTION },
           { title: REPORT_ACTION },
         ],
         onButtonPressed: index =>
@@ -223,13 +225,7 @@ class Chat extends Component {
         authUser={this.props.user.profile}
         onMessageSend={this.onMessageSend}
       />
-    ) : (
-      <Container>
-        <Center>
-          <ActivityIndicator size="large" color="#d64635" />
-        </Center>
-      </Container>
-    );
+    ) : null;
   }
 }
 

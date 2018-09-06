@@ -52,11 +52,11 @@ class ProviderProfileScreen extends Component {
   }
 
   componentDidMount() {
-    const { _id } = this.props.user.profile;
+    const { _id, isProvider } = this.props.user.profile;
 
     Analytics.trackEvent('Provider profile view', { _id });
 
-    if (_id !== this.props.provider._id) {
+    if (_id !== this.props.provider._id && !isProvider) {
       Promise.all([
         Icon.getImageSource('comments-o', 20, '#ffffff'),
         Icon.getImageSource('phone', 20, '#ffffff'),
@@ -281,12 +281,12 @@ class ProviderProfileScreen extends Component {
             </Container>
           ) : (
             [
-              <View style={styles.exitZoomView}>
+              <View style={styles.exitZoomView} key={Math.random()}>
                 <TouchableOpacity onPress={() => this.setModalForImageVisible(false)}>
                   <NBIcon style={styles.closeImgBtn} name="md-close" />
                 </TouchableOpacity>
               </View>,
-              <View style={{ backgroundColor: 'black' }}>
+              <View style={{ backgroundColor: 'black' }} key={Math.random()}>
                 <ImageZoom
                   cropWidth={ITEM_WIDTH}
                   cropHeight={ITEM_HEIGHT}
@@ -314,8 +314,8 @@ class ProviderProfileScreen extends Component {
               autoplayTimeout={5}
               dot={<View style={[{ backgroundColor: '#c4c4c4' }, dotsStyle]} />}
               activeDot={<View style={[{ backgroundColor: '#d64635' }, dotsStyle]} />}
-              nextButton={<Text style={{ color: '#d64635', fontSize: 35 }}>›</Text>}
-              prevButton={<Text style={{ color: '#d64635', fontSize: 35 }}>‹</Text>}
+              nextButton={<Text style={{ color: '#d64635', fontSize: 55 }}>›</Text>}
+              prevButton={<Text style={{ color: '#d64635', fontSize: 55 }}>‹</Text>}
             >
               {images.map((item, key) => (
                 <TouchableWithoutFeedback

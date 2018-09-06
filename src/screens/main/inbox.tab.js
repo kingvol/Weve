@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { last, orderBy } from 'lodash';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import { Icon, Container, Content, Body, Left, Right, Badge } from 'native-base';
+import { Icon, Container, Content, Body, Left, Right, Badge, Spinner } from 'native-base';
 import { Center } from '../../components/common';
 import { primaryFont, black, lighterTextColor } from '../../theme';
 import { fetchRooms } from '../../actions/chat.actions';
@@ -16,11 +16,15 @@ const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png
 class InboxTab extends Component {
   state = {
     intervalId: null,
+    showSpinner: true,
   };
 
   componentDidMount() {
-    this.props.fetchRooms();
-    this.startRoomPolling();
+    setTimeout(() => {
+      this.props.fetchRooms();
+      this.startRoomPolling();
+      this.setState({ showSpinner: false });
+    }, 5000);
   }
 
   componentWillReceiveProps({ chat, user }) {
@@ -59,6 +63,10 @@ class InboxTab extends Component {
         navBarTextColor: 'white',
         navBarButtonColor: 'white',
         navBarTextFontFamily: primaryFont,
+        // contextualMenuStatusBarColor: '#d64635',
+        contextualMenuBackgroundColor: '#d64635',
+        contextualMenuButtonsColor: 'white',
+        contextualMenuTextFontFamily: primaryFont,
       },
     });
   };
@@ -68,7 +76,7 @@ class InboxTab extends Component {
   startRoomPolling = () => {
     const intervalId = setInterval(() => {
       this.props.fetchRooms();
-    }, 3000);
+    }, 2500);
     this.setState({ intervalId });
   };
 
@@ -152,6 +160,16 @@ class InboxTab extends Component {
         });
     }
     inbox = orderBy(inbox, 'lastMessageTime', 'desc');
+
+    if (this.state.showSpinner || (this.props.chat.isLoading && !this.props.chat.rooms.length)) {
+      return (
+        <Container>
+          <Center>
+            <Spinner />
+          </Center>
+        </Container>
+      );
+    }
 
     return !this.props.chat.rooms.length ? (
       <Container>

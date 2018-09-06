@@ -197,6 +197,8 @@
   "report": {
     "name": "Report",
     "subject": "Report a user",
-    "body": "I would like to report this user:"
+    "body": "I would like to report this user:",
+    "block": "Block user",
+    "unblock": "Unblock user"
   }
 }

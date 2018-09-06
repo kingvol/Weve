@@ -8,7 +8,9 @@ import {
   Keyboard,
   Platform,
   BackHandler,
+  AsyncStorage,
 } from 'react-native';
+import { connect } from 'react-redux';
 import { Container, Icon, View, Form } from 'native-base';
 import PhoneInput from 'react-native-phone-input';
 import I18n from '../../locales';
@@ -18,6 +20,9 @@ import { startSingleScreenApp } from '../../../index';
 
 import APIs from '../../api';
 import vars from '../../env/vars';
+import { UIActions } from '../../actions';
+
+const { countryCodeChanged } = UIActions;
 
 const testNumber = '+447890000000';
 
@@ -45,8 +50,13 @@ class VerificationScreen extends Component {
     BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
   }
 
+  onCountryCodeChange = (code) => {
+    this.props.countryCodeChanged(code);
+  };
+
   onContinuePress = async () => {
     const mobileNumber = this.phoneInput.getValue();
+    this.onCountryCodeChange(this.phoneInput.getISOCode());
     this.setState({ isLoading: true });
     // check for test case
     if (mobileNumber === testNumber || (vars.DB_ENV === 'test' && this.state.switchValue)) {
@@ -114,6 +124,17 @@ class VerificationScreen extends Component {
     Alert.alert(I18n.t('auth.code_sent'));
   };
 
+  initLottery = async () => {
+    try {
+      const lotteryStatus = await AsyncStorage.getItem('wevedo_lottery_status');
+      if (!lotteryStatus || lotteryStatus === 'done') {
+        await AsyncStorage.setItem('wevedo_lottery_status', 'init');
+      }
+    } catch (error) {
+      console.warn('Error on lottery init');
+    }
+  };
+
   numberPhoneCheck = () => {
     const isValid = this.phoneInput.isValidNumber();
     this.setState({ phone: isValid });
@@ -135,9 +156,12 @@ class VerificationScreen extends Component {
     }
   };
 
-  handleSubmit = () => {
+  handleSubmit = async () => {
     const { enteredCode, verificationCode, mobileNumber } = this.state;
     if (enteredCode === verificationCode.toString() || enteredCode === '4444') {
+      if (enteredCode === '4444') {
+        await this.initLottery();
+      }
       this.props.navigator.push({
         screen: 'wevedo.registerScreen',
         passProps: { phoneNumber: mobileNumber },
@@ -197,7 +221,7 @@ class VerificationScreen extends Component {
                     ...primaryFont,
                   }}
                 >
-                  {I18n.t('logIn.verification')}
+                  {I18n.t('common.phoneNumber')}
                 </Text>
               </View>
             </View>
@@ -209,11 +233,13 @@ class VerificationScreen extends Component {
 
               <Form>
                 {this.state.step === 1 ? (
-                  <View style={styles.inputConteiner}>
+                  <View style={styles.inputContainer}>
                     <PhoneInput
                       ref={(ref) => {
                         this.phoneInput = ref;
                       }}
+                      initialCountry={this.props.countryCode.toLowerCase()}
+                      allowZeroAfterCountryCode={false}
                       onChangePhoneNumber={this.numberPhoneCheck}
                       style={styles.input}
                       textStyle={styles.inputTextStyle}
@@ -230,7 +256,7 @@ class VerificationScreen extends Component {
                     )}
                   </View>
                 ) : (
-                  <View style={styles.inputConteiner}>
+                  <View style={styles.inputContainer}>
                     <FieldInput
                       color="white"
                       name="code"
@@ -328,7 +354,7 @@ const styles = {
     fontSize: 22,
     color: 'white',
   },
-  inputConteiner: {
+  inputContainer: {
     margin: 50,
     width: 200,
     alignItems: 'center',
@@ -363,4 +389,8 @@ const styles = {
   },
 };
 
-export default VerificationScreen;
+const mapStateToProps = state => ({
+  countryCode: state.ui.countryCode,
+});
+
+export default connect(mapStateToProps, { countryCodeChanged })(VerificationScreen);

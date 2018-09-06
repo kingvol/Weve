@@ -1720,6 +1720,10 @@ decamelize@^1.0.0, decamelize@^1.1.1:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/decamelize/-/decamelize-1.2.0.tgz#f6534d15148269b20352e7bee26f501f9a191290"
 
+dedent@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/dedent/-/dedent-0.6.0.tgz#0e6da8f0ce52838ef5cec5c8f9396b0c1b64a3cb"
+
 deep-diff@^0.3.5:
   version "0.3.8"
   resolved "https://registry.yarnpkg.com/deep-diff/-/deep-diff-0.3.8.tgz#c01de63efb0eec9798801d40c7e0dae25b582c84"
@@ -3690,6 +3694,19 @@ loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.3.1:
   dependencies:
     js-tokens "^3.0.0"
 
+lottie-ios@^2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/lottie-ios/-/lottie-ios-2.5.0.tgz#55c808e785d4a6933b0c10b395530b17098b05de"
+
+lottie-react-native@^2.5.6:
+  version "2.5.6"
+  resolved "https://registry.yarnpkg.com/lottie-react-native/-/lottie-react-native-2.5.6.tgz#c5ad64a880108d50c728505ede10470a109c6e70"
+  dependencies:
+    invariant "^2.2.2"
+    lottie-ios "^2.5.0"
+    prop-types "^15.5.10"
+    react-native-safe-module "^1.1.0"
+
 lru-cache@^4.0.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-4.1.1.tgz#622e32e82488b49279114a4f9ecf45e7cd6bba55"
@@ -4690,6 +4707,12 @@ react-native-navigation@^1.1.388:
   dependencies:
     lodash "4.x.x"
 
+react-native-onesignal@^3.2.6:
+  version "3.2.6"
+  resolved "https://registry.yarnpkg.com/react-native-onesignal/-/react-native-onesignal-3.2.6.tgz#b28f874451c39d421a824209512a113a7aa8f24e"
+  dependencies:
+    invariant "^2.2.2"
+
 react-native-orientation@^3.1.0:
   version "3.1.3"
   resolved "https://registry.yarnpkg.com/react-native-orientation/-/react-native-orientation-3.1.3.tgz#d45803841fe94b6cce9acbe904fd5ca191a3711e"
@@ -4724,6 +4747,12 @@ react-native-safe-area-view@^0.7.0:
   resolved "https://registry.yarnpkg.com/react-native-safe-area-view/-/react-native-safe-area-view-0.7.0.tgz#38f5ab9368d6ef9e5d18ab64212938af3ec39421"
   dependencies:
     hoist-non-react-statics "^2.3.1"
+
+react-native-safe-module@^1.1.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-safe-module/-/react-native-safe-module-1.2.0.tgz#a23824ca24edc2901913694a76646475113d570d"
+  dependencies:
+    dedent "^0.6.0"
 
 react-native-scrollable-mixin@^1.0.1:
   version "1.0.1"

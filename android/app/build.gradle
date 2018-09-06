@@ -72,6 +72,17 @@ import com.android.build.OutputFile
  * ]
  */
 
+buildscript {
+    repositories {
+        maven { url 'https://plugins.gradle.org/m2/' } // Gradle Plugin Portal 
+    }
+    dependencies {
+        classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:[0.10.0, 0.99.99]'
+    }
+}
+
+apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
+
 project.ext.react = [
     entryFile: "index.js"
 ]
@@ -117,12 +128,14 @@ android {
         applicationId "com.wevedo"
         minSdkVersion _minSdkVersion
         targetSdkVersion _targetSdkVersion        
-        versionCode 103
-        versionName "2.8.0"
+        versionCode 104
+        versionName "2.9.0"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
-        // multiDexEnabled true
+        multiDexEnabled true
+        manifestPlaceholders = [onesignal_app_id: "991cf64c-0db1-4d93-82b7-a035cb23027b",
+                                onesignal_google_project_number: "REMOTE"]
     }
     signingConfigs {
         release {
@@ -165,6 +178,8 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-onesignal')
+    implementation project(':lottie-react-native')    
     implementation project(':react-native-keep-awake')
     implementation project(':react-native-linear-gradient')
     implementation project(':react-native-orientation')
@@ -177,6 +192,7 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.android.support:appcompat-v7:${_supportLibrariesVersion}"
     implementation "com.android.support:design:${_supportLibrariesVersion}" // support fix
+    implementation 'com.android.support:multidex:1.0.0'
     implementation "com.facebook.react:react-native:${_reactNativeVersion}"  
     implementation project(':react-native-fast-image')
     implementation project(':react-native-device-info')

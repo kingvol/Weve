@@ -5,23 +5,23 @@
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<true/>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>$(PRODUCT_NAME) would like access to your photo gallery</string>
+	<string>To continue with your profile image or video, please allow Wevedo to access your Photos</string>
 	<key>NSCameraUsageDescription</key>
-	<string>$(PRODUCT_NAME) would like to use your camera</string>
+	<string>To continue with your profile image or video, please allow Wevedo to access your Camera</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>$(PRODUCT_NAME) would like to save photos to your photo gallery</string>
+	<string>To continue with your profile image or video, please allow Wevedo to access your Photos</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>$(PRODUCT_NAME) would like to your microphone (for videos)</string>
+	<string>Wevedo would like to your microphone (for videos)</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>$(PRODUCT_NAME) would like to use bluetooth</string>
+	<string>Wevedo would like to use bluetooth</string>
 	<key>NSCalendarsUsageDescription</key>
-	<string>$(PRODUCT_NAME) would like to use calendar</string>
+	<string>Wevedo would like to use calendar</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>$(PRODUCT_NAME) would like to use speech recognition</string>
+	<string>Wevedo would like to use speech recognition</string>
 	<key>NSAppleMusicUsageDescription</key>
-	<string>$(PRODUCT_NAME) would like to use apple music</string>
+	<string>Wevedo would like to use apple music</string>
 	<key>NSMotionUsageDescription</key>
-	<string>$(PRODUCT_NAME) would like to use motion</string>
+	<string>Wevedo would like to use motion</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Enabling Face ID allows you quick and secure access to your account.</string>
 	<key>CFBundleDevelopmentRegion</key>
@@ -43,11 +43,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.8</string>
+	<string>2.9</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>17</string>
+	<string>18</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
