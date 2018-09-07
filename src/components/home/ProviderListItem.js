@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import { connect } from 'react-redux';
 import FastImage from 'react-native-fast-image';
-import { Icon } from 'native-base';
 import { primaryFont } from '../../theme';
 import { HeartAnimation } from './Heart.Animation';
 import { updateProfile, fetchProfile } from '../../actions/user.actions';

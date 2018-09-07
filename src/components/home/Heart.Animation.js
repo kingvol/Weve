@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { View, TouchableWithoutFeedback } from 'react-native';
 import LottieView from 'lottie-react-native';
-import * as likeAnimation from '../../animations/heartAnimation.json';
+import * as heartAnimation from '../../animations/heartAnimation.json';
 
 export class HeartAnimation extends PureComponent {
   componentDidMount() {
@@ -26,6 +26,10 @@ export class HeartAnimation extends PureComponent {
     this.animation.play(0, 1);
   };
 
+  animationRef = (animation) => {
+    this.animation = animation;
+  };
+
   render() {
     const { styleContainer } = this.props;
     return (
@@ -33,10 +37,8 @@ export class HeartAnimation extends PureComponent {
         <View style={[styleContainer, { width: 65, height: 65 }]}>
           <LottieView
             style={{ width: '100%', height: '100%' }}
-            ref={(animation) => {
-              this.animation = animation;
-            }}
-            source={likeAnimation}
+            ref={this.animationRef}
+            source={heartAnimation}
             loop={false}
           />
         </View>
