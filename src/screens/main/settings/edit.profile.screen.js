@@ -892,15 +892,6 @@ class EditProfileScreen extends Component {
             autoCapitalize="words"
           />
 
-          <FieldInput
-            name="phone"
-            input={{ value: phoneNumber.toString() }}
-            placeholder={I18n.t('editProfile.phone_number')}
-            onChangeText={value => this.onFieldChange('phoneNumber', value)}
-            color={lightTextColor}
-            component={EditProfileField}
-            id="EditProfile.phoneNumberInput"
-          />
           {isProvider && (
           <View style={{
             borderColor: lightTextColor,
