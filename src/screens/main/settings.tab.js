@@ -15,7 +15,6 @@ import { Body, Container, Content, List, ListItem, Right, Text } from '../../com
 import { AuthActions } from '../../actions';
 import { startSingleScreenApp } from '../../../index';
 import vars from '../../env/vars';
-import Analytics from '../../services/AnalyticsService';
 import APIs from '../../api';
 
 const { AuthApi } = APIs;
@@ -71,13 +70,10 @@ class SettingsTab extends Component {
     if (event.type === 'NavBarButtonPress') {
       // this is the event type for button presses
       if (event.id === 'sign-out') {
-        await AsyncStorage.removeItem('wevedo_access_token');
-        startSingleScreenApp();
-        Analytics.trackEvent('Signout');
-        await api.signout();
         this.props.signOut();
-        startSingleScreenApp();
+        await api.signout();
         await AsyncStorage.removeItem('wevedo_access_token');
+        startSingleScreenApp();
       }
     }
   }
