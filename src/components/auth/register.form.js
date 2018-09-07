@@ -11,6 +11,7 @@ import {
   Modal,
   TouchableOpacity,
   Dimensions,
+  Platform,
 } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import CountryPicker from 'react-native-country-picker-modal';
@@ -436,7 +437,9 @@ class SignupForm extends Component {
                   <View style={{ flex: 3, alignSelf: 'flex-end' }}>
                     <Picker
                       mode="dropdown"
-                      style={{ color: 'white', flex: 1 }}
+                      style={Platform.OS === 'android' ?
+                        { flex: 1, color: 'white' } :
+                        { flex: 1, alignItems: 'center', width: 20 }}
                       placeholder={I18n.t('logIn.select_category')}
                       selectedValue={this.state.values.regionName}
                       onValueChange={this.onRegionSelect}

@@ -4707,9 +4707,9 @@ react-native-navigation@^1.1.388:
   dependencies:
     lodash "4.x.x"
 
-react-native-onesignal@^3.2.6:
-  version "3.2.6"
-  resolved "https://registry.yarnpkg.com/react-native-onesignal/-/react-native-onesignal-3.2.6.tgz#b28f874451c39d421a824209512a113a7aa8f24e"
+react-native-onesignal@3.1.4:
+  version "3.1.4"
+  resolved "https://registry.yarnpkg.com/react-native-onesignal/-/react-native-onesignal-3.1.4.tgz#ecaa4c22597d2d76420b922110d28cdaf76ffe7d"
   dependencies:
     invariant "^2.2.2"
 

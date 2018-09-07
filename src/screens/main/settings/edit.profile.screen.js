@@ -993,7 +993,7 @@ class EditProfileScreen extends Component {
                 mode="dropdown"
                 style={Platform.OS === 'android' ?
                   { flex: 1, color: lightTextColor, alignItems: 'flex-end' } :
-                  { flex: 1, alignItems: 'flex-end' }}
+                  { flex: 1, alignItems: 'center', width: 20 }}
                 itemTextStyle={{ color: lightTextColor }}
                 placeholder={I18n.t('logIn.select_category')}
                 selectedValue={this.state.values.regionName}
