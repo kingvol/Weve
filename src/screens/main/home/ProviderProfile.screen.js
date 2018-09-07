@@ -187,14 +187,11 @@ class ProviderProfileScreen extends Component {
     const { profile } = this.props.user; // authUser
     const { provider } = this.props;
     const {
-      styleImage,
       styleImageFullScreen,
       slide,
       wrapper,
-      styleIconButton,
       styleIconImage,
       dotsStyle,
-      styleIosMargin,
       styleVideoIos,
     } = styles;
 
@@ -224,10 +221,16 @@ class ProviderProfileScreen extends Component {
         });
       }
     }
-    const nameWithRegion = provider.fullName
-      ? `${provider.fullName.toUpperCase()} · ${provider.regionName.toUpperCase()}`
-      : `${provider.firstName.toUpperCase()} ${provider.lastName.toUpperCase() ||
-          ''} · ${provider.regionName.toUpperCase()}`;
+    let artistTitle = `${provider.firstName} ${provider.lastName}`;
+    if (ITEM_WIDTH / artistTitle.length / 10 < 1) {
+      const titleArray = artistTitle.split(' ', 2);
+      artistTitle = titleArray.join(' ');
+    }
+    let separator = ' · ';
+    if (ITEM_WIDTH / provider.regionName.length / 10 < 1) {
+      separator = '\n';
+    }
+    const nameWithRegion = `${artistTitle.toUpperCase()}${separator}${provider.regionName.toUpperCase()}`;
 
     const singleProfileImage = this.props.provider.profileImageURL || defaultProfile;
 
@@ -379,6 +382,7 @@ class ProviderProfileScreen extends Component {
                     style={{
                       fontSize: Platform.OS === 'ios' ? 16 : 14,
                       margin: 15,
+                      textAlign: 'center',
                     }}
                   >
                     {nameWithRegion}
