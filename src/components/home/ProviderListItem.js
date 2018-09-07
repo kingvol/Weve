@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import FastImage from 'react-native-fast-image';
 import { Icon } from 'native-base';
 import { primaryFont } from '../../theme';
+import { HeartAnimation } from './Heart.Animation';
 import { updateProfile, fetchProfile } from '../../actions/user.actions';
 
 const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png';
@@ -12,6 +13,12 @@ class ProviderListItem extends Component {
   state = {
     favorites: !!this.props.user.profile.favoriteProviders.includes(this.props.provider._id),
   };
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      favorites: !!nextProps.user.profile.favoriteProviders.includes(this.props.provider._id),
+    });
+  }
 
   onItemPress = () => {
     this.props.onPress(this.props.provider);
@@ -61,23 +68,25 @@ class ProviderListItem extends Component {
               alignItems: 'center',
             }}
           >
-            <TouchableOpacity
-              onPress={this.onFavoriteIconPress}
-              style={{
+            <HeartAnimation
+              onAnimationPress={this.onFavoriteIconPress}
+              filled={this.state.favorites}
+              styleContainer={{
                 flex: 0,
-                alignSelf: 'flex-start',
                 position: 'absolute',
-                marginLeft: itemWidth + 10,
+                marginTop: -20,
+                marginLeft: itemWidth - 15,
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0,
               }}
-            >
-              <Icon
-                name={this.state.favorites ? 'ios-heart' : 'ios-heart-outline'}
-                style={{ color: 'red', fontWeight: 100, fontSize: 26 }}
-              />
-            </TouchableOpacity>
-            <Text style={[styles.artistTitle, { marginRight: 5 }]}>
-              {`${firstName} ${lastName || ''}`}
-            </Text>
+            />
+            <View style={{ flex: 1 }}>
+              <Text style={[styles.artistTitle, { marginRight: 5 }]}>
+                {`${firstName} ${lastName || ''}`}
+              </Text>
+            </View>
           </View>
         </View>
       </TouchableWithoutFeedback>
