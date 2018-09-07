@@ -160,12 +160,6 @@ class ProviderProfileScreen extends Component {
             ],
           );
         }
-      } else {
-        Alert.alert(
-          I18n.t('menu.homeTab.booking.cannot'),
-          I18n.t('menu.homeTab.booking.authority'),
-          [{ text: I18n.t('common.ok') }],
-        );
       }
     }
   };
