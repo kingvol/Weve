@@ -1,16 +1,9 @@
 import React, { Component } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ImageBackground,
-  TouchableWithoutFeedback,
-  TouchableOpacity,
-} from 'react-native';
+import { View, Text, StyleSheet, ImageBackground, TouchableWithoutFeedback } from 'react-native';
 import { connect } from 'react-redux';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { updateProfile, fetchProfile } from '../../actions/user.actions';
 import { primaryFont } from '../../theme';
+import { HeartAnimation } from './Heart.Animation';
 
 const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png';
 
@@ -18,6 +11,12 @@ class ProviderGridItem extends Component {
   state = {
     favorites: !!this.props.user.profile.favoriteProviders.includes(this.props.provider._id),
   };
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      favorites: !!nextProps.user.profile.favoriteProviders.includes(this.props.provider._id),
+    });
+  }
 
   onItemPress = () => {
     this.props.onPress(this.props.provider);
@@ -70,22 +69,20 @@ class ProviderGridItem extends Component {
             }}
             source={{ uri: profileImageURL || defaultProfile }}
           >
-            <TouchableOpacity
-              onPress={this.onFavoriteIconPress}
-              style={{
+            <HeartAnimation
+              onAnimationPress={this.onFavoriteIconPress}
+              filled={this.state.favorites}
+              styleContainer={{
                 flex: 0,
-                alignSelf: 'flex-start',
                 position: 'absolute',
-                marginLeft: itemWidth - itemWidth / 25 - 30,
-                marginTop: 5,
+                marginTop: -15,
+                marginLeft: itemWidth - itemWidth / 25 - 55,
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0,
               }}
-            >
-              <Icon
-                size={25}
-                name={this.state.favorites ? 'heart' : 'heart-o'}
-                style={{ color: 'red' }}
-              />
-            </TouchableOpacity>
+            />
             <View
               style={{
                 height: (itemWidth - itemWidth / 25) / 4.5,
