@@ -388,18 +388,21 @@ class SignupForm extends Component {
                   style={{
                     flexDirection: 'row',
                     flex: 1,
-                    marginTop: 10,
+                    marginTop: Platform.OS === 'ios' ? -10 : 10,
                     marginBottom: 30,
                     alignItems: 'center',
                     borderColor: 'white',
                     borderBottomWidth: 1,
-                    justifyContent: 'space-between',
+                    // justifyContent: 'space-between',
+                    height: Platform.OS === 'ios' && this.state.values.regionName.length > 30 ?
+                      Platform.OS === 'ios' && this.state.values.regionName.length > 50 ? 100 : 70
+                      : 55,
                   }}
                 >
-                  <Text style={{ flex: 3, color: 'white' }}>
+                  <Text style={{ flex: 2.5, color: 'white' }}>
                     {`${I18n.t('editProfile.country')} / ${I18n.t('editProfile.region')}`}
                   </Text>
-                  <View style={{ flex: 1, alignItems: 'flex-start' }}>
+                  <View style={{ flex: 0.7, alignItems: 'flex-start' }}>
                     <CountryPicker
                       onChange={(value) => {
                         this.setState({
@@ -434,18 +437,19 @@ class SignupForm extends Component {
                       closeable
                     />
                   </View>
-                  <View style={{ flex: 3, alignSelf: 'flex-end' }}>
+                  <View style={{ flex: 3 }}>
                     <Picker
                       mode="dropdown"
+                      iosIcon={<Icon name="ios-arrow-down" style={{ color: 'white' }} />}
                       style={Platform.OS === 'android' ?
                         { flex: 1, color: 'white' } :
-                        { flex: 1, alignItems: 'center', width: 20 }}
+                        { alignItems: 'center' }}
                       placeholder={I18n.t('logIn.select_category')}
                       selectedValue={this.state.values.regionName}
                       onValueChange={this.onRegionSelect}
                       placeholderTextColor="white"
                       placeholderStyle={{ color: 'white' }}
-                      textStyle={{ color: 'white' }}
+                      textStyle={{ color: 'white', textAlign: Platform.OS === 'ios' ? 'center' : 'right' }}
                     >
                       {countryLib[`${this.state.values.countryCode}`].provinces.map(item => (
                         <Picker.Item label={item} value={item} key={item} />

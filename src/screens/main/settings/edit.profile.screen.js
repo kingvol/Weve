@@ -57,7 +57,6 @@ class EditProfileScreen extends Component {
         firstName: this.props.user.profile.firstName || '',
         lastName: this.props.user.profile.lastName || '',
         fullName: this.props.user.profile.fullName || '',
-        phoneNumber: this.props.user.profile.phoneNumber || '',
         profileImageURL: this.props.user.profile.profileImageURL || undefined,
         profileVideoURL: this.props.user.profile.profileVideoURL || '',
         providerImages: user.profile.providerImages ? {
@@ -744,7 +743,6 @@ class EditProfileScreen extends Component {
 
   render() {
     const { photoPermission, cameraPermission } = this.state;
-    const { phoneNumber } = this.state.values;
     const { checkBoxText, categoryText, styleDescription } = styles;
     const { isProvider } = this.props.user.profile;
 
@@ -941,17 +939,20 @@ class EditProfileScreen extends Component {
           <View
             style={{
               flexDirection: 'row',
-              marginTop: 10,
+              marginTop: Platform.OS === 'ios' ? 0 : 10,
               marginBottom: 30,
               alignItems: 'center',
               borderColor: lightTextColor,
               borderBottomWidth: 1,
+              height: Platform.OS === 'ios' && this.state.values.regionName.length > 30 ?
+                Platform.OS === 'ios' && this.state.values.regionName.length > 50 ? 100 : 70
+                : 55,
             }}
           >
-            <Text style={{ flex: 3, color: lightTextColor }}>
+            <Text style={{ flex: 2.5, color: lightTextColor }}>
               {`${I18n.t('editProfile.country')} / ${I18n.t('editProfile.region')}`}
             </Text>
-            <View style={{ flex: 1, alignItems: 'flex-start' }}>
+            <View style={{ flex: 0.7, alignItems: 'flex-start' }}>
               <CountryPicker
                 onChange={(value) => {
                   this.setState({
@@ -991,16 +992,17 @@ class EditProfileScreen extends Component {
             >
               <Picker
                 mode="dropdown"
+                iosIcon={<Icon name="angle-down" style={{ color: lightTextColor }} />}
                 style={Platform.OS === 'android' ?
                   { flex: 1, color: lightTextColor, alignItems: 'flex-end' } :
-                  { flex: 1, alignItems: 'center', width: 20 }}
+                  { alignItems: 'center' }}
                 itemTextStyle={{ color: lightTextColor }}
                 placeholder={I18n.t('logIn.select_category')}
                 selectedValue={this.state.values.regionName}
                 onValueChange={this.onRegionSelect}
                 placeholderTextColor={lightTextColor}
                 placeholderStyle={{ color: lightTextColor }}
-                textStyle={{ color: lightTextColor }}
+                textStyle={{ color: lightTextColor, textAlign: Platform.OS === 'ios' ? 'center' : 'right' }}
               >
                 {countryLib[`${this.state.values.countryCode}`].provinces.map(item => (
                   <Picker.Item label={item} value={item} key={item} />
