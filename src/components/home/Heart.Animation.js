@@ -9,6 +9,16 @@ export class HeartAnimation extends PureComponent {
     if (filled) this.animation.play(29, 30);
   }
 
+  componentWillReceiveProps = (nextProps) => {
+    if (nextProps.filled !== this.props.filled) {
+      if (nextProps.filled) {
+        this.animation.play(29, 30);
+      } else {
+        this.fillOut();
+      }
+    }
+  };
+
   onAnimationPress = () => {
     if (this.props.filled) {
       this.fillOut();
