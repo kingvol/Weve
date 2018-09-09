@@ -441,7 +441,7 @@ class SignupForm extends Component {
                     borderBottomWidth: 1,
                     justifyContent: 'space-between',
                     height: Platform.OS === 'ios' && this.state.values.regionName.length > 30 ?
-                      Platform.OS === 'ios' && this.state.values.regionName.length > 50 ? 100 : 70
+                      Platform.OS === 'ios' && this.state.values.regionName.length > 50 ? 75 : 50
                       : undefined,
                   }}
                 >
@@ -449,7 +449,7 @@ class SignupForm extends Component {
                     {I18n.t('editProfile.region')}
                   </Text>
 
-                  <View style={{ flex: 4, marginLeft: 20 }}>
+                  <View style={{ flex: 4, marginLeft: 20, alignItems: 'flex-end' }}>
                     <Picker
                       mode="dropdown"
                       iosIcon={<Icon

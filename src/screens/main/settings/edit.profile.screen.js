@@ -995,16 +995,16 @@ class EditProfileScreen extends Component {
               borderBottomWidth: 1,
               justifyContent: 'space-between',
               height: Platform.OS === 'ios' && this.state.values.regionName.length > 30 ?
-                Platform.OS === 'ios' && this.state.values.regionName.length > 50 ? 100 : 70
+                Platform.OS === 'ios' && this.state.values.regionName.length > 50 ? 75 : 50
                 : undefined,
             }}
           >
             <Text style={{ flex: 1, color: lightTextColor }}>
-              {I18n.t('editProfile.region')}
+              {I18n.t('editProfile.region')}          
             </Text>
 
             <View
-              style={{ flex: 4, marginLeft: 20, marginRight: 8 }}
+              style={{ flex: 4, marginLeft: 20, marginRight: 8, alignItems: 'flex-end' }}
             >
               <Picker
                 mode="dropdown"
