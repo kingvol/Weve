@@ -938,21 +938,19 @@ class EditProfileScreen extends Component {
 
           <View
             style={{
-              flexDirection: 'row',
-              marginTop: Platform.OS === 'ios' ? 0 : 10,
-              marginBottom: 30,
-              alignItems: 'center',
+              marginTop: 10,
               borderColor: lightTextColor,
               borderBottomWidth: 1,
-              height: Platform.OS === 'ios' && this.state.values.regionName.length > 30 ?
-                Platform.OS === 'ios' && this.state.values.regionName.length > 50 ? 100 : 70
-                : 55,
+              flexDirection: 'row',
+              paddingBottom: 10,
+              justifyContent: 'space-between',
+              alignItems: 'center',
             }}
           >
-            <Text style={{ flex: 2.5, color: lightTextColor }}>
-              {`${I18n.t('editProfile.country')} / ${I18n.t('editProfile.region')}`}
+            <Text style={{ flex: 3, color: lightTextColor }}>
+              {I18n.t('editProfile.country')}
             </Text>
-            <View style={{ flex: 0.7, alignItems: 'flex-start' }}>
+            <View style={{ marginRight: 8 }}>
               <CountryPicker
                 onChange={(value) => {
                   this.setState({
@@ -987,8 +985,26 @@ class EditProfileScreen extends Component {
                 closeable
               />
             </View>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              marginBottom: 30,
+              alignItems: 'center',
+              borderColor: lightTextColor,
+              borderBottomWidth: 1,
+              justifyContent: 'space-between',
+              height: Platform.OS === 'ios' && this.state.values.regionName.length > 30 ?
+                Platform.OS === 'ios' && this.state.values.regionName.length > 50 ? 100 : 70
+                : undefined,
+            }}
+          >
+            <Text style={{ flex: 1, color: lightTextColor }}>
+              {I18n.t('editProfile.region')}
+            </Text>
+
             <View
-              style={{ flex: 3 }}
+              style={{ flex: 4, marginLeft: 20, marginRight: 8 }}
             >
               <Picker
                 mode="dropdown"

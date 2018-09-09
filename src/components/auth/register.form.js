@@ -386,23 +386,18 @@ class SignupForm extends Component {
 
                 <View
                   style={{
-                    flexDirection: 'row',
-                    flex: 1,
-                    marginTop: Platform.OS === 'ios' ? -10 : 10,
-                    marginBottom: 30,
-                    alignItems: 'center',
                     borderColor: 'white',
                     borderBottomWidth: 1,
-                    // justifyContent: 'space-between',
-                    height: Platform.OS === 'ios' && this.state.values.regionName.length > 30 ?
-                      Platform.OS === 'ios' && this.state.values.regionName.length > 50 ? 100 : 70
-                      : 55,
+                    flexDirection: 'row',
+                    paddingBottom: 10,
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
                   }}
                 >
-                  <Text style={{ flex: 2.5, color: 'white' }}>
-                    {`${I18n.t('editProfile.country')} / ${I18n.t('editProfile.region')}`}
+                  <Text style={{ flex: 3, color: 'white' }}>
+                    {I18n.t('editProfile.country')}
                   </Text>
-                  <View style={{ flex: 0.7, alignItems: 'flex-start' }}>
+                  <View>
                     <CountryPicker
                       onChange={(value) => {
                         this.setState({
@@ -437,10 +432,34 @@ class SignupForm extends Component {
                       closeable
                     />
                   </View>
-                  <View style={{ flex: 3 }}>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    borderColor: 'white',
+                    borderBottomWidth: 1,
+                    justifyContent: 'space-between',
+                    height: Platform.OS === 'ios' && this.state.values.regionName.length > 30 ?
+                      Platform.OS === 'ios' && this.state.values.regionName.length > 50 ? 100 : 70
+                      : undefined,
+                  }}
+                >
+                  <Text style={{ flex: 1, color: 'white' }}>
+                    {I18n.t('editProfile.region')}
+                  </Text>
+
+                  <View style={{ flex: 4, marginLeft: 20 }}>
                     <Picker
                       mode="dropdown"
-                      iosIcon={<Icon name="ios-arrow-down" style={{ color: 'white' }} />}
+                      iosIcon={<Icon
+                        name="md-arrow-dropdown"
+                        style={{
+                        color: '#5c251c',
+                        alignSelf: 'flex-start',
+                        textAlignVertical: 'bottom',
+                        fontSize: 20 }}
+                      />}
                       style={Platform.OS === 'android' ?
                         { flex: 1, color: 'white' } :
                         { alignItems: 'center' }}
