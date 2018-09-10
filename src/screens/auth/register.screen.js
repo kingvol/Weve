@@ -82,9 +82,9 @@ class RegisterScreen extends Component {
     }
 
     try {
-      this.setState({ loading: true });
-      const { secureUrl } = await this.uploadProfileImage(image);
-      image = secureUrl;
+      this.setState({ loading: true });     
+      const { secure_url } = await this.uploadProfileImage(image); 
+      image = secure_url;
     } catch ({ message }) {
       alert(I18n.t(`backend.${message}`, { defaults: [{ scope: 'chat.error' }] }));
       this.setState({ loading: false });
