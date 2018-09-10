@@ -1004,7 +1004,7 @@ class EditProfileScreen extends Component {
             </Text>
 
             <View
-              style={{ flex: 4, marginLeft: 20, marginRight: 8, alignItems: 'flex-end' }}
+              style={{ flex: 4, marginLeft: 20, marginRight: 8, alignItems: Platform.OS === 'ios' ? 'flex-end' : undefined }}
             >
               <Picker
                 mode="dropdown"
