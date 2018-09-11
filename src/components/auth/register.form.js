@@ -11,6 +11,7 @@ import {
   Modal,
   TouchableOpacity,
   Dimensions,
+  Platform,
 } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import CountryPicker from 'react-native-country-picker-modal';
@@ -385,20 +386,18 @@ class SignupForm extends Component {
 
                 <View
                   style={{
-                    flexDirection: 'row',
-                    flex: 1,
-                    marginTop: 10,
-                    marginBottom: 30,
-                    alignItems: 'center',
                     borderColor: 'white',
                     borderBottomWidth: 1,
+                    flexDirection: 'row',
+                    paddingBottom: 10,
                     justifyContent: 'space-between',
+                    alignItems: 'center',
                   }}
                 >
                   <Text style={{ flex: 3, color: 'white' }}>
-                    {`${I18n.t('editProfile.country')} / ${I18n.t('editProfile.region')}`}
+                    {I18n.t('editProfile.country')}
                   </Text>
-                  <View style={{ flex: 1, alignItems: 'flex-start' }}>
+                  <View>
                     <CountryPicker
                       onChange={(value) => {
                         this.setState({
@@ -433,16 +432,43 @@ class SignupForm extends Component {
                       closeable
                     />
                   </View>
-                  <View style={{ flex: 3, alignSelf: 'flex-end' }}>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    borderColor: 'white',
+                    borderBottomWidth: 1,
+                    justifyContent: 'space-between',
+                    height: Platform.OS === 'ios' && this.state.values.regionName.length > 30 ?
+                      Platform.OS === 'ios' && this.state.values.regionName.length > 50 ? 75 : 50
+                      : undefined,
+                  }}
+                >
+                  <Text style={{ flex: 1, color: 'white' }}>
+                    {I18n.t('editProfile.region')}
+                  </Text>
+
+                  <View style={{ flex: 4, marginLeft: 20, alignItems: Platform.OS === 'ios' ? 'flex-end' : undefined }}>
                     <Picker
                       mode="dropdown"
-                      style={{ color: 'white', flex: 1 }}
+                      iosIcon={<Icon
+                        name="md-arrow-dropdown"
+                        style={{
+                        color: '#5c251c',
+                        alignSelf: 'flex-start',
+                        textAlignVertical: 'bottom',
+                        fontSize: 20 }}
+                      />}
+                      style={Platform.OS === 'android' ?
+                        { flex: 1, color: 'white' } :
+                        { alignItems: 'center' }}
                       placeholder={I18n.t('logIn.select_category')}
                       selectedValue={this.state.values.regionName}
                       onValueChange={this.onRegionSelect}
                       placeholderTextColor="white"
                       placeholderStyle={{ color: 'white' }}
-                      textStyle={{ color: 'white' }}
+                      textStyle={{ color: 'white', textAlign: Platform.OS === 'ios' ? 'center' : 'right' }}
                     >
                       {countryLib[`${this.state.values.countryCode}`].provinces.map(item => (
                         <Picker.Item label={item} value={item} key={item} />

@@ -57,7 +57,6 @@ class EditProfileScreen extends Component {
         firstName: this.props.user.profile.firstName || '',
         lastName: this.props.user.profile.lastName || '',
         fullName: this.props.user.profile.fullName || '',
-        phoneNumber: this.props.user.profile.phoneNumber || '',
         profileImageURL: this.props.user.profile.profileImageURL || undefined,
         profileVideoURL: this.props.user.profile.profileVideoURL || '',
         providerImages: user.profile.providerImages ? {
@@ -744,7 +743,6 @@ class EditProfileScreen extends Component {
 
   render() {
     const { photoPermission, cameraPermission } = this.state;
-    const { phoneNumber } = this.state.values;
     const { checkBoxText, categoryText, styleDescription } = styles;
     const { isProvider } = this.props.user.profile;
 
@@ -940,18 +938,19 @@ class EditProfileScreen extends Component {
 
           <View
             style={{
-              flexDirection: 'row',
               marginTop: 10,
-              marginBottom: 30,
-              alignItems: 'center',
               borderColor: lightTextColor,
               borderBottomWidth: 1,
+              flexDirection: 'row',
+              paddingBottom: 10,
+              justifyContent: 'space-between',
+              alignItems: 'center',
             }}
           >
             <Text style={{ flex: 3, color: lightTextColor }}>
-              {`${I18n.t('editProfile.country')} / ${I18n.t('editProfile.region')}`}
+              {I18n.t('editProfile.country')}
             </Text>
-            <View style={{ flex: 1, alignItems: 'flex-start' }}>
+            <View style={{ marginRight: 8 }}>
               <CountryPicker
                 onChange={(value) => {
                   this.setState({
@@ -986,21 +985,40 @@ class EditProfileScreen extends Component {
                 closeable
               />
             </View>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              marginBottom: 30,
+              alignItems: 'center',
+              borderColor: lightTextColor,
+              borderBottomWidth: 1,
+              justifyContent: 'space-between',
+              height: Platform.OS === 'ios' && this.state.values.regionName.length > 30 ?
+                Platform.OS === 'ios' && this.state.values.regionName.length > 50 ? 75 : 50
+                : undefined,
+            }}
+          >
+            <Text style={{ flex: 1, color: lightTextColor }}>
+              {I18n.t('editProfile.region')}          
+            </Text>
+
             <View
-              style={{ flex: 3 }}
+              style={{ flex: 4, marginLeft: 20, marginRight: 8, alignItems: Platform.OS === 'ios' ? 'flex-end' : undefined }}
             >
               <Picker
                 mode="dropdown"
+                iosIcon={<Icon name="angle-down" style={{ color: lightTextColor }} />}
                 style={Platform.OS === 'android' ?
                   { flex: 1, color: lightTextColor, alignItems: 'flex-end' } :
-                  { flex: 1, alignItems: 'flex-end' }}
+                  { alignItems: 'center' }}
                 itemTextStyle={{ color: lightTextColor }}
                 placeholder={I18n.t('logIn.select_category')}
                 selectedValue={this.state.values.regionName}
                 onValueChange={this.onRegionSelect}
                 placeholderTextColor={lightTextColor}
                 placeholderStyle={{ color: lightTextColor }}
-                textStyle={{ color: lightTextColor }}
+                textStyle={{ color: lightTextColor, textAlign: Platform.OS === 'ios' ? 'center' : 'right' }}
               >
                 {countryLib[`${this.state.values.countryCode}`].provinces.map(item => (
                   <Picker.Item label={item} value={item} key={item} />
