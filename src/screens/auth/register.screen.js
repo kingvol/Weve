@@ -9,7 +9,7 @@ import { AuthActions } from '../../actions';
 import RegisterForm from '../../components/auth/register.form';
 import config from '../../../config';
 import Analytics from '../../services/AnalyticsService';
-import * as splashyLoader from '../../animations/splashyLoader.json';
+import * as splashyLoader from '../../animations/loader.json';
 
 const { registerUser, loginUser } = AuthActions;
 
@@ -82,8 +82,8 @@ class RegisterScreen extends Component {
     }
 
     try {
-      this.setState({ loading: true });     
-      const { secure_url } = await this.uploadProfileImage(image); 
+      this.setState({ loading: true });
+      const { secure_url } = await this.uploadProfileImage(image);
       image = secure_url;
     } catch ({ message }) {
       alert(I18n.t(`backend.${message}`, { defaults: [{ scope: 'chat.error' }] }));
