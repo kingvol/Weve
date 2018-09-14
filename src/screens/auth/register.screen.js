@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { View } from 'react-native';
+import LottieView from 'lottie-react-native';
 import * as Keychain from 'react-native-keychain';
+import I18n from 'react-native-i18n';
 
 import { AuthActions } from '../../actions';
 import RegisterForm from '../../components/auth/register.form';
 import config from '../../../config';
 import Analytics from '../../services/AnalyticsService';
+import * as splashyLoader from '../../animations/loader.json';
 
 const { registerUser, loginUser } = AuthActions;
 
@@ -129,7 +133,19 @@ class RegisterScreen extends Component {
   };
 
   render() {
-    return (
+    return this.state.loading ? (
+      <View
+        style={{
+          alignItems: 'center',
+          backgroundColor: 'white',
+          justifyContent: 'center',
+          width: '100%',
+          height: '100%',
+        }}
+      >
+        <LottieView style={{ width: 150, height: 150 }} source={splashyLoader} autoPlay />
+      </View>
+    ) : (
       <RegisterForm
         onBackPress={this.onBackPress}
         onFormSubmit={this.onFormSubmit}
