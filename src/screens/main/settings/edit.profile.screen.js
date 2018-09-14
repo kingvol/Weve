@@ -26,6 +26,7 @@ import {
   FieldInput,
   Thumbnail,
   Text,
+  RadioButton,
 } from '../../../components/common';
 import { backgroundColor, lightTextColor } from '../../../theme';
 import ProfileImage from '../../../components/home/ProfileImage';
@@ -401,24 +402,28 @@ class EditProfileScreen extends Component {
     this.setState({ loading: false });
   };
 
-  toggleSwitchPhone = (value) => {
-    this.dataModified();
-    this.setState({
-      values: {
-        ...this.state.values,
-        allowPhoneCalls: value,
-      },
-    });
+  toggleSwitchPhone = () => {
+    setTimeout(() => {
+      this.dataModified();
+      this.setState({
+        values: {
+          ...this.state.values,
+          allowPhoneCalls: !this.state.values.allowPhoneCalls,
+        },
+      });
+    }, 600);
   };
 
-  toggleSwitchChat = (value) => {
-    this.dataModified();
-    this.setState({
-      values: {
-        ...this.state.values,
-        chatEnabled: value,
-      },
-    });
+  toggleSwitchChat = () => {
+    setTimeout(() => {
+      this.dataModified();
+      this.setState({
+        values: {
+          ...this.state.values,
+          chatEnabled: !this.state.values.chatEnabled,
+        },
+      });
+    }, 600);
   };
 
   keyboardDidShow = () => {
@@ -903,12 +908,17 @@ class EditProfileScreen extends Component {
               {this.state.values.allowPhoneCalls ?
                   I18n.t('editProfile.CallOn') : I18n.t('editProfile.CallOff') }
             </Text>
-
-            <Switch
-              onValueChange={this.toggleSwitchPhone}
-              value={this.state.values.allowPhoneCalls}
-              onTintColor="#49d260"
-              thumbTintColor="#e7e7e7"
+            <RadioButton
+              onAnimationPress={this.toggleSwitchPhone}
+              enabled={this.state.values.allowPhoneCalls}
+              styleContainer={{
+                marginTop: -8,
+                marginBottom: -8,
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0,
+              }}
             />
           </View>
             )}
@@ -927,11 +937,17 @@ class EditProfileScreen extends Component {
               {this.state.values.chatEnabled ?
                   I18n.t('editProfile.ChatOn') : I18n.t('editProfile.ChatOff') }
             </Text>
-            <Switch
-              onValueChange={this.toggleSwitchChat}
-              value={this.state.values.chatEnabled}
-              onTintColor="#49d260"
-              thumbTintColor="#e7e7e7"
+            <RadioButton
+              onAnimationPress={this.toggleSwitchChat}
+              enabled={this.state.values.chatEnabled}
+              styleContainer={{
+                marginTop: -8,
+                marginBottom: -8,
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0,
+              }}
             />
           </View>
           )}
