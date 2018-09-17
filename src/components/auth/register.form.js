@@ -449,7 +449,7 @@ class SignupForm extends Component {
                     {I18n.t('editProfile.region')}
                   </Text>
 
-                  <View style={{ flex: 4, marginLeft: 20, alignItems: Platform.OS === 'ios' ? 'flex-end' : undefined }}>
+                  <View style={{ flex: 4, marginLeft: 30, alignItems: Platform.OS === 'ios' ? 'flex-end' : undefined }}>
                     <Picker
                       mode="dropdown"
                       iosIcon={<Icon
@@ -461,8 +461,8 @@ class SignupForm extends Component {
                         fontSize: 20 }}
                       />}
                       style={Platform.OS === 'android' ?
-                        { flex: 1, color: 'white' } :
-                        { alignItems: 'center' }}
+                        { flex: 1, color: 'white', marginRight: -20 } :
+                        { alignItems: 'center', marginRight: -15 }}
                       placeholder={I18n.t('logIn.select_category')}
                       selectedValue={this.state.values.regionName}
                       onValueChange={this.onRegionSelect}

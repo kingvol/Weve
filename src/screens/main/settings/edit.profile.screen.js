@@ -954,7 +954,7 @@ class EditProfileScreen extends Component {
 
           <View
             style={{
-              marginTop: 10,
+              marginTop: 5,
               borderColor: lightTextColor,
               borderBottomWidth: 1,
               flexDirection: 'row',
@@ -966,7 +966,7 @@ class EditProfileScreen extends Component {
             <Text style={{ flex: 3, color: lightTextColor }}>
               {I18n.t('editProfile.country')}
             </Text>
-            <View style={{ marginRight: 8 }}>
+            <View style={{ marginRight: 8, marginTop: -10 }}>
               <CountryPicker
                 onChange={(value) => {
                   this.setState({
