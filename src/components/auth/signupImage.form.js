@@ -12,15 +12,13 @@ export default class SignupImageForm extends Component {
   state = {
     imageAttached: false,
     image: null,
-    cameraPermission: 'undetermined',
     photoPermission: 'undetermined',
   };
 
   componentDidMount() {
-    Permissions.checkMultiple(['camera', 'photo']).then((response) => {
+    Permissions.checkMultiple(['photo']).then((response) => {
       // response is an object mapping type to permission
       this.setState({
-        cameraPermission: response.camera,
         photoPermission: response.photo,
       });
     });
@@ -32,14 +30,6 @@ export default class SignupImageForm extends Component {
       image: defaultProfile,
     });
     this.props.onImageSelect(defaultProfile);
-  };
-
-  requestPermissionCamera = () => {
-    Permissions.request('camera').then((response) => {
-      // Returns once the user has chosen to 'allow' or to 'not allow' access
-      // Response is one of: 'authorized', 'denied', 'restricted', or 'undetermined'
-      this.setState({ cameraPermission: response });
-    });
   };
 
   requestPermissionPhoto = () => {
@@ -62,12 +52,7 @@ export default class SignupImageForm extends Component {
     ImagePicker.showImagePicker(options, (response) => {
       const { error, uri } = response;
       if (error) {
-        Alert.alert(
-          I18n.t('editProfile.avatar_error'),
-          `${error}`,
-          [{ text: `${I18n.t('common.ok')}` }],
-          { cancelable: false },
-        );
+        this.setDefaultImage();
         return;
       }
       if (uri) {
@@ -81,39 +66,22 @@ export default class SignupImageForm extends Component {
   };
 
   captureImage = () => {
-    const { photoPermission, cameraPermission } = this.state;
-    if (photoPermission !== 'authorized' || cameraPermission !== 'authorized') {
-      if (photoPermission !== 'authorized') {
-        Alert.alert(
-          I18n.t('editProfile.permissions.allowPhoto'),
-          I18n.t('editProfile.permissions.descriptionPhoto'),
-          [
-            {
-              text: I18n.t('common.deny'),
-              onPress: this.setDefaultImage,
-              style: 'cancel',
-            },
-            Platform.OS === 'android' || photoPermission === 'undetermined'
-              ? { text: I18n.t('common.allow'), onPress: this.requestPermissionPhoto }
-              : { text: I18n.t('common.OpenSettings'), onPress: Permissions.openSettings },
-          ],
-        );
-      } else if (cameraPermission !== 'authorized') {
-        Alert.alert(
-          I18n.t('editProfile.permissions.allowCamera'),
-          I18n.t('editProfile.permissions.descriptionCamera'),
-          [
-            {
-              text: 'Deny',
-              onPress: this.setDefaultImage,
-              style: 'cancel',
-            },
-            Platform.OS === 'android' || cameraPermission === 'undetermined'
-              ? { text: I18n.t('common.allow'), onPress: this.requestPermissionCamera }
-              : { text: I18n.t('common.OpenSettings'), onPress: Permissions.openSettings },
-          ],
-        );
-      }
+    const { photoPermission } = this.state;
+    if (photoPermission !== 'authorized') {
+      Alert.alert(
+        I18n.t('editProfile.permissions.allowPhoto'),
+        I18n.t('editProfile.permissions.descriptionPhoto'),
+        [
+          {
+            text: I18n.t('common.deny'),
+            onPress: this.setDefaultImage,
+            style: 'cancel',
+          },
+          Platform.OS === 'android' || photoPermission === 'undetermined'
+            ? { text: I18n.t('common.allow'), onPress: this.requestPermissionPhoto }
+            : { text: I18n.t('common.OpenSettings'), onPress: Permissions.openSettings },
+        ],
+      );
     } else {
       this.showImagePickerMethod();
     }
