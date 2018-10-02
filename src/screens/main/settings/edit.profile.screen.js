@@ -502,12 +502,7 @@ class EditProfileScreen extends Component {
   };
 
   captureImage = () => {
-    const { photoPermission } = this.state;
-    if (photoPermission !== 'authorized') {
-      this.requestPermissionPhoto();
-    } else {
-      this.showImagePickerMethod();
-    }
+    this.showImagePickerMethod();
   };
 
   captureProviderImage = async (index) => {

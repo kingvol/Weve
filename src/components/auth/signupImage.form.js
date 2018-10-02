@@ -78,7 +78,7 @@ export default class SignupImageForm extends Component {
             style: 'cancel',
           },
           Platform.OS === 'android' || photoPermission === 'undetermined'
-            ? { text: I18n.t('common.allow'), onPress: this.requestPermissionPhoto }
+            ? { text: I18n.t('common.allow'), onPress: this.showImagePickerMethod() }
             : { text: I18n.t('common.OpenSettings'), onPress: Permissions.openSettings },
         ],
       );
