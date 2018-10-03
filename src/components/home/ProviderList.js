@@ -58,6 +58,10 @@ class ProviderList extends PureComponent {
   };
 
   onPressItem = (provider) => {
+    if (!provider.fullName) { // backward compatibility
+      provider.fullName = `${provider.firstName} ${provider.lastName || ''}`;
+    }
+
     this.props.navigator.push({
       screen: 'wevedo.ProviderProfile',
       title: provider.fullName.length > 20
@@ -79,11 +83,13 @@ class ProviderList extends PureComponent {
 
   fetchProvidersList = async (category, page, country, region) => {
     try {
-      this.setState({ isLoading: true });
+      if (page === 1) {
+        this.setState({ isLoading: true });
+      } // avoid list re-render
       const providers = await api.fetchListByCategory(category, page, country, region);
       this.setState({
         isLoading: false,
-        providers: _.sortBy([...this.state.providers, ...providers], 'createdAt').reverse(),
+        providers: this.state.providers.length ? [...this.state.providers, ...providers] : providers,
         disableMore: providers.length < PROVIDERS_PER_PAGE,
       });
     } catch ({ message }) {
