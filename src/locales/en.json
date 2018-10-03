@@ -28,7 +28,8 @@
     "landscape": "*Please upload landscape image - your profile will look great",
     "biometrics": "Fingerprint login?",
     "biometrics_title": "Fingerprint ID",
-    "biometrics_scan": "Scan your finger to sign in"
+    "biometrics_scan": "Scan your finger to sign in",
+    "add_photo_later": "I'll add photo later"
   },
   "eula": {
     "error": "Sorry you cannot sign up!",
