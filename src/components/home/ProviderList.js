@@ -58,7 +58,7 @@ class ProviderList extends PureComponent {
   };
 
   onPressItem = (provider) => {
-    if (!provider.fullName) {
+    if (!provider.fullName) { // backward compatibility
       provider.fullName = `${provider.firstName} ${provider.lastName || ''}`;
     }
 
@@ -83,7 +83,9 @@ class ProviderList extends PureComponent {
 
   fetchProvidersList = async (category, page, country, region) => {
     try {
-      this.setState({ isLoading: true });
+      if (page === 1) {
+        this.setState({ isLoading: true });
+      } // avoid list re-render
       const providers = await api.fetchListByCategory(category, page, country, region);
       this.setState({
         isLoading: false,
