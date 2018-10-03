@@ -12,7 +12,6 @@ import SpinnerOverlay from 'react-native-loading-spinner-overlay';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DeviceInfo from 'react-native-device-info';
 import MultiSelect from 'react-native-multiple-select';
-import Permissions from 'react-native-permissions';
 import ImageResizer from 'react-native-image-resizer';
 import I18n from '../../../locales';
 import config from '../../../../config';
@@ -84,7 +83,6 @@ class EditProfileScreen extends Component {
       categories: [],
       profileIconColor: 'green',
       isDataModified: false,
-      photoPermission: 'undetermined',
       /* Video upload */
       isVideoUploading: false,
       videoUploadProgress: 0,
@@ -158,12 +156,6 @@ class EditProfileScreen extends Component {
     if (!this.props.user.profile._id) {
       this.props.fetchProfile('me');
     }
-    Permissions.checkMultiple(['photo']).then((response) => {
-      // response is an object mapping type to permission
-      this.setState({
-        photoPermission: response.photo,
-      });
-    });
   }
 
   componentWillReceiveProps({ user }) {
@@ -457,17 +449,6 @@ class EditProfileScreen extends Component {
     }).then(raw => raw.json());
   };
 
-  requestPermissionPhoto = () => {
-    Permissions.request('photo').then((response) => {
-      // Returns once the user has chosen to 'allow' or to 'not allow' access
-      // Response is one of: 'authorized', 'denied', 'restricted', or 'undetermined'
-      if (response !== 'authorized') {
-        this.setDefaultImage();
-      }
-      this.setState({ photoPermission: response });
-    });
-  };
-
   showImagePickerMethod = () => {
     this.dataModified();
     const options = {
@@ -697,7 +678,6 @@ class EditProfileScreen extends Component {
   }
 
   render() {
-    const { photoPermission } = this.state;
     const { checkBoxText, categoryText, styleDescription } = styles;
     const { isProvider } = this.props.user.profile;
 
@@ -714,7 +694,7 @@ class EditProfileScreen extends Component {
           keyboardShouldPersistTaps="always"
           ref={this.setScrollRef}
         >
-          { isProvider && photoPermission === 'authorized' ? (
+          { isProvider ? (
             <View style={{ justifyContent: 'space-between' }}>
                <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
                  <ProfileImage
@@ -785,8 +765,7 @@ class EditProfileScreen extends Component {
                  />
 
                </View>
-             </View>
-
+            </View>
           ) : (
             <View style={{ justifyContent: 'center' }}>
               <Button
@@ -805,7 +784,7 @@ class EditProfileScreen extends Component {
                     defaultProfile,
                 }}
                 />
-                {!this.state.values.profileImageURL || photoPermission !== 'authorized' ? (
+                {!this.state.values.profileImageURL ? (
              <View
                style={{
                 flex: 0,
