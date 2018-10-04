@@ -5,7 +5,7 @@ import ImagePicker from 'react-native-image-picker';
 import I18n from 'react-native-i18n';
 import Permissions from 'react-native-permissions';
 
-const defaultProfile = 'https://res.cloudinary.com/wevedo/image/upload/v1538640313/profileImages/eoxggcn1864wbdjmelsn.png';
+const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png';
 
 export default class SignupImageForm extends Component {
   state = {

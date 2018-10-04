@@ -31,6 +31,7 @@ import { backgroundColor, lightTextColor } from '../../../theme';
 import ProfileImage from '../../../components/home/ProfileImage';
 import { UserActions } from '../../../actions';
 import APIs from '../../../api';
+import Permissions from 'react-native-permissions';
 
 const { CategoryApi } = APIs;
 const categoryApi = new CategoryApi();
@@ -483,10 +484,34 @@ class EditProfileScreen extends Component {
   };
 
   captureImage = () => {
-    this.showImagePickerMethod();
-  };
+    Permissions.check('photo').then((response) => {
+      if (response !== 'denied' && response !== 'restricted' && response !== 'authorized') {
+        Permissions.request('photo').then((resp) => {
+          if (resp === 'authorized') {
+            this.showImagePickerMethod();
+          }
+        });
+      }
+    });
+  }
 
   captureProviderImage = async (index) => {
+    let isPhotoAllowed = false;
+    const permission = await Permissions.check('photo');
+    console.warn(permission);
+
+    if (permission === 'undetermined') {
+      const response = await Permissions.request('photo');
+      isPhotoAllowed = response === 'authorized';
+    } else if (permission === 'authorized') {
+      isPhotoAllowed = true;
+    } else {
+      return;
+    }
+
+    if (!isPhotoAllowed) return;
+
+
     this.dataModified();
     const options = {
       title: I18n.t('editProfile.select_avatar'),
