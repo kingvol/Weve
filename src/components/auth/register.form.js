@@ -153,13 +153,13 @@ class SignupForm extends Component {
     });
   }
 
-  onImageSelect = (image) => {
+  onImageSelect = (image, cb = () => {}) => {
     this.setState({
       values: {
         ...this.state.values,
         image,
       },
-    });
+    }, cb);
   };
 
   onFieldChange = (key, value) => {
