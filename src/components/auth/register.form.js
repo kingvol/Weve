@@ -153,13 +153,13 @@ class SignupForm extends Component {
     });
   }
 
-  onImageSelect = (image) => {
+  onImageSelect = (image, cb = () => {}) => {
     this.setState({
       values: {
         ...this.state.values,
         image,
       },
-    });
+    }, cb);
   };
 
   onFieldChange = (key, value) => {
@@ -571,7 +571,7 @@ class SignupForm extends Component {
 
             {this.state.isProvider &&
               this.state.step === 2 && (
-                <SignupImageForm key="imfs" onImageSelect={this.onImageSelect} />
+                <SignupImageForm key="imfs" onImageSelect={this.onImageSelect} handleSubmit={this.handleSubmit} />
               )}
 
             {!disabled && (!this.props.isLoading || !this.state.loading) ? (

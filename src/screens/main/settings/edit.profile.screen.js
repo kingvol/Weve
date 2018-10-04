@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle, camelcase */
 import React, { Component } from 'react';
-import { Alert, Keyboard, View, Dimensions, TextInput, Switch, Platform, ActivityIndicator } from 'react-native';
+import { Alert, Keyboard, View, Dimensions, TextInput, Platform, ActivityIndicator } from 'react-native';
 import * as Progress from 'react-native-progress';
 import Upload from 'react-native-background-upload';
 import _ from 'lodash';
@@ -12,7 +12,6 @@ import SpinnerOverlay from 'react-native-loading-spinner-overlay';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DeviceInfo from 'react-native-device-info';
 import MultiSelect from 'react-native-multiple-select';
-import Permissions from 'react-native-permissions';
 import ImageResizer from 'react-native-image-resizer';
 import I18n from '../../../locales';
 import config from '../../../../config';
@@ -32,6 +31,7 @@ import { backgroundColor, lightTextColor } from '../../../theme';
 import ProfileImage from '../../../components/home/ProfileImage';
 import { UserActions } from '../../../actions';
 import APIs from '../../../api';
+import Permissions from 'react-native-permissions';
 
 const { CategoryApi } = APIs;
 const categoryApi = new CategoryApi();
@@ -84,8 +84,6 @@ class EditProfileScreen extends Component {
       categories: [],
       profileIconColor: 'green',
       isDataModified: false,
-      cameraPermission: 'undetermined',
-      photoPermission: 'undetermined',
       /* Video upload */
       isVideoUploading: false,
       videoUploadProgress: 0,
@@ -159,13 +157,6 @@ class EditProfileScreen extends Component {
     if (!this.props.user.profile._id) {
       this.props.fetchProfile('me');
     }
-    Permissions.checkMultiple(['camera', 'photo']).then((response) => {
-      // response is an object mapping type to permission
-      this.setState({
-        cameraPermission: response.camera,
-        photoPermission: response.photo,
-      });
-    });
   }
 
   componentWillReceiveProps({ user }) {
@@ -459,25 +450,6 @@ class EditProfileScreen extends Component {
     }).then(raw => raw.json());
   };
 
-  requestPermissionCamera = () => {
-    Permissions.request('camera').then((response) => {
-      // Returns once the user has chosen to 'allow' or to 'not allow' access
-      // Response is one of: 'authorized', 'denied', 'restricted', or 'undetermined'
-      this.setState({ cameraPermission: response });
-    });
-  };
-
-  requestPermissionPhoto = () => {
-    Permissions.request('photo').then((response) => {
-      // Returns once the user has chosen to 'allow' or to 'not allow' access
-      // Response is one of: 'authorized', 'denied', 'restricted', or 'undetermined'
-      if (response !== 'authorized') {
-        this.setDefaultImage();
-      }
-      this.setState({ photoPermission: response });
-    });
-  };
-
   showImagePickerMethod = () => {
     this.dataModified();
     const options = {
@@ -512,50 +484,34 @@ class EditProfileScreen extends Component {
   };
 
   captureImage = () => {
-    const { photoPermission, cameraPermission } = this.state;
-    if (
-      photoPermission !== 'authorized' ||
-      cameraPermission !== 'authorized'
-    ) {
-      if (photoPermission !== 'authorized') {
-        /* Alert.alert(
-          I18n.t('editProfile.permissions.allowPhoto'),
-          I18n.t('editProfile.permissions.descriptionPhoto'),
-          [
-            {
-              text: I18n.t('common.deny'),
-              onPress: this.setDefaultImage,
-              style: 'cancel',
-            },
-            Platform.OS === 'android' || photoPermission === 'undetermined'
-              ? { text: I18n.t('common.allow'), onPress: this.requestPermissionPhoto }
-              : { text: I18n.t('common.OpenSettings'), onPress: Permissions.openSettings },
-          ],
-        ); */
-        this.requestPermissionPhoto();
-      } else if (cameraPermission !== 'authorized') {
-        /* Alert.alert(
-          I18n.t('editProfile.permissions.allowCamera'),
-          I18n.t('editProfile.permissions.descriptionCamera'),
-          [
-            {
-              text: 'Deny',
-              onPress: this.setDefaultImage,
-              style: 'cancel',
-            },
-            Platform.OS === 'android' || cameraPermission === 'undetermined'
-              ? { text: I18n.t('common.allow'), onPress: this.requestPermissionCamera }
-              : { text: I18n.t('common.OpenSettings'), onPress: Permissions.openSettings },
-          ],
-        ); */
-        this.requestPermissionCamera();
+    Permissions.check('photo').then((response) => {
+      if (response !== 'denied' && response !== 'restricted' && response !== 'authorized') {
+        Permissions.request('photo').then((resp) => {
+          if (resp === 'authorized') {
+            this.showImagePickerMethod();
+          }
+        });
       }
-    } else {
-      this.showImagePickerMethod();
-    }
-  };
+    });
+  }
 
   captureProviderImage = async (index) => {
+    let isPhotoAllowed = false;
+    const permission = await Permissions.check('photo');
+    console.warn(permission);
+
+    if (permission === 'undetermined') {
+      const response = await Permissions.request('photo');
+      isPhotoAllowed = response === 'authorized';
+    } else if (permission === 'authorized') {
+      isPhotoAllowed = true;
+    } else {
+      return;
+    }
+
+    if (!isPhotoAllowed) return;
+
+
     this.dataModified();
     const options = {
       title: I18n.t('editProfile.select_avatar'),
@@ -747,7 +703,6 @@ class EditProfileScreen extends Component {
   }
 
   render() {
-    const { photoPermission, cameraPermission } = this.state;
     const { checkBoxText, categoryText, styleDescription } = styles;
     const { isProvider } = this.props.user.profile;
 
@@ -764,9 +719,8 @@ class EditProfileScreen extends Component {
           keyboardShouldPersistTaps="always"
           ref={this.setScrollRef}
         >
-          { isProvider && photoPermission === 'authorized'
-           && cameraPermission === 'authorized' ? (
-             <View style={{ justifyContent: 'space-between' }}>
+          { isProvider ? (
+            <View style={{ justifyContent: 'space-between' }}>
                <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
                  <ProfileImage
                    id="EditProfile.imageWrapper1"
@@ -836,8 +790,7 @@ class EditProfileScreen extends Component {
                  />
 
                </View>
-             </View>
-
+            </View>
           ) : (
             <View style={{ justifyContent: 'center' }}>
               <Button
@@ -856,8 +809,7 @@ class EditProfileScreen extends Component {
                     defaultProfile,
                 }}
                 />
-                {!this.state.values.profileImageURL || photoPermission !== 'authorized'
-           || cameraPermission !== 'authorized' ? (
+                {!this.state.values.profileImageURL ? (
              <View
                style={{
                 flex: 0,
