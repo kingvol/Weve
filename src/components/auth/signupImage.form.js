@@ -23,6 +23,7 @@ export default class SignupImageForm extends Component {
 
   skipImageUpload = () => {
     this.setDefaultImage();
+    this.props.handleSubmit();
   }
 
   showImagePickerMethod = () => {
