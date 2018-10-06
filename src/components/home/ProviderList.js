@@ -9,10 +9,9 @@ import {
   Text,
   Dimensions,
 } from 'react-native';
-import _ from 'lodash';
+import { Spinner } from 'native-base';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { Button } from '.././common';
 import ProviderListItem from './ProviderListItem';
 import ProviderGridItem from './ProviderGridItem';
 import { primaryFont, backgroundColor } from '../../theme';
@@ -26,7 +25,6 @@ const { displayModeChanged, shortListChanged } = UIActions;
 const { ProviderApi } = APIs;
 const api = new ProviderApi();
 const ITEM_WIDTH = Dimensions.get('window').width;
-const deviceWidth = Dimensions.get('window').width;
 const PROVIDERS_PER_PAGE = 10;
 
 class ProviderList extends PureComponent {
@@ -45,17 +43,6 @@ class ProviderList extends PureComponent {
       this.props.profile.regionName,
     );
   }
-
-  onMorePress = () => {
-    this.setState({ page: this.state.page + 1 }, () => {
-      this.fetchProvidersList(
-        this.props.category,
-        this.state.page,
-        this.props.profile.countryCode,
-        this.props.profile.regionName,
-      );
-    });
-  };
 
   onPressItem = (provider) => {
     if (!provider.fullName) { // backward compatibility
@@ -81,11 +68,20 @@ class ProviderList extends PureComponent {
     this.props.displayModeChanged();
   };
 
+  loadMoreItems = () => {
+    this.setState({ page: this.state.page + 1 }, () => {
+      this.fetchProvidersList(
+        this.props.category,
+        this.state.page,
+        this.props.profile.countryCode,
+        this.props.profile.regionName,
+      );
+    });
+  }
+
   fetchProvidersList = async (category, page, country, region) => {
     try {
-      if (page === 1) {
-        this.setState({ isLoading: true });
-      } // avoid list re-render
+      this.setState({ isLoading: true });
       const providers = await api.fetchListByCategory(category, page, country, region);
       this.setState({
         isLoading: false,
@@ -97,23 +93,11 @@ class ProviderList extends PureComponent {
     }
   };
 
-  _renderMoreButton = () =>
-    !this.state.disableMore ? (
-      <Button
-        style={styles.moreButton}
-        key="more_button"
-        spinner={this.state.isLoading}
-        onPress={this.onMorePress}
-      >
-        <Text style={styles.moreButtonText}>{I18n.t('common.show_more')}</Text>
-      </Button>
-    ) : null;
-
   _keyExtractor = item => item._id;
 
   _renderGridItem = ({ item }) =>
-    item._id === 'button' ? (
-      this._renderMoreButton()
+    item._id === 'spinner' ? (
+      this.state.isLoading ? <Spinner /> : null
     ) : (
       <ProviderGridItem
         provider={item}
@@ -125,8 +109,8 @@ class ProviderList extends PureComponent {
     );
 
   _renderItem = ({ item }) =>
-    item._id === 'button' ? (
-      this._renderMoreButton()
+    item._id === 'spinner' ? (
+      this.state.isLoading ? <Spinner /> : null
     ) : (
       <ProviderListItem
         provider={item}
@@ -137,17 +121,22 @@ class ProviderList extends PureComponent {
       />
     );
 
+  _endReached = () => {
+    if (this.state.disableMore) return;
+    this.loadMoreItems();
+  }
+
   render() {
     const { containerStyle, buttonsRow, buttonView } = styles;
 
     const data = this.state.providers
       ? !this.props.shortlisted
-        ? [...this.state.providers, { _id: 'button' }]
+        ? [...this.state.providers, { _id: 'spinner' }]
         : this.state.providers.filter(element =>
           this.props.profile.favoriteProviders.includes(element._id))
       : null;
 
-    return !this.state.isLoading ? (
+    return !this.state.isLoading || this.state.providers.length ? (
       <View style={containerStyle}>
         <View style={buttonsRow}>
           <View style={buttonView}>
@@ -244,6 +233,8 @@ class ProviderList extends PureComponent {
           key={this.props.grid ? 1 : 0}
           numColumns={this.props.grid ? 2 : 1}
           style={{ backgroundColor, borderLeftWidth: 3, borderRightWidth: 3, borderColor: 'white' }}
+          onEndReachedThreshold={1}
+          onEndReached={this._endReached}
         />
       </View>
     ) : (
@@ -273,17 +264,5 @@ const styles = {
     borderRightWidth: 1,
     flex: 1,
     alignItems: 'center',
-  },
-  moreButton: {
-    width: '50%',
-    borderRadius: 15,
-    marginLeft: deviceWidth / 4,
-    marginTop: 10,
-    alignSelf: 'flex-start',
-    flexDirection: 'column',
-  },
-  moreButtonText: {
-    color: 'white',
-    fontSize: 16,
   },
 };
