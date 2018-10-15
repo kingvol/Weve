@@ -159,9 +159,9 @@ class VerificationScreen extends Component {
   handleSubmit = async () => {
     const { enteredCode, verificationCode, mobileNumber } = this.state;
     if (enteredCode === verificationCode.toString() || enteredCode === '4444') {
-      if (enteredCode === '4444') {
-        await this.initLottery();
-      }
+      // if (enteredCode === '4444') {
+      //    await this.initLottery();
+      // }
       this.props.navigator.push({
         screen: 'wevedo.registerScreen',
         passProps: { phoneNumber: mobileNumber },
