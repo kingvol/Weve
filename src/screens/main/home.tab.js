@@ -127,27 +127,27 @@ class HomeTab extends Component {
     });
   };
 
-  animateLotteryModal = () => {
-    this.animatedValue1.setValue(0);
-    this.animatedValue2.setValue(0);
-    this.animatedValue3.setValue(0);
-    const createAnimation = (value, duration, easing, delay = 0) =>
-      Animated.timing(value, {
-        toValue: 1,
-        duration,
-        easing,
-        delay,
-      });
-    Animated.parallel([
-      createAnimation(this.animatedValue1, 2000, Easing.ease),
-      createAnimation(this.animatedValue2, 1000, Easing.ease, 1000),
-      createAnimation(this.animatedValue3, 1000, Easing.ease, 2000),
-    ]).start();
-  };
+  // animateLotteryModal = () => {
+  //   this.animatedValue1.setValue(0);
+  //   this.animatedValue2.setValue(0);
+  //   this.animatedValue3.setValue(0);
+  //   const createAnimation = (value, duration, easing, delay = 0) =>
+  //     Animated.timing(value, {
+  //       toValue: 1,
+  //       duration,
+  //       easing,
+  //       delay,
+  //     });
+  //   Animated.parallel([
+  //     createAnimation(this.animatedValue1, 2000, Easing.ease),
+  //     createAnimation(this.animatedValue2, 1000, Easing.ease, 1000),
+  //     createAnimation(this.animatedValue3, 1000, Easing.ease, 2000),
+  //   ]).start();
+  // };
 
-  closeLotteryModal = () => {
-    this.setState({ showLotteryModal: false });
-  };
+  // closeLotteryModal = () => {
+  //   this.setState({ showLotteryModal: false });
+  // };
 
   checkLotteryStatus = async () => {
     try {
@@ -218,7 +218,7 @@ class HomeTab extends Component {
     });
     return (
       <Content style={{ flex: 1, backgroundColor }} contentContainerStyle={{ flexGrow: 1 }}>
-        {this.state.showLotteryModal ? (
+        {/* {this.state.showLotteryModal ? (
           <Modal transparent visible onRequestClose={this.closeLotteryModal}>
             <View style={modalContainer}>
               <View elevation={5} style={modalBackground}>
@@ -253,7 +253,7 @@ class HomeTab extends Component {
               </View>
             </View>
           </Modal>
-        ) : null}
+        ) : null} */}
         <View style={{ flex: 1, minHeight: 150 }}>
           <FastImage
             source={images.category_hero}
