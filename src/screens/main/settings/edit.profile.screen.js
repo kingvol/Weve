@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle, camelcase */
 import React, { Component } from 'react';
-import { Alert, Keyboard, View, Dimensions, TextInput, Platform, ActivityIndicator } from 'react-native';
+import { Alert, Keyboard, View, Dimensions, TextInput, Switch, Platform, ActivityIndicator } from 'react-native';
 import * as Progress from 'react-native-progress';
 import Upload from 'react-native-background-upload';
 import _ from 'lodash';
@@ -27,6 +27,7 @@ import {
   Text,
   RadioButton,
 } from '../../../components/common';
+
 import { backgroundColor, lightTextColor } from '../../../theme';
 import ProfileImage from '../../../components/home/ProfileImage';
 import { UserActions } from '../../../actions';
@@ -856,21 +857,16 @@ class EditProfileScreen extends Component {
             justifyContent: 'space-between',
             }}
           >
-            <Text style={{ flex: 3, color: lightTextColor }}>
+            <Text style={{ flex: 3, color: lightTextColor, paddingTop: 6 }}>
               {this.state.values.allowPhoneCalls ?
                   I18n.t('editProfile.CallOn') : I18n.t('editProfile.CallOff') }
             </Text>
-            <RadioButton
-              onAnimationPress={this.toggleSwitchPhone}
-              enabled={this.state.values.allowPhoneCalls}
-              styleContainer={{
-                marginTop: -8,
-                marginBottom: -8,
-                top: 0,
-                bottom: 0,
-                left: 0,
-                right: 0,
-              }}
+
+            <Switch
+              onValueChange={this.toggleSwitchPhone}
+              value={this.state.values.allowPhoneCalls}
+              onTintColor="#49d260"
+              thumbTintColor="#e7e7e7"
             />
           </View>
             )}
@@ -885,40 +881,33 @@ class EditProfileScreen extends Component {
             justifyContent: 'space-between',
              }}
           >
-            <Text style={{ flex: 3, color: lightTextColor }}>
+            <Text style={{ flex: 3, color: lightTextColor, paddingTop: 6 }}>
               {this.state.values.chatEnabled ?
                   I18n.t('editProfile.ChatOn') : I18n.t('editProfile.ChatOff') }
             </Text>
-            <RadioButton
-              onAnimationPress={this.toggleSwitchChat}
-              enabled={this.state.values.chatEnabled}
-              styleContainer={{
-                marginTop: -8,
-                marginBottom: -8,
-                top: 0,
-                bottom: 0,
-                left: 0,
-                right: 0,
-              }}
+            <Switch
+              onValueChange={this.toggleSwitchChat}
+              value={this.state.values.chatEnabled}
+              onTintColor="#49d260"
+              thumbTintColor="#e7e7e7"
             />
           </View>
           )}
 
           <View
             style={{
-              marginTop: 5,
+              flexDirection: 'row',
+              marginTop: 10,
+              marginBottom: 30,
+              alignItems: 'center',
               borderColor: lightTextColor,
               borderBottomWidth: 1,
-              flexDirection: 'row',
-              paddingBottom: 10,
-              justifyContent: 'space-between',
-              alignItems: 'center',
             }}
           >
             <Text style={{ flex: 3, color: lightTextColor }}>
-              {I18n.t('editProfile.country')}
+              {`${I18n.t('editProfile.country')} / ${I18n.t('editProfile.region')}`}
             </Text>
-            <View style={{ marginRight: 8, marginTop: -10 }}>
+            <View style={{ flex: 1, alignItems: 'flex-start' }}>
               <CountryPicker
                 onChange={(value) => {
                   this.setState({
@@ -953,40 +942,21 @@ class EditProfileScreen extends Component {
                 closeable
               />
             </View>
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              marginBottom: 30,
-              alignItems: 'center',
-              borderColor: lightTextColor,
-              borderBottomWidth: 1,
-              justifyContent: 'space-between',
-              height: Platform.OS === 'ios' && this.state.values.regionName.length > 30 ?
-                Platform.OS === 'ios' && this.state.values.regionName.length > 50 ? 75 : 50
-                : undefined,
-            }}
-          >
-            <Text style={{ flex: 1, color: lightTextColor }}>
-              {I18n.t('editProfile.region')}          
-            </Text>
-
             <View
-              style={{ flex: 4, marginLeft: 20, marginRight: 8, alignItems: Platform.OS === 'ios' ? 'flex-end' : undefined }}
+              style={{ flex: 3 }}
             >
               <Picker
                 mode="dropdown"
-                iosIcon={<Icon name="angle-down" style={{ color: lightTextColor }} />}
                 style={Platform.OS === 'android' ?
                   { flex: 1, color: lightTextColor, alignItems: 'flex-end' } :
-                  { alignItems: 'center' }}
+                  { flex: 1, alignItems: 'flex-end' }}
                 itemTextStyle={{ color: lightTextColor }}
                 placeholder={I18n.t('logIn.select_category')}
                 selectedValue={this.state.values.regionName}
                 onValueChange={this.onRegionSelect}
                 placeholderTextColor={lightTextColor}
                 placeholderStyle={{ color: lightTextColor }}
-                textStyle={{ color: lightTextColor, textAlign: Platform.OS === 'ios' ? 'center' : 'right' }}
+                textStyle={{ color: lightTextColor }}
               >
                 {countryLib[`${this.state.values.countryCode}`].provinces.map(item => (
                   <Picker.Item label={item} value={item} key={item} />
@@ -994,6 +964,7 @@ class EditProfileScreen extends Component {
               </Picker>
             </View>
           </View>
+          
           { !isProvider && (
           <View style={{ marginLeft: -10, marginBottom: 10, flexDirection: 'row' }}>
             <CheckBox
