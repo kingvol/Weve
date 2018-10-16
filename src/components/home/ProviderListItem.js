@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import { connect } from 'react-redux';
+import ProviderItem from './ProviderItem';
 import FastImage from 'react-native-fast-image';
 import { primaryFont } from '../../theme';
 import { HeartAnimation } from './Heart.Animation';
@@ -8,38 +9,7 @@ import { updateProfile, fetchProfile } from '../../actions/user.actions';
 
 const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png';
 
-class ProviderListItem extends Component {
-  state = {
-    favorites: !!this.props.user.profile.favoriteProviders.includes(this.props.provider._id),
-  };
-
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      favorites: !!nextProps.user.profile.favoriteProviders.includes(this.props.provider._id),
-    });
-  }
-
-  onItemPress = () => {
-    this.props.onPress(this.props.provider);
-  };
-
-  onFavoriteIconPress = () => {
-    this.setState({ favorites: !this.state.favorites });
-    const { favoriteProviders } = this.props.user.profile;
-    const index = favoriteProviders.indexOf(this.props.provider._id);
-    const favoriteArray = [...favoriteProviders];
-    if (index > -1) {
-      favoriteArray.splice(index, 1);
-      this.props.updateProfile({
-        favoriteProviders: favoriteArray,
-      });
-    } else {
-      this.props.updateProfile({
-        favoriteProviders: [...favoriteProviders, this.props.provider._id],
-      });
-    }
-  };
-
+class ProviderListItem extends ProviderItem {
   render() {
     const { firstName, lastName, profileImageURL } = this.props.provider;
     const { itemWidth } = this.props;
@@ -69,7 +39,7 @@ class ProviderListItem extends Component {
           >
             <HeartAnimation
               onAnimationPress={this.onFavoriteIconPress}
-              filled={this.state.favorites}
+              filled={this.state.favoriteActive}
               styleContainer={{
                 flex: 0,
                 position: 'absolute',

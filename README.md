@@ -22,6 +22,7 @@ Note that your emulator will run very slowly if your processor does not support 
 ## Using IOS simulator
 
 Mac OS is needed to build the app and run simulator.
+It works with xcode 9.4.1 and ios 11.4
 
 ### Use prettier-eslint for developing
 
@@ -67,28 +68,3 @@ Cannot update the APK configuration of the track when the track has a draft rele
 
 You need to remove all draft app releases from the track in Google Play Console
 Settings -> Release management -> App releases -> Edit Release -> Discard
-
-## APNs certificate setup
-
-1.  Generate APNS certificate for iOS Push Notifications
-    https://medium.com/@ankushaggarwal/generate-apns-certificate-for-ios-push-notifications-85e4a917d522
-    https://firebase.google.com/docs/cloud-messaging/ios/certs
-    Result: got .p12 APNs certificate
-
-2.  Configure APNs with FCM.
-    Upload generated .p12 certificate in Firebase Console:
-    https://stackoverflow.com/questions/37583810/where-i-upload-apns-p12-cert-file-in-firebase-consol
-
-APNs overview:
-https://developer.apple.com/library/content/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/APNSOverview.html
-
-## IOS notifications troubleshooting
-
-1.  Test notifications only on IOS device. IOS emulator won't receive any push notification, only device can.
-2.  Try to send notification manually via Firebase Console and check if it sends without any error:
-    Firebase Console -> Notifications -> Send notification: - Directly to a device. You will need to get FCM token:
-    FCM.getFCMToken().then(token => { console.log(token) }); - Send to a topic (can be viewed in firebase logs)
-3.  Check if firebase sends notification after message send:
-    Firebase Console -> Functions -> Logs
-    Should have entry like "Sent notification to topic ios-chatroom-L3gI9Pp3AxZ6-UFewi-"
-4.  You also can check log in xcode to see if Firebase SDK throws any error. -->
