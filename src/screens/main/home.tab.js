@@ -81,6 +81,12 @@ const categories = [
     title: I18n.t('categories.transport'),
     imageSource: images.transport,
   },
+  {
+    route: 'Transport',
+    screenIndex: 8,
+    title: I18n.t('categories.transport'),
+    imageSource: images.transport,
+  }
 ];
 
 const items = [];
