@@ -42,11 +42,12 @@ class ProviderGridItem extends Component {
   render() {
     const { firstName, lastName, profileImageURL } = this.props.provider;
     const { itemWidth } = this.props;
-    let artistTitle = `${firstName} ${lastName || ''}`;
-    if (itemWidth / artistTitle.length / 10 < 0.8) {
-      const titleArray = artistTitle.split(' ', 2);
-      artistTitle = titleArray.join(' ');
-    }
+    // let artistTitle = `${firstName} ${lastName || ''}`;
+    // if (itemWidth / artistTitle.length / 10 < 0.8) {
+    //   const titleArray = artistTitle.split(' ', 2);
+    //   artistTitle = titleArray.join(' ');
+
+    // }
 
     return (
       <TouchableWithoutFeedback onPress={this.onItemPress}>
@@ -90,7 +91,7 @@ class ProviderGridItem extends Component {
                 backgroundColor: 'rgba(52, 52, 52, 0.5)',
               }}
             >
-              <Text style={styles.artistTitle}>{artistTitle}</Text>
+              <Text style={styles.artistTitle}>{`${firstName} ${lastName || ''}`}</Text>
             </View>
           </ImageBackground>
         </View>
@@ -103,8 +104,9 @@ const styles = StyleSheet.create({
   artistTitle: {
     ...primaryFont,
     color: 'white',
-    margin: 10,
+    margin: 11,
     textAlign: 'left',
+    fontSize: 12,
   },
 });
 

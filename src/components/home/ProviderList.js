@@ -51,9 +51,10 @@ class ProviderList extends PureComponent {
 
     this.props.navigator.push({
       screen: 'wevedo.ProviderProfile',
-      title: provider.fullName.length > 20
-        ? provider.fullName.split(' ', 2).join(' ')
-        : provider.fullName || `${provider.firstName} ${provider.lastName || ''}`,
+      // title: provider.fullName.length > 20
+      //   ? provider.fullName.split(' ', 2).join(' ')
+      //   : provider.fullName || `${provider.firstName} ${provider.lastName || ''}`,
+      title: provider.fullName || `${provider.firstName} ${provider.lastName || ''}`,
       passProps: { provider },
       navigatorStyle: {
         navBarBackgroundColor: '#d64635',
