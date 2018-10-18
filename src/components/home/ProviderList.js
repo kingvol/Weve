@@ -33,6 +33,7 @@ class ProviderList extends PureComponent {
     isLoading: false,
     page: 1,
     disableMore: true,
+    favorites: this.props.profile.favoriteProviders,
   };
 
   componentDidMount() {
@@ -44,16 +45,24 @@ class ProviderList extends PureComponent {
     );
   }
 
+  componentWillReceiveProps({ profile }) {
+    this.setState({
+      favorites: profile.favoriteProviders,
+    });
+  }
+
   onPressItem = (provider) => {
-    if (!provider.fullName) { // backward compatibility
+    if (!provider.fullName) {
+      // backward compatibility
       provider.fullName = `${provider.firstName} ${provider.lastName || ''}`;
     }
 
     this.props.navigator.push({
       screen: 'wevedo.ProviderProfile',
-      title: provider.fullName.length > 20
-        ? provider.fullName.split(' ', 2).join(' ')
-        : provider.fullName || `${provider.firstName} ${provider.lastName || ''}`,
+      title:
+        provider.fullName.length > 20
+          ? provider.fullName.split(' ', 2).join(' ')
+          : provider.fullName || `${provider.firstName} ${provider.lastName || ''}`,
       passProps: { provider },
       navigatorStyle: {
         navBarBackgroundColor: '#d64635',
@@ -68,6 +77,11 @@ class ProviderList extends PureComponent {
     this.props.displayModeChanged();
   };
 
+  handleFavorites = (favorites) => {
+    this.setState({ favorites });
+    this.forceUpdate();
+  };
+
   loadMoreItems = () => {
     this.setState({ page: this.state.page + 1 }, () => {
       this.fetchProvidersList(
@@ -77,7 +91,7 @@ class ProviderList extends PureComponent {
         this.props.profile.regionName,
       );
     });
-  }
+  };
 
   fetchProvidersList = async (category, page, country, region) => {
     try {
@@ -85,7 +99,9 @@ class ProviderList extends PureComponent {
       const providers = await api.fetchListByCategory(category, page, country, region);
       this.setState({
         isLoading: false,
-        providers: this.state.providers.length ? [...this.state.providers, ...providers] : providers,
+        providers: this.state.providers.length
+          ? [...this.state.providers, ...providers]
+          : providers,
         disableMore: providers.length < PROVIDERS_PER_PAGE,
       });
     } catch ({ message }) {
@@ -97,10 +113,13 @@ class ProviderList extends PureComponent {
 
   _renderGridItem = ({ item }) =>
     item._id === 'spinner' ? (
-      this.state.isLoading ? <Spinner /> : null
+      this.state.isLoading ? (
+        <Spinner />
+      ) : null
     ) : (
       <ProviderGridItem
         provider={item}
+        handleFavorites={this.handleFavorites}
         id={item._id}
         key={item._id.toString()}
         itemWidth={ITEM_WIDTH / 2}
@@ -110,10 +129,13 @@ class ProviderList extends PureComponent {
 
   _renderItem = ({ item }) =>
     item._id === 'spinner' ? (
-      this.state.isLoading ? <Spinner /> : null
+      this.state.isLoading ? (
+        <Spinner />
+      ) : null
     ) : (
       <ProviderListItem
         provider={item}
+        handleFavorites={this.handleFavorites}
         id={item._id}
         key={item._id.toString()}
         itemWidth={ITEM_WIDTH / 2.5}
@@ -124,7 +146,7 @@ class ProviderList extends PureComponent {
   _endReached = () => {
     if (this.state.disableMore) return;
     this.loadMoreItems();
-  }
+  };
 
   render() {
     const { containerStyle, buttonsRow, buttonView } = styles;
@@ -132,8 +154,7 @@ class ProviderList extends PureComponent {
     const data = this.state.providers
       ? !this.props.shortlisted
         ? [...this.state.providers, { _id: 'spinner' }]
-        : this.state.providers.filter(element =>
-          this.props.profile.favoriteProviders.includes(element._id))
+        : this.state.providers.filter(element => this.state.favorites.includes(element._id))
       : null;
 
     return !this.state.isLoading || this.state.providers.length ? (
