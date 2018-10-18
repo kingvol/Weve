@@ -12,6 +12,9 @@ const images = {
   photo: require('./Categories/photo.png'), // eslint-disable-line global-require
   venue: require('./Categories/venue.png'), // eslint-disable-line global-require
   catering: require('./Categories/catering.png'), // eslint-disable-line global-require
+  jewelry: require('./Categories/jewelry.png'), // eslint-disable-line global-require
+  stationary: require('./Categories/stationary.png'), // eslint-disable-line global-require
+  honeymoon: require('./Categories/honeymoon.png'), // eslint-disable-line global-require
 };
 
 export default images;
