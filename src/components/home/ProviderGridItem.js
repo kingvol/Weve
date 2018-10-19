@@ -10,13 +10,15 @@ const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png
 
 class ProviderGridItem extends ProviderItem {
   render() {
-    const { firstName, lastName, profileImageURL } = this.props.provider;
+    const { fullName, firstName, lastName, profileImageURL } = this.props.provider;
     const { itemWidth } = this.props;
-    let artistTitle = `${firstName} ${lastName || ''}`;
-    if (itemWidth / artistTitle.length / 10 < 0.8) {
-      const titleArray = artistTitle.split(' ', 2);
-      artistTitle = titleArray.join(' ');
-    }
+    let providerTitle = fullName ||`${firstName} ${lastName || ''}`
+    //let artistTitle = `${firstName} ${lastName || ''}`;
+    // if (itemWidth / artistTitle.length / 10 < 0.8) {
+    //   const titleArray = artistTitle.split(' ', 2);
+    //   artistTitle = titleArray.join(' ');
+
+    // }
 
     return (
       <TouchableWithoutFeedback onPress={this.onItemPress}>
@@ -60,7 +62,7 @@ class ProviderGridItem extends ProviderItem {
                 backgroundColor: 'rgba(52, 52, 52, 0.5)',
               }}
             >
-              <Text style={styles.artistTitle}>{artistTitle}</Text>
+              <Text style={styles.artistTitle}>{providerTitle}</Text>
             </View>
           </ImageBackground>
         </View>
@@ -73,8 +75,10 @@ const styles = StyleSheet.create({
   artistTitle: {
     ...primaryFont,
     color: 'white',
-    margin: 10,
+    // margin: 11,
     textAlign: 'left',
+    textAlignVertical: 'center',
+    fontSize: 14,
   },
 });
 

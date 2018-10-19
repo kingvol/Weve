@@ -11,8 +11,9 @@ const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png
 
 class ProviderListItem extends ProviderItem {
   render() {
-    const { firstName, lastName, profileImageURL } = this.props.provider;
+    const { fullName, firstName, lastName, profileImageURL } = this.props.provider;
     const { itemWidth } = this.props;
+    let providerTitle = fullName ||`${firstName} ${lastName || ''}`
     return (
       <TouchableWithoutFeedback onPress={this.onItemPress}>
         <View style={styles.listItem}>
@@ -53,7 +54,8 @@ class ProviderListItem extends ProviderItem {
             />
             <View style={{ flex: 1 }}>
               <Text style={[styles.artistTitle, { marginRight: 5 }]}>
-                {`${firstName} ${lastName || ''}`}
+                {/* {`${firstName} ${lastName || ''}`} */}
+                {providerTitle}
               </Text>
             </View>
           </View>
