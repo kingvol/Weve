@@ -11,22 +11,26 @@ import images from '../../images';
 const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png';
 const loadingImage = images.loadingImage;
 
+
 class ProviderListItem extends ProviderItem {
 
   constructor(props) {
     super(props);
     this.state = {
-      loaded: false,
+      favorites: !!this.props.user.profile.favoriteProviders.includes(this.props.provider._id),
+      isLoaded: false,
     };
   }
-  
+
   render() {
     const { fullName, firstName, lastName, profileImageURL } = this.props.provider;
     const { itemWidth } = this.props;
     let providerTitle = fullName ||`${firstName} ${lastName || ''}`;
-    return (
-      <TouchableWithoutFeedback onPress={this.onItemPress}>
+    
+      return  (
+        <TouchableWithoutFeedback onPress={this.onItemPress}>
         <View style={styles.listItem}>
+        
           <FastImage
             style={{
               height: itemWidth,
@@ -40,6 +44,7 @@ class ProviderListItem extends ProviderItem {
             source={{ uri: profileImageURL || defaultProfile }}
             onLoad={this._onLoad}
           />
+  
           {!this.state.loaded && (
             <FastImage
             style={{
@@ -55,6 +60,7 @@ class ProviderListItem extends ProviderItem {
             source={loadingImage}
           />
           )}
+         
           <View
             style={{
               margin: 10,
@@ -86,7 +92,15 @@ class ProviderListItem extends ProviderItem {
           </View>
         </View>
       </TouchableWithoutFeedback>
-    );
+      );
+  
+  }
+  _onLoad = () => {
+    // This only exists so the transition can be seen
+    // if loaded too quickly.
+    setTimeout(() => {
+      this.setState(() => ({ loaded: true }))
+    }, 500)
   }
   _onLoad = () => {
     // This only exists so the transition can be seen

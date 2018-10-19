@@ -222,6 +222,7 @@ class ProviderProfileScreen extends Component {
         });
       }
     }
+    
     let artistTitle = fullName ||`${firstName} ${lastName || ''}`;
     // if (ITEM_WIDTH / artistTitle.length / 10 < 1) {
     //   const titleArray = artistTitle.split(' ', 2);
