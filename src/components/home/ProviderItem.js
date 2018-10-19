@@ -4,10 +4,14 @@ let timer = false;
 const DEBOUNCE_DELAY = 2000;
 
 export default class ProviderItem extends Component {
-  state = {
-    favoriteActive: this.props.user.profile.favoriteProviders.includes(this.props.provider._id),
-    favorites: this.props.user.profile.favoriteProviders,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      favoriteActive: this.props.user.profile.favoriteProviders.includes(this.props.provider._id),
+      favorites: this.props.user.profile.favoriteProviders,
+      imageLoaded: false,
+    };
+  }
 
   componentWillReceiveProps(nextProps) {
     this.setState({
@@ -41,5 +45,9 @@ export default class ProviderItem extends Component {
         favoriteProviders: this.state.favorites,
       });
     }, DEBOUNCE_DELAY);
+  };
+
+  _onLoad = () => {
+    this.setState({ imageLoaded: true });
   };
 }
