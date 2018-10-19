@@ -609,6 +609,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     zIndex: -1,
+    padding:15,
   },
   header: {
     flex: 1,
@@ -645,11 +646,12 @@ const styles = StyleSheet.create({
     marginRight: 100,
   },
   formWrapper: {
-    backgroundColor: 'rgba(0,0,0,0.2)',
-    padding: 10,
-    paddingTop: 10,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    padding: 15,
+    paddingTop: 15,
     paddingBottom: 10,
     flexDirection: 'column',
+    borderRadius:10
   },
 });
 
