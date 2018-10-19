@@ -11,11 +11,6 @@ const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png
 const loadingImage = images.loadingImage;
 
 class ProviderGridItem extends ProviderItem {
-  state = {
-    favorites: this.props.user.profile.favoriteProviders.includes(this.props.provider._id),
-    loaded: false,
-  };
-
   render() {
     const { fullName, firstName, lastName, profileImageURL } = this.props.provider;
     const { itemWidth } = this.props;

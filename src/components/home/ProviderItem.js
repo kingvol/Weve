@@ -8,7 +8,8 @@ export default class ProviderItem extends Component {
     super(props);
     this.state = {
       favoriteActive: this.props.user.profile.favoriteProviders.includes(this.props.provider._id),
-      favorites: this.props.user.profile.favoriteProviders || [],
+      favorites: this.props.user.profile.favoriteProviders,
+      loaded: false,
     };
   }
 
