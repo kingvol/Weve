@@ -63,7 +63,10 @@
     "decoration": "Decoration",
     "costume": "Boutique",
     "catering": "Catering",
-    "cake": "Cake"
+    "cake": "Cake",
+    "jewelry": "Jewelry",
+    "stationary": "Stationary",
+    "honeymoon": "Honeymoon"
   },
   "menu": {
     "home": "Home",
