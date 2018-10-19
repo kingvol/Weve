@@ -9,7 +9,7 @@ export default class ProviderItem extends Component {
     this.state = {
       favoriteActive: this.props.user.profile.favoriteProviders.includes(this.props.provider._id),
       favorites: this.props.user.profile.favoriteProviders,
-      loaded: false,
+      imageLoaded: false,
     };
   }
 
@@ -45,5 +45,9 @@ export default class ProviderItem extends Component {
         favoriteProviders: this.state.favorites,
       });
     }, DEBOUNCE_DELAY);
+  };
+
+  _onLoad = () => {
+    this.setState({ imageLoaded: true });
   };
 }

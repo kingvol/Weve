@@ -33,7 +33,7 @@ class ProviderListItem extends ProviderItem {
             onLoad={this._onLoad}
           />
 
-          {!this.state.loaded && (
+          {!this.state.imageLoaded && (
             <FastImage
               style={{
                 height: itemWidth,
@@ -80,20 +80,6 @@ class ProviderListItem extends ProviderItem {
       </TouchableWithoutFeedback>
     );
   }
-  _onLoad = () => {
-    // This only exists so the transition can be seen
-    // if loaded too quickly.
-    setTimeout(() => {
-      this.setState(() => ({ loaded: true }));
-    }, 500);
-  };
-  _onLoad = () => {
-    // This only exists so the transition can be seen
-    // if loaded too quickly.
-    setTimeout(() => {
-      this.setState(() => ({ loaded: true }));
-    }, 500);
-  };
 }
 
 const styles = StyleSheet.create({

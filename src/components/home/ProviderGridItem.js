@@ -42,7 +42,7 @@ class ProviderGridItem extends ProviderItem {
           >
             <HeartAnimation
               onAnimationPress={this.onFavoriteIconPress}
-              filled={this.state.favorites}
+              filled={this.state.favoriteActive}
               styleContainer={{
                 flex: 0,
                 position: 'absolute',
@@ -65,7 +65,7 @@ class ProviderGridItem extends ProviderItem {
             </View>
           </ImageBackground>
 
-          {!this.state.loaded && (
+          {!this.state.imageLoaded && (
             <ImageBackground
               style={{
                 paddingTop: itemWidth - itemWidth / 25 - (itemWidth - itemWidth / 25) / 4.5,
@@ -106,13 +106,6 @@ class ProviderGridItem extends ProviderItem {
       </TouchableWithoutFeedback>
     );
   }
-  _onLoad = () => {
-    // This only exists so the transition can be seen
-    // if loaded too quickly.
-    setTimeout(() => {
-      this.setState(() => ({ loaded: true }));
-    }, 500);
-  };
 }
 
 const styles = StyleSheet.create({
