@@ -81,6 +81,24 @@ const categories = [
     title: I18n.t('categories.transport'),
     imageSource: images.transport,
   },
+  {
+    route: 'Jewelry',
+    screenIndex: 9,
+    title: I18n.t('categories.jewelry'),
+    imageSource: images.jewelry,
+  },
+  {
+    route: 'Stationary',
+    screenIndex: 10,
+    title: I18n.t('categories.stationary'),
+    imageSource: images.stationary,
+  },
+  {
+    route: 'Honeymoon',
+    screenIndex: 11,
+    title: I18n.t('categories.honeymoon'),
+    imageSource: images.honeymoon,
+  }
 ];
 
 const items = [];

@@ -32,6 +32,9 @@ class ProviderTabList extends Component {
           { key: 'costume', title: I18n.t('categories.costume') },
           { key: 'venue', title: I18n.t('categories.venue') },
           { key: 'transport', title: I18n.t('categories.transport') },
+          { key: 'jewelry', title: I18n.t('categories.jewelry') },
+          { key: 'stationary', title: I18n.t('categories.stationary') },
+          { key: 'honeymoon', title: I18n.t('categories.honeymoon') },
         ],
       },
       visible: false,
@@ -100,6 +103,9 @@ class ProviderTabList extends Component {
   ConstumeRoute = () => <ProviderList category="Costume" navigator={this.props.navigator} />;
   VenueRoute = () => <ProviderList category="Venue" navigator={this.props.navigator} />;
   TransportRoute = () => <ProviderList category="Transport" navigator={this.props.navigator} />;
+  JewelryRoute = () => <ProviderList category="Jewelry" navigator={this.props.navigator} />;
+  StationaryRoute = () => <ProviderList category="Stationary" navigator={this.props.navigator} />;
+  HoneymoonRoute = () => <ProviderList category="Honeymoon" navigator={this.props.navigator} />;
 
   _handleIndexChange = (index) => {
     this.setState({
@@ -138,6 +144,9 @@ class ProviderTabList extends Component {
     costume: this.ConstumeRoute,
     venue: this.VenueRoute,
     transport: this.TransportRoute,
+    jewelry: this.JewelryRoute,
+    stationary: this.StationaryRoute,
+    honeymoon: this.HoneymoonRoute,
   });
 
   render() {

@@ -51,3 +51,6 @@ buck-out/
 */fastlane/Preview.html
 */fastlane/screenshots
 .vscode/settings.json
+
+.nyc_output
+coverage
