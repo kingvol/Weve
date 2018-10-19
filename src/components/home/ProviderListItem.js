@@ -6,13 +6,24 @@ import FastImage from 'react-native-fast-image';
 import { primaryFont } from '../../theme';
 import { HeartAnimation } from './Heart.Animation';
 import { updateProfile, fetchProfile } from '../../actions/user.actions';
+import images from '../../images';
 
 const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png';
+const loadingImage = images.loadingImage;
 
 class ProviderListItem extends ProviderItem {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      loaded: false,
+    };
+  }
+  
   render() {
-    const { firstName, lastName, profileImageURL } = this.props.provider;
+    const { fullName, firstName, lastName, profileImageURL } = this.props.provider;
     const { itemWidth } = this.props;
+    let providerTitle = fullName ||`${firstName} ${lastName || ''}`;
     return (
       <TouchableWithoutFeedback onPress={this.onItemPress}>
         <View style={styles.listItem}>
@@ -27,7 +38,23 @@ class ProviderListItem extends ProviderItem {
               borderRadius: 20,
             }}
             source={{ uri: profileImageURL || defaultProfile }}
+            onLoad={this._onLoad}
           />
+          {!this.state.loaded && (
+            <FastImage
+            style={{
+              height: itemWidth,
+              width: itemWidth,
+              marginTop: 5,
+              marginBottom: 2,
+              borderColor: 'white',
+              borderWidth: 5,
+              borderRadius: 20,
+              position: 'absolute',
+            }}
+            source={loadingImage}
+          />
+          )}
           <View
             style={{
               margin: 10,
@@ -53,13 +80,20 @@ class ProviderListItem extends ProviderItem {
             />
             <View style={{ flex: 1 }}>
               <Text style={[styles.artistTitle, { marginRight: 5 }]}>
-                {`${firstName} ${lastName || ''}`}
+                {providerTitle}
               </Text>
             </View>
           </View>
         </View>
       </TouchableWithoutFeedback>
     );
+  }
+  _onLoad = () => {
+    // This only exists so the transition can be seen
+    // if loaded too quickly.
+    setTimeout(() => {
+      this.setState(() => ({ loaded: true }))
+    }, 500)
   }
 }
 

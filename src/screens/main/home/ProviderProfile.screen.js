@@ -185,6 +185,7 @@ class ProviderProfileScreen extends Component {
 
   render() {
     const { profile } = this.props.user; // authUser
+    const { fullName, firstName, lastName } = this.props.provider;
     const { provider } = this.props;
     const {
       styleImageFullScreen,
@@ -221,11 +222,11 @@ class ProviderProfileScreen extends Component {
         });
       }
     }
-    let artistTitle = `${provider.firstName} ${provider.lastName}`;
-    if (ITEM_WIDTH / artistTitle.length / 10 < 1) {
-      const titleArray = artistTitle.split(' ', 2);
-      artistTitle = titleArray.join(' ');
-    }
+    let artistTitle = fullName ||`${firstName} ${lastName || ''}`;
+    // if (ITEM_WIDTH / artistTitle.length / 10 < 1) {
+    //   const titleArray = artistTitle.split(' ', 2);
+    //   artistTitle = titleArray.join(' ');
+    // }
     let separator = ' · ';
     if (ITEM_WIDTH / provider.regionName.length / 10 < 1) {
       separator = '\n';
