@@ -17,6 +17,7 @@ import I18n from '../../../locales';
 import config from '../../../../config';
 import countries from '../../../countryLib/countries';
 import countryLib from '../../../countryLib';
+import { CountriesPicker } from '../../../components/common/CountriesPicker';
 import {
   Button,
   Container,
@@ -39,9 +40,8 @@ import FastImage from 'react-native-fast-image';
 
 const { CategoryApi } = APIs;
 const categoryApi = new CategoryApi();
-
 const { fetchProfile, updateProfile } = UserActions;
-const defaultImage = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png';
+const { defaultProfile, ipUrl } = config;
 const userLocaleCountryCode = DeviceInfo.getDeviceCountry();
 const countryCode = countries.includes(userLocaleCountryCode) ? userLocaleCountryCode : 'GB';
 const regionName = countryLib[`${countryCode}`].provinces[0];
@@ -56,33 +56,46 @@ class EditProfileScreen extends Component {
     this.onRegionSelect = this.onRegionSelect.bind(this);
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     const user = Object.assign({}, this.props.user);
-    if (!user.profile.providerImages) { user.profile.providerImages = {}; }
+    if (!user.profile.providerImages) {
+      user.profile.providerImages = {};
+    }
     this.state = {
       values: {
-        firstName: this.props.user.profile.firstName || '',
-        lastName: this.props.user.profile.lastName || '',
-        fullName: this.props.user.profile.fullName || '',
-        profileImageURL: this.props.user.profile.profileImageURL || '',
-        profileVideoURL: this.props.user.profile.profileVideoURL || '',
-        providerImages: user.profile.providerImages ? {
-          0: user.profile.providerImages[0] || undefined,
-          1: user.profile.providerImages[1] || undefined,
-          2: user.profile.providerImages[2] || undefined,
-          3: user.profile.providerImages[3] || undefined,
-          4: user.profile.providerImages[4] || undefined,
-        } : undefined,
+        firstName: user.profile.firstName || '',
+        lastName: user.profile.lastName || '',
+        fullName: user.profile.fullName || '',
+        profileImageURL: user.profile.profileImageURL || undefined,
+        profileVideoURL: user.profile.profileVideoURL || '',
+        providerImages: user.profile.providerImages
+          ? {
+            0: user.profile.providerImages[0] || undefined,
+            1: user.profile.providerImages[1] || undefined,
+            2: user.profile.providerImages[2] || undefined,
+            3: user.profile.providerImages[3] || undefined,
+            4: user.profile.providerImages[4] || undefined,
+          }
+          : undefined,
         countryCode,
         regionName,
-        isProvider: this.props.user.profile.isProvider,
-        categories: this.props.user.profile.categories,
-        bio: this.props.user.profile.bio || '',
-        descriptionLength: this.props.user.profile.bio ? maxLength - this.props.user.profile.bio.length : maxLength,
-        allowPhoneCalls: this.props.user.profile.allowPhoneCalls === undefined ? true :
-          this.props.user.profile.allowPhoneCalls,
-        chatEnabled: this.props.user.profile.chatEnabled === undefined ? true :
-          this.props.user.profile.chatEnabled,
+        appearInCountries: user.profile.appearInCountries || [],
+        isProvider: user.profile.isProvider,
+        categories: user.profile.categories,
+        bio: user.profile.bio || '',
+        descriptionLength: user.profile.bio
+          ? maxLength - user.profile.bio.length
+          : maxLength,
+        allowPhoneCalls:
+          user.profile.allowPhoneCalls === undefined
+            ? true
+            : user.profile.allowPhoneCalls,
+        chatEnabled:
+          user.profile.chatEnabled === undefined
+            ? true
+            : user.profile.chatEnabled,
       },
-      fullName: this.props.user.profile.fullName || `${this.props.user.profile.firstName} ${this.props.user.profile.lastName}`,
+      fullName:
+        user.profile.fullName ||
+        `${user.profile.firstName} ${user.profile.lastName}`,
       loading: false,
       imageUploading: false,
       categories: [],
@@ -131,9 +144,7 @@ class EditProfileScreen extends Component {
         },
       });
     } else {
-      const url =
-        'http://api.ipstack.com/check?access_key=e1a9033da20c96cf61c52598eb00cfb9&format=1';
-      await fetch(url)
+      await fetch(ipUrl)
         .then(response => response.json())
         .then((responseJson) => {
           this.setState({
@@ -256,7 +267,10 @@ class EditProfileScreen extends Component {
 
     if (!_.isEqual(user.profile.providerImages, values.providerImages)) {
       await Promise.all(Object.keys(values.providerImages).map(async (index) => {
-        if (user.profile.providerImages[index] !== values.providerImages[index] && values.providerImages[index]) {
+        if (
+          user.profile.providerImages[index] !== values.providerImages[index] &&
+            values.providerImages[index]
+        ) {
           try {
             this.setState({ imageUploading: true });
             const { secure_url } = await this.uploadProfileImage(values.providerImages[index]);
@@ -274,11 +288,15 @@ class EditProfileScreen extends Component {
 
     if (!this.state.values.profileImageURL && this.state.values.isProvider) {
       Alert.alert(
-        I18n.t('logIn.upload_photo'), '',
-        [{
-          text: `${I18n.t('common.ok')}`,
-          onPress: this.newScrollMethod,
-        }], {
+        I18n.t('logIn.upload_photo'),
+        '',
+        [
+          {
+            text: `${I18n.t('common.ok')}`,
+            onPress: this.newScrollMethod,
+          },
+        ],
+        {
           cancelable: false,
         },
       );
@@ -319,6 +337,31 @@ class EditProfileScreen extends Component {
     });
   };
 
+  onCountrySelect = async (appearInCountries) => {
+    this.dataModified();
+    let regionName;
+    if(appearInCountries.length === 1) {
+      await fetch(ipUrl)
+      .then(response => response.json())
+      .then((responseJson) => {
+  
+        if(appearInCountries[0] === responseJson.country_code) {
+          regionName = countryLib[`${appearInCountries[0]}`].provinces.find(item => (item.substr(0, 2) === responseJson.region_name.substr(0, 2) ? item : null))
+        }
+        else {
+          regionName = countryLib[`${appearInCountries[0]}`].provinces[0];
+        }
+      });
+    }
+    this.setState({
+      values: {
+        ...this.state.values,
+        appearInCountries,
+        regionName
+      },
+    });
+  };
+
   onVideoUploadPress = () => {
     /* Open video picker */
     const options = {
@@ -343,38 +386,39 @@ class EditProfileScreen extends Component {
         this.startVideoUpload(uri);
       }
     });
-  }
+  };
 
   onRemoveVideoPress = () => {
-    this.setState({
-      values: {
-        ...this.state.values,
-        profileVideoURL: '',
+    this.setState(
+      {
+        values: {
+          ...this.state.values,
+          profileVideoURL: '',
+        },
       },
-    }, this.dataModified);
-  }
+      this.dataModified,
+    );
+  };
 
   setMultiSelectRef = (ref) => {
     this.multiSelect = ref;
-  }
+  };
 
   setScrollRef = (ref) => {
     this.scroll = ref;
-  }
+  };
 
   setDefaultImage = () => {
     this.setState({
       values: {
         ...this.state.values,
-        profileImageURL: defaultImage,
+        profileImageURL: defaultProfile,
       },
     });
   };
 
   setSaveButton = () => {
-    Promise.all([
-      Icon.getImageSource('check', 22, '#ffffff'),
-    ]).then((sources) => {
+    Promise.all([Icon.getImageSource('check', 22, '#ffffff')]).then((sources) => {
       this.props.navigator.setButtons({
         rightButtons: [
           {
@@ -385,12 +429,12 @@ class EditProfileScreen extends Component {
         animated: true,
       });
     });
-  }
+  };
 
   newScrollMethod = () => {
     this.scroll._root.scrollToPosition(0, 0);
     this.setState({ profileIconColor: '#d64635' });
-  }
+  };
 
   updateProfile = () => {
     this.props.fetchProfile('me');
@@ -497,7 +541,7 @@ class EditProfileScreen extends Component {
         });
       }
     });
-  }
+  };
 
   captureProviderImage = async (index) => {
     let isPhotoAllowed = false;
@@ -514,7 +558,6 @@ class EditProfileScreen extends Component {
     }
 
     if (!isPhotoAllowed) return;
-
 
     this.dataModified();
     const options = {
@@ -573,14 +616,14 @@ class EditProfileScreen extends Component {
         bio: value,
       },
     });
-  }
+  };
 
   dataModified = () => {
     if (!this.state.isDataModified) {
       this.setState({ isDataModified: true });
       this.setSaveButton();
     }
-  }
+  };
 
   startVideoUpload = (path) => {
     const { cloudinary: { apiKey, cloud } } = config;
@@ -602,37 +645,43 @@ class EditProfileScreen extends Component {
       },
     };
 
-    Upload.startUpload(options).then((uploadId) => {
-      this.setState({ isVideoUploading: true, uploadId });
+    Upload.startUpload(options)
+      .then((uploadId) => {
+        this.setState({ isVideoUploading: true, uploadId });
 
-      Upload.addListener('progress', uploadId, (data) => {
-        this.setState({ videoUploadProgress: this.state.isVideoUploading ? data.progress : 0 });
-        console.log(`Progress: ${data.progress}%`);
-      });
+        Upload.addListener('progress', uploadId, (data) => {
+          this.setState({ videoUploadProgress: this.state.isVideoUploading ? data.progress : 0 });
+          console.log(`Progress: ${data.progress}%`);
+        });
 
-      Upload.addListener('error', uploadId, (data) => {
-        console.log(`Error: ${data.error}%`);
-      });
+        Upload.addListener('error', uploadId, (data) => {
+          console.log(`Error: ${data.error}%`);
+        });
 
-      Upload.addListener('cancelled', uploadId, () => {
-        console.log('Cancelled!');
-      });
+        Upload.addListener('cancelled', uploadId, () => {
+          console.log('Cancelled!');
+        });
 
-      Upload.addListener('completed', uploadId, ({ responseBody }) => { // typeof responseBody === string
-        const body = JSON.parse(responseBody);
-        this.setState({
-          isVideoUploading: false,
-          videoUploadProgress: 100,
-          values: {
-            ...this.state.values,
-            profileVideoURL: body.secure_url,
-          },
-        }, this.dataModified);
+        Upload.addListener('completed', uploadId, ({ responseBody }) => {
+          // typeof responseBody === string
+          const body = JSON.parse(responseBody);
+          this.setState(
+            {
+              isVideoUploading: false,
+              videoUploadProgress: 100,
+              values: {
+                ...this.state.values,
+                profileVideoURL: body.secure_url,
+              },
+            },
+            this.dataModified,
+          );
+        });
+      })
+      .catch((err) => {
+        console.warn('Upload error!', err);
       });
-    }).catch((err) => {
-      console.warn('Upload error!', err);
-    });
-  }
+  };
 
   cancelVideoUpload = () => {
     const { uploadId } = this.state;
@@ -642,7 +691,7 @@ class EditProfileScreen extends Component {
       isVideoUploading: false,
       videoUploadProgress: 0,
     });
-  }
+  };
 
   renderVideoStatus = () => {
     const { isVideoUploading, videoUploadProgress } = this.state;
@@ -651,26 +700,14 @@ class EditProfileScreen extends Component {
       return (
         <View style={styles.videoButtonsContainer}>
           {/* <Text style={{ marginRight: 5 }}>{I18n.t('editProfile.video_uploaded')}</Text> */}
-          <NBButton
-            warning
-            rounded
-            onPress={this.onVideoUploadPress}
-            style={{ margin: 5 }}
-          >
-            <Text
-              style={{ fontSize: 0.35 * ITEM_WIDTH / I18n.t('editProfile.new_video').length }}
-            >{I18n.t('editProfile.new_video')}
+          <NBButton warning rounded onPress={this.onVideoUploadPress} style={{ margin: 5 }}>
+            <Text style={{ fontSize: 0.35 * ITEM_WIDTH / I18n.t('editProfile.new_video').length }}>
+              {I18n.t('editProfile.new_video')}
             </Text>
           </NBButton>
-          <NBButton
-            danger
-            rounded
-            onPress={this.onRemoveVideoPress}
-            style={{ margin: 5 }}
-          >
-            <Text
-              style={{ fontSize: 0.35 * ITEM_WIDTH / I18n.t('editProfile.new_video').length }}
-            >{I18n.t('editProfile.remove_video')}
+          <NBButton danger rounded onPress={this.onRemoveVideoPress} style={{ margin: 5 }}>
+            <Text style={{ fontSize: 0.35 * ITEM_WIDTH / I18n.t('editProfile.new_video').length }}>
+              {I18n.t('editProfile.remove_video')}
             </Text>
           </NBButton>
         </View>
@@ -704,7 +741,7 @@ class EditProfileScreen extends Component {
         <Text>{I18n.t('menu.homeTab.booking.cancel')}</Text>
       </Button>,
     ];
-  }
+  };
 
   render() {
     const { checkBoxText, categoryText, styleDescription } = styles;
@@ -723,77 +760,74 @@ class EditProfileScreen extends Component {
           keyboardShouldPersistTaps="always"
           ref={this.setScrollRef}
         >
-          { isProvider ? (
+          {isProvider ? (
             <View style={{ justifyContent: 'space-between' }}>
-               <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
-                 <ProfileImage
-                   id="EditProfile.imageWrapper1"
-                   onPress={this.captureImage}
-                   source={{
-                        uri:
-                          this.state.values.profileImageURL ||
-                          this.props.user.profile.profileImageURL,
-                      }}
-                   hasImage={this.state.values.profileImageURL}
-                   size={2 / 3}
-                   styleContainer={{ marginRight: (ITEM_WIDTH / 20) - 2 }}
-                 />
+              <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
+                <ProfileImage
+                  id="EditProfile.imageWrapper1"
+                  onPress={this.captureImage}
+                  source={{
+                    uri:
+                      this.state.values.profileImageURL || this.props.user.profile.profileImageURL,
+                  }}
+                  hasImage={this.state.values.profileImageURL}
+                  size={2 / 3}
+                  styleContainer={{ marginRight: ITEM_WIDTH / 20 - 2 }}
+                />
 
-                 <View style={{ justifyContent: 'flex-start' }}>
+                <View style={{ justifyContent: 'flex-start' }}>
+                  <ProfileImage
+                    id="EditProfile.imageWrapper2"
+                    onPress={() => this.captureProviderImage(0)}
+                    source={{ uri: this.state.values.providerImages[0] }}
+                    hasImage={!!this.state.values.providerImages[0]}
+                    size={1 / 3}
+                    styleContainer={{ marginBottom: ITEM_WIDTH / 20 }}
+                  />
 
-                   <ProfileImage
-                     id="EditProfile.imageWrapper2"
-                     onPress={() => this.captureProviderImage(0)}
-                     source={{ uri: this.state.values.providerImages[0] }}
-                     hasImage={!!this.state.values.providerImages[0]}
-                     size={1 / 3}
-                     styleContainer={{ marginBottom: ITEM_WIDTH / 20 }}
-                   />
-
-                   <ProfileImage
-                     id="EditProfile.imageWrapper3"
-                     onPress={() => this.captureProviderImage(1)}
-                     source={{ uri: this.state.values.providerImages[1] }}
-                     hasImage={!!this.state.values.providerImages[1]}
-                     size={1 / 3}
-                   />
-                 </View>
-               </View>
-               <View style={{
+                  <ProfileImage
+                    id="EditProfile.imageWrapper3"
+                    onPress={() => this.captureProviderImage(1)}
+                    source={{ uri: this.state.values.providerImages[1] }}
+                    hasImage={!!this.state.values.providerImages[1]}
+                    size={1 / 3}
+                  />
+                </View>
+              </View>
+              <View
+                style={{
                   flexDirection: 'row',
                   justifyContent: 'flex-start',
                   marginTop: ITEM_WIDTH / 20,
                   marginBottom: ITEM_WIDTH / 20,
                 }}
-               >
+              >
+                <ProfileImage
+                  id="EditProfile.imageWrapper6"
+                  onPress={() => this.captureProviderImage(4)}
+                  source={{ uri: this.state.values.providerImages[4] }}
+                  hasImage={!!this.state.values.providerImages[4]}
+                  size={1 / 3}
+                  styleContainer={{ marginRight: ITEM_WIDTH / 20 }}
+                />
 
-                 <ProfileImage
-                   id="EditProfile.imageWrapper6"
-                   onPress={() => this.captureProviderImage(4)}
-                   source={{ uri: this.state.values.providerImages[4] }}
-                   hasImage={!!this.state.values.providerImages[4]}
-                   size={1 / 3}
-                   styleContainer={{ marginRight: ITEM_WIDTH / 20 }}
-                 />
+                <ProfileImage
+                  id="EditProfile.imageWrapper5"
+                  onPress={() => this.captureProviderImage(3)}
+                  source={{ uri: this.state.values.providerImages[3] }}
+                  hasImage={!!this.state.values.providerImages[3]}
+                  size={1 / 3}
+                  styleContainer={{ marginRight: ITEM_WIDTH / 20 - 2 }}
+                />
 
-                 <ProfileImage
-                   id="EditProfile.imageWrapper5"
-                   onPress={() => this.captureProviderImage(3)}
-                   source={{ uri: this.state.values.providerImages[3] }}
-                   hasImage={!!this.state.values.providerImages[3]}
-                   size={1 / 3}
-                   styleContainer={{ marginRight: (ITEM_WIDTH / 20) - 2 }}
-                 />
-
-                 <ProfileImage
-                   id="EditProfile.imageWrapper4"
-                   onPress={() => this.captureProviderImage(2)}
-                   source={{ uri: this.state.values.providerImages[2] }}
-                   hasImage={!!this.state.values.providerImages[2]}
-                   size={1 / 3}
-                 />
-
-               </View>
+                <ProfileImage
+                  id="EditProfile.imageWrapper4"
+                  onPress={() => this.captureProviderImage(2)}
+                  source={{ uri: this.state.values.providerImages[2] }}
+                  hasImage={!!this.state.values.providerImages[2]}
+                  size={1 / 3}
+                />
+              </View>
             </View>
           ) : (
             <View style={{ justifyContent: 'center' }}>
@@ -810,7 +844,7 @@ class EditProfileScreen extends Component {
                   uri:
                     this.state.values.profileImageURL ||
                     this.props.user.profile.profileImageURL ||
-                    defaultImage,
+                    defaultProfile,
                 }}
                 /> */}
                 <Col style={{ alignItems: 'center' }}>
@@ -822,36 +856,36 @@ class EditProfileScreen extends Component {
                       source={{ uri: 
                         this.props.user.profile.profileImageURL ||
                         this.props.user.profile.profileImageURL ||
-                        defaultImage,
+                        defaultProfile,
                       }}
                     />
                   </Row>
                 </Col>
 
                 {!this.state.values.profileImageURL ? (
-             <View
-               style={{
-                flex: 0,
-                bottom: 13,
-                paddingLeft: 40,
-                position: 'absolute',
-              }}
-             >
-               <Icon
-                 style={{
-                      color: this.state.profileIconColor,
-                      backgroundColor: 'white',
-                      borderRadius: 12,
-                      paddingTop: 0.8,
-                      paddingBottom: 0.8,
-                      paddingLeft: 3.3,
-                      paddingRight: 3.3,
+                  <View
+                    style={{
+                      flex: 0,
+                      bottom: 13,
+                      paddingLeft: 40,
+                      position: 'absolute',
                     }}
-                 size={20}
-                 name="plus"
-               />
-             </View>
-              ) : null}
+                  >
+                    <Icon
+                      style={{
+                        color: this.state.profileIconColor,
+                        backgroundColor: 'white',
+                        borderRadius: 12,
+                        paddingTop: 0.8,
+                        paddingBottom: 0.8,
+                        paddingLeft: 3.3,
+                        paddingRight: 3.3,
+                      }}
+                      size={20}
+                      name="plus"
+                    />
+                  </View>
+                ) : null}
               </Button>
             </View>
           )}
@@ -867,190 +901,138 @@ class EditProfileScreen extends Component {
           />
 
           {isProvider && (
-          <View style={{
-            borderColor: lightTextColor,
-            borderBottomWidth: 1,
-            flexDirection: 'row',
-            paddingBottom: 10,
-            justifyContent: 'space-between',
-            }}
-          >
-            <Text style={{ flex: 3, color: lightTextColor, paddingTop: 6 }}>
-              {this.state.values.allowPhoneCalls ?
-                  I18n.t('editProfile.CallOn') : I18n.t('editProfile.CallOff') }
-            </Text>
+            <View
+              style={{
+                borderColor: lightTextColor,
+                borderBottomWidth: 1,
+                flexDirection: 'row',
+                paddingBottom: 10,
+                justifyContent: 'space-between',
+              }}
+            >
+              <Text style={{ flex: 3, color: lightTextColor, paddingTop: 6 }}>
+                {this.state.values.allowPhoneCalls
+                  ? I18n.t('editProfile.CallOn')
+                  : I18n.t('editProfile.CallOff')}
+              </Text>
 
-            <Switch
-              onValueChange={this.toggleSwitchPhone}
-              value={this.state.values.allowPhoneCalls}
-              onTintColor="#49d260"
-              thumbTintColor="#e7e7e7"
-            />
-          </View>
-            )}
+              <Switch
+                onValueChange={this.toggleSwitchPhone}
+                value={this.state.values.allowPhoneCalls}
+                onTintColor="#49d260"
+                thumbTintColor="#e7e7e7"
+              />
+            </View>
+          )}
 
           {isProvider && (
-          <View style={{
-            marginTop: 15,
-            borderColor: lightTextColor,
-            borderBottomWidth: 1,
-            flexDirection: 'row',
-            paddingBottom: 10,
-            justifyContent: 'space-between',
-             }}
-          >
-            <Text style={{ flex: 3, color: lightTextColor, paddingTop: 6 }}>
-              {this.state.values.chatEnabled ?
-                  I18n.t('editProfile.ChatOn') : I18n.t('editProfile.ChatOff') }
-            </Text>
-            <Switch
-              onValueChange={this.toggleSwitchChat}
-              value={this.state.values.chatEnabled}
-              onTintColor="#49d260"
-              thumbTintColor="#e7e7e7"
-            />
-          </View>
+            <View
+              style={{
+                marginTop: 15,
+                borderColor: lightTextColor,
+                borderBottomWidth: 1,
+                flexDirection: 'row',
+                paddingBottom: 10,
+                justifyContent: 'space-between',
+              }}
+            >
+              <Text style={{ flex: 3, color: lightTextColor, paddingTop: 6 }}>
+                {this.state.values.chatEnabled
+                  ? I18n.t('editProfile.ChatOn')
+                  : I18n.t('editProfile.ChatOff')}
+              </Text>
+              <Switch
+                onValueChange={this.toggleSwitchChat}
+                value={this.state.values.chatEnabled}
+                onTintColor="#49d260"
+                thumbTintColor="#e7e7e7"
+              />
+            </View>
           )}
 
           <View
             style={{
-              flexDirection: 'row',
-              marginTop: 10,
-              marginBottom: 30,
-              alignItems: 'center',
+              marginTop: 15,
               borderColor: lightTextColor,
               borderBottomWidth: 1,
+              flexDirection: 'row',
+              paddingBottom: 10,
             }}
           >
-            <Text style={{ flex: 3, color: lightTextColor }}>
-              {`${I18n.t('editProfile.country')} / ${I18n.t('editProfile.region')}`}
-            </Text>
-            <View style={{ flex: 1, alignItems: 'flex-start' }}>
-              <CountryPicker
-                onChange={(value) => {
-                  this.setState({
-                    values: {
-                      ...this.state.values,
-                      countryCode: value.cca2,
-                      regionName: countryLib[`${value.cca2}`].provinces[0],
-                    },
-                  });
-                }}
-                cca2={this.state.values.countryCode}
-                excludeCountries={[
-                  'AD',
-                  'AQ',
-                  'BV',
-                  'VG',
-                  'CW',
-                  'XK',
-                  'ME',
-                  'PS',
-                  'BL',
-                  'MF',
-                  'RS',
-                  'SX',
-                  'TC',
-                  'UM',
-                  'VI',
-                  'VA',
-                  'AX',
-                ]}
-                translation={I18n.t('editProfile.countryLang')}
-                closeable
-              />
-            </View>
-            <View
-              style={{ flex: 3 }}
-            >
-              <Picker
-                mode="dropdown"
-                style={Platform.OS === 'android' ?
-                  { flex: 1, color: lightTextColor, alignItems: 'flex-end' } :
-                  { flex: 1, alignItems: 'flex-end' }}
-                itemTextStyle={{ color: lightTextColor }}
-                placeholder={I18n.t('logIn.select_category')}
-                selectedValue={this.state.values.regionName}
-                onValueChange={this.onRegionSelect}
-                placeholderTextColor={lightTextColor}
-                placeholderStyle={{ color: lightTextColor }}
-                textStyle={{ color: lightTextColor }}
-              >
-                {countryLib[`${this.state.values.countryCode}`].provinces.map(item => (
-                  <Picker.Item label={item} value={item} key={item} />
-              ))}
-              </Picker>
-            </View>
-          </View>
-          
-          { !isProvider && (
-          <View style={{ marginLeft: -10, marginBottom: 10, flexDirection: 'row' }}>
-            <CheckBox
-              checked={this.state.values.isProvider}
-              onPress={this.onCheckboxPress}
-              color="#d64635"
+            <CountriesPicker 
+              onCountrySelect={this.onCountrySelect}
+              selectedCountries={this.state.values.appearInCountries}
+              onRegionSelect={this.onRegionSelect}
+              selectedRegion={this.state.values.regionName}
             />
-            <Left>
-              <Text style={checkBoxText}>{I18n.t('logIn.advertiser')}</Text>
-            </Left>
-          </View>)}
-          {this.state.values.isProvider && (
-          <View style={{ flex: 1 }}>
-            <View style={{ flex: 1 }}>
-              <Text style={{ color: lightTextColor, marginBottom: 7 }}>
-                { I18n.t('editProfile.description') }
-              </Text>
-              <View style={{ height: 140, flex: 1 }}>
-                <TextInput
-                  onChangeText={value => this.profileDescriptionMethod(value)}
-                  value={this.state.values.bio}
-                  style={styleDescription}
-                  maxLength={maxLength}
-                  underlineColorAndroid="transparent"
-                  placeholder={`5000 ${I18n.t('editProfile.symbols')}`}
-                  multiline
-                />
-                <Text style={{ fontSize: 10, color: 'lightgrey', textAlign: 'right' }}>
-                  {this.state.values.descriptionLength}
-                </Text>
-              </View>
-            </View>
-            <View style={{ flexDirection: 'row' }}>
-              <View style={{ flex: 1 }}>
-                <MultiSelect
-                       // hideTags
-                  items={this.state.categories}
-                  uniqueKey="_id"
-                  ref={this.setMultiselectRef}
-                  onSelectedItemsChange={this.onCategorySelect}
-                  selectedItems={this.state.values.categories}
-                  selectText={I18n.t('common.category')}
-                  searchInputPlaceholderText={`${I18n.t('common.category')}...`}
-                  fontSize={16}
-                  tagRemoveIconColor="#d64635"
-                  tagBorderColor="#f3c200"
-                  tagTextColor={lightTextColor}
-                  selectedItemTextColor={lightTextColor}
-                  selectedItemIconColor={lightTextColor}
-                  itemTextColor="#000"
-                  displayKey="name"
-                  searchInputStyle={{ color: lightTextColor }}
-                  autoFocusInput={false}
-                  submitButtonColor="#d64635"
-                  submitButtonText={I18n.t('common.ok')}
-                  hideSubmitButton
-                />
-              </View>
-            </View>
-            {this.state.values.isProvider && !this.props.user.profile.isProvider && (
-            <Text style={categoryText}>
-              {I18n.t('logIn.account_activation')}
-            </Text>
-            )}
-            <View style={styles.videoField}>
-              {this.renderVideoStatus()}
-            </View>
           </View>
+
+          {!isProvider && (
+            <View style={{ marginLeft: -10, marginBottom: 10, flexDirection: 'row' }}>
+              <CheckBox
+                checked={this.state.values.isProvider}
+                onPress={this.onCheckboxPress}
+                color="#d64635"
+              />
+              <Left>
+                <Text style={checkBoxText}>{I18n.t('logIn.advertiser')}</Text>
+              </Left>
+            </View>
+          )}
+          {this.state.values.isProvider && (
+            <View style={{ flex: 1 }}>
+              <View style={{ flex: 1 }}>
+                <Text style={{ color: lightTextColor, marginBottom: 7, marginTop: 15 }}>
+                  {I18n.t('editProfile.description')}
+                </Text>
+                <View style={{ height: 140, flex: 1 }}>
+                  <TextInput
+                    onChangeText={value => this.profileDescriptionMethod(value)}
+                    value={this.state.values.bio}
+                    style={styleDescription}
+                    maxLength={maxLength}
+                    underlineColorAndroid="transparent"
+                    placeholder={`5000 ${I18n.t('editProfile.symbols')}`}
+                    multiline
+                  />
+                  <Text style={{ fontSize: 10, color: 'lightgrey', textAlign: 'right' }}>
+                    {this.state.values.descriptionLength}
+                  </Text>
+                </View>
+              </View>
+              <View style={{ flexDirection: 'row' }}>
+                <View style={{ flex: 1 }}>
+                  <MultiSelect
+                    // hideTags
+                    items={this.state.categories}
+                    uniqueKey="_id"
+                    ref={this.setMultiselectRef}
+                    onSelectedItemsChange={this.onCategorySelect}
+                    selectedItems={this.state.values.categories}
+                    selectText={I18n.t('common.category')}
+                    searchInputPlaceholderText={`${I18n.t('common.category')}...`}
+                    fontSize={16}
+                    tagRemoveIconColor="#d64635"
+                    tagBorderColor="#f3c200"
+                    tagTextColor={lightTextColor}
+                    selectedItemTextColor={lightTextColor}
+                    selectedItemIconColor={lightTextColor}
+                    itemTextColor="#000"
+                    displayKey="name"
+                    searchInputStyle={{ color: lightTextColor }}
+                    autoFocusInput={false}
+                    submitButtonColor="#d64635"
+                    submitButtonText={I18n.t('common.ok')}
+                    hideSubmitButton
+                  />
+                </View>
+              </View>
+              {this.state.values.isProvider &&
+                !this.props.user.profile.isProvider && (
+                  <Text style={categoryText}>{I18n.t('logIn.account_activation')}</Text>
+                )}
+              <View style={styles.videoField}>{this.renderVideoStatus()}</View>
+            </View>
           )}
         </Content>
       </Container>
