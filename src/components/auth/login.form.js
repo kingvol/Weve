@@ -21,6 +21,7 @@ import { Button, Center, Text, Logo } from '../../components/common';
 import config from '../../../config';
 import countries from '../../countryLib/countries';
 import { UIActions } from '../../actions';
+import vars from '../../env/vars';
 
 const { countryCodeChanged } = UIActions;
 
@@ -179,7 +180,9 @@ class LoginForm extends Component {
       <ScrollView>
         <Container containerStyle={containerStyle} id="LoginPage.main-content">
           <ImageBackground resizeMode="cover" style={background} source={images.backGround}>
+          {vars.DB_ENV === 'test' && <Text style={{ alignSelf: 'center', paddingTop: 30 }}>DEV</Text>}
             <CardItem style={header} id="LoginPage.logo-container">
+            
               <Title style={headerText} id="LoginPage.accountLoginText">
                 {I18n.t('logIn.account_login')}
               </Title>
@@ -348,7 +351,7 @@ const styles = {
   header: {
     alignSelf: 'center',
     marginTop:
-      screenHeight > 550 ? (Platform.OS === 'ios' ? 30 : 0) : Platform.OS === 'ios' ? 10 : 0,
+      screenHeight > 350 ? (Platform.OS === 'ios' ? 30 : 0) : Platform.OS === 'ios' ? 10 : 0,
     backgroundColor: 'transparent',
   },
   headerText: {
