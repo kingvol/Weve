@@ -17,14 +17,16 @@ import {
 } from '../../../components/common';
 import { backgroundColor, primaryFont } from '../../../theme';
 import { UserActions } from '../../../actions';
+import images from '../../../images';
 
 const { fetchProfile } = UserActions;
-const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png';
+const defaultImage = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png';
 
 class ProfileScreen extends Component {
   constructor(props) {
     super(props);
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+    
   }
 
   state = {
@@ -116,7 +118,7 @@ class ProfileScreen extends Component {
             style={styles.profileImage}
             id="Profile.profileImage"
             large
-            source={{ uri: this.props.user.profile.profileImageURL || defaultProfile }}
+            source={{ uri: this.props.user.profile.profileImageURL || defaultImage }}
           />
         </Row>
         <Row size={35} style={{ height: 20 }}>
