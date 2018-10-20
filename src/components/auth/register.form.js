@@ -23,7 +23,7 @@ import Eula from './EULA';
 import countries from '../../countryLib/countries';
 import countryLib from '../../countryLib';
 import images from '../../images';
-
+import vars from '../../env/vars';
 import APIs from '../../api';
 
 const { AuthApi, CategoryApi } = APIs;
@@ -291,7 +291,10 @@ class SignupForm extends Component {
             onRequestClose={() => this.props.onBackPress()}
           >
             <ImageBackground resizeMode="cover" style={background} source={images.backGround}>
-              <Logo styleContainer={{ marginTop: 60 }} />
+
+            {vars.DB_ENV === 'test' && <Text style={{ alignSelf: 'center', paddingTop: 30 }}>DEV</Text>}
+
+              <Logo styleContainer={{ marginTop: 40 }} />
               <CardItem style={headerModal} id="RegisterPage.logo-container">
                 <Title style={headerModalText} id="RegisterPage.accountLoginText">
                   {I18n.t('logIn.account_type')}
