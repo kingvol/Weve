@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle, camelcase */
 import React, { Component } from 'react';
-import { Alert, Keyboard, View, Dimensions, TextInput, Switch, Platform, ActivityIndicator } from 'react-native';
+import { Alert, Keyboard, View, Dimensions, TextInput, Switch, Platform, ActivityIndicator, TouchableOpacity } from 'react-native';
 import * as Progress from 'react-native-progress';
 import Upload from 'react-native-background-upload';
 import _ from 'lodash';
@@ -11,7 +11,6 @@ import { connect } from 'react-redux';
 import SpinnerOverlay from 'react-native-loading-spinner-overlay';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DeviceInfo from 'react-native-device-info';
-import MultiSelect from 'react-native-multiple-select';
 import ImageResizer from 'react-native-image-resizer';
 import I18n from '../../../locales';
 import config from '../../../../config';
@@ -703,6 +702,14 @@ class EditProfileScreen extends Component {
     ];
   }
 
+
+  selectCategory = () => {
+    this.props.navigator.push({
+      screen: 'wevedo.CategoryGridScreen',
+      passProps:{ categories:this.state.categories }
+    });
+  }
+
   render() {
     const { checkBoxText, categoryText, styleDescription } = styles;
     const { isProvider } = this.props.user.profile;
@@ -964,7 +971,7 @@ class EditProfileScreen extends Component {
               </Picker>
             </View>
           </View>
-          
+
           { !isProvider && (
           <View style={{ marginLeft: -10, marginBottom: 10, flexDirection: 'row' }}>
             <CheckBox
@@ -999,29 +1006,12 @@ class EditProfileScreen extends Component {
             </View>
             <View style={{ flexDirection: 'row' }}>
               <View style={{ flex: 1 }}>
-                <MultiSelect
-                       // hideTags
-                  items={this.state.categories}
-                  uniqueKey="_id"
-                  ref={this.setMultiselectRef}
-                  onSelectedItemsChange={this.onCategorySelect}
-                  selectedItems={this.state.values.categories}
-                  selectText={I18n.t('common.category')}
-                  searchInputPlaceholderText={`${I18n.t('common.category')}...`}
-                  fontSize={16}
-                  tagRemoveIconColor="#d64635"
-                  tagBorderColor="#f3c200"
-                  tagTextColor={lightTextColor}
-                  selectedItemTextColor={lightTextColor}
-                  selectedItemIconColor={lightTextColor}
-                  itemTextColor="#000"
-                  displayKey="name"
-                  searchInputStyle={{ color: lightTextColor }}
-                  autoFocusInput={false}
-                  submitButtonColor="#d64635"
-                  submitButtonText={I18n.t('common.ok')}
-                  hideSubmitButton
-                />
+                <TouchableOpacity onPress={()=>this.selectCategory()}>
+                  <View style={styles.categorySelectContainer}>
+                    <Text>{I18n.t('common.category')}</Text>
+                    <Text>here</Text>
+                  </View>
+                </TouchableOpacity>
               </View>
             </View>
             {this.state.values.isProvider && !this.props.user.profile.isProvider && (
@@ -1081,4 +1071,38 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
   },
+  categorySelectContainer: {
+    padding: 10,
+    paddingVertical: 15,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderColor: '#000000',
+    borderBottomWidth: 1,
+  },
 };
+
+
+/*
+<MultiSelect
+       // hideTags
+  items={this.state.categories}
+  uniqueKey="_id"
+  ref={this.setMultiselectRef}
+  onSelectedItemsChange={this.onCategorySelect}
+  selectedItems={this.state.values.categories}
+  selectText={I18n.t('common.category')}
+  searchInputPlaceholderText={`${I18n.t('common.category')}...`}
+  fontSize={16}
+  tagRemoveIconColor="#d64635"
+  tagBorderColor="#f3c200"
+  tagTextColor={lightTextColor}
+  selectedItemTextColor={lightTextColor}
+  selectedItemIconColor={lightTextColor}
+  itemTextColor="#000"
+  displayKey="name"
+  searchInputStyle={{ color: lightTextColor }}
+  autoFocusInput={false}
+  submitButtonColor="#d64635"
+  submitButtonText={I18n.t('common.ok')}
+  hideSubmitButton
+/> */
