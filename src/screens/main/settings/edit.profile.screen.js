@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle, camelcase */
 import React, { Component } from 'react';
-import { Alert, Keyboard, View, Dimensions, TextInput, Switch, Platform, ActivityIndicator } from 'react-native';
+import { Alert, Keyboard, View, Dimensions, Image, TextInput, Switch, Platform, ActivityIndicator } from 'react-native';
 import * as Progress from 'react-native-progress';
 import Upload from 'react-native-background-upload';
 import _ from 'lodash';
@@ -24,6 +24,8 @@ import {
   EditProfileField,
   FieldInput,
   Thumbnail,
+  Row,
+  Col,
   Text,
   RadioButton,
 } from '../../../components/common';
@@ -33,12 +35,13 @@ import ProfileImage from '../../../components/home/ProfileImage';
 import { UserActions } from '../../../actions';
 import APIs from '../../../api';
 import Permissions from 'react-native-permissions';
+import FastImage from 'react-native-fast-image';
 
 const { CategoryApi } = APIs;
 const categoryApi = new CategoryApi();
 
 const { fetchProfile, updateProfile } = UserActions;
-const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png';
+const defaultImage = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png';
 const userLocaleCountryCode = DeviceInfo.getDeviceCountry();
 const countryCode = countries.includes(userLocaleCountryCode) ? userLocaleCountryCode : 'GB';
 const regionName = countryLib[`${countryCode}`].provinces[0];
@@ -59,7 +62,7 @@ class EditProfileScreen extends Component {
         firstName: this.props.user.profile.firstName || '',
         lastName: this.props.user.profile.lastName || '',
         fullName: this.props.user.profile.fullName || '',
-        profileImageURL: this.props.user.profile.profileImageURL || undefined,
+        profileImageURL: this.props.user.profile.profileImageURL || '',
         profileVideoURL: this.props.user.profile.profileVideoURL || '',
         providerImages: user.profile.providerImages ? {
           0: user.profile.providerImages[0] || undefined,
@@ -363,7 +366,7 @@ class EditProfileScreen extends Component {
     this.setState({
       values: {
         ...this.state.values,
-        profileImageURL: defaultProfile,
+        profileImageURL: defaultImage,
       },
     });
   };
@@ -800,16 +803,31 @@ class EditProfileScreen extends Component {
                 transparent
                 onPress={this.captureImage}
               >
-                <Thumbnail
+                {/* <Thumbnail
                   id="EditProfile.profileImage"
                   large
                   source={{
                   uri:
                     this.state.values.profileImageURL ||
                     this.props.user.profile.profileImageURL ||
-                    defaultProfile,
+                    defaultImage,
                 }}
-                />
+                /> */}
+                <Col style={{ alignItems: 'center' }}>
+                  <Row size={100} style={{ height: 65 }}>
+                    <FastImage
+                      style={styles.profileImage}
+                      id="Profile.profileImage"
+                      large
+                      source={{ uri: 
+                        this.props.user.profile.profileImageURL ||
+                        this.props.user.profile.profileImageURL ||
+                        defaultImage,
+                      }}
+                    />
+                  </Row>
+                </Col>
+
                 {!this.state.values.profileImageURL ? (
              <View
                style={{
@@ -1080,5 +1098,10 @@ const styles = {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  profileImage: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
   },
 };
