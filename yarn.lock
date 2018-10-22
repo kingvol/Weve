@@ -4564,6 +4564,10 @@ react-native-calendars@^1.17.7:
     prop-types "^15.5.10"
     xdate "^0.8.0"
 
+react-native-chip-view@^0.0.9:
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/react-native-chip-view/-/react-native-chip-view-0.0.9.tgz#0a7e83dd16945846bc3f5de9e20ffc81edd85ccd"
+
 react-native-communications@2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/react-native-communications/-/react-native-communications-2.2.1.tgz#7883b56b20a002eeb790c113f8616ea8692ca795"

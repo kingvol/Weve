@@ -16,6 +16,7 @@ import I18n from '../../../locales';
 import config from '../../../../config';
 import countries from '../../../countryLib/countries';
 import countryLib from '../../../countryLib';
+import { RNChipView } from 'react-native-chip-view'
 import {
   Button,
   Container,
@@ -26,6 +27,7 @@ import {
   Text,
   RadioButton,
 } from '../../../components/common';
+
 
 import { backgroundColor, lightTextColor } from '../../../theme';
 import ProfileImage from '../../../components/home/ProfileImage';
@@ -46,9 +48,63 @@ const ucFirst = s => (s.substr(0, 1).toLowerCase() + s.substr(1)).replace(' ', '
 const ITEM_WIDTH = Dimensions.get('window').width;
 const maxLength = 5000;
 
+
+const CatInfo = {
+  key_5ae9ba16c2ccda00b752b718: {
+    name: 'venue',
+    id: '5ae9ba16c2ccda00b752b718',
+  },
+  key_5ae9ba16c2ccda00b752b71a: {
+    name: 'photo',
+    id: '5ae9ba16c2ccda00b752b71a',
+  },
+  key_5ae9ba16c2ccda00b752b71c: {
+    name: 'entertainment',
+    id: '5ae9ba16c2ccda00b752b71c',
+  },
+  key_5ae9ba16c2ccda00b752b71d: {
+    name: 'makeup',
+    id: '5ae9ba16c2ccda00b752b71d',
+  },
+  key_5ae9ba16c2ccda00b752b71f: {
+    name: 'decoration',
+    id: '5ae9ba16c2ccda00b752b71f',
+  },
+  key_5ae9ba16c2ccda00b752b720: {
+    name: 'cake',
+    id: '5ae9ba16c2ccda00b752b720',
+  },
+  key_5ae9ba16c2ccda00b752b71e: {
+    name: 'costume',
+    id: '5ae9ba16c2ccda00b752b71e',
+  },
+  key_5ae9ba16c2ccda00b752b71b: {
+    name: 'catering',
+    id: '5ae9ba16c2ccda00b752b71b',
+  },
+  key_5b5c2f35a4a01374a3d1d74a: {
+    name: 'transport',
+    id: '5b5c2f35a4a01374a3d1d74a',
+  },
+  key_5bc7be2e58c2de53fff805aa: {
+    name: 'jewelry',
+    id: '5bc7be2e58c2de53fff805aa',
+  },
+  key_5bc7be2e58c2de53fff805ab: {
+    name: 'stationary',
+    id: '5bc7be2e58c2de53fff805ab',
+  },
+  key_5bc7be2e58c2de53fff805ac: {
+    name: 'honeymoon',
+    id: '5bc7be2e58c2de53fff805ac',
+  },
+};
+
+
 class EditProfileScreen extends Component {
   constructor(props) {
     super(props);
+    this.onCategorySelect = this.onCategorySelect.bind(this);
     this.onRegionSelect = this.onRegionSelect.bind(this);
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     const user = Object.assign({}, this.props.user);
@@ -90,6 +146,7 @@ class EditProfileScreen extends Component {
       uploadId: '',
     };
   }
+
 
   async componentWillMount() {
     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
@@ -706,7 +763,11 @@ class EditProfileScreen extends Component {
   selectCategory = () => {
     this.props.navigator.push({
       screen: 'wevedo.CategoryGridScreen',
-      passProps:{ categories:this.state.categories }
+      passProps: {
+        categories: this.state.categories,
+        onCategorySelect: this.onCategorySelect,
+        selectedCategoriesArray: this.state.values.categories,
+      },
     });
   }
 
@@ -1004,15 +1065,27 @@ class EditProfileScreen extends Component {
                 </Text>
               </View>
             </View>
-            <View style={{ flexDirection: 'row' }}>
-              <View style={{ flex: 1 }}>
-                <TouchableOpacity onPress={()=>this.selectCategory()}>
-                  <View style={styles.categorySelectContainer}>
-                    <Text>{I18n.t('common.category')}</Text>
-                    <Text>here</Text>
+            <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+              <TouchableOpacity style={{ flex: 1 }} onPress={() => this.selectCategory()}>
+                <View style={styles.categorySelectContainer}>
+                  <Text>{I18n.t('common.category')}</Text>
+                  <Icon name="angle-right" size={25} />
+                </View>
+              </TouchableOpacity>
+            </View>
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', flex: 1 }}>
+              {this.state.values.categories.map((cat) => {
+                const catname = CatInfo[`key_${cat}`].name;
+                return (
+                  <View style={{ marginBottom: 10, marginRight: 5 }} key={catname}>
+                    <RNChipView
+                      title={I18n.t(`categories.${catname}`)}
+                      avatar={false}
+                      titleStyle={{ fontSize: 14 }}
+                    />
                   </View>
-                </TouchableOpacity>
-              </View>
+                );
+              })}
             </View>
             {this.state.values.isProvider && !this.props.user.profile.isProvider && (
             <Text style={categoryText}>
@@ -1073,10 +1146,10 @@ const styles = {
   },
   categorySelectContainer: {
     padding: 10,
-    paddingVertical: 15,
+    paddingVertical: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    borderColor: '#000000',
+    borderColor: '#B2B3B5',
     borderBottomWidth: 1,
   },
 };

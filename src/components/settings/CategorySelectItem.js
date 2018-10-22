@@ -5,14 +5,19 @@ import images from '../../images';
 
 
 class CategorySelectItem extends React.Component {
-  constructor() {
-    super();
-    this.state = { selected: false };
+  constructor(props) {
+    super(props);
+    this.state = { selected: props.status };
   }
 
 
   onToggle = () => {
-    this.setState({ selected: !this.state.selected });
+    this.props.toggleCategory(this.props.catId);
+    if (this.state.selected === false) {
+      this.setState({ selected: !this.state.selected });
+    } else {
+      this.setState({ selected: !this.state.selected });
+    }
   }
 
   render() {

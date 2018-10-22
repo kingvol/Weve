@@ -33,6 +33,7 @@
     "react-native-af-video-player": "^0.2.1",
     "react-native-background-upload": "^4.4.0",
     "react-native-calendars": "^1.17.7",
+    "react-native-chip-view": "^0.0.9",
     "react-native-country-picker-modal": "https://github.com/Preeternal/react-native-country-picker-modal.git",
     "react-native-device-info": "^0.21.5",
     "react-native-easy-grid": "^0.1.17",
