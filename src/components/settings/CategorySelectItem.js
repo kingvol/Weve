@@ -3,6 +3,7 @@ import { TouchableOpacity, Text, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import images from '../../images';
 
+
 class CategorySelectItem extends React.Component {
   constructor() {
     super();
@@ -18,11 +19,16 @@ class CategorySelectItem extends React.Component {
     const tickImage = this.state.selected ? images.tick_active : images.tick_blank;
 
     return (
-      <TouchableOpacity style={{ padding: 15 }} onPress={()=>this.onToggle()}>
-        <View style={styles.imageCoverContainer}>
-          <FastImage source={tickImage} style={{ height: 14, width: 14 }} />
+      <TouchableOpacity style={{ marginBottom: 5 }} onPress={() => this.onToggle()}>
+        <View style={{ padding: 15, paddingBottom: 5 }}>
+          <FastImage
+            source={this.props.image}
+            style={{ width: 65, height: 65, marginBottom: 3, alignSelf: 'center' }}
+          />
+          <View style={styles.imageCoverContainer}>
+            <FastImage source={tickImage} style={{ height: 14, width: 14 }} />
+          </View>
         </View>
-        <FastImage source={this.props.image} style={{ width: 80, height: 80, marginBottom: 3 }} />
         <Text style={{ alignSelf: 'center' }}>{this.props.name}</Text>
       </TouchableOpacity>
     );
