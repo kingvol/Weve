@@ -209,7 +209,7 @@ class ProviderProfileScreen extends Component {
       });
     }
 
-    let images;
+    let images = [];
     if (provider.providerImages) {
       const arrayImages = Object.values(provider.providerImages);
       images = arrayImages.filter(e => !!e);
@@ -229,10 +229,10 @@ class ProviderProfileScreen extends Component {
     //   artistTitle = titleArray.join(' ');
     // }
     let separator = ' · ';
-    if (ITEM_WIDTH / provider.regionName.length / 10 < 1) {
+    if (provider.regionName && ITEM_WIDTH / provider.regionName.length / 10 < 1) {
       separator = '\n';
     }
-    const nameWithRegion = `${artistTitle.toUpperCase()}${separator}${provider.regionName.toUpperCase()}`;
+    const nameWithRegion = `${artistTitle.toUpperCase()}${separator}${provider.regionName ? provider.regionName.toUpperCase() : ''}`;
 
     const singleProfileImage = this.props.provider.profileImageURL || defaultProfile;
 
