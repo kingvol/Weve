@@ -6,8 +6,9 @@ import { updateProfile, fetchProfile } from '../../actions/user.actions';
 import { primaryFont } from '../../theme';
 import images from '../../images';
 import { HeartAnimation } from './Heart.Animation';
+import config from '../../../config';
 
-const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png';
+const { defaultProfile } = config;
 const loadingImage = images.loadingImage;
 
 class ProviderGridItem extends ProviderItem {

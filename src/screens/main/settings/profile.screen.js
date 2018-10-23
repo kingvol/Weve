@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, AsyncStorage } from 'react-native';
+import { Text, AsyncStorage, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import FastImage from 'react-native-fast-image';
 import { connect } from 'react-redux';
@@ -17,14 +17,17 @@ import {
 } from '../../../components/common';
 import { backgroundColor, primaryFont } from '../../../theme';
 import { UserActions } from '../../../actions';
+import config from '../../../../config';
+import { CountriesPicker } from '../../../components/common/CountriesPicker';
 
+const { defaultProfile } = config;
 const { fetchProfile } = UserActions;
-const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png';
 
 class ProfileScreen extends Component {
   constructor(props) {
     super(props);
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+    
   }
 
   state = {
@@ -137,7 +140,10 @@ class ProfileScreen extends Component {
       profileImageURL,
       countryCode,
       regionName,
+      appearInCountries,
+      isProvider
     } = this.props.profile;
+    
     return (
       <Container id="Profile.container" style={{ backgroundColor }}>
         <Content id="Profile.content" padder>
@@ -149,13 +155,15 @@ class ProfileScreen extends Component {
               title={I18n.t('common.phone')}
               subTitle={phoneNumber || ''}
             />
-            <ProfileFieldForCountry
-              id="Profile.countryField"
-              icon={countryCode || ''}
-              title={I18n.t('editProfile.region')}
-              subTitle={regionName || ''}
-            />
+            <View style={{ marginLeft: 65, marginTop: 20 }}>
+              <CountriesPicker
+                readOnly
+                selectedCountries={isProvider ? appearInCountries : [countryCode]}
+                selectedRegion={regionName}
+              />
+            </View>
           </Grid>
+
           {this.props.profile.countryCode === 'GB' && this.state.showRedeemBtn ? (
             <Button
               style={{ marginTop: 30, marginLeft: 50, marginRight: 50 }}

@@ -14,7 +14,6 @@ import {
   Platform,
 } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
-import CountryPicker from 'react-native-country-picker-modal';
 import MultiSelect from 'react-native-multiple-select';
 import { contrastColor, primaryFont } from '../../theme';
 import { Button, Container, FieldInput, Text, Logo } from '../../components/common';
@@ -25,6 +24,8 @@ import countryLib from '../../countryLib';
 import images from '../../images';
 import vars from '../../env/vars';
 import APIs from '../../api';
+import config from '../../../config';
+import { CountriesPicker } from '../../components/common/CountriesPicker';
 
 const { AuthApi, CategoryApi } = APIs;
 const categoryApi = new CategoryApi();
@@ -49,6 +50,7 @@ class SignupForm extends Component {
         image: null,
         countryCode,
         regionName,
+        appearInCountries: [],
       },
       errors: {
         fullName: {
@@ -91,10 +93,11 @@ class SignupForm extends Component {
     } catch ({ message }) {
       alert(I18n.t(`backend.${message}`, { defaults: [{ scope: 'chat.error' }] }));
     }
-    const url = 'http://api.ipstack.com/check?access_key=e1a9033da20c96cf61c52598eb00cfb9&format=1';
-    await fetch(url)
+    const { ipUrl } = config;
+    await fetch(ipUrl)
       .then(response => response.json())
       .then((responseJson) => {
+        this.onCountrySelect([responseJson.country_code]);
         this.setState({
           values: {
             ...this.state.values,
@@ -107,6 +110,11 @@ class SignupForm extends Component {
             // regionName: countryLib[`${this.state.values.countryCode}`].provinces.find(item => (item.substr(0, 2) === responseJson.region_name.substr(0, 2) ? item : null)),
           },
         });
+      })
+      .catch((error) => {
+        console.log(`There has been a problem with your fetch operation: ${error.message}`);
+        // ADD THIS THROW error
+        throw error;
       });
     this.setState({
       values: {
@@ -127,7 +135,7 @@ class SignupForm extends Component {
     this.setState({
       modalForUserProfileVisible: true,
     });
-  }
+  };
 
   onContinuePress = () => {
     this.setState({
@@ -154,12 +162,15 @@ class SignupForm extends Component {
   }
 
   onImageSelect = (image, cb = () => {}) => {
-    this.setState({
-      values: {
-        ...this.state.values,
-        image,
+    this.setState(
+      {
+        values: {
+          ...this.state.values,
+          image,
+        },
       },
-    }, cb);
+      cb,
+    );
   };
 
   onFieldChange = (key, value) => {
@@ -212,6 +223,22 @@ class SignupForm extends Component {
     }
   }
 
+  onCountrySelect = (appearInCountries) => {
+    let regionName, countryCode;
+    if (appearInCountries.length === 1) {
+      regionName = countryLib[`${appearInCountries[0]}`].provinces[0];
+      countryCode = appearInCountries[0]
+    }
+    this.setState({
+      values: {
+        ...this.state.values,
+        appearInCountries,
+        regionName,
+        countryCode
+      },
+    });
+  };
+
   setModalForCategoryVisible = (visible) => {
     this.setState({ modalForCategoryVisible: visible });
   };
@@ -238,12 +265,15 @@ class SignupForm extends Component {
 
   handleAccept = () => {
     this.setState({ isModalVisible: !this.state.isModalVisible });
-    const { password, fullName, countryCode, regionName } = this.state.values;
+    const { password, fullName, countryCode, regionName, appearInCountries } = this.state.values;
     const arrFN = fullName.split(' ').map(a => a.charAt(0).toUpperCase() + a.substr(1));
     const capitalFullName = arrFN.join(' ');
 
     if (this.state.isProvider) {
       const { image, category } = this.state.values;
+
+      console.log('SUBMIT ', countryCode, appearInCountries, regionName)
+
       this.props.onProviderFormSubmit(
         password,
         capitalFullName,
@@ -251,11 +281,29 @@ class SignupForm extends Component {
         category,
         countryCode,
         regionName,
+        appearInCountries,
       );
     } else {
-      this.props.onFormSubmit(password, capitalFullName, countryCode, regionName);
+      this.props.onFormSubmit(
+        password,
+        capitalFullName,
+        countryCode,
+        regionName,
+        [],
+      );
     }
   };
+
+  selectCategory = () => {
+    this.props.navigator.push({
+      screen: 'wevedo.CategoryGridScreen',
+      passProps: {
+        categories: this.state.categories,
+        onCategorySelect: this.onCategorySelect,
+        selectedCategoriesArray: this.state.values.category,
+      },
+    });
+  }
 
   renderSignUp = () => {
     const { password, confirmPassword } = this.state.values;
@@ -266,323 +314,283 @@ class SignupForm extends Component {
       !confirmPassword ||
       (this.state.step === 2 && !this.state.values.image);
 
-    const {
-      background,
-      headerModal,
-      headerModalText,
-      registerButton,
-      registerButtonText,
-    } = styles;
+    const { background, headerModal, headerModalText, registerButton, registerButtonText } = styles;
 
-    const choosenCategoriesArray = this.state.categories.filter(item => this.state.values.category.includes(item._id));
+    const choosenCategoriesArray = this.state.categories.filter(item =>
+      this.state.values.category.includes(item._id));
     const firstCategory = choosenCategoriesArray[0];
-    const firstCategoryName = (firstCategory
-      ? choosenCategoriesArray.length > 1
-        ? `${firstCategory.name}..`
-        : firstCategory.name
-      : '');
+    const firstCategoryName = firstCategory
+      ? choosenCategoriesArray.length > 1 ? `${firstCategory.name}..` : firstCategory.name
+      : '';
 
+    return (
+      <ScrollView id="SignUp.content" contentContainerStyle={{ justifyContent: 'center' }}>
+        <Modal
+          transparent={false}
+          visible={this.state.modalForUserProfileVisible}
+          onRequestClose={() => this.props.onBackPress()}
+        >
+          <ImageBackground resizeMode="cover" style={background} source={images.backGround}>
+            {vars.DB_ENV === 'test' && (
+              <Text style={{ alignSelf: 'center', paddingTop: 30 }}>DEV</Text>
+            )}
 
-      return (
-        <ScrollView id="SignUp.content" contentContainerStyle={{ justifyContent: 'center' }}>
-          <Modal
-            transparent={false}
-            visible={this.state.modalForUserProfileVisible}
-            onRequestClose={() => this.props.onBackPress()}
-          >
-            <ImageBackground resizeMode="cover" style={background} source={images.backGround}>
-
-            {vars.DB_ENV === 'test' && <Text style={{ alignSelf: 'center', paddingTop: 30 }}>DEV</Text>}
-
-              <Logo styleContainer={{ marginTop: 40 }} />
-              <CardItem style={headerModal} id="RegisterPage.logo-container">
-                <Title style={headerModalText} id="RegisterPage.accountLoginText">
-                  {I18n.t('logIn.account_type')}
-                </Title>
-              </CardItem>
-              <View style={{ flex: 2, marginLeft: 50, marginRight: 50 }}>
+            <Logo styleContainer={{ marginTop: 40 }} />
+            <CardItem style={headerModal} id="RegisterPage.logo-container">
+              <Title style={headerModalText} id="RegisterPage.accountLoginText">
+                {I18n.t('logIn.account_type')}
+              </Title>
+            </CardItem>
+            <View style={{ flex: 2, marginLeft: 50, marginRight: 50 }}>
+              <Button
+                id="User.submitButton"
+                block
+                style={registerButton}
+                onPress={() => this.onSupplierPress(false)}
+              >
+                <Text style={[registerButtonText, { fontSize: ITEM_WIDTH / 26 }]}>
+                  {I18n.t('logIn.user')}
+                </Text>
+              </Button>
+              <View style={{ marginTop: 25 }}>
                 <Button
                   id="User.submitButton"
                   block
                   style={registerButton}
-                  onPress={() => this.onSupplierPress(false)}
+                  onPress={() => this.onSupplierPress(true)}
                 >
-                  <Text style={[registerButtonText, { fontSize: ITEM_WIDTH / 26 }]}>{I18n.t('logIn.user')}</Text>
+                  <Text style={[registerButtonText, { fontSize: ITEM_WIDTH / 26 }]}>
+                    {I18n.t('logIn.supplier')}
+                  </Text>
                 </Button>
-                <View style={{ marginTop: 25 }}>
-                  <Button
-                    id="User.submitButton"
-                    block
-                    style={registerButton}
-                    onPress={() => this.onSupplierPress(true)}
-                  >
-                    <Text style={[registerButtonText, { fontSize: ITEM_WIDTH / 26 }]}>{I18n.t('logIn.supplier')}</Text>
-                  </Button>
-                </View>
               </View>
-            </ImageBackground>
-          </Modal>
-          <View id="Signup.backButtonAndTitleWrapper" style={styles.header}>
-            <Button
-              id="Signup.backButton"
-              style={{ flex: 1, justifyContent: 'center', alignSelf: 'center' }}
-              transparent
-              onPress={this.onBackPress}
-            >
-              <Icon style={{ color: 'white', fontSize: 40 }} name="ios-arrow-back" />
-            </Button>
-            <View style={{ flex: 1.7, justifyContent: 'center', alignSelf: 'center' }}>
-              <Text
-                id="Signup.titleText"
-                style={{ color: contrastColor, fontSize: 25, ...primaryFont }}
-              >
-                {I18n.t('logIn.sign_up')}
-              </Text>
             </View>
-          </View>
-          <Logo />
-
-          <View
-            id="Signup.formWrapper"
-            style={{ flex: 3, justifyContent: 'flex-start' }}
+          </ImageBackground>
+        </Modal>
+        <View id="Signup.backButtonAndTitleWrapper" style={styles.header}>
+          <Button
+            id="Signup.backButton"
+            style={{ flex: 1, justifyContent: 'center', alignSelf: 'center' }}
+            transparent
+            onPress={this.onBackPress}
           >
-            <View style={styles.formWrapper}>
-              {this.state.step === 1 && (
-                <View>
-                  <FieldInput
-                    name="fullName"
-                    color={contrastColor}
-                    placeholder={I18n.t(this.state.isProvider ? 'common.businessName' : 'common.fullName')}
-                    errorColor={contrastColor}
-                    input={{ maxLength: 50 }}
-                    onChangeText={text => this.onFieldChange('fullName', text)}
-                    onBlur={() => this.onBlur('fullName', this.state.values.fullName)}
-                    id="SignUp.fullNameInput"
-                    autoCapitalize="words"
-                    isError={this.state.errors.fullName.isError}
-                    error={this.state.errors.fullName.error}
-                  />
-                  <FieldInput
-                    color={contrastColor}
-                    name="password"
-                    placeholder={I18n.t('common.password')}
-                    errorColor={contrastColor}
-                    secureTextEntry
-                    onChangeText={text => this.onFieldChange('password', text)}
-                    onBlur={() => this.onBlur('password', this.state.values.password)}
-                    id="SignUp.passwordInput"
-                    isError={this.state.errors.password.isError}
-                    error={this.state.errors.password.error}
-                  />
-                  <FieldInput
-                    color={contrastColor}
-                    name="confirmPassword"
-                    placeholder={I18n.t('logIn.confirm_password')}
-                    errorColor={contrastColor}
-                    secureTextEntry
-                    onChangeText={text => this.onFieldChange('confirmPassword', text)}
-                    onBlur={() => this.onBlur('confirmPassword', this.state.values.confirmPassword)}
-                    id="SignUp.confirmPasswordInput"
-                    isError={this.state.errors.confirmPassword.isError}
-                    error={this.state.errors.confirmPassword.error}
-                  />
+            <Icon style={{ color: 'white', fontSize: 40 }} name="ios-arrow-back" />
+          </Button>
+          <View style={{ flex: 1.7, justifyContent: 'center', alignSelf: 'center' }}>
+            <Text
+              id="Signup.titleText"
+              style={{ color: contrastColor, fontSize: 25, ...primaryFont }}
+            >
+              {I18n.t('logIn.sign_up')}
+            </Text>
+          </View>
+        </View>
+        <Logo />
 
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      flex: 1,
-                      marginTop: 10,
-                      marginBottom: 30,
-                      alignItems: 'center',
-                      borderColor: 'white',
-                      borderBottomWidth: 1,
-                      justifyContent: 'space-between',
+        <View id="Signup.formWrapper" style={{ flex: 3, justifyContent: 'flex-start' }}>
+          <View style={styles.formWrapper}>
+            {this.state.step === 1 && (
+              <View>
+                <FieldInput
+                  name="fullName"
+                  color={contrastColor}
+                  placeholder={I18n.t(this.state.isProvider ? 'common.businessName' : 'common.fullName')}
+                  errorColor={contrastColor}
+                  input={{ maxLength: 50 }}
+                  onChangeText={text => this.onFieldChange('fullName', text)}
+                  onBlur={() => this.onBlur('fullName', this.state.values.fullName)}
+                  id="SignUp.fullNameInput"
+                  autoCapitalize="words"
+                  isError={this.state.errors.fullName.isError}
+                  error={this.state.errors.fullName.error}
+                />
+                <FieldInput
+                  color={contrastColor}
+                  name="password"
+                  placeholder={I18n.t('common.password')}
+                  errorColor={contrastColor}
+                  secureTextEntry
+                  onChangeText={text => this.onFieldChange('password', text)}
+                  onBlur={() => this.onBlur('password', this.state.values.password)}
+                  id="SignUp.passwordInput"
+                  isError={this.state.errors.password.isError}
+                  error={this.state.errors.password.error}
+                />
+                <FieldInput
+                  color={contrastColor}
+                  name="confirmPassword"
+                  placeholder={I18n.t('logIn.confirm_password')}
+                  errorColor={contrastColor}
+                  secureTextEntry
+                  onChangeText={text => this.onFieldChange('confirmPassword', text)}
+                  onBlur={() => this.onBlur('confirmPassword', this.state.values.confirmPassword)}
+                  id="SignUp.confirmPasswordInput"
+                  isError={this.state.errors.confirmPassword.isError}
+                  error={this.state.errors.confirmPassword.error}
+                />
+
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 1,
+                    marginTop: 10,
+                    marginBottom: 30,
+                    alignItems: 'center',
+                    borderColor: 'white',
+                    borderBottomWidth: 1,
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <CountriesPicker
+                    onCountrySelect={this.onCountrySelect}
+                    selectedCountries={this.state.values.appearInCountries}
+                    onRegionSelect={this.onRegionSelect}
+                    selectedRegion={this.state.values.regionName}
+                    single={true}
+                    styles={{
+                      textColor: '#848787',
+                      backgroundColor: 'transparent',
+                      chipBorderColor: '#f3c200',
+                      backgroundButton: '#d64635',
+                      labelColor: '#ffffff',
+                      selectedTextColor: '#ffffff',
+                      selectOffset: 40,
                     }}
-                  >
-                    <Text style={{ flex: 3, color: 'white' }}>
-                      {`${I18n.t('editProfile.country')} / ${I18n.t('editProfile.region')}`}
-                    </Text>
-                    <View style={{ flex: 1, alignItems: 'flex-start' }}>
-                      <CountryPicker
-                        onChange={(value) => {
-                          this.setState({
-                            values: {
-                              ...this.state.values,
-                              countryCode: value.cca2,
-                              regionName: countryLib[`${value.cca2}`].provinces[0],
-                            },
-                          });
-                        }}
-                        cca2={this.state.values.countryCode}
-                        excludeCountries={[
-                          'AD',
-                          'AQ',
-                          'BV',
-                          'VG',
-                          'CW',
-                          'XK',
-                          'ME',
-                          'PS',
-                          'BL',
-                          'MF',
-                          'RS',
-                          'SX',
-                          'TC',
-                          'UM',
-                          'VI',
-                          'VA',
-                          'AX',
-                        ]}
-                        translation={I18n.t('editProfile.countryLang')}
-                        closeable
-                      />
-                    </View>
-                    <View style={{ flex: 3, alignSelf: 'flex-end' }}>
-                      <Picker
-                        mode="dropdown"
-                        style={{ color: 'white', flex: 1 }}
-                        placeholder={I18n.t('logIn.select_category')}
-                        selectedValue={this.state.values.regionName}
-                        onValueChange={this.onRegionSelect}
-                        placeholderTextColor="white"
-                        placeholderStyle={{ color: 'white' }}
-                        textStyle={{ color: 'white' }}
-                      >
-                        {countryLib[`${this.state.values.countryCode}`].provinces.map(item => (
-                          <Picker.Item label={item} value={item} key={item} />
-                      ))}
-                      </Picker>
-                    </View>
-                  </View>
+                  />
+                </View>
 
-                  {this.state.isProvider &&
-                    this.state.step === 1 && (
-                      <View>
-                        <Modal
-                          animationType="fade"
-                          transparent={false}
-                          visible={this.state.modalForCategoryVisible}
-                          onRequestClose={() =>
-                            this.setModalForCategoryVisible(!this.state.modalForCategoryVisible)
-                          }
-                        >
-                          <View style={{ margin: 22 }}>
-                            <View>
-                              <View style={{ flexDirection: 'row' }}>
-                                <View style={{ flex: 1 }}>
-                                  <MultiSelect
-                                    // hideTags
-                                    items={this.state.categories}
-                                    uniqueKey="_id"
-                                    ref={(component) => {
-                                      this.multiSelect = component;
-                                    }}
-                                    onSelectedItemsChange={this.onCategorySelect}
-                                    selectedItems={this.state.values.category}
-                                    selectText={I18n.t('common.category')}
-                                    searchInputPlaceholderText={`${I18n.t('common.category')}...`}
-                                    fontSize={16}
-                                    tagRemoveIconColor="#d64635"
-                                    tagBorderColor="#f3c200"
-                                    tagTextColor="grey"
-                                    itemTextColor="#000"
-                                    displayKey="name"
-                                    autoFocusInput={false}
-                                    submitButtonColor="#f3c200"
-                                    submitButtonText={I18n.t('common.ok')}
-                                    hideSubmitButton
-                                  />
-                                </View>
+                {this.state.isProvider &&
+                  this.state.step === 1 && (
+                    <View>
+                      <Modal
+                        animationType="fade"
+                        transparent={false}
+                        visible={this.state.modalForCategoryVisible}
+                        onRequestClose={() =>
+                          this.setModalForCategoryVisible(!this.state.modalForCategoryVisible)
+                        }
+                      >
+                        <View style={{ margin: 22 }}>
+                          <View>
+                            <View style={{ flexDirection: 'row' }}>
+                              <View style={{ flex: 1 }}>
+                                <MultiSelect
+                                  // hideTags
+                                  items={this.state.categories}
+                                  uniqueKey="_id"
+                                  ref={(component) => {
+                                    this.multiSelect = component;
+                                  }}
+                                  onSelectedItemsChange={this.onCategorySelect}
+                                  selectedItems={this.state.values.category}
+                                  selectText={I18n.t('common.category')}
+                                  searchInputPlaceholderText={`${I18n.t('common.category')}...`}
+                                  fontSize={16}
+                                  tagRemoveIconColor="#d64635"
+                                  tagBorderColor="#f3c200"
+                                  tagTextColor="grey"
+                                  itemTextColor="#000"
+                                  displayKey="name"
+                                  autoFocusInput={false}
+                                  submitButtonColor="#f3c200"
+                                  submitButtonText={I18n.t('common.ok')}
+                                  hideSubmitButton
+                                />
                               </View>
-                              <Button
-                                id="CategoryForProfile.subbmitButton"
-                                block
-                                success
-                                onPress={() =>
-                                  this.setModalForCategoryVisible(!this.state.modalForCategoryVisible)
-                                }
-                              >
-                                {I18n.t('common.ok')}
-                              </Button>
                             </View>
-                          </View>
-                        </Modal>
-                        <View style={{ flexDirection: 'row', flex: 1, marginBottom: 10, marginTop: 8 }}>
-                          <Text style={{ color: 'white', alignSelf: 'flex-start', flex: 4.5 }}>
-                            {I18n.t('common.category')}
-                          </Text>
-                          <View style={{ alignSelf: 'flex-start', flex: 3 }}>
-                            <TouchableOpacity
-                              style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-between' }}
-                              onPress={() => this.setModalForCategoryVisible(true)}
+                            <Button
+                              id="CategoryForProfile.subbmitButton"
+                              block
+                              success
+                              onPress={() =>
+                                this.setModalForCategoryVisible(!this.state.modalForCategoryVisible)
+                              }
                             >
-                              <Text style={{ color: 'white', alignSelf: 'flex-start' }}>
-                                {firstCategoryName}
-                              </Text>
-                              <Icon
-                                style={{
+                              {I18n.t('common.ok')}
+                            </Button>
+                          </View>
+                        </View>
+                      </Modal>
+                      <View
+                        style={{ flexDirection: 'row', flex: 1, marginBottom: 10, marginTop: 8 }}
+                      >
+                        <Text style={{ color: 'white', alignSelf: 'flex-start', flex: 4.5 }}>
+                          {I18n.t('common.category')}
+                        </Text>
+                        <View style={{ alignSelf: 'flex-start', flex: 3 }}>
+                          <TouchableOpacity
+                            style={{
+                              flexDirection: 'row',
+                              flex: 1,
+                              justifyContent: 'space-between',
+                            }}
+                            onPress={() => this.selectCategory()}
+                          >
+                            <Text style={{ color: 'white', alignSelf: 'flex-start' }}>
+                              {firstCategoryName}
+                            </Text>
+                            <Icon
+                              style={{
                                 color: '#5c251c',
                                 alignSelf: 'flex-start',
                                 textAlignVertical: 'bottom',
                                 fontSize: 20,
-                                }}
-                                name="md-arrow-dropdown"
-                              />
-                            </TouchableOpacity>
-                          </View>
+                              }}
+                              name="md-arrow-dropdown"
+                            />
+                          </TouchableOpacity>
                         </View>
                       </View>
+                    </View>
+                  )}
+              </View>
+            )}
 
-
-                    )}
+            {this.state.isProvider &&
+              this.state.step === 1 && (
+                <View style={{ alignItems: 'center', borderTopColor: 'white', borderTopWidth: 1 }}>
+                  <Text note style={{ color: 'white', margin: 10, marginBottom: 0 }}>
+                    {I18n.t('logIn.account_activation')}
+                  </Text>
                 </View>
               )}
 
-              {this.state.isProvider &&
-                this.state.step === 1 && (
-                  <View style={{ alignItems: 'center', borderTopColor: 'white', borderTopWidth: 1 }}>
-                    <Text note style={{ color: 'white', margin: 10, marginBottom: 0 }}>
-                      {I18n.t('logIn.account_activation')}
-                    </Text>
-                  </View>
-                )}
+            {this.state.isProvider &&
+              this.state.step === 2 && (
+                <SignupImageForm key="imfs" onImageSelect={this.onImageSelect} />
+              )}
 
-              {this.state.isProvider &&
-                this.state.step === 2 && (
-                  <SignupImageForm key="imfs" onImageSelect={this.onImageSelect} />
-                )}
-
-              {!disabled && (!this.props.isLoading || !this.state.loading) ? (
-                <Button
-                  id="Signup.submitButton"
-                  block
-                  style={styles.registerButton}
-                  onPress={
-                    this.state.isProvider && this.state.step === 1
+            {!disabled && (!this.props.isLoading || !this.state.loading) ? (
+              <Button
+                id="Signup.submitButton"
+                block
+                style={styles.registerButton}
+                onPress={
+                  this.state.isProvider && this.state.step === 1
                     ? this.onContinuePress
-                      : this.handleSubmit
-                  }
-                  spinner={this.props.isLoading || this.state.loading}
-                  disabled={disabled}
-                >
-                  <Text style={styles.registerButtonText}>
-                    {this.state.isProvider && this.state.step === 1
-                      ? I18n.t('common.continue')
-                      : I18n.t('logIn.sign_up')}
-                  </Text>
-                </Button>
-              ) : null}
+                    : this.handleSubmit
+                }
+                spinner={this.props.isLoading || this.state.loading}
+                disabled={disabled}
+              >
+                <Text style={styles.registerButtonText}>
+                  {this.state.isProvider && this.state.step === 1
+                    ? I18n.t('common.continue')
+                    : I18n.t('logIn.sign_up')}
+                </Text>
+              </Button>
+            ) : null}
 
-              <Eula
-                isModalVisible={this.state.isModalVisible}
-                handleDecline={this.handleDecline}
-                handleAccept={this.handleAccept}
-                id="Signup.EULA"
-              />
-            </View>
+            <Eula
+              isModalVisible={this.state.isModalVisible}
+              handleDecline={this.handleDecline}
+              handleAccept={this.handleAccept}
+              id="Signup.EULA"
+            />
           </View>
-        </ScrollView>
-      );
+        </View>
+      </ScrollView>
+    );
   };
 
   render() {
@@ -612,7 +620,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     zIndex: -1,
-    padding:15,
+    padding: 15,
   },
   header: {
     flex: 1,
@@ -654,7 +662,7 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     paddingBottom: 10,
     flexDirection: 'column',
-    borderRadius:10
+    borderRadius: 10,
   },
 });
 

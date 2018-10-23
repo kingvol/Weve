@@ -26,6 +26,9 @@ import { updateProfile, fetchProfile } from '../../../actions/user.actions';
 import Analytics from '../../../services/AnalyticsService';
 
 import I18n from '../../../locales';
+import config from '../../../../config';
+
+const { defaultProfile } = config;
 
 const calendarTheme = {
   selectedDayBackgroundColor: lightTextColor,
@@ -36,7 +39,6 @@ const calendarTheme = {
   textDayHeaderFontFamily: primaryFont.fontFamily,
 };
 
-const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png';
 const ITEM_WIDTH = Dimensions.get('window').width;
 const ITEM_HEIGHT = Dimensions.get('window').height;
 
@@ -209,7 +211,7 @@ class ProviderProfileScreen extends Component {
       });
     }
 
-    let images;
+    let images = [];
     if (provider.providerImages) {
       const arrayImages = Object.values(provider.providerImages);
       images = arrayImages.filter(e => !!e);
@@ -229,10 +231,10 @@ class ProviderProfileScreen extends Component {
     //   artistTitle = titleArray.join(' ');
     // }
     let separator = ' · ';
-    if (ITEM_WIDTH / provider.regionName.length / 10 < 1) {
+    if (provider.regionName && ITEM_WIDTH / provider.regionName.length / 10 < 1) {
       separator = '\n';
     }
-    const nameWithRegion = `${artistTitle.toUpperCase()}${separator}${provider.regionName.toUpperCase()}`;
+    const nameWithRegion = `${artistTitle.toUpperCase()}${separator}${provider.regionName ? provider.regionName.toUpperCase() : ''}`;
 
     const singleProfileImage = this.props.provider.profileImageURL || defaultProfile;
 

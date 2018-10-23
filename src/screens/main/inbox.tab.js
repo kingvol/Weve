@@ -10,8 +10,9 @@ import { Center } from '../../components/common';
 import { primaryFont, black, lighterTextColor } from '../../theme';
 import { fetchRooms } from '../../actions/chat.actions';
 import I18n from '../../locales';
+import config from '../../../config';
 
-const defaultProfile = 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png';
+const { defaultProfile } = config;
 
 class InboxTab extends Component {
   state = {
