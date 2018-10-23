@@ -45,7 +45,7 @@ class RegisterScreen extends Component {
     });
   };
 
-  onFormSubmit = (password, fullName, countryCode, regionName) => {
+  onFormSubmit = (password, fullName, countryCode, regionName, appearInCountries) => {
     /* divide fullName to first and last */
     const firstName = fullName.replace(/ .*/, '');
     const wordsLength = fullName.split(' ').length;
@@ -63,6 +63,7 @@ class RegisterScreen extends Component {
       lastName,
       countryCode,
       regionName,
+      appearInCountries,
       eulaAccepted: true,
       deviceToken: 'somerandomtoken',
     };
@@ -71,7 +72,7 @@ class RegisterScreen extends Component {
     this.props.registerUser(body);
   };
 
-  onProviderFormSubmit = async (password, fullName, image, category, countryCode, regionName) => {
+  onProviderFormSubmit = async (password, fullName, image, category, countryCode, regionName, appearInCountries) => {
     /* divide fullName to first and last */
     const firstName = fullName.replace(/ .*/, '');
     const wordsLength = fullName.split(' ').length;
@@ -98,6 +99,7 @@ class RegisterScreen extends Component {
       lastName,
       countryCode,
       regionName,
+      appearInCountries,
       eulaAccepted: true,
       isProvider: true,
       deviceToken: 'somerandomtoken',

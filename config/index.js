@@ -10,4 +10,5 @@ export default {
   onesignal: {
     appId: '991cf64c-0db1-4d93-82b7-a035cb23027b',
   },
+  defaultProfile: 'https://d30y9cdsu7xlg0.cloudfront.net/png/112829-200.png',
 };
