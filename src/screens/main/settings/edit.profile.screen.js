@@ -339,12 +339,12 @@ class EditProfileScreen extends Component {
 
   onCountrySelect = async (appearInCountries) => {
     this.dataModified();
-    let regionName;
+    let regionName, countryCode;
     if(appearInCountries.length === 1) {
       await fetch(ipUrl)
       .then(response => response.json())
       .then((responseJson) => {
-  
+        countryCode = appearInCountries[0]
         if(appearInCountries[0] === responseJson.country_code) {
           regionName = countryLib[`${appearInCountries[0]}`].provinces.find(item => (item.substr(0, 2) === responseJson.region_name.substr(0, 2) ? item : null))
         }
@@ -357,7 +357,8 @@ class EditProfileScreen extends Component {
       values: {
         ...this.state.values,
         appearInCountries,
-        regionName
+        regionName,
+        countryCode
       },
     });
   };
@@ -953,6 +954,7 @@ class EditProfileScreen extends Component {
           <View
             style={{
               marginTop: 15,
+              marginBottom: 15,
               borderColor: lightTextColor,
               borderBottomWidth: 1,
               flexDirection: 'row',
@@ -961,7 +963,8 @@ class EditProfileScreen extends Component {
           >
             <CountriesPicker 
               onCountrySelect={this.onCountrySelect}
-              selectedCountries={this.state.values.appearInCountries}
+              selectedCountries={isProvider ? this.state.values.appearInCountries: [this.state.values.countryCode]}
+              single={!isProvider}
               onRegionSelect={this.onRegionSelect}
               selectedRegion={this.state.values.regionName}
             />

@@ -103,6 +103,7 @@ class CountriesPicker extends PureComponent {
           subKey="children"
           selectText="Select country"
           showDropDowns={false}
+          single={this.props.single || false}
           showCancelButton
           onSelectedItemsChange={this.onSelectedItemsChange}
           selectedItems={this.state.selectedItems}

@@ -141,8 +141,9 @@ class ProfileScreen extends Component {
       countryCode,
       regionName,
       appearInCountries,
+      isProvider
     } = this.props.profile;
-
+    
     return (
       <Container id="Profile.container" style={{ backgroundColor }}>
         <Content id="Profile.content" padder>
@@ -157,7 +158,7 @@ class ProfileScreen extends Component {
             <View style={{ marginLeft: 65, marginTop: 20 }}>
               <CountriesPicker
                 readOnly
-                selectedCountries={appearInCountries}
+                selectedCountries={isProvider ? appearInCountries : [countryCode]}
                 selectedRegion={regionName}
               />
             </View>

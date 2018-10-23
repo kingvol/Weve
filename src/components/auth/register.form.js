@@ -224,15 +224,17 @@ class SignupForm extends Component {
   }
 
   onCountrySelect = (appearInCountries) => {
-    let regionName;
+    let regionName, countryCode;
     if (appearInCountries.length === 1) {
       regionName = countryLib[`${appearInCountries[0]}`].provinces[0];
+      countryCode = appearInCountries[0]
     }
     this.setState({
       values: {
         ...this.state.values,
         appearInCountries,
         regionName,
+        countryCode
       },
     });
   };
@@ -269,6 +271,9 @@ class SignupForm extends Component {
 
     if (this.state.isProvider) {
       const { image, category } = this.state.values;
+
+      console.log('SUBMIT ', countryCode, appearInCountries, regionName)
+
       this.props.onProviderFormSubmit(
         password,
         capitalFullName,
@@ -284,7 +289,7 @@ class SignupForm extends Component {
         capitalFullName,
         countryCode,
         regionName,
-        appearInCountries,
+        [],
       );
     }
   };
@@ -303,31 +308,40 @@ class SignupForm extends Component {
     const choosenCategoriesArray = this.state.categories.filter(item =>
       this.state.values.category.includes(item._id));
     const firstCategory = choosenCategoriesArray[0];
-    const firstCategoryName = (firstCategory
-      ? choosenCategoriesArray.length > 1
-        ? `${firstCategory.name}..`
-        : firstCategory.name
-      : '');
+    const firstCategoryName = firstCategory
+      ? choosenCategoriesArray.length > 1 ? `${firstCategory.name}..` : firstCategory.name
+      : '';
 
+    return (
+      <ScrollView id="SignUp.content" contentContainerStyle={{ justifyContent: 'center' }}>
+        <Modal
+          transparent={false}
+          visible={this.state.modalForUserProfileVisible}
+          onRequestClose={() => this.props.onBackPress()}
+        >
+          <ImageBackground resizeMode="cover" style={background} source={images.backGround}>
+            {vars.DB_ENV === 'test' && (
+              <Text style={{ alignSelf: 'center', paddingTop: 30 }}>DEV</Text>
+            )}
 
-      return (
-        <ScrollView id="SignUp.content" contentContainerStyle={{ justifyContent: 'center' }}>
-          <Modal
-            transparent={false}
-            visible={this.state.modalForUserProfileVisible}
-            onRequestClose={() => this.props.onBackPress()}
-          >
-            <ImageBackground resizeMode="cover" style={background} source={images.backGround}>
-
-            {vars.DB_ENV === 'test' && <Text style={{ alignSelf: 'center', paddingTop: 30 }}>DEV</Text>}
-
-              <Logo styleContainer={{ marginTop: 40 }} />
-              <CardItem style={headerModal} id="RegisterPage.logo-container">
-                <Title style={headerModalText} id="RegisterPage.accountLoginText">
-                  {I18n.t('logIn.account_type')}
-                </Title>
-              </CardItem>
-              <View style={{ flex: 2, marginLeft: 50, marginRight: 50 }}>
+            <Logo styleContainer={{ marginTop: 40 }} />
+            <CardItem style={headerModal} id="RegisterPage.logo-container">
+              <Title style={headerModalText} id="RegisterPage.accountLoginText">
+                {I18n.t('logIn.account_type')}
+              </Title>
+            </CardItem>
+            <View style={{ flex: 2, marginLeft: 50, marginRight: 50 }}>
+              <Button
+                id="User.submitButton"
+                block
+                style={registerButton}
+                onPress={() => this.onSupplierPress(false)}
+              >
+                <Text style={[registerButtonText, { fontSize: ITEM_WIDTH / 26 }]}>
+                  {I18n.t('logIn.user')}
+                </Text>
+              </Button>
+              <View style={{ marginTop: 25 }}>
                 <Button
                   id="User.submitButton"
                   block
@@ -339,6 +353,7 @@ class SignupForm extends Component {
                   </Text>
                 </Button>
               </View>
+            </View>
           </ImageBackground>
         </Modal>
         <View id="Signup.backButtonAndTitleWrapper" style={styles.header}>
@@ -420,6 +435,7 @@ class SignupForm extends Component {
                     selectedCountries={this.state.values.appearInCountries}
                     onRegionSelect={this.onRegionSelect}
                     selectedRegion={this.state.values.regionName}
+                    single={true}
                     styles={{
                       textColor: '#848787',
                       backgroundColor: 'transparent',
@@ -443,7 +459,7 @@ class SignupForm extends Component {
                           this.setModalForCategoryVisible(!this.state.modalForCategoryVisible)
                         }
                       >
-                        <View style={{ margin: 2 }}>
+                        <View style={{ margin: 22 }}>
                           <View>
                             <View style={{ flexDirection: 'row' }}>
                               <View style={{ flex: 1 }}>
