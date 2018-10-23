@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   SafeAreaView,
-  Text,
   FlatList,
   TouchableOpacity,
   View,
@@ -10,6 +9,8 @@ import { connect } from 'react-redux';
 import images from '../../../images';
 import CategorySelectItem from '../../../components/settings/CategorySelectItem';
 import I18n from '../../../locales';
+import { Button, Text } from '../../../components/common';
+
 
 
 // "key_" + categorty id( from backend ) = key for Catinfo lookup
@@ -135,12 +136,12 @@ class CategoryGridScreen extends React.Component {
           />
         </View>
 
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} >
-          <TouchableOpacity style={styles.okButton} onPress={()=>this.onOkPress()}>
-            <Text style={{ color: '#fff', fontWeight: '700', fontSize: 15 }}>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }} >
+          <Button onPress={this.onOkPress}>
+            <Text>
               {I18n.t('common.ok')}
             </Text>
-          </TouchableOpacity>
+          </Button>
         </View>
 
       </SafeAreaView>
@@ -151,14 +152,11 @@ class CategoryGridScreen extends React.Component {
 
 const styles = {
   okButton: {
-    width: 200,
-    height: 40,
     borderRadius: 5,
     backgroundColor: '#FF0000',
     justifyContent: 'center',
     alignItems: 'center',
   },
 };
-
 
 export default connect(null, {})(CategoryGridScreen);

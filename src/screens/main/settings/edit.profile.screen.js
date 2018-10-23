@@ -1084,11 +1084,9 @@ class EditProfileScreen extends Component {
                 const catname = CatInfo[`key_${cat}`].name;
                 return (
                   <View style={{ marginBottom: 10, marginRight: 5 }} key={catname}>
-                    <RNChipView
-                      title={I18n.t(`categories.${catname}`)}
-                      avatar={false}
-                      titleStyle={{ fontSize: 14 }}
-                    />
+                    <View style={{ backgroundColor: '#DEDEDE', padding:10, borderRadius:5 }}>
+                      <Text style={{ color: '#222222', fontSize: 14 }}>{I18n.t(`categories.${catname}`)}</Text>
+                    </View>
                   </View>
                 );
               })}
