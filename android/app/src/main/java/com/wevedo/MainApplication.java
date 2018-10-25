@@ -27,6 +27,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.dylanvann.fastimage.FastImageViewPackage;
+import com.gettipsi.stripe.StripeReactPackage;
 
 import com.reactnativenavigation.NavigationApplication;
 
@@ -44,11 +45,12 @@ public class MainApplication extends NavigationApplication  {
   public List<ReactPackage> createAdditionalReactPackages() {
     return Arrays.<ReactPackage>asList(
     new MainReactPackage(),
+    new StripeReactPackage(),
     new ReactNativeOneSignalPackage(),
     new LottiePackage(),
     new KCKeepAwakePackage(),
     new LinearGradientPackage(),
-    new OrientationPackage(), 
+    new OrientationPackage(),
     new ReactVideoPackage(),
     new UploaderReactPackage(),
     new FingerprintAuthPackage(),
@@ -57,8 +59,8 @@ public class MainApplication extends NavigationApplication  {
     new RNDeviceInfo(),
     new FIRMessagingPackage(),
     new ImagePickerPackage(),
-    new VectorIconsPackage(),          
-    new RNI18nPackage(),            
+    new VectorIconsPackage(),
+    new RNI18nPackage(),
     new AppCenterReactNativeCrashesPackage(MainApplication.this, getResources().getString(R.string.appCenterCrashes_whenToSendCrashes)),
     new AppCenterReactNativeAnalyticsPackage(MainApplication.this, getResources().getString(R.string.appCenterAnalytics_whenToEnableAnalytics)),
     new AppCenterReactNativePackage(MainApplication.this),
