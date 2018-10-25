@@ -1,7 +1,7 @@
 /* eslint-disable global-require, max-len */
 import React, { Component } from 'react';
 import I18n from 'react-native-i18n';
-import { Icon, Picker, CardItem, Title } from 'native-base';
+import { Icon, CardItem, Title } from 'native-base';
 import {
   Alert,
   ImageBackground,
@@ -27,9 +27,8 @@ import APIs from '../../api';
 import config from '../../../config';
 import { CountriesPicker } from '../../components/common/CountriesPicker';
 
-const { AuthApi, CategoryApi } = APIs;
+const { CategoryApi } = APIs;
 const categoryApi = new CategoryApi();
-const api = new AuthApi();
 const ucFirst = s => (s.substr(0, 1).toLowerCase() + s.substr(1)).replace(' ', '');
 const ITEM_WIDTH = Dimensions.get('window').width;
 
@@ -295,7 +294,7 @@ class SignupForm extends Component {
   };
 
   selectCategory = () => {
-    this.props.navigator.push({
+    this.props.navigator.showModal({
       screen: 'wevedo.CategoryGridScreen',
       passProps: {
         categories: this.state.categories,
@@ -524,7 +523,7 @@ class SignupForm extends Component {
                               flex: 1,
                               justifyContent: 'space-between',
                             }}
-                            onPress={() => this.selectCategory()}
+                            onPress={this.selectCategory}
                           >
                             <Text style={{ color: 'white', alignSelf: 'flex-start' }}>
                               {firstCategoryName}

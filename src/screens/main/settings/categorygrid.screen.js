@@ -1,17 +1,10 @@
 import React from 'react';
-import {
-  SafeAreaView,
-  FlatList,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { SafeAreaView, FlatList, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 import images from '../../../images';
 import CategorySelectItem from '../../../components/settings/CategorySelectItem';
 import I18n from '../../../locales';
 import { Button, Text } from '../../../components/common';
-
-
 
 // "key_" + categorty id( from backend ) = key for Catinfo lookup
 // this is used to store category information for easy lookups
@@ -79,12 +72,10 @@ const CatInfo = {
   },
 };
 
-
 // this stores the final result array of all the selected categories
 // used 2 DataStrcutures to better integrate with the API.
 
 let selectedCategories = [];
-
 
 class CategoryGridScreen extends React.Component {
   componentWillMount() {
@@ -95,7 +86,6 @@ class CategoryGridScreen extends React.Component {
     });
   }
 
-
   onOkPress = () => {
     selectedCategories = [];
     Object.keys(CatInfo).forEach((key) => {
@@ -103,15 +93,17 @@ class CategoryGridScreen extends React.Component {
       if (status) selectedCategories.push(id);
     });
     this.props.onCategorySelect(selectedCategories);
-    this.props.navigator.pop({ animated: true, animationType: 'slide-up' });
-  }
+    this.props.navigator.dismissModal({
+      animationType: 'slide-down',
+    });
+  };
 
   toggleCategory = (catId) => {
     const currentStatus = CatInfo[`key_${catId}`].status;
-    CatInfo[`key_${catId}`].status = (!currentStatus);
-  }
+    CatInfo[`key_${catId}`].status = !currentStatus;
+  };
 
-  keyExtractor = (item, index) => index ;
+  keyExtractor = (item, index) => index;
 
   renderItem = ({ item }) => (
     <CategorySelectItem
@@ -121,12 +113,11 @@ class CategoryGridScreen extends React.Component {
       status={CatInfo[`key_${item._id}`].status}
       toggleCategory={this.toggleCategory}
     />
-  )
+  );
 
   render() {
     return (
       <SafeAreaView style={{ flex: 1 }}>
-
         <View style={{ alignItems: 'center', paddingTop: 10 }}>
           <FlatList
             numColumns={3}
@@ -136,19 +127,15 @@ class CategoryGridScreen extends React.Component {
           />
         </View>
 
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }} >
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
           <Button onPress={this.onOkPress}>
-            <Text>
-              {I18n.t('common.ok')}
-            </Text>
+            <Text>{I18n.t('common.ok')}</Text>
           </Button>
         </View>
-
       </SafeAreaView>
     );
   }
 }
-
 
 const styles = {
   okButton: {
