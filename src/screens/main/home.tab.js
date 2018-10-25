@@ -28,9 +28,9 @@ const api = new UserApi();
 
 const categories = [
   {
-    route: 'Photo',
+    route: 'Media',
     screenIndex: 0,
-    title: I18n.t('categories.photo'),
+    title: I18n.t('categories.media'),
     imageSource: images.photo,
   },
   {
@@ -46,9 +46,9 @@ const categories = [
     imageSource: images.ent,
   },
   {
-    route: 'MakeUp',
+    route: 'Beauty',
     screenIndex: 3,
-    title: I18n.t('categories.makeup'),
+    title: I18n.t('categories.beauty'),
     imageSource: images.make_up,
   },
   {
@@ -64,9 +64,9 @@ const categories = [
     imageSource: images.decoration,
   },
   {
-    route: 'Costume',
+    route: 'Boutique',
     screenIndex: 6,
-    title: I18n.t('categories.costume'),
+    title: I18n.t('categories.boutique'),
     imageSource: images.costume,
   },
   {

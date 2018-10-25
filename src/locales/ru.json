@@ -56,12 +56,12 @@
   "categories": {
     "categories": "Категории",
     "transport": "Транспорт",
-    "photo": "Фотограф",
+    "media": "Фотограф",
     "venue": "Зал",
-    "makeup": "Красота",
+    "beauty": "Красота",
     "entertainment": "Развлечение",
     "decoration": "Декорация",
-    "costume": "Платье",
+    "boutique": "Платье",
     "catering": "Кейтеринг",
     "cake": "Торт"
   },

@@ -23,13 +23,13 @@ class ProviderTabList extends Component {
       tabBarState: {
         index: this.props.routeIndex || 0,
         routes: [
-          { key: 'photo', title: I18n.t('categories.photo') },
+          { key: 'media', title: I18n.t('categories.media') },
           { key: 'catering', title: I18n.t('categories.catering') },
           { key: 'entertainment', title: I18n.t('categories.entertainment') },
-          { key: 'makeup', title: I18n.t('categories.makeup') },
+          { key: 'beauty', title: I18n.t('categories.beauty') },
           { key: 'cake', title: I18n.t('categories.cake') },
           { key: 'decoration', title: I18n.t('categories.decoration') },
-          { key: 'costume', title: I18n.t('categories.costume') },
+          { key: 'boutique', title: I18n.t('categories.boutique') },
           { key: 'venue', title: I18n.t('categories.venue') },
           { key: 'transport', title: I18n.t('categories.transport') },
           { key: 'jewelry', title: I18n.t('categories.jewelry') },
@@ -135,13 +135,13 @@ class ProviderTabList extends Component {
   );
 
   _renderScene = SceneMap({
-    photo: this.PhotoRoute,
+    media: this.PhotoRoute,
     catering: this.CateringRoute,
     entertainment: this.EntertainmentRoute,
-    makeup: this.MakeupRoute,
+    beauty: this.MakeupRoute,
     cake: this.CakeRoute,
     decoration: this.DecorationRoute,
-    costume: this.ConstumeRoute,
+    boutique: this.ConstumeRoute,
     venue: this.VenueRoute,
     transport: this.TransportRoute,
     jewelry: this.JewelryRoute,
