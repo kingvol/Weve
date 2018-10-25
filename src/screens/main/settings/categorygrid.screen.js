@@ -6,84 +6,27 @@ import CategorySelectItem from '../../../components/settings/CategorySelectItem'
 import I18n from '../../../locales';
 import { Button, Text } from '../../../components/common';
 
-// "key_" + categorty id( from backend ) = key for Catinfo lookup
-// this is used to store category information for easy lookups
-
-const caregoryImages = {
-  'Venue': images.venue,
-  
-}
-
-
-const CatInfo = {
-  key_5ae9ba16c2ccda00b752b718: {
-    image: images.venue,
-    status: false,
-    id: '5ae9ba16c2ccda00b752b718',
-  },
-  key_5ae9ba16c2ccda00b752b71a: {
-    image: images.photo,
-    status: false,
-    id: '5ae9ba16c2ccda00b752b71a',
-  },
-  key_5ae9ba16c2ccda00b752b71c: {
-    image: images.ent,
-    status: false,
-    id: '5ae9ba16c2ccda00b752b71c',
-  },
-  key_5ae9ba16c2ccda00b752b71d: {
-    image: images.make_up,
-    status: false,
-    id: '5ae9ba16c2ccda00b752b71d',
-  },
-  key_5ae9ba16c2ccda00b752b71f: {
-    image: images.decoration,
-    status: false,
-    id: '5ae9ba16c2ccda00b752b71f',
-  },
-  key_5ae9ba16c2ccda00b752b720: {
-    image: images.cake,
-    status: false,
-    id: '5ae9ba16c2ccda00b752b720',
-  },
-  key_5ae9ba16c2ccda00b752b71e: {
-    image: images.costume,
-    status: false,
-    id: '5ae9ba16c2ccda00b752b71e',
-  },
-  key_5ae9ba16c2ccda00b752b71b: {
-    image: images.catering,
-    status: false,
-    id: '5ae9ba16c2ccda00b752b71b',
-  },
-  key_5b5c2f35a4a01374a3d1d74a: {
-    image: images.transport,
-    status: false,
-    id: '5b5c2f35a4a01374a3d1d74a',
-  },
-  key_5bc7be2e58c2de53fff805aa: {
-    image: images.jewelry,
-    status: false,
-    id: '5bc7be2e58c2de53fff805aa',
-  },
-  key_5bc7be2e58c2de53fff805ab: {
-    image: images.stationary,
-    status: false,
-    id: '5bc7be2e58c2de53fff805ab',
-  },
-  key_5bc7be2e58c2de53fff805ac: {
-    image: images.honeymoon,
-    status: false,
-    id: '5bc7be2e58c2de53fff805ac',
-  },
+const categoryImages = {
+  Venue: images.venue,
+  Media: images.photo,
+  Catering: images.catering,
+  Entertainment: images.ent,
+  Beauty: images.make_up,
+  Boutique: images.costume,
+  Decoration: images.decoration,
+  Cake: images.cake,
+  Transport: images.transport,
+  Stationary: images.stationary,
+  Jewelry: images.jewelry,
+  Honeymoon: images.honeymoon,
 };
 
-// this stores the final result array of all the selected categories
-// used 2 DataStrcutures to better integrate with the API.
-
-let selectedCategories = [];
+const selectedCategories = [];
 
 class CategoryGridScreen extends React.Component {
+  componentDidMount() {
+    console.warn(this.props.categories);
+  }
   // componentWillMount() {
   //   this.toggleCategory = this.toggleCategory.bind(this);
   //   this.props.selectedCategoriesArray.forEach((catId) => {
@@ -110,12 +53,19 @@ class CategoryGridScreen extends React.Component {
 
   // keyExtractor = (item, index) => index;
 
+  toggleCategory = () => {
+    // const currentStatus = CatInfo[`key_${catId}`].status;
+    // CatInfo[`key_${catId}`].status = !currentStatus;
+  };
+
+  keyExtractor = (item, index) => index;
+
   renderItem = ({ item }) => (
     <CategorySelectItem
-      image={CatInfo[`key_${item._id}`].image}
+      image={categoryImages[item.name]}
       name={item.name}
       catId={item._id}
-      status={CatInfo[`key_${item._id}`].status}
+      status={false}
       toggleCategory={this.toggleCategory}
     />
   );
@@ -126,7 +76,7 @@ class CategoryGridScreen extends React.Component {
         <View style={{ alignItems: 'center', paddingTop: 10 }}>
           <FlatList
             numColumns={3}
-            data={this.props.categories.slice()}
+            data={this.props.categories}
             keyExtractor={this.keyExtractor}
             renderItem={this.renderItem}
           />

@@ -65,7 +65,8 @@ class SignupForm extends Component {
           error: '',
         },
       },
-      categories: [],
+      categories: [], // localised
+      categoriesFromServer: [],
       loading: false,
       isProvider: false,
       isModalVisible: false,
@@ -77,13 +78,13 @@ class SignupForm extends Component {
   async componentWillMount() {
     try {
       const categoriesFromServer = await categoryApi.fetchCategoriesList();
-      const categories = categoriesFromServer.map((e) => {
-        delete e.__v;
-        e.name = this.localiseCategory(ucFirst(e.name));
-        return e;
-      });
+      const categories = categoriesFromServer.slice(0).map(e => ({
+        ...e,
+        name: this.localiseCategory(ucFirst(e.name)),
+      }));
       this.setState({
         categories,
+        categoriesFromServer,
         values: {
           ...this.state.values,
           category: [categories[0]._id], // Predefine 'Venue category'
@@ -223,17 +224,18 @@ class SignupForm extends Component {
   }
 
   onCountrySelect = (appearInCountries) => {
-    let regionName, countryCode;
+    let regionName,
+      countryCode;
     if (appearInCountries.length === 1) {
       regionName = countryLib[`${appearInCountries[0]}`].provinces[0];
-      countryCode = appearInCountries[0]
+      countryCode = appearInCountries[0];
     }
     this.setState({
       values: {
         ...this.state.values,
         appearInCountries,
         regionName,
-        countryCode
+        countryCode,
       },
     });
   };
@@ -271,7 +273,7 @@ class SignupForm extends Component {
     if (this.state.isProvider) {
       const { image, category } = this.state.values;
 
-      console.log('SUBMIT ', countryCode, appearInCountries, regionName)
+      console.log('SUBMIT ', countryCode, appearInCountries, regionName);
 
       this.props.onProviderFormSubmit(
         password,
@@ -283,26 +285,21 @@ class SignupForm extends Component {
         appearInCountries,
       );
     } else {
-      this.props.onFormSubmit(
-        password,
-        capitalFullName,
-        countryCode,
-        regionName,
-        [],
-      );
+      this.props.onFormSubmit(password, capitalFullName, countryCode, regionName, []);
     }
   };
 
   selectCategory = () => {
-    this.props.navigator.showModal({
-      screen: 'wevedo.CategoryGridScreen',
-      passProps: {
-        categories: this.state.categories,
-        onCategorySelect: this.onCategorySelect,
-        selectedCategoriesArray: this.state.values.category,
-      },
-    });
-  }
+    console.warn(this.state.categoriesFromServer);
+    // this.props.navigator.showModal({
+    //   screen: 'wevedo.CategoryGridScreen',
+    //   passProps: {
+    //     categories: this.state.categoriesFromServer,
+    //     onCategorySelect: this.onCategorySelect,
+    //     selectedCategoriesArray: this.state.values.category,
+    //   },
+    // });
+  };
 
   renderSignUp = () => {
     const { password, confirmPassword } = this.state.values;
@@ -445,7 +442,7 @@ class SignupForm extends Component {
                     selectedCountries={this.state.values.appearInCountries}
                     onRegionSelect={this.onRegionSelect}
                     selectedRegion={this.state.values.regionName}
-                    single={true}
+                    single
                     styles={{
                       textColor: '#848787',
                       backgroundColor: 'transparent',
