@@ -56,12 +56,12 @@
   "categories": {
     "categories": "Kategoriler",
     "transport": "Araç",
-    "photo": "Fotoğrafçı",
+    "media": "Fotoğrafçı",
     "venue": "Mekan",
-    "makeup": "Güzellik",
+    "beauty": "Güzellik",
     "entertainment": "Eğlence",
     "decoration": "Dekorasyon",
-    "costume": "Elbise",
+    "boutique": "Elbise",
     "catering": "Catering",
     "cake": "Pasta"
   },
