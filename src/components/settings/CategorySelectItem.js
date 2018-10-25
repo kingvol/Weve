@@ -3,13 +3,11 @@ import { TouchableOpacity, Text, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import images from '../../images';
 
-
 class CategorySelectItem extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { selected: props.status };
+    this.state = { selected: props.selected };
   }
-
 
   onToggle = () => {
     this.props.toggleCategory(this.props.catId);
@@ -18,7 +16,7 @@ class CategorySelectItem extends React.Component {
     } else {
       this.setState({ selected: !this.state.selected });
     }
-  }
+  };
 
   render() {
     const tickImage = this.state.selected ? images.tick_active : images.tick_blank;
@@ -40,7 +38,6 @@ class CategorySelectItem extends React.Component {
   }
 }
 
-
 const styles = {
   imageCoverContainer: {
     position: 'absolute',
@@ -52,6 +49,5 @@ const styles = {
     padding: 5,
   },
 };
-
 
 export default CategorySelectItem;

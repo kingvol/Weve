@@ -11,7 +11,6 @@ import {
   Modal,
   TouchableOpacity,
   Dimensions,
-  Platform,
 } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import MultiSelect from 'react-native-multiple-select';
@@ -290,15 +289,14 @@ class SignupForm extends Component {
   };
 
   selectCategory = () => {
-    console.warn(this.state.categoriesFromServer);
-    // this.props.navigator.showModal({
-    //   screen: 'wevedo.CategoryGridScreen',
-    //   passProps: {
-    //     categories: this.state.categoriesFromServer,
-    //     onCategorySelect: this.onCategorySelect,
-    //     selectedCategoriesArray: this.state.values.category,
-    //   },
-    // });
+    this.props.navigator.showModal({
+      screen: 'wevedo.CategoryGridScreen',
+      passProps: {
+        categories: this.state.categoriesFromServer,
+        onCategorySelect: this.onCategorySelect,
+        selectedCategoriesArray: this.state.values.category,
+      },
+    });
   };
 
   renderSignUp = () => {

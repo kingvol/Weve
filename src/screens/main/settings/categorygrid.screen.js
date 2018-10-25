@@ -21,41 +21,31 @@ const categoryImages = {
   Honeymoon: images.honeymoon,
 };
 
-const selectedCategories = [];
-
 class CategoryGridScreen extends React.Component {
-  componentDidMount() {
-    console.warn(this.props.categories);
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedCategories: props.selectedCategoriesArray,
+    };
   }
-  // componentWillMount() {
-  //   this.toggleCategory = this.toggleCategory.bind(this);
-  //   this.props.selectedCategoriesArray.forEach((catId) => {
-  //     CatInfo[`key_${catId}`].status = true;
-  //   });
-  // }
 
-  // onOkPress = () => {
-  //   selectedCategories = [];
-  //   Object.keys(CatInfo).forEach((key) => {
-  //     const { status, id } = CatInfo[key];
-  //     if (status) selectedCategories.push(id);
-  //   });
-  //   this.props.onCategorySelect(selectedCategories);
-  //   this.props.navigator.dismissModal({
-  //     animationType: 'slide-down',
-  //   });
-  // };
+  onSubmitPress = () => {
+    this.props.onCategorySelect(this.state.selectedCategories);
+    this.props.navigator.dismissModal({
+      animationType: 'slide-down',
+    });
+  };
 
-  // toggleCategory = (catId) => {
-  //   const currentStatus = CatInfo[`key_${catId}`].status;
-  //   CatInfo[`key_${catId}`].status = !currentStatus;
-  // };
+  toggleCategory = (id) => {
+    const { selectedCategories } = this.state;
 
-  // keyExtractor = (item, index) => index;
-
-  toggleCategory = () => {
-    // const currentStatus = CatInfo[`key_${catId}`].status;
-    // CatInfo[`key_${catId}`].status = !currentStatus;
+    if (selectedCategories.indexOf(id) === -1) {
+      this.setState({ selectedCategories: [...selectedCategories, id] });
+    } else {
+      this.setState({
+        selectedCategories: selectedCategories.filter(item => item !== id),
+      });
+    }
   };
 
   keyExtractor = (item, index) => index;
@@ -63,9 +53,9 @@ class CategoryGridScreen extends React.Component {
   renderItem = ({ item }) => (
     <CategorySelectItem
       image={categoryImages[item.name]}
-      name={item.name}
+      name={I18n.t(`categories.${item.name.toLowerCase()}`)}
       catId={item._id}
-      status={false}
+      selected={this.state.selectedCategories.indexOf(item._id) !== -1}
       toggleCategory={this.toggleCategory}
     />
   );
@@ -83,7 +73,7 @@ class CategoryGridScreen extends React.Component {
         </View>
 
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
-          <Button onPress={this.onOkPress}>
+          <Button onPress={this.onSubmitPress}>
             <Text>{I18n.t('common.ok')}</Text>
           </Button>
         </View>
