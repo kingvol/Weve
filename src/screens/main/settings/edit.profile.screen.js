@@ -1,22 +1,22 @@
 /* eslint-disable no-underscore-dangle, camelcase */
 import React, { Component } from 'react';
-import { Alert, Keyboard, View, Dimensions, TextInput, Switch, Platform, ActivityIndicator, TouchableOpacity, Image } from 'react-native';
+import { Alert, Keyboard, View, Dimensions, TextInput, Switch, ActivityIndicator, TouchableOpacity } from 'react-native';
 import * as Progress from 'react-native-progress';
 import Upload from 'react-native-background-upload';
 import _ from 'lodash';
 import ImagePicker from 'react-native-image-picker';
-import { Picker, CheckBox, Left, Button as NBButton, Icon as NBIcon } from 'native-base';
-import CountryPicker from 'react-native-country-picker-modal';
+import { CheckBox, Left, Button as NBButton, Icon as NBIcon } from 'native-base';
 import { connect } from 'react-redux';
 import SpinnerOverlay from 'react-native-loading-spinner-overlay';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DeviceInfo from 'react-native-device-info';
 import ImageResizer from 'react-native-image-resizer';
+import Permissions from 'react-native-permissions';
+import FastImage from 'react-native-fast-image';
 import I18n from '../../../locales';
 import config from '../../../../config';
 import countries from '../../../countryLib/countries';
 import countryLib from '../../../countryLib';
-import { RNChipView } from 'react-native-chip-view'
 import { CountriesPicker } from '../../../components/common/CountriesPicker';
 import {
   Button,
@@ -24,11 +24,9 @@ import {
   Content,
   EditProfileField,
   FieldInput,
-  Thumbnail,
   Row,
   Col,
   Text,
-  RadioButton,
 } from '../../../components/common';
 
 
@@ -36,8 +34,6 @@ import { backgroundColor, lightTextColor } from '../../../theme';
 import ProfileImage from '../../../components/home/ProfileImage';
 import { UserActions } from '../../../actions';
 import APIs from '../../../api';
-import Permissions from 'react-native-permissions';
-import FastImage from 'react-native-fast-image';
 
 const { CategoryApi } = APIs;
 const categoryApi = new CategoryApi();
@@ -50,59 +46,6 @@ const ucFirst = s => (s.substr(0, 1).toLowerCase() + s.substr(1)).replace(' ', '
 
 const ITEM_WIDTH = Dimensions.get('window').width;
 const maxLength = 5000;
-
-
-const CatInfo = {
-  key_5ae9ba16c2ccda00b752b718: {
-    name: 'venue',
-    id: '5ae9ba16c2ccda00b752b718',
-  },
-  key_5ae9ba16c2ccda00b752b71a: {
-    name: 'photo',
-    id: '5ae9ba16c2ccda00b752b71a',
-  },
-  key_5ae9ba16c2ccda00b752b71c: {
-    name: 'entertainment',
-    id: '5ae9ba16c2ccda00b752b71c',
-  },
-  key_5ae9ba16c2ccda00b752b71d: {
-    name: 'makeup',
-    id: '5ae9ba16c2ccda00b752b71d',
-  },
-  key_5ae9ba16c2ccda00b752b71f: {
-    name: 'decoration',
-    id: '5ae9ba16c2ccda00b752b71f',
-  },
-  key_5ae9ba16c2ccda00b752b720: {
-    name: 'cake',
-    id: '5ae9ba16c2ccda00b752b720',
-  },
-  key_5ae9ba16c2ccda00b752b71e: {
-    name: 'costume',
-    id: '5ae9ba16c2ccda00b752b71e',
-  },
-  key_5ae9ba16c2ccda00b752b71b: {
-    name: 'catering',
-    id: '5ae9ba16c2ccda00b752b71b',
-  },
-  key_5b5c2f35a4a01374a3d1d74a: {
-    name: 'transport',
-    id: '5b5c2f35a4a01374a3d1d74a',
-  },
-  key_5bc7be2e58c2de53fff805aa: {
-    name: 'jewelry',
-    id: '5bc7be2e58c2de53fff805aa',
-  },
-  key_5bc7be2e58c2de53fff805ab: {
-    name: 'stationary',
-    id: '5bc7be2e58c2de53fff805ab',
-  },
-  key_5bc7be2e58c2de53fff805ac: {
-    name: 'honeymoon',
-    id: '5bc7be2e58c2de53fff805ac',
-  },
-};
-
 
 class EditProfileScreen extends Component {
   constructor(props) {
@@ -153,7 +96,8 @@ class EditProfileScreen extends Component {
         `${user.profile.firstName} ${user.profile.lastName}`,
       loading: false,
       imageUploading: false,
-      categories: [],
+      categories: [], // localised
+      categoriesFromServer: [],
       profileIconColor: 'green',
       isDataModified: false,
       /* Video upload */
@@ -169,11 +113,11 @@ class EditProfileScreen extends Component {
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
     try {
       const categoriesFromServer = await categoryApi.fetchCategoriesList();
-      const categories = categoriesFromServer.map((e) => {
-        delete e.__v;
-        e.name = this.localiseCategory(ucFirst(e.name));
-        return e;
-      });
+      this.setState({ categoriesFromServer });
+      const categories = categoriesFromServer.slice(0).map(e => ({
+        ...e,
+        name: this.localiseCategory(ucFirst(e.name)),
+      }));
       if (!this.props.user.profile.isProvider) {
         this.setState({
           categories,
@@ -754,7 +698,7 @@ class EditProfileScreen extends Component {
     this.props.navigator.showModal({
       screen: 'wevedo.CategoryGridScreen',
       passProps: {
-        categories: this.state.categories,
+        categories: this.state.categoriesFromServer,
         onCategorySelect: this.onCategorySelect,
         selectedCategoriesArray: this.state.values.categories,
       },
@@ -1079,8 +1023,9 @@ class EditProfileScreen extends Component {
                 </TouchableOpacity>
               </View>
               <View style={{ flexDirection: 'row', flexWrap: 'wrap', flex: 1 }}>
-                {this.state.values.categories.map((cat) => {
-                const catname = CatInfo[`key_${cat}`].name;
+                {this.state.values.categories.map((category) => {
+                  const targetCat = this.state.categoriesFromServer.find(i => i._id === category);
+                  const catname = targetCat ? targetCat.name.toLowerCase() : undefined;
                 return (
                   <View style={{ marginBottom: 10, marginRight: 5 }} key={catname}>
                     <View style={{ backgroundColor: '#DEDEDE', padding:10, borderRadius:5 }}>
