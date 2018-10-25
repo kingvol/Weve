@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, FlatList, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView, FlatList, View } from 'react-native';
 import { connect } from 'react-redux';
 import images from '../../../images';
 import CategorySelectItem from '../../../components/settings/CategorySelectItem';

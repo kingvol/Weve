@@ -750,6 +750,17 @@ class EditProfileScreen extends Component {
     });
   };
 
+  selectCategory = () => {
+    this.props.navigator.showModal({
+      screen: 'wevedo.CategoryGridScreen',
+      passProps: {
+        categories: this.state.categories,
+        onCategorySelect: this.onCategorySelect,
+        selectedCategoriesArray: this.state.values.categories,
+      },
+    });
+  }
+
   renderVideoStatus = () => {
     const { isVideoUploading, videoUploadProgress } = this.state;
 
@@ -799,18 +810,6 @@ class EditProfileScreen extends Component {
       </Button>,
     ];
   };
-
-
-  selectCategory = () => {
-    this.props.navigator.push({
-      screen: 'wevedo.CategoryGridScreen',
-      passProps: {
-        categories: this.state.categories,
-        onCategorySelect: this.onCategorySelect,
-        selectedCategoriesArray: this.state.values.categories,
-      },
-    });
-  }
 
   render() {
     const { checkBoxText, categoryText, styleDescription } = styles;
