@@ -9,6 +9,12 @@ import { Button, Text } from '../../../components/common';
 // "key_" + categorty id( from backend ) = key for Catinfo lookup
 // this is used to store category information for easy lookups
 
+const caregoryImages = {
+  'Venue': images.venue,
+  
+}
+
+
 const CatInfo = {
   key_5ae9ba16c2ccda00b752b718: {
     image: images.venue,
@@ -78,32 +84,31 @@ const CatInfo = {
 let selectedCategories = [];
 
 class CategoryGridScreen extends React.Component {
-  componentWillMount() {
-    this.toggleCategory = this.toggleCategory.bind(this);
-    this.props.selectedCategoriesArray.forEach((catId) => {
-      console.log(catId);
-      CatInfo[`key_${catId}`].status = true;
-    });
-  }
+  // componentWillMount() {
+  //   this.toggleCategory = this.toggleCategory.bind(this);
+  //   this.props.selectedCategoriesArray.forEach((catId) => {
+  //     CatInfo[`key_${catId}`].status = true;
+  //   });
+  // }
 
-  onOkPress = () => {
-    selectedCategories = [];
-    Object.keys(CatInfo).forEach((key) => {
-      const { status, id } = CatInfo[key];
-      if (status) selectedCategories.push(id);
-    });
-    this.props.onCategorySelect(selectedCategories);
-    this.props.navigator.dismissModal({
-      animationType: 'slide-down',
-    });
-  };
+  // onOkPress = () => {
+  //   selectedCategories = [];
+  //   Object.keys(CatInfo).forEach((key) => {
+  //     const { status, id } = CatInfo[key];
+  //     if (status) selectedCategories.push(id);
+  //   });
+  //   this.props.onCategorySelect(selectedCategories);
+  //   this.props.navigator.dismissModal({
+  //     animationType: 'slide-down',
+  //   });
+  // };
 
-  toggleCategory = (catId) => {
-    const currentStatus = CatInfo[`key_${catId}`].status;
-    CatInfo[`key_${catId}`].status = !currentStatus;
-  };
+  // toggleCategory = (catId) => {
+  //   const currentStatus = CatInfo[`key_${catId}`].status;
+  //   CatInfo[`key_${catId}`].status = !currentStatus;
+  // };
 
-  keyExtractor = (item, index) => index;
+  // keyExtractor = (item, index) => index;
 
   renderItem = ({ item }) => (
     <CategorySelectItem
@@ -121,7 +126,7 @@ class CategoryGridScreen extends React.Component {
         <View style={{ alignItems: 'center', paddingTop: 10 }}>
           <FlatList
             numColumns={3}
-            data={this.props.categories.slice(0, 12)}
+            data={this.props.categories.slice()}
             keyExtractor={this.keyExtractor}
             renderItem={this.renderItem}
           />
@@ -136,14 +141,5 @@ class CategoryGridScreen extends React.Component {
     );
   }
 }
-
-const styles = {
-  okButton: {
-    borderRadius: 5,
-    backgroundColor: '#FF0000',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-};
 
 export default connect(null, {})(CategoryGridScreen);
