@@ -1,7 +1,7 @@
 /* eslint-disable global-require, max-len */
 import React, { Component } from 'react';
 import I18n from 'react-native-i18n';
-import { Icon, Picker, CardItem, Title } from 'native-base';
+import { Icon, CardItem, Title } from 'native-base';
 import {
   Alert,
   ImageBackground,
@@ -11,7 +11,6 @@ import {
   Modal,
   TouchableOpacity,
   Dimensions,
-  Platform,
 } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import MultiSelect from 'react-native-multiple-select';
@@ -27,9 +26,8 @@ import APIs from '../../api';
 import config from '../../../config';
 import { CountriesPicker } from '../../components/common/CountriesPicker';
 
-const { AuthApi, CategoryApi } = APIs;
+const { CategoryApi } = APIs;
 const categoryApi = new CategoryApi();
-const api = new AuthApi();
 const ucFirst = s => (s.substr(0, 1).toLowerCase() + s.substr(1)).replace(' ', '');
 const ITEM_WIDTH = Dimensions.get('window').width;
 
@@ -66,7 +64,8 @@ class SignupForm extends Component {
           error: '',
         },
       },
-      categories: [],
+      categories: [], // localised
+      categoriesFromServer: [],
       loading: false,
       isProvider: false,
       isModalVisible: false,
@@ -78,13 +77,13 @@ class SignupForm extends Component {
   async componentWillMount() {
     try {
       const categoriesFromServer = await categoryApi.fetchCategoriesList();
-      const categories = categoriesFromServer.map((e) => {
-        delete e.__v;
-        e.name = this.localiseCategory(ucFirst(e.name));
-        return e;
-      });
+      const categories = categoriesFromServer.slice(0).map(e => ({
+        ...e,
+        name: this.localiseCategory(ucFirst(e.name)),
+      }));
       this.setState({
         categories,
+        categoriesFromServer,
         values: {
           ...this.state.values,
           category: [categories[0]._id], // Predefine 'Venue category'
@@ -224,17 +223,18 @@ class SignupForm extends Component {
   }
 
   onCountrySelect = (appearInCountries) => {
-    let regionName, countryCode;
+    let regionName,
+      countryCode;
     if (appearInCountries.length === 1) {
       regionName = countryLib[`${appearInCountries[0]}`].provinces[0];
-      countryCode = appearInCountries[0]
+      countryCode = appearInCountries[0];
     }
     this.setState({
       values: {
         ...this.state.values,
         appearInCountries,
         regionName,
-        countryCode
+        countryCode,
       },
     });
   };
@@ -272,7 +272,7 @@ class SignupForm extends Component {
     if (this.state.isProvider) {
       const { image, category } = this.state.values;
 
-      console.log('SUBMIT ', countryCode, appearInCountries, regionName)
+      console.log('SUBMIT ', countryCode, appearInCountries, regionName);
 
       this.props.onProviderFormSubmit(
         password,
@@ -284,14 +284,19 @@ class SignupForm extends Component {
         appearInCountries,
       );
     } else {
-      this.props.onFormSubmit(
-        password,
-        capitalFullName,
-        countryCode,
-        regionName,
-        [],
-      );
+      this.props.onFormSubmit(password, capitalFullName, countryCode, regionName, []);
     }
+  };
+
+  selectCategory = () => {
+    this.props.navigator.showModal({
+      screen: 'wevedo.CategoryGridScreen',
+      passProps: {
+        categories: this.state.categoriesFromServer,
+        onCategorySelect: this.onCategorySelect,
+        selectedCategoriesArray: this.state.values.category,
+      },
+    });
   };
 
   renderSignUp = () => {
@@ -435,7 +440,7 @@ class SignupForm extends Component {
                     selectedCountries={this.state.values.appearInCountries}
                     onRegionSelect={this.onRegionSelect}
                     selectedRegion={this.state.values.regionName}
-                    single={true}
+                    single
                     styles={{
                       textColor: '#848787',
                       backgroundColor: 'transparent',
@@ -513,7 +518,7 @@ class SignupForm extends Component {
                               flex: 1,
                               justifyContent: 'space-between',
                             }}
-                            onPress={() => this.setModalForCategoryVisible(true)}
+                            onPress={this.selectCategory}
                           >
                             <Text style={{ color: 'white', alignSelf: 'flex-start' }}>
                               {firstCategoryName}

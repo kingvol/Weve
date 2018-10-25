@@ -1,18 +1,18 @@
 /* eslint-disable no-underscore-dangle, camelcase */
 import React, { Component } from 'react';
-import { Alert, Keyboard, View, Dimensions, Image, TextInput, Switch, Platform, ActivityIndicator } from 'react-native';
+import { Alert, Keyboard, View, Dimensions, TextInput, Switch, ActivityIndicator, TouchableOpacity } from 'react-native';
 import * as Progress from 'react-native-progress';
 import Upload from 'react-native-background-upload';
 import _ from 'lodash';
 import ImagePicker from 'react-native-image-picker';
-import { Picker, CheckBox, Left, Button as NBButton, Icon as NBIcon } from 'native-base';
-import CountryPicker from 'react-native-country-picker-modal';
+import { CheckBox, Left, Button as NBButton, Icon as NBIcon } from 'native-base';
 import { connect } from 'react-redux';
 import SpinnerOverlay from 'react-native-loading-spinner-overlay';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DeviceInfo from 'react-native-device-info';
-import MultiSelect from 'react-native-multiple-select';
 import ImageResizer from 'react-native-image-resizer';
+import Permissions from 'react-native-permissions';
+import FastImage from 'react-native-fast-image';
 import I18n from '../../../locales';
 import config from '../../../../config';
 import countries from '../../../countryLib/countries';
@@ -24,19 +24,16 @@ import {
   Content,
   EditProfileField,
   FieldInput,
-  Thumbnail,
   Row,
   Col,
   Text,
-  RadioButton,
 } from '../../../components/common';
+
 
 import { backgroundColor, lightTextColor } from '../../../theme';
 import ProfileImage from '../../../components/home/ProfileImage';
 import { UserActions } from '../../../actions';
 import APIs from '../../../api';
-import Permissions from 'react-native-permissions';
-import FastImage from 'react-native-fast-image';
 
 const { CategoryApi } = APIs;
 const categoryApi = new CategoryApi();
@@ -53,6 +50,7 @@ const maxLength = 5000;
 class EditProfileScreen extends Component {
   constructor(props) {
     super(props);
+    this.onCategorySelect = this.onCategorySelect.bind(this);
     this.onRegionSelect = this.onRegionSelect.bind(this);
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     const user = Object.assign({}, this.props.user);
@@ -98,7 +96,8 @@ class EditProfileScreen extends Component {
         `${user.profile.firstName} ${user.profile.lastName}`,
       loading: false,
       imageUploading: false,
-      categories: [],
+      categories: [], // localised
+      categoriesFromServer: [],
       profileIconColor: 'green',
       isDataModified: false,
       /* Video upload */
@@ -108,16 +107,17 @@ class EditProfileScreen extends Component {
     };
   }
 
+
   async componentWillMount() {
     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
     try {
       const categoriesFromServer = await categoryApi.fetchCategoriesList();
-      const categories = categoriesFromServer.map((e) => {
-        delete e.__v;
-        e.name = this.localiseCategory(ucFirst(e.name));
-        return e;
-      });
+      this.setState({ categoriesFromServer });
+      const categories = categoriesFromServer.slice(0).map(e => ({
+        ...e,
+        name: this.localiseCategory(ucFirst(e.name)),
+      }));
       if (!this.props.user.profile.isProvider) {
         this.setState({
           categories,
@@ -694,6 +694,17 @@ class EditProfileScreen extends Component {
     });
   };
 
+  selectCategory = () => {
+    this.props.navigator.showModal({
+      screen: 'wevedo.CategoryGridScreen',
+      passProps: {
+        categories: this.state.categoriesFromServer,
+        onCategorySelect: this.onCategorySelect,
+        selectedCategoriesArray: this.state.values.categories,
+      },
+    });
+  }
+
   renderVideoStatus = () => {
     const { isVideoUploading, videoUploadProgress } = this.state;
 
@@ -854,7 +865,7 @@ class EditProfileScreen extends Component {
                       style={styles.profileImage}
                       id="Profile.profileImage"
                       large
-                      source={{ uri: 
+                      source={{ uri:
                         this.props.user.profile.profileImageURL ||
                         this.props.user.profile.profileImageURL ||
                         defaultProfile,
@@ -961,9 +972,9 @@ class EditProfileScreen extends Component {
               paddingBottom: 10,
             }}
           >
-            <CountriesPicker 
+            <CountriesPicker
               onCountrySelect={this.onCountrySelect}
-              selectedCountries={isProvider ? this.state.values.appearInCountries: [this.state.values.countryCode]}
+              selectedCountries={isProvider ? this.state.values.appearInCountries : [this.state.values.countryCode]}
               single={!isProvider}
               onRegionSelect={this.onRegionSelect}
               selectedRegion={this.state.values.regionName}
@@ -1003,37 +1014,31 @@ class EditProfileScreen extends Component {
                   </Text>
                 </View>
               </View>
-              <View style={{ flexDirection: 'row' }}>
-                <View style={{ flex: 1 }}>
-                  <MultiSelect
-                    // hideTags
-                    items={this.state.categories}
-                    uniqueKey="_id"
-                    ref={this.setMultiselectRef}
-                    onSelectedItemsChange={this.onCategorySelect}
-                    selectedItems={this.state.values.categories}
-                    selectText={I18n.t('common.category')}
-                    searchInputPlaceholderText={`${I18n.t('common.category')}...`}
-                    fontSize={16}
-                    tagRemoveIconColor="#d64635"
-                    tagBorderColor="#f3c200"
-                    tagTextColor={lightTextColor}
-                    selectedItemTextColor={lightTextColor}
-                    selectedItemIconColor={lightTextColor}
-                    itemTextColor="#000"
-                    displayKey="name"
-                    searchInputStyle={{ color: lightTextColor }}
-                    autoFocusInput={false}
-                    submitButtonColor="#d64635"
-                    submitButtonText={I18n.t('common.ok')}
-                    hideSubmitButton
-                  />
-                </View>
+              <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+                <TouchableOpacity style={{ flex: 1 }} onPress={() => this.selectCategory()}>
+                  <View style={styles.categorySelectContainer}>
+                    <Text>{I18n.t('common.category')}</Text>
+                    <Icon name="angle-right" size={25} />
+                  </View>
+                </TouchableOpacity>
+              </View>
+              <View style={{ flexDirection: 'row', flexWrap: 'wrap', flex: 1 }}>
+                {this.state.values.categories.map((category) => {
+                  const targetCat = this.state.categoriesFromServer.find(i => i._id === category);
+                  const catname = targetCat ? targetCat.name.toLowerCase() : undefined;
+                return (
+                  <View style={{ marginBottom: 10, marginRight: 5 }} key={catname}>
+                    <View style={{ backgroundColor: '#DEDEDE', padding:10, borderRadius:5 }}>
+                      <Text style={{ color: '#222222', fontSize: 14 }}>{I18n.t(`categories.${catname}`)}</Text>
+                    </View>
+                  </View>
+                );
+              })}
               </View>
               {this.state.values.isProvider &&
-                !this.props.user.profile.isProvider && (
-                  <Text style={categoryText}>{I18n.t('logIn.account_activation')}</Text>
-                )}
+              !this.props.user.profile.isProvider && (
+                <Text style={categoryText}>{I18n.t('logIn.account_activation')}</Text>
+              )}
               <View style={styles.videoField}>{this.renderVideoStatus()}</View>
             </View>
           )}
@@ -1084,9 +1089,43 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
   },
+  categorySelectContainer: {
+    padding: 10,
+    paddingVertical: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderColor: '#B2B3B5',
+    borderBottomWidth: 1,
+  },
   profileImage: {
     width: 80,
     height: 80,
     borderRadius: 40,
   },
 };
+
+
+/*
+<MultiSelect
+       // hideTags
+  items={this.state.categories}
+  uniqueKey="_id"
+  ref={this.setMultiselectRef}
+  onSelectedItemsChange={this.onCategorySelect}
+  selectedItems={this.state.values.categories}
+  selectText={I18n.t('common.category')}
+  searchInputPlaceholderText={`${I18n.t('common.category')}...`}
+  fontSize={16}
+  tagRemoveIconColor="#d64635"
+  tagBorderColor="#f3c200"
+  tagTextColor={lightTextColor}
+  selectedItemTextColor={lightTextColor}
+  selectedItemIconColor={lightTextColor}
+  itemTextColor="#000"
+  displayKey="name"
+  searchInputStyle={{ color: lightTextColor }}
+  autoFocusInput={false}
+  submitButtonColor="#d64635"
+  submitButtonText={I18n.t('common.ok')}
+  hideSubmitButton
+/> */

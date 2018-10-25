@@ -17,6 +17,8 @@ const images = {
   jewelry: require('./Categories/jewelry.png'), // eslint-disable-line global-require
   stationary: require('./Categories/stationary.png'), // eslint-disable-line global-require
   honeymoon: require('./Categories/honeymoon.png'), // eslint-disable-line global-require
+  tick_blank: require('./tick_blank.png'), // eslint-disable-line global-require
+  tick_active: require('./tick_active.png'), // eslint-disable-line global-require
 };
 
 export default images;

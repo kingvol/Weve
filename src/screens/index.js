@@ -16,6 +16,8 @@ import ProviderProfileScreen from './main/home/ProviderProfile.screen';
 
 import ChatScreen from './main/chat/chat.screen';
 
+import CategoryGridScreen from './main/settings/categorygrid.screen';
+
 const registerScreens = (store = {}, Provider = {}) => {
   Navigation.registerComponent('wevedo.loginScreen', () => LoginScreen, store, Provider);
   Navigation.registerComponent('wevedo.registerScreen', () => RegisterScreen, store, Provider);
@@ -50,6 +52,12 @@ const registerScreens = (store = {}, Provider = {}) => {
     Provider,
   );
   Navigation.registerComponent('wevedo.ChatScreen', () => ChatScreen, store, Provider);
+  Navigation.registerComponent(
+    'wevedo.CategoryGridScreen',
+    () => CategoryGridScreen,
+    store,
+    Provider,
+  );
 };
 
 export default registerScreens;

@@ -153,6 +153,7 @@ class RegisterScreen extends Component {
         onFormSubmit={this.onFormSubmit}
         onProviderFormSubmit={this.onProviderFormSubmit}
         isLoading={this.props.auth.isLoading || this.state.loading}
+        navigator={this.props.navigator}
       />
     );
   }
